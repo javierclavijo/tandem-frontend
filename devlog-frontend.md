@@ -85,3 +85,19 @@ can start coding the frontend part of it.
 Anyway, I should start thinking about Redux soon. Some parts of the app are going to need to share state (mostly about
 chat messages and user online status). Therefore, it should become a priority once I have set up the basic WS stuff (
 which should be pretty soon). But first, there's that.
+
+Also, now that I'm thinking, the view I've made will probably be useless in the long run. I should have just added info
+to the Channel and User ChatSerializers, then added filtering by user and made two calls to the respective list views,
+which would have gone to the Redux state. How stupid. But well, this kind of thing is just unavoidable, even if I try (
+yesterday I wrote about it). Also, I have a better plan now (the one I've mentioned). Time to set up Redux, then.
+
+I don't have the time to keep coding right now, so I'll write it here. I have to think about how I'm going to handle the
+fetching of chat data. It's too messy right now. It requires several ways to fetch them:
+
+1. Initial fetch (when logging in, etc.). Make two calls to the chat list endpoints, which should basic info about
+   user/channel and a list of the first 20 messages or so. This can be done through the current ChatViewSets (I just
+   need to make some adjustments, such as limiting the number of messages and probably returning more information).
+2. Look up older messages: when the user clicks 'show more messages' (or similar) in the chat, more messages should load
+   up. This should be done through specific MessageViewSets, to enable pagination (always taking into account the number
+   of messages fetched initially).
+3. Send/receive message: this is done through WS, so ViewSets don't matter in this case.
