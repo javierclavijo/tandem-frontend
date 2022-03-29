@@ -1,20 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { BrowserRouter } from 'react-router-dom';
+import {BrowserRouter} from 'react-router-dom';
 import App from './App';
 
 const browserRouter = (
-  <BrowserRouter>
     <React.StrictMode>
-      <App />
+        <BrowserRouter>
+            <App/>
+        </BrowserRouter>
     </React.StrictMode>
-  </BrowserRouter>
 );
 
 ReactDOM.render(
-  browserRouter,
-  document.getElementById('root'),
+    browserRouter,
+    document.getElementById('root'),
 );
 
 // If you want to start measuring performance in your app, pass a function

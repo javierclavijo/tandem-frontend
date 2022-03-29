@@ -11,7 +11,7 @@ down here, including the order in which I think I should create the views:
 1. [ ] Basic setup
     - [x] Set up TypeScript
     - [x] Set up React Router
-    - [ ] Integrate with the backend --create user list view (keep in mind that it most surely won't be used)
+    - [x] Integrate with the backend --create user list view (keep in mind that it most surely won't be used)
     - [ ] Set up base async stuff, research how it all works
 2. Create basic views
     - [ ] Chat list
@@ -70,3 +70,18 @@ bit further, including additional functionalities, the changes that I'll probabl
 Anyway, I'm leaving it here. I should note, however, that I'm considering to implement the async stuff earlier. The
 later I implement it, the more I'll have to do later, and the more unused code that I'll waste time writing. So I'll
 update the to-do list to reflect that.
+
+`29/03/2022`
+
+I've done the basic setup part already. I think I'm going to create the chat list view first, then proceed to create the
+user chat view with websockets and all. I'm going to try to do everything with TS from the start, so I'll define
+entities as I move forward.
+
+Edit: I've spent a lot of time writing the chat list view in the backend --too much time, in fact. I've fallen prey to
+my eagerness to coding thing as they should be done, instead of simply making them functional. Basically, I've tried
+using serializers and subqueries, but in the end those approaches were too complicated. Well, at least I've made it and
+can start coding the frontend part of it.
+
+Anyway, I should start thinking about Redux soon. Some parts of the app are going to need to share state (mostly about
+chat messages and user online status). Therefore, it should become a priority once I have set up the basic WS stuff (
+which should be pretty soon). But first, there's that.
