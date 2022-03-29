@@ -10,7 +10,7 @@ down here, including the order in which I think I should create the views:
 
 1. [ ] Basic setup
     - [x] Set up TypeScript
-    - [ ] Set up React Router
+    - [x] Set up React Router
     - [ ] Integrate with the backend --create user list view (keep in mind that it most surely won't be used)
     - [ ] Set up base async stuff, research how it all works
 2. Create basic views

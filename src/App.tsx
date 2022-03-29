@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import axios from "axios";
+import useAsyncEffect from "use-async-effect";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const [users, setUsers] = useState([]);
+
+
+    const getUsers = async () => {
+        const response = await axios.get(process.env.REACT_APP_API_URL! + '/users', {
+            auth: {
+                username: 'admin',
+                password: 'password'
+            }
+        })
+        setUsers(response.data.results)
+    }
+
+    useAsyncEffect(getUsers);
+
+    return (
+        <div className="App">
+            {users.map(user=>(
+                <div>
+                    {user['username']}
+                </div>
+            ))}
+        </div>
+    );
 }
 
 export default App;
