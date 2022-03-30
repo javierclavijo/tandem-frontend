@@ -23,8 +23,8 @@ const slice = createSlice({
 
 export const {setCredentials, removeCredentials} = slice.actions;
 
-export default slice.reducer;
-
 export const selectToken = (state: RootState) => state.auth.token;
+
+export default slice.reducer;
 
 // Initial code source: https://codesandbox.io/s/github/reduxjs/redux-toolkit/tree/master/examples/query/react/authentication?from-embed

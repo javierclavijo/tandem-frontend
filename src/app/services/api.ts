@@ -1,5 +1,6 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {RootState} from "../store";
+import {ChatMessage} from "../../entities/ChatMessage";
 
 export interface UserResponse {
     token: string;
@@ -8,6 +9,14 @@ export interface UserResponse {
 export interface LoginRequest {
     username: string;
     password: string;
+}
+
+export interface ChatListResponse {
+    id:number,
+    url:string,
+    name:string,
+    type: "user" | "channel",
+    messages: ChatMessage[]
 }
 
 export const api = createApi({
@@ -30,9 +39,15 @@ export const api = createApi({
                 body: credentials,
             }),
         }),
+        fetchUserChatList: builder.query<ChatListResponse, string>({
+            query: () => "/user_chats/",
+        }),
+        fetchChannelChatList: builder.query<ChatListResponse, string>({
+            query: () => "/channel_chats/",
+        }),
     }),
 });
 
-export const {useLoginMutation} = api;
+export const {useLoginMutation, useFetchUserChatListQuery, useFetchChannelChatListQuery} = api;
 
 // Initial code source: https://codesandbox.io/s/github/reduxjs/redux-toolkit/tree/master/examples/query/react/authentication?from-embed
