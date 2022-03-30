@@ -1,14 +1,18 @@
 import React, {Fragment, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
+import {useAppDispatch} from "../app/hooks";
+import {removeCredentials} from "../app/authSlice";
 
-function LogOut({setToken}: { setToken: Function }) {
+function LogOut() {
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
     const handleLogout = () => {
-        localStorage.removeItem("auth-token");
-        setToken("");
+        dispatch(removeCredentials())
         navigate("/");
     };
-    useEffect(handleLogout);
+
+    useEffect(handleLogout, []);
 
     return (
         <Fragment/>

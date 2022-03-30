@@ -3,11 +3,14 @@ import useAsyncEffect from "use-async-effect";
 import axios from "axios";
 import {ChatListElement} from "../entities/ChatListElement";
 import {useNavigate} from "react-router-dom";
+import {useAppSelector} from "../app/hooks";
+import {selectToken} from "../app/authSlice";
 
 
-function ChatList({token}: { token: string }) {
+function ChatList() {
 
     const [chats, setChats] = useState<ChatListElement[]>([]);
+    const token = useAppSelector(selectToken);
     const navigate = useNavigate();
 
     const getChats = async () => {

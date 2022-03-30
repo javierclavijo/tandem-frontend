@@ -1,8 +1,10 @@
 import React from "react";
 import {Link, NavLink} from "react-router-dom";
+import {useAppSelector} from "../app/hooks";
+import {selectToken} from "../app/authSlice";
 
-function Nav({token}: { token: string }) {
-
+function Nav() {
+    const token = useAppSelector(selectToken);
 
     return (
         <nav>

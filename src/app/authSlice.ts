@@ -1,27 +1,30 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {User} from "../entities/User";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {RootState} from "./store";
 
-export interface CounterState {
-    token: string,
-    user: User | null,
-    isLoggedIn: boolean
+type AuthState = {
+    token: string | null
 }
 
-const initialState: CounterState = {
-    token: "",
-    user: null,
-    isLoggedIn: false
-};
-
-export const authSlice = createSlice({
+const slice = createSlice({
     name: "auth",
-    initialState,
+    initialState: {token: null} as AuthState,
     reducers: {
-
+        setCredentials: (
+            state,
+            {payload: {token}}: PayloadAction<{ token: string }>
+        ) => {
+            state.token = token;
+        },
+        removeCredentials: (state) => {
+            state.token = null;
+        }
     },
 });
 
-// Action creators are generated for each case reducer function
-export const {} = authSlice.actions;
+export const {setCredentials, removeCredentials} = slice.actions;
 
-export default authSlice.reducer;
+export default slice.reducer;
+
+export const selectToken = (state: RootState) => state.auth.token;
+
+// Initial code source: https://codesandbox.io/s/github/reduxjs/redux-toolkit/tree/master/examples/query/react/authentication?from-embed

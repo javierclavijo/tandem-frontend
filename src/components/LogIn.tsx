@@ -1,29 +1,20 @@
 import React from "react";
 import {useForm} from "react-hook-form";
-import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import {LoginRequest, useLoginMutation} from "../app/services/api";
+import {useAppDispatch} from "../app/hooks";
+import {setCredentials} from "../app/authSlice";
 
-type LogInFormData = {
-    username: string,
-    password: string
-}
-
-function LogIn({setToken}: { setToken: Function }) {
-    const {register, formState: {errors}, setError, handleSubmit} = useForm<LogInFormData>();
+function LogIn() {
+    const {register, formState: {errors}, setError, handleSubmit} = useForm<LoginRequest>();
+    const [login] = useLoginMutation();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const onSubmit = async (data: LogInFormData) => {
-        const url = `${process.env.REACT_APP_API_URL as string}/api-token-auth/`;
+    const onSubmit = async (data: LoginRequest) => {
         try {
-            const response = await axios.post(url, {
-                username: data.username,
-                password: data.password
-            });
-
-            // If login is successful, save token in local storage
-            const token = response.data.token;
-            localStorage.setItem("auth-token", token);
-            setToken(token);
+            const response = await login(data).unwrap();
+            dispatch(setCredentials(response));
             navigate("/chats");
 
         } catch (exception) {
