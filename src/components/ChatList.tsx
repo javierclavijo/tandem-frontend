@@ -1,5 +1,6 @@
 import React from "react";
 import {useGetChatListQuery} from "../app/services/api";
+import {Link, Outlet} from "react-router-dom";
 
 
 function ChatList() {
@@ -13,11 +14,13 @@ function ChatList() {
                     const latestMessage = chat.messages[0];
                     return (
                         <li key={chat.url}>
-                            <a href={chat.url}>{chat.name}</a> - {latestMessage.author.username}: {latestMessage.content} ({latestMessage.timestamp})
+                            <Link
+                                to={`/chats/${chat.id}`}>{chat.name}</Link> - {latestMessage.author.username}: {latestMessage.content} ({latestMessage.timestamp})
                         </li>
                     );
                 })}
             </ul>
+            <Outlet/>
         </div>
     );
 }
