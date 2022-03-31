@@ -12,7 +12,7 @@ export interface LoginRequest {
 }
 
 export interface ChatListResponse {
-    results: Chat[]
+    results: Chat[];
 }
 
 export const api = createApi({
@@ -35,15 +35,30 @@ export const api = createApi({
                 body: credentials,
             }),
         }),
-        fetchUserChatList: builder.query<ChatListResponse, void>({
-            query: () => "/user_chats/",
-        }),
-        fetchChannelChatList: builder.query<ChatListResponse, void>({
-            query: () => "/channel_chats/",
-        }),
+        getChatList: builder.query<Chat[], void>({
+            async queryFn(_arg, queryAou, _extraOptions, fetchWithBQ) {
+                // Fetch both user and channel chats, then add them to a list and return that list
+                const chats = [] as Chat[];
+                const channelChatResponse = await fetchWithBQ("/channel_chats/");
+                if (channelChatResponse.error) {
+                    throw channelChatResponse.error;
+                }
+                const channelChatData = channelChatResponse.data as ChatListResponse;
+                chats.push(...channelChatData.results);
+
+                const userChatResponse = await fetchWithBQ("/user_chats/");
+                if (userChatResponse.error) {
+                    throw userChatResponse.error;
+                }
+                const userChatData = userChatResponse.data as ChatListResponse;
+                chats.push(...userChatData.results);
+
+                return {data: chats};
+            }
+        })
     }),
 });
 
-export const {useLoginMutation, useFetchUserChatListQuery, useFetchChannelChatListQuery} = api;
+export const {useLoginMutation, useGetChatListQuery} = api;
 
 // Initial code source: https://codesandbox.io/s/github/reduxjs/redux-toolkit/tree/master/examples/query/react/authentication?from-embed

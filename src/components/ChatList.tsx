@@ -1,21 +1,22 @@
-import React, {useMemo} from "react";
-import {useNavigate} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "../app/hooks";
-import {selectToken} from "../app/authSlice";
-import {useFetchChannelChatListQuery} from "../app/services/api";
+import React from "react";
+import {useGetChatListQuery} from "../app/services/api";
 
 
 function ChatList() {
 
-    const token = useAppSelector(selectToken);
-    const {data: channelChatData} = useFetchChannelChatListQuery();
+    const {data: channelChatData} = useGetChatListQuery();
 
     return (
         <div>
             <ul>
-                {channelChatData?.results.map(chat => (
-                    <li>{chat.url}</li>
-                ))}
+                {channelChatData?.map(chat => {
+                    const latestMessage = chat.messages[0];
+                    return (
+                        <li key={chat.url}>
+                            <a href={chat.url}>{chat.name}</a> - {latestMessage.author.username}: {latestMessage.content} ({latestMessage.timestamp})
+                        </li>
+                    );
+                })}
             </ul>
         </div>
     );
