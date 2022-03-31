@@ -2,7 +2,7 @@ import {Language} from "./Language";
 import {Membership} from "./Membership";
 
 export interface User {
-    id: number,
+    id: string,
     url: string,
     username: string,
     email: string,

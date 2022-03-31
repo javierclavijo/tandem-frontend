@@ -1,7 +1,7 @@
 import {ChatMessage} from "./ChatMessage";
 
 export interface Chat {
-    id: number,
+    id: string,
     url: string,
     name: string,
     messages: ChatMessage[]
