@@ -13,7 +13,7 @@ function Home() {
         } else {
             navigate("/login");
         }
-    });
+    }, [token]);
 
     return (
         <React.Fragment/>
