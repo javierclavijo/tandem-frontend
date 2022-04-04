@@ -7,27 +7,26 @@ import Nav from "./components/Nav";
 import LogOut from "./components/LogOut";
 import Home from "./components/Home";
 import Chat from "./components/Chat";
-import useAuth from "./app/AuthContext";
+import {AuthProvider} from "./app/AuthContext";
+import {QueryClient, QueryClientProvider} from "react-query";
+
+const queryClient = new QueryClient();
 
 export default function App() {
-    const {token} = useAuth();
 
     return (
-        <React.Fragment>
-            {token ?
-                <React.Fragment>
-                    <Nav/>
-                    <Routes>
-                        <Route path="/chats" element={<ChatList/>}>
-                            <Route path=":id" element={<Chat/>}/>
-                        </Route> :
-                        <Route path="/login" element={<LogIn/>}/>
-                        <Route path="/logout" element={<LogOut/>}/>
-                        <Route path="/" element={<Home/>}/>
-                    </Routes>
-                </React.Fragment> :
-                <LogIn/>
-            }
-        </React.Fragment>
+        <QueryClientProvider client={queryClient}>
+            <AuthProvider>
+                <Nav/>
+                <Routes>
+                    <Route path="/chats" element={<ChatList/>}>
+                        <Route path=":id" element={<Chat/>}/>
+                    </Route>
+                    <Route path="/login" element={<LogIn/>}/>
+                    <Route path="/logout" element={<LogOut/>}/>
+                    <Route path="/" element={<Home/>}/>
+                </Routes>
+            </AuthProvider>
+        </QueryClientProvider>
     );
 }

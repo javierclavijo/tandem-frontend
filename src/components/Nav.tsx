@@ -1,16 +1,14 @@
 import React from "react";
 import {Link, NavLink} from "react-router-dom";
-import {useAppSelector} from "../app/hooks";
-import {selectToken} from "../app/authSlice";
+import useAuth from "../app/AuthContext";
 
 function Nav() {
-    const token = useAppSelector(selectToken);
+    const {isLoggedIn} = useAuth();
 
     return (
         <nav>
             <ul>
-                {/* If user has an auth token, show logout link. Else, show login link. */}
-                {token ?
+                {isLoggedIn ?
                     <React.Fragment>
                         <li><NavLink to={"/chats"}>Chats</NavLink></li>
                         <li><Link to={"/logout"}>Log out</Link></li>

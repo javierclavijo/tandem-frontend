@@ -1,19 +1,18 @@
 import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
-import {useAppSelector} from "../app/hooks";
-import {selectToken} from "../app/authSlice";
+import useAuth from "../app/AuthContext";
 
 function Home() {
-    const token = useAppSelector(selectToken);
+    const {isLoggedIn} = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (token) {
+        if (isLoggedIn) {
             navigate("/chats");
         } else {
             navigate("/login");
         }
-    }, [token]);
+    }, [isLoggedIn]);
 
     return (
         <React.Fragment/>

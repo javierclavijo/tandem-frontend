@@ -1,11 +1,12 @@
 import React from "react";
 import {useForm} from "react-hook-form";
-import {LogInRequestData} from "../app/services/authApi";
-import useAuth from "../app/AuthContext";
+import useAuth, {LogInRequestData} from "../app/AuthContext";
+import {useNavigate} from "react-router-dom";
 
 function LogIn() {
 
-    const {login, error} = useAuth();
+    const {isLoggedIn, login, error} = useAuth();
+    const navigate = useNavigate();
 
     // React Hook Form hooks
     const {
@@ -30,6 +31,12 @@ function LogIn() {
             clearErrors();
         }
     }, [error, setError, clearErrors]);
+
+    React.useEffect(() => {
+        if (isLoggedIn) {
+            navigate("/chats");
+        }
+    }, [isLoggedIn]);
 
     return (
         <div>
