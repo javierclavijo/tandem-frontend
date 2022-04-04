@@ -6,7 +6,7 @@ import ChatList from "./components/ChatList";
 import Nav from "./components/Nav";
 import LogOut from "./components/LogOut";
 import Home from "./components/Home";
-import Chat from "./components/Chat";
+import ChatMain from "./components/ChatMain";
 import {AuthProvider} from "./app/AuthContext";
 import {QueryClient, QueryClientProvider} from "react-query";
 
@@ -20,7 +20,7 @@ export default function App() {
                 <Nav/>
                 <Routes>
                     <Route path="/chats" element={<ChatList/>}>
-                        <Route path=":id" element={<Chat/>}/>
+                        <Route path=":id" element={<ChatMain/>}/>
                     </Route>
                     <Route path="/login" element={<LogIn/>}/>
                     <Route path="/logout" element={<LogOut/>}/>

@@ -1,31 +1,44 @@
 import React, {useCallback, useEffect, useState} from "react";
 import BackButton from "./BackButton";
-import {api} from "../app/services/api";
 import {useParams} from "react-router-dom";
 import useWebSocket from "react-use-websocket";
+import {useChatList} from "../app/hooks/useChatList";
+import {Chat} from "../entities/Chat";
 
-function Chat() {
+function ChatMain() {
     const params = useParams();
     const [newMessages, setNewMessages] = useState<string[]>([]);
     const [inputValue, setInputValue] = useState<string>("");
 
-    const {chat} = api.useGetChatListQuery(undefined, {
-        selectFromResult: ({data}) => ({
-            chat: data?.find(c => c.id === params.id)
-        })
+    const data = useChatList();
+    const [chat, setChat] = useState<Chat>({
+        id: "",
+        url: "",
+        name: "",
+        messages: []
     });
+
+    React.useEffect(() => {
+        debugger
+        const chatResult = data.find(c => c.id === params.id);
+        if (chatResult) {
+            setChat(chatResult);
+        }
+    }, [data, params.id]);
+
 
     const {
         sendJsonMessage,
         lastJsonMessage
-    } = useWebSocket(`${process.env.REACT_APP_WS_URL}/ws/chat/${params.id}/`, {
-        onClose: () => console.error("Chat socket closed unexpectedly")
+    } = useWebSocket(`${process.env.REACT_APP_WS_URL}/ws/chats/${params.id}/`, {
+        onClose: () => console.error("Chat socket closed unexpectedly"),
+        share: true
     });
 
     const handleSend = useCallback(() => {
         sendJsonMessage({message: inputValue});
         setInputValue("");
-    }, [inputValue]);
+    }, [inputValue, sendJsonMessage]);
 
     useEffect(() => {
         if (lastJsonMessage !== null) {
@@ -56,4 +69,4 @@ function Chat() {
     );
 }
 
-export default Chat;
+export default ChatMain;
