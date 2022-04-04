@@ -1,22 +1,10 @@
 import React from "react";
 import {Link, Outlet} from "react-router-dom";
-import {useQuery} from "react-query";
-import {axiosApi} from "../app/AuthContext";
-import {Chat} from "../entities/Chat";
+import {useChatList} from "../app/hooks/useChatList";
 
 
 function ChatList() {
-    const fetchChannelChatList = async () => {
-        const response = await axiosApi.get(process.env.REACT_APP_API_URL + "/channel_chats");
-        return response.data.results;
-    };
-    const fetchUserChatList = async () => {
-        const response = await axiosApi.get(process.env.REACT_APP_API_URL + "/user_chats");
-        return response.data.results;
-    };
-
-    const {data} = useQuery<Chat[]>({queryKey: ["chats", "channel"], queryFn: fetchChannelChatList});
-
+    const data = useChatList();
 
     return (
         <div>
