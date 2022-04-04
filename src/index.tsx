@@ -5,12 +5,15 @@ import {BrowserRouter} from "react-router-dom";
 import App from "./App";
 import {Provider} from "react-redux";
 import {store} from "./app/store";
+import {AuthProvider} from "./app/AuthContext";
 
 const browserRouter = (
     <React.StrictMode>
         <BrowserRouter>
             <Provider store={store}>
-                <App/>
+                <AuthProvider>
+                    <App/>
+                </AuthProvider>
             </Provider>
         </BrowserRouter>
     </React.StrictMode>

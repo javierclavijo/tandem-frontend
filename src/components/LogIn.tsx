@@ -1,30 +1,35 @@
 import React from "react";
 import {useForm} from "react-hook-form";
-import {useNavigate} from "react-router-dom";
-import {LoginRequest, useLoginMutation} from "../app/services/api";
-import {useAppDispatch} from "../app/hooks";
-import {setCredentials} from "../app/authSlice";
+import {LogInRequestData} from "../app/services/authApi";
+import useAuth from "../app/AuthContext";
 
 function LogIn() {
-    const {register, formState: {errors}, setError, handleSubmit} = useForm<LoginRequest>();
-    const [login] = useLoginMutation();
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
 
-    const onSubmit = async (data: LoginRequest) => {
-        try {
-            const response = await login(data).unwrap();
-            dispatch(setCredentials(response));
-            navigate("/chats");
+    const {login, error} = useAuth();
 
-        } catch (exception) {
-            // If login couldn't be performed, display error message
+    // React Hook Form hooks
+    const {
+        register,
+        formState: {errors},
+        setError,
+        clearErrors,
+        handleSubmit,
+    } = useForm<LogInRequestData>();
+
+    const onSubmit = async (data: LogInRequestData) => {
+        login(data);
+    };
+
+    React.useEffect(() => {
+        if (error) {
             setError("password", {
                 type: "server",
-                message: "Incorrect username or password."
+                message: error
             });
+        } else {
+            clearErrors();
         }
-    };
+    }, [error, setError, clearErrors]);
 
     return (
         <div>
