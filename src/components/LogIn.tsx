@@ -8,7 +8,7 @@ function LogIn() {
     const {isLoggedIn, login, error} = useAuth();
     const navigate = useNavigate();
 
-    // React Hook Form hooks
+    // React Hook Form
     const {
         register,
         formState: {errors},
@@ -36,7 +36,7 @@ function LogIn() {
         if (isLoggedIn) {
             navigate("/chats");
         }
-    }, [isLoggedIn]);
+    }, [isLoggedIn, navigate]);
 
     return (
         <div>

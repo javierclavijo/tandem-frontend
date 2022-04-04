@@ -1,18 +1,15 @@
 import React, {Fragment, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
-import {useAppDispatch} from "../app/hooks";
-import {removeCredentials} from "../app/authSlice";
+import useAuth from "../app/AuthContext";
 
 function LogOut() {
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
+    const {logout} = useAuth();
 
-    const handleLogout = () => {
-        dispatch(removeCredentials())
-        navigate("/");
-    };
-
-    useEffect(handleLogout, []);
+    useEffect(() => {
+        logout();
+        navigate("/login");
+    }, [logout, navigate]);
 
     return (
         <Fragment/>

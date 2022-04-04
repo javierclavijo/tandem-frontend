@@ -8,6 +8,7 @@ interface AuthContextType {
     loading: boolean;
     isLoggedIn: boolean;
     login: (requestData: LogInRequestData) => void;
+    logout: () => void;
 }
 
 export type LogInRequestData = {
@@ -26,6 +27,14 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
     const [error, setError] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
 
+    React.useEffect(() => {
+        // Fetch token from localStorage on init
+        const token = localStorage.getItem("auth-token");
+        if (token) {
+            setToken(token);
+            setIsLoggedIn(true);
+        }
+    }, []);
 
     const loginRequest = async (data: LogInRequestData) => {
         const url = `${process.env.REACT_APP_API_URL as string}/api-token-auth/`;
@@ -35,12 +44,14 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
 
     const loginQuery = useMutation(loginRequest, {
         onSuccess: async (data) => {
-            setToken(data.token);
+            const token = data.token;
+            setToken(token);
+            localStorage.setItem("auth-token", token);
             setIsLoggedIn(true);
         }
     });
 
-    const login = async (data: LogInRequestData) => {
+    const login = React.useCallback(async (data: LogInRequestData) => {
         setLoading(true);
         try {
             await loginQuery.mutateAsync(data);
@@ -49,8 +60,13 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
         } finally {
             setLoading(false);
         }
-    };
+    }, [loginQuery]);
 
+    const logout = () => {
+        localStorage.removeItem("auth-token");
+        setToken("");
+        setIsLoggedIn(false);
+    };
 
     React.useEffect(() => {
         if (token) {
@@ -75,12 +91,13 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
 
     const memoedValue = useMemo(() => ({
             token,
-            login,
             error,
             loading,
             isLoggedIn,
+            login,
+            logout
         }),
-        [token, error, loading, isLoggedIn]);
+        [token, error, loading, isLoggedIn, login]);
 
     return (
         <AuthContext.Provider value={memoedValue}>{children}</AuthContext.Provider>
