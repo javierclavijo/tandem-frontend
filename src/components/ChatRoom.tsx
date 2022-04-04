@@ -5,10 +5,11 @@ import useWebSocket from "react-use-websocket";
 import {useChatList} from "../app/hooks/chat";
 import {Chat} from "../entities/Chat";
 import {useQuery} from "react-query";
-import {axiosApi} from "../app/AuthContext";
+import useAuth, {axiosApi} from "../app/AuthContext";
 
 function ChatRoom() {
     const params = useParams();
+    const {token} = useAuth();
 
     const [newMessages, setNewMessages] = useState<string[]>([]);
     const [inputValue, setInputValue] = useState<string>("");
@@ -36,15 +37,19 @@ function ChatRoom() {
     const {
         sendJsonMessage,
         lastJsonMessage
-    } = useWebSocket(`${process.env.REACT_APP_WS_URL}/ws/chats/${params.id}/`, {
+    } = useWebSocket(`${process.env.REACT_APP_WS_URL}/ws/chats/?${token}`, {
         onClose: () => console.error("Chat socket closed unexpectedly"),
         share: true
     });
 
     const handleSend = useCallback(() => {
-        sendJsonMessage({message: inputValue});
+        const message = {
+            chat_id: chatId,
+            content: inputValue
+        };
+        sendJsonMessage(message);
         setInputValue("");
-    }, [inputValue, sendJsonMessage]);
+    }, [chatId, inputValue, sendJsonMessage]);
 
     useEffect(() => {
         if (lastJsonMessage !== null) {
