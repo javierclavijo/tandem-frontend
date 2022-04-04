@@ -3,19 +3,20 @@ import {Chat} from "../../entities/Chat";
 import useAuth, {axiosApi} from "../AuthContext";
 import React from "react";
 
+const fetchChannelChatList = async () => {
+    const response = await axiosApi.get("/channel_chats");
+    return response.data.results;
+};
+
+const fetchUserChatList = async () => {
+    const response = await axiosApi.get("/user_chats");
+    return response.data.results;
+};
+
 export const useChatList = () => {
 
     const [data, setData] = React.useState<Chat[]>([]);
     const {isLoggedIn, loading} = useAuth();
-
-    const fetchChannelChatList = async () => {
-        const response = await axiosApi.get("/channel_chats");
-        return response.data.results;
-    };
-    const fetchUserChatList = async () => {
-        const response = await axiosApi.get("/user_chats");
-        return response.data.results;
-    };
 
     const {data: channelChatListData, isSuccess: channelChatListFetchIsSuccess} = useQuery<Chat[]>(
         ["chats", "channel"],

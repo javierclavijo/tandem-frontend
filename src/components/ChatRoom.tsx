@@ -2,30 +2,36 @@ import React, {useCallback, useEffect, useState} from "react";
 import BackButton from "./BackButton";
 import {useParams} from "react-router-dom";
 import useWebSocket from "react-use-websocket";
-import {useChatList} from "../app/hooks/useChatList";
+import {useChatList} from "../app/hooks/chat";
 import {Chat} from "../entities/Chat";
+import {useQuery} from "react-query";
+import {axiosApi} from "../app/AuthContext";
 
-function ChatMain() {
+function ChatRoom() {
     const params = useParams();
+
     const [newMessages, setNewMessages] = useState<string[]>([]);
     const [inputValue, setInputValue] = useState<string>("");
 
-    const data = useChatList();
-    const [chat, setChat] = useState<Chat>({
-        id: "",
-        url: "",
-        name: "",
-        messages: []
+    const chatList = useChatList();
+    const [chatUrl, setChatUrl] = useState<string>("");
+    const [chatId, setChatId] = useState<string>("");
+
+    const {data} = useQuery<Chat>(["chat", "detail", chatId], async () => {
+        const response = await axiosApi.get(chatUrl);
+        return response.data;
+    }, {
+        enabled: Boolean(chatUrl) && Boolean(chatId)
     });
 
     React.useEffect(() => {
-        debugger
-        const chatResult = data.find(c => c.id === params.id);
+        // Fetch the resource's URL and ID from the chat list
+        const chatResult = chatList.find(c => c.id === params.id);
         if (chatResult) {
-            setChat(chatResult);
+            setChatUrl(chatResult.url);
+            setChatId(chatResult.id);
         }
-    }, [data, params.id]);
-
+    }, [chatList, params.id]);
 
     const {
         sendJsonMessage,
@@ -49,7 +55,7 @@ function ChatMain() {
     return (
         <div>
             <ul>
-                {chat?.messages.map(message => (
+                {data?.messages.map(message => (
                     <li key={message.id}>{message.author.username}: {message.content} ({message.timestamp})</li>
                 ))}
                 {newMessages.map((message, index) => (
@@ -69,4 +75,4 @@ function ChatMain() {
     );
 }
 
-export default ChatMain;
+export default ChatRoom;
