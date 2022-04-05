@@ -4,13 +4,14 @@ import useWebSocket from "react-use-websocket";
 import useAuth from "../app/AuthContext";
 import {useQueryClient} from "react-query";
 import {useChatList} from "../app/hooks/chat";
+import {Chat} from "../entities/Chat";
 
 
 function ChatList() {
     const {token} = useAuth();
     const queryClient = useQueryClient();
 
-    const {data} = useChatList()
+    const {data} = useChatList();
 
     const {
         lastJsonMessage
@@ -22,11 +23,29 @@ function ChatList() {
 
     useEffect(() => {
         if (lastJsonMessage !== null) {
+            // Whenever a message is received, update both the chat list query and the chat detail queries with the new
+            // message.
             const message = lastJsonMessage.message;
-            queryClient.invalidateQueries("chats");
 
+            queryClient.setQueryData<Chat[] | undefined>(["chats", "list"], (old) => {
+                if (old !== undefined) {
+                    const oldChat = old.find(c => c.id === message.chat_id);
+                    if (oldChat) {
+                        oldChat.messages = [message];
+                    }
+                }
+                return old;
+            });
+
+            queryClient.setQueryData<Chat | undefined>(["chats", "detail", message.chat_id], (old) => {
+                    if (old !== undefined) {
+                        old.messages.push(message);
+                    }
+                    return old;
+                }
+            );
         }
-    }, [lastJsonMessage]);
+    }, [lastJsonMessage, queryClient]);
 
     return (
         <div>

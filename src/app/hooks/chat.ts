@@ -17,13 +17,14 @@ const chatSortFn = (a: Chat, b: Chat) => {
 };
 
 const fetchChatList = async () => {
-    // Concat the data returned from both requests and sort according to the latest message's datetime before returning it
     const userChatsResponse = await axiosApi.get("/user_chats");
     const channelChatsResponse = await axiosApi.get("/channel_chats");
-    const chats = [...userChatsResponse.data.results, ...channelChatsResponse.data.results];
-    return chats.sort(chatSortFn);
+    return [...userChatsResponse.data.results, ...channelChatsResponse.data.results];
 };
 
 export const useChatList = () => {
-    return useQuery<Chat[]>(["chats", "list"], fetchChatList);
+    return useQuery<Chat[]>(["chats", "list"], fetchChatList, {
+        // Whenever data is either fetched or updated with setQueryData(), sort chats according to their latest messages
+        onSuccess: (data) => data.sort(chatSortFn)
+    });
 };

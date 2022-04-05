@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useState} from "react";
 import BackButton from "./BackButton";
 import {useParams} from "react-router-dom";
 import useWebSocket from "react-use-websocket";
@@ -10,15 +10,13 @@ import useAuth, {axiosApi} from "../app/AuthContext";
 function ChatRoom() {
     const params = useParams();
     const {token} = useAuth();
-
-    const [newMessages, setNewMessages] = useState<string[]>([]);
     const [inputValue, setInputValue] = useState<string>("");
 
     const {data: chatList} = useChatList();
     const [chatUrl, setChatUrl] = useState<string>("");
     const [chatId, setChatId] = useState<string>("");
 
-    const {data} = useQuery<Chat>(["chat", "detail", chatId], async () => {
+    const {data} = useQuery<Chat>(["chats", "detail", chatId], async () => {
         const response = await axiosApi.get(chatUrl);
         return response.data;
     }, {
@@ -36,7 +34,6 @@ function ChatRoom() {
 
     const {
         sendJsonMessage,
-        lastJsonMessage
     } = useWebSocket(`${process.env.REACT_APP_WS_URL}/ws/chats/?${token}`, {
         onClose: () => console.error("Chat socket closed unexpectedly"),
         shouldReconnect: (closeEvent) => true,
@@ -52,23 +49,11 @@ function ChatRoom() {
         setInputValue("");
     }, [chatId, inputValue, sendJsonMessage]);
 
-    useEffect(() => {
-        if (lastJsonMessage !== null) {
-            const message = lastJsonMessage.message;
-            if (message.chat_id === chatId) {
-                setNewMessages(prevState => prevState.concat(message.content));
-            }
-        }
-    }, [lastJsonMessage]);
-
     return (
         <div>
             <ul>
                 {data?.messages.map(message => (
                     <li key={message.id}>{message.author.username}: {message.content} ({message.timestamp})</li>
-                ))}
-                {newMessages.map((message, index) => (
-                    <li key={index}>{message}</li>
                 ))}
             </ul>
             <input type="text" id="chat-text-input"
