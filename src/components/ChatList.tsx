@@ -1,10 +1,32 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Link, Outlet} from "react-router-dom";
+import useWebSocket from "react-use-websocket";
+import useAuth from "../app/AuthContext";
+import {useQueryClient} from "react-query";
 import {useChatList} from "../app/hooks/chat";
 
 
 function ChatList() {
-    const data = useChatList();
+    const {token} = useAuth();
+    const queryClient = useQueryClient();
+
+    const {data} = useChatList()
+
+    const {
+        lastJsonMessage
+    } = useWebSocket(`${process.env.REACT_APP_WS_URL}/ws/chats/?${token}`, {
+        onClose: () => console.error("Chat socket closed unexpectedly"),
+        shouldReconnect: (closeEvent) => true,
+        share: true
+    });
+
+    useEffect(() => {
+        if (lastJsonMessage !== null) {
+            const message = lastJsonMessage.message;
+            queryClient.invalidateQueries("chats");
+
+        }
+    }, [lastJsonMessage]);
 
     return (
         <div>

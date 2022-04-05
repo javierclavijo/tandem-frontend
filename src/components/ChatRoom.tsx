@@ -14,7 +14,7 @@ function ChatRoom() {
     const [newMessages, setNewMessages] = useState<string[]>([]);
     const [inputValue, setInputValue] = useState<string>("");
 
-    const chatList = useChatList();
+    const {data: chatList} = useChatList();
     const [chatUrl, setChatUrl] = useState<string>("");
     const [chatId, setChatId] = useState<string>("");
 
@@ -27,7 +27,7 @@ function ChatRoom() {
 
     React.useEffect(() => {
         // Fetch the resource's URL and ID from the chat list
-        const chatResult = chatList.find(c => c.id === params.id);
+        const chatResult = chatList?.find(c => c.id === params.id);
         if (chatResult) {
             setChatUrl(chatResult.url);
             setChatId(chatResult.id);
@@ -39,6 +39,7 @@ function ChatRoom() {
         lastJsonMessage
     } = useWebSocket(`${process.env.REACT_APP_WS_URL}/ws/chats/?${token}`, {
         onClose: () => console.error("Chat socket closed unexpectedly"),
+        shouldReconnect: (closeEvent) => true,
         share: true
     });
 
