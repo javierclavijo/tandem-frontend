@@ -20,7 +20,8 @@ function ChatRoom() {
         const response = await axiosApi.get(chatUrl);
         return response.data;
     }, {
-        enabled: Boolean(chatUrl) && Boolean(chatId)
+        enabled: Boolean(chatUrl) && Boolean(chatId),
+        staleTime: 15000
     });
 
     React.useEffect(() => {

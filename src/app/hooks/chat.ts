@@ -25,6 +25,7 @@ const fetchChatList = async () => {
 export const useChatList = () => {
     return useQuery<Chat[]>(["chats", "list"], fetchChatList, {
         // Whenever data is either fetched or updated with setQueryData(), sort chats according to their latest messages
-        onSuccess: (data) => data.sort(chatSortFn)
+        onSuccess: (data) => data.sort(chatSortFn),
+        staleTime: 15000,
     });
 };
