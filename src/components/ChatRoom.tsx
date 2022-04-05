@@ -53,7 +53,10 @@ function ChatRoom() {
 
     useEffect(() => {
         if (lastJsonMessage !== null) {
-            setNewMessages(prevState => prevState.concat(lastJsonMessage.message));
+            const message = lastJsonMessage.message;
+            if (message.chat_id === chatId) {
+                setNewMessages(prevState => prevState.concat(message.content));
+            }
         }
     }, [lastJsonMessage]);
 
