@@ -1,15 +1,16 @@
 import {useQuery} from "react-query";
 import {Chat} from "../../entities/Chat";
 import {axiosApi} from "../AuthContext";
+import {ChatMessage} from "../../entities/ChatMessage";
+import {DateTime} from "luxon";
 
+export const messageSortFn = (a: ChatMessage, b: ChatMessage) => {
+    const aDateTime = DateTime.fromISO(a.timestamp);
+    const bDateTime = DateTime.fromISO(b.timestamp);
 
-const chatSortFn = (a: Chat, b: Chat) => {
-    const aLatestMessageTimestamp = a.messages[0].timestamp;
-    const bLatestMessageTimestamp = b.messages[0].timestamp;
-
-    if (aLatestMessageTimestamp > bLatestMessageTimestamp) {
+    if (aDateTime > bDateTime) {
         return -1;
-    } else if (bLatestMessageTimestamp > aLatestMessageTimestamp) {
+    } else if (bDateTime > aDateTime) {
         return 1;
     } else {
         return 0;
@@ -25,7 +26,7 @@ const fetchChatList = async () => {
 export const useChatList = () => {
     return useQuery<Chat[]>(["chats", "list"], fetchChatList, {
         // Whenever data is either fetched or updated with setQueryData(), sort chats according to their latest messages
-        onSuccess: (data) => data.sort(chatSortFn),
+        onSuccess: (data) => data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
         staleTime: 15000,
     });
 };

@@ -2,7 +2,7 @@ import React, {useCallback, useState} from "react";
 import BackButton from "./BackButton";
 import {useParams} from "react-router-dom";
 import useWebSocket from "react-use-websocket";
-import {useChatList} from "../app/hooks/chat";
+import {messageSortFn, useChatList} from "../app/hooks/chat";
 import {Chat} from "../entities/Chat";
 import {useQuery} from "react-query";
 import useAuth, {axiosApi} from "../app/AuthContext";
@@ -20,7 +20,9 @@ function ChatRoom() {
         return response.data;
     }, {
         enabled: Boolean(chat.id),
-        staleTime: 15000
+        staleTime: 15000,
+        // Sort messages whenever query data changes
+        onSuccess: (data) => data.messages.sort((a, b) => messageSortFn(a, b)).reverse(),
     });
 
     React.useEffect(() => {
