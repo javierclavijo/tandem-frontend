@@ -22,7 +22,7 @@ function ChatList() {
     });
 
     useEffect(() => {
-        if (lastJsonMessage !== null) {
+        if (lastJsonMessage) {
             // Whenever a message is received, update both the chat list query and the chat detail queries with the new
             // message.
             const message = lastJsonMessage.message;

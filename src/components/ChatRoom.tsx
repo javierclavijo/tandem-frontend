@@ -13,14 +13,13 @@ function ChatRoom() {
     const [inputValue, setInputValue] = useState<string>("");
 
     const {data: chatList} = useChatList();
-    const [chatUrl, setChatUrl] = useState<string>("");
-    const [chatId, setChatId] = useState<string>("");
+    const [chat, setChat] = useState<Chat>({} as Chat);
 
-    const {data} = useQuery<Chat>(["chats", "detail", chatId], async () => {
-        const response = await axiosApi.get(chatUrl);
+    const {data} = useQuery<Chat>(["chats", "detail", chat.id], async () => {
+        const response = await axiosApi.get(chat.url);
         return response.data;
     }, {
-        enabled: Boolean(chatUrl) && Boolean(chatId),
+        enabled: Boolean(chat.id),
         staleTime: 15000
     });
 
@@ -28,8 +27,7 @@ function ChatRoom() {
         // Fetch the resource's URL and ID from the chat list
         const chatResult = chatList?.find(c => c.id === params.id);
         if (chatResult) {
-            setChatUrl(chatResult.url);
-            setChatId(chatResult.id);
+            setChat(chatResult);
         }
     }, [chatList, params.id]);
 
@@ -43,12 +41,13 @@ function ChatRoom() {
 
     const handleSend = useCallback(() => {
         const message = {
-            chat_id: chatId,
-            content: inputValue
+            chat_id: chat.id,
+            content: inputValue,
+            chat_type: chat.chat_type
         };
         sendJsonMessage(message);
         setInputValue("");
-    }, [chatId, inputValue, sendJsonMessage]);
+    }, [chat, inputValue, sendJsonMessage]);
 
     return (
         <div>
