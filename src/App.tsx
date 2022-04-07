@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+
 import React from "react";
 import "./App.css";
 import {Route, Routes} from "react-router-dom";
@@ -9,24 +11,31 @@ import Home from "./components/Home";
 import ChatRoom from "./components/ChatRoom";
 import {AuthProvider} from "./app/AuthContext";
 import {QueryClient, QueryClientProvider} from "react-query";
+import {Global, jsx, css} from "@emotion/react";
+import emotionNormalize from "emotion-normalize";
 
 const queryClient = new QueryClient();
 
 export default function App() {
 
+    const normalizeCss = css`${emotionNormalize}`;
+
     return (
-        <QueryClientProvider client={queryClient}>
-            <AuthProvider>
-                <Nav/>
-                <Routes>
-                    <Route path="/chats" element={<ChatList/>}>
-                        <Route path=":id" element={<ChatRoom/>}/>
-                    </Route>
-                    <Route path="/login" element={<LogIn/>}/>
-                    <Route path="/logout" element={<LogOut/>}/>
-                    <Route path="/" element={<Home/>}/>
-                </Routes>
-            </AuthProvider>
-        </QueryClientProvider>
+        <React.Fragment>
+            <Global styles={normalizeCss}/>
+            <QueryClientProvider client={queryClient}>
+                <AuthProvider>
+                    <Nav/>
+                    <Routes>
+                        <Route path="/chats" element={<ChatList/>}>
+                            <Route path=":id" element={<ChatRoom/>}/>
+                        </Route>
+                        <Route path="/login" element={<LogIn/>}/>
+                        <Route path="/logout" element={<LogOut/>}/>
+                        <Route path="/" element={<Home/>}/>
+                    </Routes>
+                </AuthProvider>
+            </QueryClientProvider>
+        </React.Fragment>
     );
 }
