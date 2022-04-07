@@ -18,11 +18,21 @@ const queryClient = new QueryClient();
 
 export default function App() {
 
-    const normalizeCss = css`${emotionNormalize}`;
+    const globalStyles = css`
+      ${emotionNormalize}
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+        background: white;
+        min-height: 100%;
+        font-family: Helvetica, Arial, sans-serif;
+      }
+    `;
 
     return (
         <React.Fragment>
-            <Global styles={normalizeCss}/>
+            <Global styles={globalStyles}/>
             <QueryClientProvider client={queryClient}>
                 <AuthProvider>
                     <Nav/>
