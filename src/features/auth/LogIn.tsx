@@ -1,12 +1,15 @@
+/** @jsxImportSource @emotion/react */
+
 import React from "react";
 import {useForm} from "react-hook-form";
 import useAuth, {LogInRequestData} from "./AuthContext";
 import {useNavigate} from "react-router-dom";
+import {css, jsx} from "@emotion/react";
 
 function LogIn() {
 
     const {isLoggedIn, login, error} = useAuth();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     // React Hook Form
     const {
@@ -38,8 +41,13 @@ function LogIn() {
         }
     }, [isLoggedIn, navigate]);
 
+    const sectionCss = css`
+      grid-column-start: 5;
+      grid-column-end: 9;
+    `;
+
     return (
-        <div>
+        <section css={sectionCss}>
             <h2>Log In</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input {...register("username",
@@ -52,7 +60,7 @@ function LogIn() {
 
                 <button type={"submit"}>Log in</button>
             </form>
-        </div>
+        </section>
     );
 }
 

@@ -10,18 +10,20 @@ function Nav() {
     const {isLoggedIn} = useAuth();
 
     return (
-        <nav css={navCss}>
-            <h1 css={h1Css}>ChatApp</h1>
-            <ul css={ulCss}>
-                {isLoggedIn ?
-                    <React.Fragment>
-                        <li><NavLink to={"/chats"} css={linkCss}>Chats</NavLink></li>
-                        <li><Link to={"/logout"} css={linkCss}>Log out</Link></li>
-                    </React.Fragment> :
-                    <li><Link to={"/login"} css={linkCss}>Log in</Link></li>
-                }
-            </ul>
-        </nav>
+        <header>
+            <nav css={navCss}>
+                <h1 css={h1Css}>ChatApp</h1>
+                <ul css={ulCss}>
+                    {isLoggedIn ?
+                        <React.Fragment>
+                            <li><NavLink to={"/chats"} css={linkCss}>Chats</NavLink></li>
+                            <li><Link to={"/logout"} css={linkCss}>Log out</Link></li>
+                        </React.Fragment> :
+                        <li><Link to={"/login"} css={linkCss}>Log in</Link></li>
+                    }
+                </ul>
+            </nav>
+        </header>
     );
 }
 

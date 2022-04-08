@@ -9,11 +9,3 @@
     src: url('../static/fonts/Rubik/Rubik-Italic-VariableFont_wght.ttf') format('truetype');
     font-style: italic;
 }
-
-* {
-    font-family: 'Rubik', 'sans-serif';
-}
-
-body {
-    margin: 0;
-}
