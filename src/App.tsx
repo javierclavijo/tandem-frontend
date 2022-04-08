@@ -11,18 +11,15 @@ import Home from "./components/Home";
 import ChatRoom from "./components/ChatRoom";
 import {AuthProvider} from "./app/AuthContext";
 import {QueryClient, QueryClientProvider} from "react-query";
-import {Global, jsx, css} from "@emotion/react";
+import {jsx} from "@emotion/react";
 
 const queryClient = new QueryClient();
 
 export default function App() {
 
-    const globalStyles = css`
-    `;
 
     return (
         <React.Fragment>
-            <Global styles={globalStyles}/>
             <QueryClientProvider client={queryClient}>
                 <AuthProvider>
                     <Nav/>
