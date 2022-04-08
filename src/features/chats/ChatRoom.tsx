@@ -1,11 +1,11 @@
 import React, {useCallback, useState} from "react";
-import BackButton from "./BackButton";
+import BackButton from "../../components/BackButton/BackButton";
 import {useParams} from "react-router-dom";
 import useWebSocket from "react-use-websocket";
-import {messageSortFn, useChatList} from "../app/hooks/chat";
-import {Chat} from "../entities/Chat";
+import {messageSortFn, useChatList} from "./hooks";
+import {Chat} from "../../entities/Chat";
 import {useQuery} from "react-query";
-import useAuth, {axiosApi} from "../app/AuthContext";
+import useAuth, {axiosApi} from "../auth/AuthContext";
 
 function ChatRoom() {
     const params = useParams();

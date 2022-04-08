@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
-import useAuth from "../app/AuthContext";
+import useAuth from "../auth/AuthContext";
 
 function Home() {
     const {isLoggedIn} = useAuth();

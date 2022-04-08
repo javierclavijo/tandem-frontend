@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import "./App.css";
+import "./styles/App.css";
 import {Route, Routes} from "react-router-dom";
-import LogIn from "./components/LogIn";
-import ChatList from "./components/ChatList";
-import Nav from "./components/Nav";
-import LogOut from "./components/LogOut";
-import Home from "./components/Home";
-import ChatRoom from "./components/ChatRoom";
-import {AuthProvider} from "./app/AuthContext";
+import LogIn from "./features/auth/LogIn";
+import ChatList from "./features/chats/ChatList";
+import Nav from "./components/Nav/Nav";
+import LogOut from "./features/auth/LogOut";
+import Home from "./features/home/Home";
+import ChatRoom from "./features/chats/ChatRoom";
+import {AuthProvider} from "./features/auth/AuthContext";
 import {QueryClient, QueryClientProvider} from "react-query";
 import {jsx} from "@emotion/react";
 

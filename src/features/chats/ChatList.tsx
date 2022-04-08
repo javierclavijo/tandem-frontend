@@ -1,10 +1,10 @@
 import React, {useEffect} from "react";
 import {Link, Outlet} from "react-router-dom";
 import useWebSocket from "react-use-websocket";
-import useAuth from "../app/AuthContext";
+import useAuth from "../auth/AuthContext";
 import {useQueryClient} from "react-query";
-import {useChatList} from "../app/hooks/chat";
-import {Chat} from "../entities/Chat";
+import {useChatList} from "./hooks";
+import {Chat} from "../../entities/Chat";
 
 
 function ChatList() {

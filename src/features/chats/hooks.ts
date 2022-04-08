@@ -1,6 +1,6 @@
 import {useQuery} from "react-query";
 import {Chat} from "../../entities/Chat";
-import {axiosApi} from "../AuthContext";
+import {axiosApi} from "../auth/AuthContext";
 import {ChatMessage} from "../../entities/ChatMessage";
 import {DateTime} from "luxon";
 

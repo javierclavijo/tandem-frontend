@@ -1,12 +1,12 @@
 import React from "react";
 import {useForm} from "react-hook-form";
-import useAuth, {LogInRequestData} from "../app/AuthContext";
+import useAuth, {LogInRequestData} from "./AuthContext";
 import {useNavigate} from "react-router-dom";
 
 function LogIn() {
 
     const {isLoggedIn, login, error} = useAuth();
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
     // React Hook Form
     const {
