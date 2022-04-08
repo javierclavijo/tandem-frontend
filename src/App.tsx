@@ -12,22 +12,12 @@ import ChatRoom from "./components/ChatRoom";
 import {AuthProvider} from "./app/AuthContext";
 import {QueryClient, QueryClientProvider} from "react-query";
 import {Global, jsx, css} from "@emotion/react";
-import emotionNormalize from "emotion-normalize";
 
 const queryClient = new QueryClient();
 
 export default function App() {
 
     const globalStyles = css`
-      ${emotionNormalize}
-      html,
-      body {
-        padding: 0;
-        margin: 0;
-        background: white;
-        min-height: 100%;
-        font-family: Helvetica, Arial, sans-serif;
-      }
     `;
 
     return (
