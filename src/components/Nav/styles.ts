@@ -1,11 +1,18 @@
 import {css} from "@emotion/react";
 import {colors, textSizes} from "../../styles/variables";
 
+export const headerCss = css`
+  grid-area: header;
+  height: 100%;
+`;
 export const navCss = css`
+  height: 100%;
   background: ${colors.PRIMARY};
   display: flex;
   justify-content: space-between;
-  padding: 20px 50px;
+  align-items: center;
+  padding: 0 3.125rem;
+  box-sizing: border-box;
 `;
 export const h1Css = css`
   color: ${colors.WHITE};

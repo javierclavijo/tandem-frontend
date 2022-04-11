@@ -4,7 +4,7 @@ import React from "react";
 import {useForm} from "react-hook-form";
 import useAuth, {LogInRequestData} from "./AuthContext";
 import {useNavigate} from "react-router-dom";
-import {css, jsx} from "@emotion/react";
+import {buttonCss, errorCss, formCss, h2Css, inputCss, labelCss, mainCss, sectionCss} from "./styles";
 
 function LogIn() {
 
@@ -41,26 +41,46 @@ function LogIn() {
         }
     }, [isLoggedIn, navigate]);
 
-    const sectionCss = css`
-      grid-column-start: 5;
-      grid-column-end: 9;
-    `;
 
     return (
-        <section css={sectionCss}>
-            <h2>Log In</h2>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <input {...register("username",
-                    {required: "Username is required."})}/>
-                {errors.username && errors.username.message}
+        <main css={mainCss}>
+            <section css={sectionCss}>
+                <h2 css={h2Css}>Log in</h2>
+                <form css={formCss} onSubmit={handleSubmit(onSubmit)}>
+                    <label css={labelCss}
+                           htmlFor="username">
+                        Username
+                        <input type="text" id="username"
+                               css={inputCss}
+                               {...register("username", {required: "Username is required."})}/>
+                    </label>
 
-                <input type="password" {...register("password",
-                    {required: "Password is required"})}/>
-                {errors.password && errors.password.message}
+                    {errors.username &&
+                        <p css={errorCss}>
+                            {errors.username.message}
+                        </p>
+                    }
 
-                <button type={"submit"}>Log in</button>
-            </form>
-        </section>
+                    <label css={labelCss}
+                           htmlFor="password">
+                        Password
+                        <input type="password" id="password"
+                               css={inputCss}
+                               {...register("password", {required: "Password is required"})}/>
+                    </label>
+
+                    {errors.password &&
+                        <p css={errorCss}>
+                            {errors.password.message}
+                        </p>
+                    }
+
+                    <button type="submit"
+                            css={buttonCss}>Log in
+                    </button>
+                </form>
+            </section>
+        </main>
     );
 }
 

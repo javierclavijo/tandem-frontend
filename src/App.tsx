@@ -27,13 +27,18 @@ export default function App() {
         margin: 0;
         background-color: ${colors.LIGHT};
       }
+
+      #root {
+        width: 100vw;
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: 6.25rem 1fr;
+        grid-template-columns: 3.125rem 1fr 3.125rem;
+        grid-template-areas: "header header header"
+        ". main .";
+      }
     `;
 
-    const mainCss = css`
-      margin: 20px 50px;
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-    `;
 
     return (
         <React.Fragment>
@@ -41,16 +46,14 @@ export default function App() {
             <QueryClientProvider client={queryClient}>
                 <AuthProvider>
                     <Nav/>
-                    <main css={mainCss}>
-                        <Routes>
-                            <Route path="/chats" element={<ChatList/>}>
-                                <Route path=":id" element={<ChatRoom/>}/>
-                            </Route>
-                            <Route path="/login" element={<LogIn/>}/>
-                            <Route path="/logout" element={<LogOut/>}/>
-                            <Route path="/" element={<Home/>}/>
-                        </Routes>
-                    </main>
+                    <Routes>
+                        <Route path="/chats" element={<ChatList/>}>
+                            <Route path=":id" element={<ChatRoom/>}/>
+                        </Route>
+                        <Route path="/login" element={<LogIn/>}/>
+                        <Route path="/logout" element={<LogOut/>}/>
+                        <Route path="/" element={<Home/>}/>
+                    </Routes>
                 </AuthProvider>
             </QueryClientProvider>
         </React.Fragment>

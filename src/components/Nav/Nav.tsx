@@ -3,14 +3,14 @@
 import React from "react";
 import {Link, NavLink} from "react-router-dom";
 import useAuth from "../../features/auth/AuthContext";
-import {h1Css, linkCss, navCss, ulCss} from "./styles";
+import {h1Css, headerCss, linkCss, navCss, ulCss} from "./styles";
 
 
 function Nav() {
     const {isLoggedIn} = useAuth();
 
     return (
-        <header>
+        <header css={headerCss}>
             <nav css={navCss}>
                 <h1 css={h1Css}>ChatApp</h1>
                 <ul css={ulCss}>

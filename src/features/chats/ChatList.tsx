@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+
 import React, {useEffect} from "react";
 import {Link, Outlet} from "react-router-dom";
 import useWebSocket from "react-use-websocket";
@@ -5,6 +7,8 @@ import useAuth from "../auth/AuthContext";
 import {useQueryClient} from "react-query";
 import {useChatList} from "./hooks";
 import {Chat} from "../../entities/Chat";
+import {mainCss} from "./styles";
+import {jsx} from "@emotion/react";
 
 
 function ChatList() {
@@ -51,7 +55,7 @@ function ChatList() {
     }, [lastJsonMessage, queryClient]);
 
     return (
-        <div>
+        <main css={mainCss}>
             <ul>
                 {data?.map(chat => {
                     const latestMessage = chat.messages[0];
@@ -64,7 +68,7 @@ function ChatList() {
                 })}
             </ul>
             <Outlet/>
-        </div>
+        </main>
     );
 }
 
