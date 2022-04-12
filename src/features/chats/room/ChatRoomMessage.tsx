@@ -14,54 +14,84 @@ interface ChatRoomMessageProps {
 
 function ChatRoomMessage({message, isOwnMessage, chat_type}: ChatRoomMessageProps) {
 
-    const baseCss = css`
+    const outerCss = css`
+      display: flex;
+      margin: 0.25rem 0.5rem;
+    `;
+
+    const ownMessageOuterCss = css`${outerCss};
+      justify-content: flex-end;
+    `;
+
+    const innerCss = css`
       max-width: calc(5 / 8 * 100%);
       min-width: 10rem;
       width: fit-content;
-      margin: 0.25rem 1rem;
       padding: 0.5rem;
       box-sizing: border-box;
-
       color: ${colors.WHITE};
-      border-radius: 5px;
-
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
     `;
 
-    const ownMessageCss = css`${baseCss};
+    const ownMessageCss = css`${innerCss};
       align-self: flex-end;
       background-color: ${colors.PRIMARY};
+      border-radius: 5px 0 5px 5px;
     `;
 
-    const otherMessageCss = css`${baseCss};
+    const otherMessageCss = css`${innerCss};
       background-color: ${colors.DARK};
+      border-radius: 0 5px 5px 5px;
+    `;
+
+    const speechBubbleOwnMessageCss = css`
+      clip-path: polygon(100% 0, 0 0, 0 100%);
+      background-color: ${colors.PRIMARY};
+      width: 0.5rem;
+      height: 1rem;
+    `;
+
+    const speechBubbleOtherMessageCss = css`
+      clip-path: polygon(100% 0, 0 0, 100% 100%);
+      background-color: ${colors.DARK};
+      width: 0.5rem;
+      height: 1rem;
     `;
 
     return (
-        <div
-            css={isOwnMessage ? ownMessageCss : otherMessageCss}>
-            {!isOwnMessage && chat_type === "channel" ?
-                <span css={css`
-                  font-size: ${textSizes.S};
-                  width: fit-content;
-                `}>
+        <div css={isOwnMessage ? ownMessageOuterCss : outerCss}>
+            {!isOwnMessage ?
+                <div css={speechBubbleOtherMessageCss}/>
+                : null}
+            <div
+                css={isOwnMessage ? ownMessageCss : otherMessageCss}>
+                {!isOwnMessage && chat_type === "channel" ?
+                    <span css={css`
+                      font-size: ${textSizes.S};
+                      width: fit-content;
+                    `}>
                     {message.author.username}
                 </span> :
-                null
-            }
-            <span css={css`
-              font-size: ${textSizes.M};
-            `}>
+                    null
+                }
+                <span css={css`
+                  font-size: ${textSizes.M};
+                `}>
             {message.content}
             </span>
-            <span css={css`
-              font-size: ${textSizes.S};
-              align-self: flex-end;
-            `}>
+                <span css={css`
+                  font-size: ${textSizes.S};
+                  align-self: flex-end;
+                `}>
             {DateTime.fromISO(message.timestamp).toLocaleString(DateTime.DATETIME_SHORT)}
             </span>
+            </div>
+            {isOwnMessage ?
+                <div css={speechBubbleOwnMessageCss}/> :
+                null
+            }
         </div>
     );
 }
