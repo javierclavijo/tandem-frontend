@@ -1,9 +1,11 @@
 import React, {useContext, useMemo, useState} from "react";
 import axios, {AxiosRequestConfig} from "axios";
-import {useMutation} from "react-query";
+import {useMutation, useQuery} from "react-query";
+import {User} from "../../entities/User";
 
 interface AuthContextType {
     token: string;
+    user: User | undefined;
     error: string;
     loading: boolean;
     isLoggedIn: boolean;
@@ -26,6 +28,13 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
+
+    const {data: user} = useQuery<User>(["user", "me"], async () => {
+        const response = await axiosApi.get("/users/me/");
+        return response.data;
+    }, {
+        enabled: Boolean(isLoggedIn)
+    });
 
     React.useEffect(() => {
         // Fetch token from localStorage on init
@@ -62,6 +71,7 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
         }
     }, [loginQuery]);
 
+
     const logout = () => {
         localStorage.removeItem("auth-token");
         setToken("");
@@ -91,13 +101,14 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
 
     const memoedValue = useMemo(() => ({
             token,
+            user,
             error,
             loading,
             isLoggedIn,
             login,
             logout
         }),
-        [token, error, loading, isLoggedIn, login]);
+        [token, user, error, loading, isLoggedIn, login]);
 
     return (
         <AuthContext.Provider value={memoedValue}>{children}</AuthContext.Provider>
