@@ -29,6 +29,7 @@ export default function App() {
         background-color: ${colors.LIGHT};
       }
 
+      // Main page layout
       #root {
         width: 100vw;
         min-height: 100vh;
@@ -37,6 +38,29 @@ export default function App() {
         grid-template-columns: 3.125rem 1fr 3.125rem;
         grid-template-areas: "header header header"
         ". main .";
+      }
+      
+      
+      // Scrollbar styles
+      ::-webkit-scrollbar {
+        width: 0.5rem;
+      }
+
+      ::-webkit-scrollbar-track {
+        margin-block: 0.25rem;
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background: ${colors.SECONDARY};
+        border-radius: 100vw;
+      }
+
+      // Firefox-specific scrollbar styles
+      @supports (scrollbar-width: thin) {
+        * {
+          scrollbar-width: thin;
+          scrollbar-color: ${colors.SECONDARY} ${colors.WHITE};
+        }
       }
     `;
 

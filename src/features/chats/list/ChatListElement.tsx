@@ -10,7 +10,7 @@ import {textSizes} from "../../../styles/variables";
 
 function ChatListElement({chat}: { chat: Chat }) {
     return (
-        <li css={listElementCss}>
+        <div css={listElementCss}>
             <div css={elementContentCss}>
                 <div css={imageContainerCss}>
                     <img src={require("../../../static/images/user_placeholder.png")} alt=""
@@ -50,7 +50,7 @@ function ChatListElement({chat}: { chat: Chat }) {
             </div>
             <Link to={`/chats/${chat.id}`}
                   css={linkCss}/>
-        </li>
+        </div>
     );
 }
 

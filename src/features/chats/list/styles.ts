@@ -5,7 +5,7 @@ export const mainCss = css`
   grid-area: main;
   display: grid;
   grid-template-columns: minmax(20rem, 1fr) 2fr;
-  grid-template-rows: calc(100vh - 5rem);
+  grid-template-rows: calc(100vh - 7rem);
   grid-template-areas: "list room";
 
   gap: 1rem;
@@ -16,13 +16,13 @@ export const mainCss = css`
 export const listCss = css`
   grid-area: list;
   box-sizing: border-box;
-  padding: 1rem;
+  padding: 1rem 0 1rem 1rem;
   border-radius: 3px;
-  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
 
   background-color: ${colors.WHITE};
   width: 100%;
-  //overflow: hidden;
 `;
 
 export const searchInputCss = css`
@@ -43,16 +43,21 @@ export const searchInputCss = css`
 `;
 
 export const searchFormCss = css`
-  padding-bottom: 1rem;
+  padding: 0 1rem 1rem 0;
   box-sizing: border-box;
   border-bottom: 1px solid ${colors.LIGHT};
 `;
 
 export const ulCss = css`
   list-style-type: none;
-  padding: 0;
+  padding: 0 1rem 0 0 ;
+  box-sizing: border-box;
   margin: 0;
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
 `;
 
 export const listElementCss = css`

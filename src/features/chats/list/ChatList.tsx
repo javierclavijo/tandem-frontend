@@ -65,11 +65,11 @@ function ChatList() {
                            placeholder="Search..."
                     />
                 </form>
-                <ul css={ulCss}>
+                <div css={ulCss}>
                     {data?.map(chat =>
                         <ChatListElement key={chat.id} chat={chat}/>
                     )}
-                </ul>
+                </div>
             </section>
             <Outlet/>
         </main>

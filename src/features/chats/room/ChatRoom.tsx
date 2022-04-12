@@ -1,19 +1,18 @@
 /** @jsxImportSource @emotion/react */
 
-import React, {useCallback, useState} from "react";
-import BackButton from "../../../components/BackButton/BackButton";
+import React, {useState} from "react";
 import {useParams} from "react-router-dom";
-import useWebSocket from "react-use-websocket";
 import {messageSortFn, useChatList} from "../hooks";
 import {Chat} from "../../../entities/Chat";
 import {useQuery} from "react-query";
-import useAuth, {axiosApi} from "../../auth/AuthContext";
+import {axiosApi} from "../../auth/AuthContext";
 import {css} from "@emotion/react";
+import {colors} from "../../../styles/variables";
+import ChatRoomMessage from "./ChatRoomMessage";
+import ChatInputForm from "./ChatInputForm";
 
 function ChatRoom() {
     const params = useParams();
-    const {token} = useAuth();
-    const [inputValue, setInputValue] = useState<string>("");
 
     const {data: chatList} = useChatList();
     const [chat, setChat] = useState<Chat>({} as Chat);
@@ -36,42 +35,35 @@ function ChatRoom() {
         }
     }, [chatList, params.id]);
 
-    const {
-        sendJsonMessage,
-    } = useWebSocket(`${process.env.REACT_APP_WS_URL}/ws/chats/?${token}`, {
-        onClose: () => console.error("Chat socket closed unexpectedly"),
-        shouldReconnect: (closeEvent) => true,
-        share: true
-    });
-
-    const handleSend = useCallback(() => {
-        const message = {
-            chat_id: chat.id,
-            content: inputValue,
-            chat_type: chat.chat_type
-        };
-        sendJsonMessage(message);
-        setInputValue("");
-    }, [chat, inputValue, sendJsonMessage]);
-
     return (
         <div css={css`
           grid-area: room;
+          background-color: ${colors.WHITE};
+          border-radius: 3px;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
         `}>
-            <ul>
+            <header css={css`
+              height: 4.15rem;
+              background-color: ${colors.PRIMARY};
+              display: flex;
+              align-items: center;
+              padding: 1rem;
+              box-sizing: border-box;
+              color: ${colors.WHITE};
+            `}>
+                <h2>{chat.name}</h2>
+            </header>
+            <div css={css`
+              overflow-y: scroll;
+              height: 100%;
+            `}>
                 {data?.messages.map(message => (
-                    <li key={message.id}>{message.author.username}: {message.content} ({message.timestamp})</li>
+                    <ChatRoomMessage message={message} key={message.id}/>
                 ))}
-            </ul>
-            <input type="text" id="chat-text-input"
-                   value={inputValue}
-                   onChange={(e) => setInputValue(e.target.value)}
-            />
-            <button type="button" id="chat-send"
-                    onClick={handleSend}
-            >Send
-            </button>
-            <BackButton/>
+            </div>
+            <ChatInputForm chat={chat}/>
         </div>
     );
 }
