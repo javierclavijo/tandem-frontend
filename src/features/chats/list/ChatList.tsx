@@ -1,21 +1,22 @@
 /** @jsxImportSource @emotion/react */
 
 import React, {useEffect} from "react";
-import {Link, Outlet} from "react-router-dom";
+import {Outlet} from "react-router-dom";
 import useWebSocket from "react-use-websocket";
-import useAuth from "../auth/AuthContext";
+import useAuth from "../../auth/AuthContext";
 import {useQueryClient} from "react-query";
-import {useChatList} from "./hooks";
-import {Chat} from "../../entities/Chat";
-import {mainCss} from "./styles";
-import {jsx} from "@emotion/react";
+import {useChatList} from "../hooks";
+import {Chat} from "../../../entities/Chat";
+import {listCss, mainCss, searchFormCss, searchInputCss, ulCss} from "./styles";
+import ChatListElement from "./ChatListElement";
 
 
 function ChatList() {
     const {token} = useAuth();
     const queryClient = useQueryClient();
-
     const {data} = useChatList();
+
+    const [filter, setFilter] = React.useState<string>("");
 
     const {
         lastJsonMessage
@@ -56,17 +57,20 @@ function ChatList() {
 
     return (
         <main css={mainCss}>
-            <ul>
-                {data?.map(chat => {
-                    const latestMessage = chat.messages[0];
-                    return (
-                        <li key={chat.url}>
-                            <Link to={`/chats/${chat.id}`}>{chat.name}</Link>
-                            - {latestMessage.author.username}: {latestMessage.content} ({latestMessage.timestamp})
-                        </li>
-                    );
-                })}
-            </ul>
+            <section css={listCss}>
+                <form css={searchFormCss}>
+                    <input type="text"
+                           css={searchInputCss}
+                           onChange={(e) => setFilter(e.target.value)}
+                           placeholder="Search..."
+                    />
+                </form>
+                <ul css={ulCss}>
+                    {data?.map(chat =>
+                        <ChatListElement key={chat.id} chat={chat}/>
+                    )}
+                </ul>
+            </section>
             <Outlet/>
         </main>
     );

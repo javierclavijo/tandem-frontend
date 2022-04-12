@@ -1,11 +1,14 @@
+/** @jsxImportSource @emotion/react */
+
 import React, {useCallback, useState} from "react";
-import BackButton from "../../components/BackButton/BackButton";
+import BackButton from "../../../components/BackButton/BackButton";
 import {useParams} from "react-router-dom";
 import useWebSocket from "react-use-websocket";
-import {messageSortFn, useChatList} from "./hooks";
-import {Chat} from "../../entities/Chat";
+import {messageSortFn, useChatList} from "../hooks";
+import {Chat} from "../../../entities/Chat";
 import {useQuery} from "react-query";
-import useAuth, {axiosApi} from "../auth/AuthContext";
+import useAuth, {axiosApi} from "../../auth/AuthContext";
+import {css} from "@emotion/react";
 
 function ChatRoom() {
     const params = useParams();
@@ -52,7 +55,9 @@ function ChatRoom() {
     }, [chat, inputValue, sendJsonMessage]);
 
     return (
-        <div>
+        <div css={css`
+          grid-area: room;
+        `}>
             <ul>
                 {data?.messages.map(message => (
                     <li key={message.id}>{message.author.username}: {message.content} ({message.timestamp})</li>

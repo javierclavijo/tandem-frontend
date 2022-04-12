@@ -38,6 +38,7 @@ export const labelCss = css`
   font-size: ${textSizes.M};
 `;
 export const inputCss = css`
+  color: ${colors.DARK};
   width: 100%;
   border: none;
   border-bottom: 1px solid ${colors.PRIMARY};
