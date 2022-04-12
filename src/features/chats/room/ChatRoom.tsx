@@ -5,7 +5,7 @@ import {useParams} from "react-router-dom";
 import {messageSortFn, useChatList} from "../hooks";
 import {Chat} from "../../../entities/Chat";
 import {useQuery} from "react-query";
-import {axiosApi} from "../../auth/AuthContext";
+import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import {colors} from "../../../styles/variables";
 import ChatRoomMessage from "./ChatRoomMessage";
@@ -14,6 +14,7 @@ import ChatInputForm from "./ChatInputForm";
 function ChatRoom() {
     const params = useParams();
 
+    const {user} = useAuth();
     const {data: chatList} = useChatList();
     const [chat, setChat] = useState<Chat>({} as Chat);
 
@@ -58,9 +59,14 @@ function ChatRoom() {
             <div css={css`
               overflow-y: scroll;
               height: 100%;
+              display: flex;
+              flex-direction: column;
             `}>
                 {data?.messages.map(message => (
-                    <ChatRoomMessage message={message} key={message.id}/>
+                    <ChatRoomMessage message={message}
+                                     isOwnMessage={user?.id === message.author.id}
+                                     chat_type={chat.chat_type}
+                                     key={message.id}/>
                 ))}
             </div>
             <ChatInputForm chat={chat}/>

@@ -2,7 +2,7 @@ export interface ChatMessage {
     id: string,
     url: string,
     author: {
-        id: number,
+        id: string,
         url: string,
         username: string
     },
