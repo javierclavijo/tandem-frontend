@@ -43,7 +43,7 @@ export const searchInputCss = css`
 `;
 
 export const searchFormCss = css`
-  padding: 0 1rem 1rem 0;
+  padding-bottom: 1rem;
   box-sizing: border-box;
   border-bottom: 1px solid ${colors.LIGHT};
 `;

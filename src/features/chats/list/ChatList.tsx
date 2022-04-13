@@ -7,8 +7,9 @@ import useAuth from "../../auth/AuthContext";
 import {useQueryClient} from "react-query";
 import {useChatList} from "../hooks";
 import {Chat} from "../../../entities/Chat";
-import {listCss, mainCss, searchFormCss, searchInputCss, ulCss} from "./styles";
+import {listCss, mainCss, ulCss} from "./styles";
 import ChatListElement from "./ChatListElement";
+import ChatListFilter from "./ChatListFilter";
 
 
 function ChatList() {
@@ -58,17 +59,12 @@ function ChatList() {
     return (
         <main css={mainCss}>
             <section css={listCss}>
-                <form css={searchFormCss}>
-                    <input type="text"
-                           css={searchInputCss}
-                           onChange={(e) => setFilter(e.target.value)}
-                           placeholder="Search..."
-                    />
-                </form>
+                <ChatListFilter setFilter={setFilter}/>
                 <div css={ulCss}>
-                    {data?.map(chat =>
-                        <ChatListElement key={chat.id} chat={chat}/>
-                    )}
+                    {data?.filter(chat => filter ? chat.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()) : true)
+                        .map(chat =>
+                            <ChatListElement key={chat.id} chat={chat}/>
+                        )}
                 </div>
             </section>
             <Outlet/>
