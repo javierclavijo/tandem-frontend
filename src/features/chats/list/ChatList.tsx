@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 
 import React, {useEffect} from "react";
-import {Outlet} from "react-router-dom";
+import {Outlet, useParams} from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import useAuth from "../../auth/AuthContext";
 import {useQueryClient} from "react-query";
 import {useChatList} from "../hooks";
 import {Chat} from "../../../entities/Chat";
-import {listCss, mainCss, ulCss} from "./styles";
+import {listContainerCss, mainCss, listElementContainerCss} from "./styles";
 import ChatListElement from "./ChatListElement";
 import ChatListFilter from "./ChatListFilter";
 
@@ -16,6 +16,7 @@ function ChatList() {
     const {token} = useAuth();
     const queryClient = useQueryClient();
     const {data} = useChatList();
+    const params = useParams();
 
     const [filter, setFilter] = React.useState<string>("");
 
@@ -58,12 +59,13 @@ function ChatList() {
 
     return (
         <main css={mainCss}>
-            <section css={listCss}>
+            <section css={listContainerCss}>
                 <ChatListFilter setFilter={setFilter}/>
-                <div css={ulCss}>
+                <div css={listElementContainerCss}>
                     {data?.filter(chat => filter ? chat.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()) : true)
                         .map(chat =>
-                            <ChatListElement key={chat.id} chat={chat}/>
+                            <ChatListElement chat={chat} selected={chat.id === params.id}
+                                             key={chat.id}/>
                         )}
                 </div>
             </section>

@@ -3,14 +3,26 @@
 import React from "react";
 import {Chat} from "../../../entities/Chat";
 import {Link} from "react-router-dom";
-import {imgCss, elementContentCss, imageContainerCss, linkCss, listElementCss} from "./styles";
+import {elementContentCss, imageContainerCss, imgCss, linkCss} from "./styles";
 import {css} from "@emotion/react";
 import {DateTime} from "luxon";
-import {textSizes} from "../../../styles/variables";
+import {colors, textSizes} from "../../../styles/variables";
 
-function ChatListElement({chat}: { chat: Chat }) {
+interface ChatListElementProps {
+    chat: Chat;
+    selected: boolean;
+}
+
+function ChatListElement({chat, selected}: ChatListElementProps) {
     return (
-        <div css={listElementCss}>
+        <div css={css`display: grid;
+          border-bottom: 1px solid ${colors.LIGHT};
+          color: ${selected? colors.WHITE: colors.DARK};
+          width: 100%;
+          background-color: ${selected ? colors.PRIMARY : colors.WHITE};
+          padding: 0 1rem;
+          box-sizing: border-box;
+        `}>
             <div css={elementContentCss}>
                 <div css={imageContainerCss}>
                     <img src={require("../../../static/images/user_placeholder.png")} alt=""
@@ -46,7 +58,6 @@ function ChatListElement({chat}: { chat: Chat }) {
                     {chat.messages[0].author.username}: {chat.messages[0].content}
                     </span>
                 </div>
-
             </div>
             <Link to={`/chats/${chat.id}`}
                   css={linkCss}/>

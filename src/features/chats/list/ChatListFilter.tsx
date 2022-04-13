@@ -7,7 +7,7 @@ import {css} from "@emotion/react";
 function ChatListFilter({setFilter}: { setFilter: React.Dispatch<React.SetStateAction<string>> }) {
     return (
         <div css={css`
-          padding-right: 1rem;
+          padding: 1rem;
         `}>
             <form css={searchFormCss}>
                 <input type="text"

@@ -13,10 +13,9 @@ export const mainCss = css`
   box-sizing: border-box;
 `;
 
-export const listCss = css`
+export const listContainerCss = css`
   grid-area: list;
   box-sizing: border-box;
-  padding: 1rem 0 1rem 1rem;
   border-radius: 3px;
   display: flex;
   flex-direction: column;
@@ -48,9 +47,8 @@ export const searchFormCss = css`
   border-bottom: 1px solid ${colors.LIGHT};
 `;
 
-export const ulCss = css`
+export const listElementContainerCss = css`
   list-style-type: none;
-  padding: 0 1rem 0 0 ;
   box-sizing: border-box;
   margin: 0;
   width: 100%;
@@ -58,13 +56,7 @@ export const ulCss = css`
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
-`;
-
-export const listElementCss = css`
-  display: grid;
-  border-bottom: 1px solid ${colors.LIGHT};
-  color: ${colors.DARK};
-  width: 100%;
+  padding-bottom: 1rem;
 `;
 
 export const linkCss = css`
