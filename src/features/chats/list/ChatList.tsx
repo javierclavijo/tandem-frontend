@@ -7,9 +7,10 @@ import useAuth from "../../auth/AuthContext";
 import {useQueryClient} from "react-query";
 import {useChatList} from "../hooks";
 import {Chat} from "../../../entities/Chat";
-import {listContainerCss, mainCss, listElementContainerCss} from "./styles";
+import {listContainerCss, mainCss, listElementContainerCss, mainCssMobile, listContainerCssMobile} from "./styles";
 import ChatListElement from "./ChatListElement";
 import ChatListFilter from "./ChatListFilter";
+import {useMediaQuery} from "react-responsive";
 
 
 function ChatList() {
@@ -17,6 +18,8 @@ function ChatList() {
     const queryClient = useQueryClient();
     const {data} = useChatList();
     const params = useParams();
+    const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
+
 
     const [filter, setFilter] = React.useState<string>("");
 
@@ -57,8 +60,8 @@ function ChatList() {
         }
     }, [lastJsonMessage, queryClient]);
 
-    return (
-        <main css={mainCss}>
+    return isDesktop ?
+        (<main css={mainCss}>
             <section css={listContainerCss}>
                 <ChatListFilter setFilter={setFilter}/>
                 <div css={listElementContainerCss}>
@@ -70,8 +73,23 @@ function ChatList() {
                 </div>
             </section>
             <Outlet/>
-        </main>
-    );
+        </main>) :
+        (<main css={mainCssMobile}>
+                {params.id ?
+                    <Outlet/> :
+                    <section css={listContainerCssMobile}>
+                        <ChatListFilter setFilter={setFilter}/>
+                        <div css={listElementContainerCss}>
+                            {data?.filter(chat => filter ? chat.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()) : true)
+                                .map(chat =>
+                                    <ChatListElement chat={chat} selected={chat.id === params.id}
+                                                     key={chat.id}/>
+                                )}
+                        </div>
+                    </section>
+                }
+            </main>
+        );
 }
 
 export default ChatList;

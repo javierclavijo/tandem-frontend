@@ -9,8 +9,12 @@ export const mainCss = css`
   grid-template-areas: "list room";
 
   gap: 1rem;
-  padding: 1rem 0;
+  padding: 1rem 3.125rem;
   box-sizing: border-box;
+`;
+
+export const mainCssMobile = css`
+  grid-area: main;
 `;
 
 export const listContainerCss = css`
@@ -22,6 +26,16 @@ export const listContainerCss = css`
 
   background-color: ${colors.WHITE};
   width: 100%;
+`;
+
+export const listContainerCssMobile = css`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+
+  background-color: ${colors.WHITE};
+  width: 100%;
+  max-height: calc(100vh - 8rem);
 `;
 
 export const listElementContainerCss = css`

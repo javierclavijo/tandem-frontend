@@ -3,12 +3,20 @@ import ReactDOM from "react-dom";
 import {BrowserRouter} from "react-router-dom";
 import App from "./App";
 import "./styles/index.css";
-import '@csstools/normalize.css';
+import "@csstools/normalize.css";
+import {QueryClient, QueryClientProvider} from "react-query";
+import {AuthProvider} from "./features/auth/AuthContext";
+
+const queryClient = new QueryClient();
 
 const browserRouter = (
     <React.StrictMode>
         <BrowserRouter>
-            <App/>
+            <QueryClientProvider client={queryClient}>
+                <AuthProvider>
+                    <App/>
+                </AuthProvider>
+            </QueryClientProvider>
         </BrowserRouter>
     </React.StrictMode>
 );
