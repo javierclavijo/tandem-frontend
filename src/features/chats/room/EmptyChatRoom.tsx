@@ -7,7 +7,12 @@ import {chatRoomCss, chatRoomHeaderCss} from "./styles";
 
 function EmptyChatRoom() {
     return (
-        <div css={chatRoomCss}>
+        <div css={css`${chatRoomCss};
+          display: none;
+          @media (min-width: 1025px) {
+            display: flex;
+          }
+        `}>
             <header css={chatRoomHeaderCss}>
                 <h2>
                     Chats

@@ -3,14 +3,18 @@ import {colors} from "../../../styles/variables";
 
 export const mainCss = css`
   grid-area: main;
-  display: grid;
-  grid-template-columns: minmax(20rem, 1fr) 2fr;
-  grid-template-rows: calc(100vh - 7rem);
-  grid-template-areas: "list room";
+  height: 100%;
+  max-height: calc(100vh - 8rem);
 
-  gap: 1rem;
-  padding: 1rem 0;
-  box-sizing: border-box;
+  @media (min-width: 1025px) {
+    box-sizing: border-box;
+    padding: 1rem 3.25rem;
+    display: grid;
+    grid-template-columns: minmax(20rem, 1fr) 2fr;
+    grid-template-rows: calc(100vh - 7rem);
+    grid-template-areas: "list room";
+    gap: 1rem;
+  }
 `;
 
 export const listContainerCss = css`
@@ -22,6 +26,7 @@ export const listContainerCss = css`
 
   background-color: ${colors.WHITE};
   width: 100%;
+  height: 100%;
 `;
 
 export const listElementContainerCss = css`

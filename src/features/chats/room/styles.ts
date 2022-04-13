@@ -2,12 +2,15 @@ import {css} from "@emotion/react";
 import {colors} from "../../../styles/variables";
 
 export const chatRoomCss = css`
-  grid-area: room;
   background-color: ${colors.WHITE};
-  border-radius: 3px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+
+  @media (min-width: 1025px) {
+    grid-area: room;
+    border-radius: 3px;
+  }
 `;
 
 export const chatRoomHeaderCss = css`
