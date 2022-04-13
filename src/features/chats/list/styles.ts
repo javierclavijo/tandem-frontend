@@ -1,5 +1,5 @@
 import {css} from "@emotion/react";
-import {colors, textSizes} from "../../../styles/variables";
+import {colors} from "../../../styles/variables";
 
 export const mainCss = css`
   grid-area: main;
@@ -22,29 +22,6 @@ export const listContainerCss = css`
 
   background-color: ${colors.WHITE};
   width: 100%;
-`;
-
-export const searchInputCss = css`
-  width: 100%;
-  font-size: ${textSizes.M};
-  padding: 0.5rem;
-  box-sizing: border-box;
-
-  background-color: ${colors.LIGHT};
-  color: ${colors.DARK};
-
-  border-radius: 3px;
-  border: none;
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-export const searchFormCss = css`
-  padding-bottom: 1rem;
-  box-sizing: border-box;
-  border-bottom: 1px solid ${colors.LIGHT};
 `;
 
 export const listElementContainerCss = css`

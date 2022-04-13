@@ -6,6 +6,7 @@ import useWebSocket from "react-use-websocket";
 import useAuth from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import {colors, textSizes} from "../../../styles/variables";
+import {ArrowRightCircled} from "iconoir-react";
 
 function ChatInputForm({chat}: { chat: Chat }) {
     const [inputValue, setInputValue] = useState<string>("");
@@ -61,8 +62,11 @@ function ChatInputForm({chat}: { chat: Chat }) {
                         css={css`
                           background: none;
                           border: none;
+                          display: flex;
+                          justify-content: center;
+                          align-items: center;
                         `}>
-                    Send
+                    <ArrowRightCircled color={colors.PRIMARY} width="1.5rem" height="1.5rem"/>
                 </button>
             </form>
         </div>
