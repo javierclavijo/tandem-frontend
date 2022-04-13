@@ -7,7 +7,7 @@ import useAuth from "../../auth/AuthContext";
 import {useQueryClient} from "react-query";
 import {useChatList} from "../hooks";
 import {Chat} from "../../../entities/Chat";
-import {listContainerCss, listElementContainerCss, mainCss} from "./styles";
+import {listContainerCss, mainCss, listElementContainerCss} from "./styles";
 import ChatListElement from "./ChatListElement";
 import ChatListFilter from "./ChatListFilter";
 

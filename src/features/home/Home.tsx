@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import useAuth from "../auth/AuthContext";
 
-function HomeView() {
+function Home() {
     const {isLoggedIn} = useAuth();
     const navigate = useNavigate();
 
@@ -12,11 +12,11 @@ function HomeView() {
         } else {
             navigate("/login");
         }
-    }, [navigate, isLoggedIn]);
+    }, [isLoggedIn]);
 
     return (
         <React.Fragment/>
     );
 }
 
-export default HomeView;
+export default Home;

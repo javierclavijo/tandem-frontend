@@ -15,10 +15,9 @@ interface ChatListElementProps {
 
 function ChatListElement({chat, selected}: ChatListElementProps) {
     return (
-        <div css={css`
-          display: grid;
+        <div css={css`display: grid;
           border-bottom: 1px solid ${colors.LIGHT};
-          color: ${selected ? colors.WHITE : colors.DARK};
+          color: ${selected? colors.WHITE: colors.DARK};
           width: 100%;
           background-color: ${selected ? colors.PRIMARY : colors.WHITE};
           padding: 0 1rem;
