@@ -21,13 +21,15 @@ function ChatInputForm({chat}: { chat: Chat }) {
 
     const handleSend = useCallback((event) => {
         event.preventDefault();
-        const message = {
-            chat_id: chat.id,
-            content: inputValue,
-            chat_type: chat.chat_type
-        };
-        sendJsonMessage(message);
-        setInputValue("");
+        if (inputValue) {
+            const message = {
+                chat_id: chat.id,
+                content: inputValue,
+                chat_type: chat.chat_type
+            };
+            sendJsonMessage(message);
+            setInputValue("");
+        }
     }, [chat, inputValue, sendJsonMessage]);
 
     return (
@@ -57,8 +59,8 @@ function ChatInputForm({chat}: { chat: Chat }) {
                 />
                 <button type="submit" id="chat-send"
                         css={css`
-                            background: none;
-                            border: none;
+                          background: none;
+                          border: none;
                         `}>
                     Send
                 </button>
