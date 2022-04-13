@@ -20,7 +20,6 @@ function ChatList() {
     const params = useParams();
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
 
-
     const [filter, setFilter] = React.useState<string>("");
 
     const {

@@ -9,7 +9,8 @@ import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import ChatRoomMessage from "./ChatRoomMessage";
 import ChatInputForm from "./ChatInputForm";
-import {chatRoomCss, chatRoomHeaderCss} from "./styles";
+import {chatRoomCss, chatRoomCssMobile, chatRoomHeaderCss} from "./styles";
+import {useMediaQuery} from "react-responsive";
 
 function ChatRoom() {
     const params = useParams();
@@ -20,6 +21,8 @@ function ChatRoom() {
 
     const messageContainerRef = React.useRef<HTMLDivElement>(null);
     const [isScrollBottom, setIsScrollBottom] = React.useState<boolean>(true);
+
+    const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
 
     const {data} = useQuery<Chat>(["chats", "detail", chat.id], async () => {
         const response = await axiosApi.get(chat.url);
@@ -63,7 +66,7 @@ function ChatRoom() {
         setIsScrollBottom(true);
     }, [chat]);
 
-    return (
+    return isDesktop ?
         <div css={chatRoomCss}>
             <header css={chatRoomHeaderCss}>
                 <h2>{chat.name}</h2>
@@ -84,8 +87,26 @@ function ChatRoom() {
                 ))}
             </div>
             <ChatInputForm chat={chat}/>
+        </div> :
+        <div css={chatRoomCssMobile}>
+            <div ref={messageContainerRef}
+                 onScroll={handleScroll}
+                 css={css`
+                   overflow-y: scroll;
+                   height: 100%;
+                   display: flex;
+                   flex-direction: column;
+                 `}>
+                {data?.messages.map(message => (
+                    <ChatRoomMessage message={message}
+                                     isOwnMessage={user?.id === message.author.id}
+                                     chat_type={chat.chat_type}
+                                     key={message.id}/>
+                ))}
+            </div>
+            <ChatInputForm chat={chat}/>
         </div>
-    );
+        ;
 }
 
 export default ChatRoom;

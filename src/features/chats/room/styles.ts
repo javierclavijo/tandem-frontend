@@ -10,6 +10,14 @@ export const chatRoomCss = css`
   flex-direction: column;
 `;
 
+export const chatRoomCssMobile = css`
+  background-color: ${colors.WHITE};
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 8rem);
+`;
+
 export const chatRoomHeaderCss = css`
   height: 4.15rem;
   background-color: ${colors.PRIMARY};
