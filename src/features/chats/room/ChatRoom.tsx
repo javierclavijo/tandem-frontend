@@ -7,9 +7,9 @@ import {Chat} from "../../../entities/Chat";
 import {useQuery} from "react-query";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {css} from "@emotion/react";
-import {colors} from "../../../styles/variables";
 import ChatRoomMessage from "./ChatRoomMessage";
 import ChatInputForm from "./ChatInputForm";
+import {chatRoomCss, chatRoomHeaderCss} from "./styles";
 
 function ChatRoom() {
     const params = useParams();
@@ -64,23 +64,8 @@ function ChatRoom() {
     }, [chat]);
 
     return (
-        <div css={css`
-          grid-area: room;
-          background-color: ${colors.WHITE};
-          border-radius: 3px;
-          overflow: hidden;
-          display: flex;
-          flex-direction: column;
-        `}>
-            <header css={css`
-              height: 4.15rem;
-              background-color: ${colors.PRIMARY};
-              display: flex;
-              align-items: center;
-              padding: 1rem;
-              box-sizing: border-box;
-              color: ${colors.WHITE};
-            `}>
+        <div css={chatRoomCss}>
+            <header css={chatRoomHeaderCss}>
                 <h2>{chat.name}</h2>
             </header>
             <div ref={messageContainerRef}
