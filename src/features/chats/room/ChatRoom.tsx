@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
-import React, {SyntheticEvent, useState} from "react";
+import React, {SyntheticEvent} from "react";
 import {useParams} from "react-router-dom";
-import {messageSortFn, useChatList} from "../hooks";
+import {messageSortFn, useChat} from "../hooks";
 import {Chat} from "../../../entities/Chat";
-import {useQuery} from "react-query";
-import useAuth, {axiosApi} from "../../auth/AuthContext";
+import useAuth from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import ChatRoomMessage from "./ChatRoomMessage";
 import ChatInputForm from "./ChatInputForm";
@@ -14,21 +13,14 @@ import {useMediaQuery} from "react-responsive";
 
 function ChatRoom() {
     const params = useParams();
-
     const {user} = useAuth();
-    const {data: chatList} = useChatList();
-    const [chat, setChat] = useState<Chat>({} as Chat);
 
     const messageContainerRef = React.useRef<HTMLDivElement>(null);
     const [isScrollBottom, setIsScrollBottom] = React.useState<boolean>(true);
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
 
-    const {data} = useQuery<Chat>(["chats", "detail", chat.id], async () => {
-        const response = await axiosApi.get(chat.url);
-        return response.data;
-    }, {
-        enabled: Boolean(chat.id),
+    const {data} = useChat(params.id as string, {
         staleTime: 15000,
         // Whenever query data changes, scroll to the bottom of the chat if it's positioned there to show new
         // messages, then sort messages
@@ -36,15 +28,7 @@ function ChatRoom() {
             scrollToBottom();
             return data.messages.sort((a, b) => messageSortFn(a, b)).reverse();
         },
-    });
-
-    React.useLayoutEffect(() => {
-        // Fetch the resource's URL and ID from the chat list
-        const chatResult = chatList?.find(c => c.id === params.id);
-        if (chatResult) {
-            setChat(chatResult);
-        }
-    }, [chatList, params.id]);
+    })
 
     const scrollToBottom = () => {
         if (isScrollBottom) {
@@ -64,12 +48,12 @@ function ChatRoom() {
     React.useEffect(() => {
         // When another chat is selected, set the property to scroll to the bottom again
         setIsScrollBottom(true);
-    }, [chat]);
+    }, [data]);
 
     return isDesktop ?
         <div css={chatRoomCss}>
             <header css={chatRoomHeaderCss}>
-                <h2>{chat.name}</h2>
+                <h2>{data?.name}</h2>
             </header>
             <div ref={messageContainerRef}
                  onScroll={handleScroll}
@@ -82,11 +66,11 @@ function ChatRoom() {
                 {data?.messages.map(message => (
                     <ChatRoomMessage message={message}
                                      isOwnMessage={user?.id === message.author.id}
-                                     chat_type={chat.chat_type}
+                                     chat_type={data.chat_type}
                                      key={message.id}/>
                 ))}
             </div>
-            <ChatInputForm chat={chat}/>
+            <ChatInputForm chat={data as Chat}/>
         </div> :
         <div css={chatRoomCssMobile}>
             <div ref={messageContainerRef}
@@ -100,11 +84,11 @@ function ChatRoom() {
                 {data?.messages.map(message => (
                     <ChatRoomMessage message={message}
                                      isOwnMessage={user?.id === message.author.id}
-                                     chat_type={chat.chat_type}
+                                     chat_type={data.chat_type}
                                      key={message.id}/>
                 ))}
             </div>
-            <ChatInputForm chat={chat}/>
+            <ChatInputForm chat={data as Chat}/>
         </div>
         ;
 }
