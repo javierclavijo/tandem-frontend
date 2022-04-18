@@ -1,16 +1,19 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import {Chat} from "../../../entities/Chat";
 import {chatRoomHeaderCss} from "./styles";
 import {Link} from "react-router-dom";
 import {css} from "@emotion/react";
 import {colors} from "../../../styles/variables";
 import BackButton from "../../../components/BackButton/BackButton";
 import {useMediaQuery} from "react-responsive";
+import {useChat} from "../hooks";
 
-function ChatRoomHeader({chat}: { chat: Chat }) {
+function ChatRoomHeader({id}: { id: string }) {
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
+    const {data} = useChat(id, {
+        staleTime: 15000,
+    });
 
     return (
         <header css={chatRoomHeaderCss}>
@@ -22,7 +25,7 @@ function ChatRoomHeader({chat}: { chat: Chat }) {
               text-decoration: none;
               color: ${colors.WHITE};
             `}>
-                {chat?.name}
+                {data?.name}
             </Link></h2>
         </header>
     );

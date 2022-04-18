@@ -7,7 +7,7 @@ import {colors} from "../../styles/variables";
 
 function Tabs() {
     return (
-        <div css={css`
+        <nav css={css`
           grid-area: tabs;
           display: flex;
           width: 100%;
@@ -45,7 +45,7 @@ function Tabs() {
             `}>
                 <Search color={colors.WHITE} width="1.5rem" height="1.5rem"/>
             </div>
-        </div>
+        </nav>
     );
 }
 

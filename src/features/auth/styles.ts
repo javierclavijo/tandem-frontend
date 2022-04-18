@@ -10,6 +10,7 @@ export const mainCss = css`
   align-items: center;
   padding-top: 3.125rem;
 `;
+
 export const sectionCss = css`
   background-color: ${colors.WHITE};
   color: ${colors.PRIMARY};
@@ -19,24 +20,28 @@ export const sectionCss = css`
   width: calc(100% / 4);
   min-width: 20rem;
 `;
+
 export const h2Css = css`
   font-weight: 400;
   font-size: ${textSizes.L};
   margin: 0 0 1rem 0;
   text-align: center;
 `;
+
 export const formCss = css`
   display: flex;
   flex-direction: column;
   gap: 1rem;
   align-items: center;
 `;
+
 export const labelCss = css`
   width: 100%;
   display: flex;
   flex-direction: column;
   font-size: ${textSizes.M};
 `;
+
 export const inputCss = css`
   color: ${colors.DARK};
   width: 100%;
@@ -49,6 +54,7 @@ export const inputCss = css`
     outline: none;
   }
 `;
+
 export const buttonCss = css`
   font-size: ${textSizes.M};
   padding: 0.5rem 1rem;
@@ -58,6 +64,7 @@ export const buttonCss = css`
   border-radius: 3px;
   color: ${colors.WHITE};
 `;
+
 export const errorCss = css`
   color: ${colors.CONTRAST};
   font-size: ${textSizes.S};

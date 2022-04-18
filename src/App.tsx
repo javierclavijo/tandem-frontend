@@ -2,27 +2,19 @@
 
 import React from "react";
 import "./styles/App.css";
-import {Route, Routes, useMatch} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import LogIn from "./features/auth/LogIn";
 import ChatList from "./features/chats/list/ChatList";
-import Nav from "./components/Nav/Nav";
 import LogOut from "./features/auth/LogOut";
 import Home from "./features/home/Home";
 import ChatRoom from "./features/chats/room/ChatRoom";
-import useAuth from "./features/auth/AuthContext";
 import {css, Global} from "@emotion/react";
 import {colors} from "./styles/variables";
 import EmptyChatRoom from "./features/chats/room/EmptyChatRoom";
-import {useMediaQuery} from "react-responsive";
-import Tabs from "./components/Nav/Tabs";
 import ChatInfo from "./features/info/ChatInfo";
 
 
 export default function App() {
-
-    const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
-    const {isLoggedIn} = useAuth();
-    const isChatRoom = useMatch("/chats/:id");
 
     const globalStyles = css`
       * {
@@ -33,27 +25,6 @@ export default function App() {
         margin: 0;
         background-color: ${colors.LIGHT};
       }
-
-      // Main page layout
-      #root {
-        width: 100vw;
-        height: 100vh;
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-areas:  "header"
-                              "main"
-                              "tabs";
-        grid-template-rows: 5rem 1fr 3rem;
-
-        ${!isDesktop && isChatRoom ?
-                `grid-template-rows: 0 1fr 3rem;`
-                : ""};
-        
-        @media (min-width: 1025px) {
-          grid-template-rows: 5rem 1fr 0;
-        }
-      }
-
 
       // Scrollbar styles
       ::-webkit-scrollbar {
@@ -81,11 +52,6 @@ export default function App() {
     return (
         <React.Fragment>
             <Global styles={globalStyles}/>
-            {/* To make space for the chat header, don't render the main nav bar in the mobile chat room layout */}
-            {!isDesktop && isChatRoom ?
-                null :
-                <Nav/>
-            }
             <Routes>
                 <Route path="/chats" element={<ChatList/>}>
                     <Route path=":id/info" element={<ChatInfo/>}/>
@@ -96,10 +62,6 @@ export default function App() {
                 <Route path="/logout" element={<LogOut/>}/>
                 <Route path="/" element={<Home/>}/>
             </Routes>
-            {!isDesktop && isLoggedIn ?
-                <Tabs/> :
-                null
-            }
         </React.Fragment>
     );
 }

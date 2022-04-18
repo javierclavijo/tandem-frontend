@@ -53,7 +53,7 @@ function ChatRoom() {
 
     return isDesktop ?
         <div css={chatRoomCss}>
-            <ChatRoomHeader chat={data as Chat}/>
+            <ChatRoomHeader id={data?.id as string}/>
             <div ref={messageContainerRef}
                  onScroll={handleScroll}
                  css={css`
@@ -72,7 +72,6 @@ function ChatRoom() {
             <ChatInputForm chat={data as Chat}/>
         </div> :
         <div css={chatRoomCssMobile}>
-            <ChatRoomHeader chat={data as Chat}/>
             <div ref={messageContainerRef}
                  onScroll={handleScroll}
                  css={css`

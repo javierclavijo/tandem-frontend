@@ -7,10 +7,14 @@ import useAuth from "../../auth/AuthContext";
 import {useQueryClient} from "react-query";
 import {useChatList} from "../hooks";
 import {Chat} from "../../../entities/Chat";
-import {listContainerCss, mainCss, listElementContainerCss, mainCssMobile, listContainerCssMobile} from "./styles";
+import {listContainerCss, listContainerCssMobile, listElementContainerCss, mainCss, mainCssMobile} from "./styles";
 import ChatListElement from "./ChatListElement";
 import ChatListFilter from "./ChatListFilter";
 import {useMediaQuery} from "react-responsive";
+import Nav from "../../../components/Nav/Nav";
+import {baseAppContainerWithoutTabsCss, baseAppContainerWithTabsCss} from "../../../styles/layout";
+import Tabs from "../../../components/Nav/Tabs";
+import ChatRoomHeader from "../room/ChatRoomHeader";
 
 
 function ChatList() {
@@ -60,22 +64,37 @@ function ChatList() {
     }, [lastJsonMessage, queryClient]);
 
     return isDesktop ?
-        (<main css={mainCss}>
-            <section css={listContainerCss}>
-                <ChatListFilter setFilter={setFilter}/>
-                <div css={listElementContainerCss}>
-                    {data?.filter(chat => filter ? chat.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()) : true)
-                        .map(chat =>
-                            <ChatListElement chat={chat} selected={chat.id === params.id}
-                                             key={chat.id}/>
-                        )}
-                </div>
-            </section>
-            <Outlet/>
-        </main>) :
-        (<main css={mainCssMobile}>
-                {params.id ?
-                    <Outlet/> :
+        // Desktop
+        <div css={baseAppContainerWithoutTabsCss}>
+            <Nav/>
+            <main css={mainCss}>
+                <section css={listContainerCss}>
+                    <ChatListFilter setFilter={setFilter}/>
+                    <div css={listElementContainerCss}>
+                        {data?.filter(chat => filter ? chat.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()) : true)
+                            .map(chat =>
+                                <ChatListElement chat={chat} selected={chat.id === params.id}
+                                                 key={chat.id}/>
+                            )}
+                    </div>
+                </section>
+                <Outlet/>
+            </main>
+        </div> :
+
+        // Mobile chat room
+        params.id ?
+            <div css={baseAppContainerWithoutTabsCss}>
+                <ChatRoomHeader id={params.id}/>
+                <main css={mainCssMobile}>
+                    <Outlet/>
+                </main>
+            </div> :
+
+            // Mobile chat list
+            <div css={baseAppContainerWithTabsCss}>
+                <Nav/>
+                <main css={mainCssMobile}>
                     <section css={listContainerCssMobile}>
                         <ChatListFilter setFilter={setFilter}/>
                         <div css={listElementContainerCss}>
@@ -86,9 +105,10 @@ function ChatList() {
                                 )}
                         </div>
                     </section>
-                }
-            </main>
-        );
+                </main>
+                <Tabs/>
+            </div>
+        ;
 }
 
 export default ChatList;
