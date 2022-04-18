@@ -1,10 +1,12 @@
-import {Link} from "react-router-dom";
+import {Link, To} from "react-router-dom";
+import {ArrowLeft} from "iconoir-react";
+import {colors} from "../../styles/variables";
 
-function BackButton() {
+function BackButton({to}: { to: To | undefined }) {
     return (
         // @ts-ignore
-        <Link to={-1}>
-            Back
+        <Link to={to ? to : -1}>
+            <ArrowLeft color={colors.WHITE} width="1.5rem" height="1.5rem"/>
         </Link>
     );
 }

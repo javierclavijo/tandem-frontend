@@ -1,16 +1,16 @@
 /** @jsxImportSource @emotion/react */
 
 import React, {SyntheticEvent} from "react";
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {messageSortFn, useChat} from "../hooks";
 import {Chat} from "../../../entities/Chat";
 import useAuth from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import ChatRoomMessage from "./ChatRoomMessage";
 import ChatInputForm from "./ChatInputForm";
-import {chatRoomCss, chatRoomCssMobile, chatRoomHeaderCss} from "./styles";
+import {chatRoomCss, chatRoomCssMobile} from "./styles";
 import {useMediaQuery} from "react-responsive";
-import {colors} from "../../../styles/variables";
+import ChatRoomHeader from "./ChatRoomHeader";
 
 function ChatRoom() {
     const params = useParams();
@@ -53,14 +53,7 @@ function ChatRoom() {
 
     return isDesktop ?
         <div css={chatRoomCss}>
-            <header css={chatRoomHeaderCss}>
-                <h2><Link to={`info`} css={css`
-                  text-decoration: none;
-                  color: ${colors.WHITE};
-                `}>
-                    {data?.name}
-                </Link></h2>
-            </header>
+            <ChatRoomHeader chat={data as Chat}/>
             <div ref={messageContainerRef}
                  onScroll={handleScroll}
                  css={css`
@@ -79,6 +72,7 @@ function ChatRoom() {
             <ChatInputForm chat={data as Chat}/>
         </div> :
         <div css={chatRoomCssMobile}>
+            <ChatRoomHeader chat={data as Chat}/>
             <div ref={messageContainerRef}
                  onScroll={handleScroll}
                  css={css`

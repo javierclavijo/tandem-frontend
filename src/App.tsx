@@ -2,7 +2,7 @@
 
 import React from "react";
 import "./styles/App.css";
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, useMatch} from "react-router-dom";
 import LogIn from "./features/auth/LogIn";
 import ChatList from "./features/chats/list/ChatList";
 import Nav from "./components/Nav/Nav";
@@ -22,6 +22,7 @@ export default function App() {
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
     const {isLoggedIn} = useAuth();
+    const isChatRoom = useMatch("/chats/:id");
 
     const globalStyles = css`
       * {
@@ -36,7 +37,7 @@ export default function App() {
       // Main page layout
       #root {
         width: 100vw;
-        min-height: 100vh;
+        height: 100vh;
         display: grid;
         grid-template-columns: 1fr;
         grid-template-areas:  "header"
@@ -44,6 +45,10 @@ export default function App() {
                               "tabs";
         grid-template-rows: 5rem 1fr 3rem;
 
+        ${!isDesktop && isChatRoom ?
+                `grid-template-rows: 0 1fr 3rem;`
+                : ""};
+        
         @media (min-width: 1025px) {
           grid-template-rows: 5rem 1fr 0;
         }
@@ -76,7 +81,11 @@ export default function App() {
     return (
         <React.Fragment>
             <Global styles={globalStyles}/>
-            <Nav/>
+            {/* To make space for the chat header, don't render the main nav bar in the mobile chat room layout */}
+            {!isDesktop && isChatRoom ?
+                null :
+                <Nav/>
+            }
             <Routes>
                 <Route path="/chats" element={<ChatList/>}>
                     <Route path=":id/info" element={<ChatInfo/>}/>

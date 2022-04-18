@@ -33,7 +33,8 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
         const response = await axiosApi.get("/users/me/");
         return response.data;
     }, {
-        enabled: Boolean(isLoggedIn)
+        enabled: Boolean(isLoggedIn),
+        staleTime: 15000,
     });
 
     React.useEffect(() => {

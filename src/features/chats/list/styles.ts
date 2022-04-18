@@ -3,6 +3,9 @@ import {colors} from "../../../styles/variables";
 
 export const mainCss = css`
   grid-area: main;
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
   display: grid;
   grid-template-columns: minmax(20rem, 1fr) 2fr;
   grid-template-rows: calc(100vh - 7rem);
@@ -15,6 +18,8 @@ export const mainCss = css`
 
 export const mainCssMobile = css`
   grid-area: main;
+  max-height: 100%;
+  min-height: 0;
 `;
 
 export const listContainerCss = css`

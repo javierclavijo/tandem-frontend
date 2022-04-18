@@ -15,7 +15,8 @@ export const chatRoomCssMobile = css`
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 8rem);
+  max-height: 100%;
+  min-height: 0;
 `;
 
 export const chatRoomHeaderCss = css`
