@@ -3,6 +3,7 @@ import {ChatMessage} from "./ChatMessage";
 export interface Chat {
     id: string,
     url: string,
+    info_url: string;
     name: string,
     chat_type: "user" | "channel",
     messages: ChatMessage[]

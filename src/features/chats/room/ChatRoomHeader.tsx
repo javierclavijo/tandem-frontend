@@ -21,7 +21,7 @@ function ChatRoomHeader({id}: { id: string }) {
                 <BackButton to="/chats"/> :
                 null
             }
-            <h2><Link to={`info`} css={css`
+            <h2><Link to={`/chats/${id}/info`} css={css`
               text-decoration: none;
               color: ${colors.WHITE};
             `}>

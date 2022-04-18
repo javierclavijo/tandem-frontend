@@ -6,6 +6,7 @@ import "./styles/index.css";
 import "@csstools/normalize.css";
 import {QueryClient, QueryClientProvider} from "react-query";
 import {AuthProvider} from "./features/auth/AuthContext";
+import {ReactQueryDevtools} from "react-query/devtools";
 
 const queryClient = new QueryClient();
 
@@ -16,6 +17,7 @@ const browserRouter = (
                 <AuthProvider>
                     <App/>
                 </AuthProvider>
+                <ReactQueryDevtools initialIsOpen={false}/>
             </QueryClientProvider>
         </BrowserRouter>
     </React.StrictMode>
