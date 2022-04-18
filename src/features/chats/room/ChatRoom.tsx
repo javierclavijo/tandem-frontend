@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import React, {SyntheticEvent} from "react";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {messageSortFn, useChat} from "../hooks";
 import {Chat} from "../../../entities/Chat";
 import useAuth from "../../auth/AuthContext";
@@ -10,6 +10,7 @@ import ChatRoomMessage from "./ChatRoomMessage";
 import ChatInputForm from "./ChatInputForm";
 import {chatRoomCss, chatRoomCssMobile, chatRoomHeaderCss} from "./styles";
 import {useMediaQuery} from "react-responsive";
+import {colors} from "../../../styles/variables";
 
 function ChatRoom() {
     const params = useParams();
@@ -28,7 +29,7 @@ function ChatRoom() {
             scrollToBottom();
             return data.messages.sort((a, b) => messageSortFn(a, b)).reverse();
         },
-    })
+    });
 
     const scrollToBottom = () => {
         if (isScrollBottom) {
@@ -53,7 +54,12 @@ function ChatRoom() {
     return isDesktop ?
         <div css={chatRoomCss}>
             <header css={chatRoomHeaderCss}>
-                <h2>{data?.name}</h2>
+                <h2><Link to={`info`} css={css`
+                  text-decoration: none;
+                  color: ${colors.WHITE};
+                `}>
+                    {data?.name}
+                </Link></h2>
             </header>
             <div ref={messageContainerRef}
                  onScroll={handleScroll}

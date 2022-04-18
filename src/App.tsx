@@ -15,6 +15,7 @@ import {colors} from "./styles/variables";
 import EmptyChatRoom from "./features/chats/room/EmptyChatRoom";
 import {useMediaQuery} from "react-responsive";
 import Tabs from "./components/Nav/Tabs";
+import ChatInfo from "./features/info/ChatInfo";
 
 
 export default function App() {
@@ -78,6 +79,7 @@ export default function App() {
             <Nav/>
             <Routes>
                 <Route path="/chats" element={<ChatList/>}>
+                    <Route path=":id/info" element={<ChatInfo/>}/>
                     <Route path=":id" element={<ChatRoom/>}/>
                     <Route index element={<EmptyChatRoom/>}/>
                 </Route>
