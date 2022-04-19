@@ -74,7 +74,7 @@ function ChannelInfo({chat}: { chat: Chat }) {
     const memberArticle = css`
       width: 100%;
       display: flex;
-      gap: 0.5rem;
+      gap: 1rem;
     `;
 
     const memberImg = css`
