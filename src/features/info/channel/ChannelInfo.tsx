@@ -132,17 +132,20 @@ function ChannelInfo({chat}: { chat: Chat }) {
                                 <h4>{membership.user?.username}</h4>
                                 <NavArrowDown color={colors.PRIMARY} width={"1.5rem"} height={"1.5rem"}/>
                             </div>
-                            <p css={css`
-                              text-overflow: ellipsis;
-                              overflow: hidden;
-                              white-space: nowrap;
-                              max-width: 14rem;
+                            <div css={css`
                               height: 100%;
                               display: flex;
                               align-items: center;
                             `}>
-                                {membership.user?.description}
-                            </p>
+                                <p css={css`
+                                  text-overflow: ellipsis;
+                                  overflow: hidden;
+                                  white-space: nowrap;
+                                  max-width: 14rem;
+                                `}>
+                                    {membership.user?.description}
+                                </p>
+                            </div>
                         </div>
                     </article>
                 )}
