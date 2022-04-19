@@ -7,16 +7,30 @@ import ChatRoomHeader from "../../chats/room/ChatRoomHeader";
 import {useMediaQuery} from "react-responsive";
 import {useQuery} from "react-query";
 import {Channel} from "../../../entities/Channel";
-import {axiosApi} from "../../auth/AuthContext";
+import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import {colors} from "../../../styles/variables";
 import {NavArrowDown} from "iconoir-react";
+import Description from "../Description";
+import {
+    descriptionSection,
+    infoSection,
+    languageItem,
+    languageSection,
+    memberArticle,
+    memberImg,
+    membersSection,
+    profileImg
+} from "./styles";
 
 const placeholderImg = require("../../../static/images/user_placeholder.png");
+
 
 function ChannelInfo({chat}: { chat: Chat }) {
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
+    const {user} = useAuth();
+    const editableRef = React.useRef<boolean>(false);
 
     const {data} = useQuery<Channel>(["chats", "info", chat.id], async () => {
         const response = await axiosApi.get(chat.info_url);
@@ -25,91 +39,37 @@ function ChannelInfo({chat}: { chat: Chat }) {
         staleTime: 15000,
     });
 
-    const infoSection = css`
-      background-color: ${colors.PRIMARY};
-      color: ${colors.WHITE};
-      padding: 1rem;
-      box-sizing: border-box;
+    React.useEffect(() => {
+        editableRef.current = !!data?.memberships.some(membership =>
+            membership.user?.id === user?.id && membership.role === "Administrator"
+        );
+    }, [data?.memberships, user]);
 
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-    `;
 
-    const profileImg = css`
-      width: 50%;
-      border-radius: 50%;
-    `;
-
-    const descriptionSection = css`
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    `;
-
-    const languageSection = css`
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    `;
-
-    const languageItem = css`
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-    `;
-
-    const membersSection = css`
-      padding: 1rem;
-      background-color: ${colors.WHITE};
-      color: ${colors.DARK};
-
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    `;
-
-    const memberArticle = css`
-      width: 100%;
-      display: flex;
-      gap: 1rem;
-    `;
-
-    const memberImg = css`
-      width: 3rem;
-      border-radius: 50%;
-    `;
-
-    return isDesktop ?
-        <div css={css`${chatRoomCss};
-        `}>
-            <ChatRoomHeader id={chat.id}/>
-            <div css={infoSection}>
-                <p>{data?.description}</p>
-            </div>
-        </div> :
-        <div css={css`${chatRoomCssMobile};
+    return (
+        <div css={css`${isDesktop ? chatRoomCss : chatRoomCssMobile};
           overflow-y: scroll;
         `}>
+            {isDesktop ?
+                <ChatRoomHeader id={data?.id as string}/> :
+                null}
             <section css={infoSection}>
-                <img src={placeholderImg} alt="" css={profileImg}/>
-                <p>Channel · {data?.memberships.length} members</p>
-                <section css={descriptionSection}>
-                    <h3>Description</h3>
-                    <p>{data?.description}</p>
-                </section>
-                <section css={languageSection}>
-                    <div css={languageItem}>
-                        <h3>Language</h3>
-                        <p>{data?.language}</p>
-                    </div>
-                    <div css={languageItem}>
-                        <h3>Level</h3>
-                        <p>{data?.level}</p>
-                    </div>
-                </section>
+                    <img src={placeholderImg} alt="" css={profileImg}/>
+                    <p>{data?.name}</p>
+                    <p>Channel · {data?.memberships.length} members</p>
+                    <section css={descriptionSection}>
+                        <Description data={data} editable={editableRef.current}/>
+                    </section>
+                    <section css={languageSection}>
+                        <div css={languageItem}>
+                            <h3>Language</h3>
+                            <p>{data?.language}</p>
+                        </div>
+                        <div css={languageItem}>
+                            <h3>Level</h3>
+                            <p>{data?.level}</p>
+                        </div>
+                    </section>
             </section>
             <section css={membersSection}>
                 <h3>Members</h3>
@@ -151,7 +111,7 @@ function ChannelInfo({chat}: { chat: Chat }) {
                 )}
             </section>
         </div>
-        ;
+    );
 }
 
 export default ChannelInfo;
