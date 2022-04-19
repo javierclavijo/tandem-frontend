@@ -6,7 +6,6 @@ export interface Channel {
     name: string;
     description: string;
     language: string;
-    start_proficiency_level: string;
-    end_proficiency_level: string;
+    level: string;
     memberships: Membership[];
 }

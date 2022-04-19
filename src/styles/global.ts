@@ -4,6 +4,7 @@ import {colors} from "./variables";
 export const globalStyles = css`
   * {
     font-family: 'Rubik', 'sans-serif';
+    margin: 0;
   }
 
   body {
