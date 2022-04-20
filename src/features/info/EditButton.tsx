@@ -7,21 +7,21 @@ import {colors} from "../../styles/variables";
 
 interface EditButtonProps {
     type: "enable" | "accept" | "cancel";
-    onClickFn: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    visible: boolean;
+    onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-function EditButton({type, onClickFn}: EditButtonProps) {
+const EditButton = React.forwardRef<HTMLButtonElement, EditButtonProps>((
+    {type, visible, onClick}: EditButtonProps,
+    ref) => {
     return (
-        <button
-            onClick={onClickFn}
-            css={css`
-              border: none;
-              background: none;
-              padding: 0;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            `}>
+        <button ref={ref}
+                onClick={onClick}
+                css={css`${button};
+                  ${!visible ?
+                          `display: none;` : ``
+                  }
+                `}>
             {type === "enable" ?
                 <EditPencil color={colors.WHITE} width={"1.5rem"} height={"1.5rem"}/> :
                 type === "accept" ?
@@ -30,6 +30,15 @@ function EditButton({type, onClickFn}: EditButtonProps) {
             }
         </button>
     );
-}
+});
+
+const button = css`
+  border: none;
+  background: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 export default EditButton;

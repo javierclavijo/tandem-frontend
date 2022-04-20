@@ -7,7 +7,7 @@ import ChatRoomHeader from "../../chats/room/ChatRoomHeader";
 import {useMediaQuery} from "react-responsive";
 import {useQuery} from "react-query";
 import {Channel} from "../../../entities/Channel";
-import useAuth, {axiosApi} from "../../auth/AuthContext";
+import {axiosApi} from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import {colors} from "../../../styles/variables";
 import {NavArrowDown} from "iconoir-react";
@@ -29,8 +29,6 @@ const placeholderImg = require("../../../static/images/user_placeholder.png");
 function ChannelInfo({chat}: { chat: Chat }) {
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
-    const {user} = useAuth();
-    const editableRef = React.useRef<boolean>(false);
 
     const {data} = useQuery<Channel>(["chats", "info", chat.id], async () => {
         const response = await axiosApi.get(chat.info_url);
@@ -38,13 +36,6 @@ function ChannelInfo({chat}: { chat: Chat }) {
     }, {
         staleTime: 15000,
     });
-
-    React.useEffect(() => {
-        editableRef.current = !!data?.memberships.some(membership =>
-            membership.user?.id === user?.id && membership.role === "Administrator"
-        );
-    }, [data?.memberships, user]);
-
 
     return (
         <div css={css`${isDesktop ? chatRoomCss : chatRoomCssMobile};
@@ -54,27 +45,27 @@ function ChannelInfo({chat}: { chat: Chat }) {
                 <ChatRoomHeader id={data?.id as string}/> :
                 null}
             <section css={infoSection}>
-                    <img src={placeholderImg} alt="" css={profileImg}/>
-                    <p>{data?.name}</p>
-                    <p>Channel · {data?.memberships.length} members</p>
-                    <section css={descriptionSection}>
-                        <Description data={data} editable={editableRef.current}/>
-                    </section>
-                    <section css={languageSection}>
-                        <div css={languageItem}>
-                            <h3>Language</h3>
-                            <p>{data?.language}</p>
-                        </div>
-                        <div css={languageItem}>
-                            <h3>Level</h3>
-                            <p>{data?.level}</p>
-                        </div>
-                    </section>
+                <img src={placeholderImg} alt="" css={profileImg}/>
+                <p>{data?.name}</p>
+                <p>Channel · {data?.memberships.length} members</p>
+                <section css={descriptionSection}>
+                    <Description data={data}/>
+                </section>
+                <section css={languageSection}>
+                    <div css={languageItem}>
+                        <h3>Language</h3>
+                        <p>{data?.language}</p>
+                    </div>
+                    <div css={languageItem}>
+                        <h3>Level</h3>
+                        <p>{data?.level}</p>
+                    </div>
+                </section>
             </section>
             <section css={membersSection}>
                 <h3>Members</h3>
                 {data?.memberships.map(membership =>
-                    <article css={memberArticle}>
+                    <article css={memberArticle} key={membership.url}>
                         <img src={placeholderImg} alt="" css={memberImg}/>
                         <div css={css`
                           display: flex;
