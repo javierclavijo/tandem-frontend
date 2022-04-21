@@ -6,62 +6,126 @@ import {css} from "@emotion/react";
 import EditButton from "./EditButton";
 import {colors, textSizes} from "../../styles/variables";
 import TextareaAutosize from "react-textarea-autosize";
-import useAuth from "../auth/AuthContext";
+import useAuth, {axiosApi} from "../auth/AuthContext";
+import {useMutation, useQueryClient} from "react-query";
 
 interface DescriptionProps {
-    data: Channel | undefined;
+    channelData: Channel | undefined;
 }
 
-function Description({data}: DescriptionProps) {
+interface DescriptionUpdateData {
+    description: string;
+}
+
+function Description({channelData}: DescriptionProps) {
+    const {user} = useAuth();
+    const queryClient = useQueryClient();
+
     const [editable, setEditable] = React.useState<boolean>(false);
     const [editEnabled, setEditEnabled] = React.useState<boolean>(false);
     const [inputValue, setInputValue] = React.useState<string>("");
+    const [error, setError] = React.useState<string>("");
+
     const textareaRef = React.useRef<HTMLTextAreaElement>(null);
     const submitButtonRef = React.useRef<HTMLButtonElement>(null);
-    const {user} = useAuth();
+
 
     React.useEffect(() => setEditable(
-        !!data?.memberships.some(membership =>
+        // Check if the user has admin role, set the 'editable' state accordingly
+        !!channelData?.memberships.some(membership =>
             membership.user?.id === user?.id && membership.role === "Administrator"
-        )), [data?.memberships, user]);
+        )), [channelData?.memberships, user]);
 
-    const setInitialDataDescription = useCallback(() => {
-        if (data?.description) {
-            setInputValue(data.description);
-        }
-    }, [data?.description]);
 
-    const handleSubmit = () => {
-        setEditEnabled(false);
+    const updateRequest = async (requestData: DescriptionUpdateData) => {
+        const response = await axiosApi.patch(`/channels/${channelData?.id}/`, requestData);
+        return response.data;
     };
 
-    const handleBlur = (event: React.FocusEvent<HTMLTextAreaElement>) => {
+    const updateMutation = useMutation(updateRequest, {
+        onSuccess: async (data) => {
+            queryClient.setQueryData<Channel | undefined>(["chats", "info", channelData?.id], (old) => {
+                if (old) {
+                    old.description = data.description;
+                }
+                return old;
+            });
+        }
+    });
+
+
+    const clearError = () => {
+        if (error) {
+            setError("");
+        }
+    };
+
+    const updateInputValue = useCallback(() => {
+        if (channelData?.description) {
+            setInputValue(channelData.description);
+        }
+    }, [channelData?.description]);
+
+    // Set data on init and whenever data changes (i.e. after submitting)
+    React.useEffect(updateInputValue, [channelData?.description]);
+
+
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        clearError();
+        setInputValue(e.target.value);
+    };
+
+    const handleFocus = () => {
+        setEditEnabled(true);
+        clearError();
+    };
+
+
+    const handleBlur = async (event: React.FocusEvent<HTMLTextAreaElement>) => {
         // If the submit button was clicked, submit the value. Else, cancel the editing.
-        if (event?.relatedTarget === submitButtonRef?.current) {
-            handleSubmit();
+        if (event.relatedTarget === submitButtonRef?.current) {
+            const success = await handleSubmit();
+            if (!success) {
+                textareaRef.current?.focus();
+            }
         } else {
             handleCancel();
         }
     };
 
+    const handleSubmit = async () => {
+        if (!inputValue) {
+            setError("Description must have a length between 1 and 2000 characters.");
+            return false;
+        }
+        const requestData = {description: inputValue};
+        await updateMutation.mutateAsync(requestData);
+        setEditEnabled(false);
+        return true;
+    };
+
     const handleCancel = () => {
-        setInitialDataDescription();
+        updateInputValue();
         setEditEnabled(false);
     };
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const handleKeyDown = async (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
         // If the Meta or Control key is pressed at the same time as the Enter key, submit the form. If the pressed key
         // is the Escape key, cancel the editing and blur the text area.
         if (event.metaKey || event.ctrlKey && event.code === "Enter") {
-            handleSubmit();
-            textareaRef.current?.blur();
+            const success = await handleSubmit();
+            if (success) {
+                textareaRef.current?.blur();
+            } else {
+                event.preventDefault();
+            }
+
         } else if (event.code === "Escape") {
             handleCancel();
             textareaRef.current?.blur();
         }
     };
 
-    React.useEffect(setInitialDataDescription, [data?.description]);
 
     return editable ?
         <React.Fragment>
@@ -81,16 +145,23 @@ function Description({data}: DescriptionProps) {
             </div>
             <TextareaAutosize id="description" name="description" ref={textareaRef}
                               value={inputValue}
-                              onChange={(e) => setInputValue(e.target.value)}
-                              onFocus={() => setEditEnabled(true)}
+                              onChange={handleChange}
+                              onFocus={handleFocus}
                               onBlur={handleBlur}
                               onKeyDown={handleKeyDown}
                               minRows={1} maxRows={8}
                               css={textarea}/>
+            {error ?
+                <p css={css`
+                  color: ${colors.CONTRAST};
+                `}>
+                    {error}
+                </p> :
+                null}
         </React.Fragment> :
         <React.Fragment>
             <h3>Description</h3>
-            <p>{data?.description}</p>
+            <p>{channelData?.description}</p>
         </React.Fragment>
         ;
 }

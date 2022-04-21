@@ -49,7 +49,7 @@ function ChannelInfo({chat}: { chat: Chat }) {
                 <p>{data?.name}</p>
                 <p>Channel · {data?.memberships.length} members</p>
                 <section css={descriptionSection}>
-                    <Description data={data}/>
+                    <Description channelData={data}/>
                 </section>
                 <section css={languageSection}>
                     <div css={languageItem}>
