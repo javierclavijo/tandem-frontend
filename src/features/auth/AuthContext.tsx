@@ -1,6 +1,6 @@
 import React, {useContext, useMemo, useState} from "react";
 import axios, {AxiosRequestConfig} from "axios";
-import {useMutation, useQuery} from "react-query";
+import {useMutation, useQuery, useQueryClient} from "react-query";
 import {User} from "../../entities/User";
 
 interface AuthContextType {
@@ -24,12 +24,17 @@ export const axiosApi = axios.create({baseURL: process.env.REACT_APP_API_URL || 
 
 export function AuthProvider({children}: { children: React.ReactNode }) {
 
+    const queryClient = useQueryClient();
+
     const [token, setToken] = useState<string>("");
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
 
-    const {data: user} = useQuery<User>(["user", "me"], async () => {
+    const authHeaderInterceptorRef = React.useRef<number | null>(null);
+
+
+    const {data: user} = useQuery<User>(["users", "me"], async () => {
         const response = await axiosApi.get("/users/me/");
         return response.data;
     }, {
@@ -52,7 +57,7 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
         return response.data;
     };
 
-    const loginQuery = useMutation(loginRequest, {
+    const loginMutation = useMutation(loginRequest, {
         onSuccess: async (data) => {
             const token = data.token;
             setToken(token);
@@ -64,26 +69,35 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
     const login = React.useCallback(async (data: LogInRequestData) => {
         setLoading(true);
         try {
-            await loginQuery.mutateAsync(data);
+            await loginMutation.mutateAsync(data);
         } catch (e) {
             setError("Incorrect username or password.");
         } finally {
             setLoading(false);
         }
-    }, [loginQuery]);
+    }, [loginMutation]);
 
 
     const logout = () => {
         localStorage.removeItem("auth-token");
         setToken("");
         setIsLoggedIn(false);
+
+        // On logout, remove the logged-in user query to avoid keeping the user's data in cache
+        queryClient.removeQueries(["users", "me"], {exact: true});
+
+        // Also, eject the Axios interceptor which appends the Authorization header
+        const interceptor = authHeaderInterceptorRef.current;
+        if (interceptor !== null) {
+            axiosApi.interceptors.request.eject(interceptor);
+        }
     };
 
     React.useEffect(() => {
         // Add auth header to requests when token is updated
         if (token) {
-            // add authorization token to each request
-            axiosApi.interceptors.request.use(
+            // Add authorization token to each request, save the interceptor in a ref to be able to eject it on logout
+            authHeaderInterceptorRef.current = axiosApi.interceptors.request.use(
                 (config: AxiosRequestConfig): AxiosRequestConfig => {
                     config.headers!.authorization = `Token ${token}`;
                     return config;

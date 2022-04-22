@@ -71,7 +71,7 @@ function ChannelInfo({chat}: { chat: Chat }) {
             <section css={membersSection}>
                 <h3>Members</h3>
                 {data?.memberships.map(membership =>
-                    <ChannelMemberListElement membership={membership}/>
+                    <ChannelMemberListElement membership={membership} key={membership.url}/>
                 )}
             </section>
         </div>
