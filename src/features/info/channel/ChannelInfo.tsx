@@ -9,19 +9,9 @@ import {useQuery} from "react-query";
 import {Channel} from "../../../entities/Channel";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {css} from "@emotion/react";
-import {colors} from "../../../styles/variables";
-import {NavArrowDown} from "iconoir-react";
 import DescriptionTextarea from "../DescriptionTextarea";
-import {
-    descriptionSection,
-    infoSection,
-    languageItem,
-    languageSection,
-    memberArticle,
-    memberImg,
-    membersSection,
-    profileImg
-} from "./styles";
+import {descriptionSection, infoSection, languageItem, languageSection, membersSection, profileImg} from "./styles";
+import ChannelMemberListElement from "./ChannelMemberListElement";
 
 const placeholderImg = require("../../../static/images/user_placeholder.png");
 
@@ -81,40 +71,7 @@ function ChannelInfo({chat}: { chat: Chat }) {
             <section css={membersSection}>
                 <h3>Members</h3>
                 {data?.memberships.map(membership =>
-                    <article css={memberArticle} key={membership.url}>
-                        <img src={placeholderImg} alt="" css={memberImg}/>
-                        <div css={css`
-                          display: flex;
-                          flex-direction: column;
-                          justify-content: space-between;
-                          width: 100%;
-                        `}>
-                            <div css={css`
-                              display: flex;
-                              flex-direction: row;
-                              justify-content: space-between;
-                              align-items: center;
-                              height: 100%;
-                            `}>
-                                <h4>{membership.user?.username}</h4>
-                                <NavArrowDown color={colors.PRIMARY} width={"1.5rem"} height={"1.5rem"}/>
-                            </div>
-                            <div css={css`
-                              height: 100%;
-                              display: flex;
-                              align-items: center;
-                            `}>
-                                <p css={css`
-                                  text-overflow: ellipsis;
-                                  overflow: hidden;
-                                  white-space: nowrap;
-                                  max-width: 14rem;
-                                `}>
-                                    {membership.user?.description}
-                                </p>
-                            </div>
-                        </div>
-                    </article>
+                    <ChannelMemberListElement membership={membership}/>
                 )}
             </section>
         </div>
