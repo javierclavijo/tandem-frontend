@@ -3,13 +3,13 @@
 import React from "react";
 import {Channel} from "../../entities/Channel";
 import {css} from "@emotion/react";
-import EditButton from "./EditButton";
 import {colors} from "../../styles/variables";
 import TextareaAutosize from "react-textarea-autosize";
 import {axiosApi} from "../auth/AuthContext";
 import {useMutation, useQueryClient} from "react-query";
 import {useEdit} from "./hooks";
 import {editElement} from "./channel/styles";
+import EditButtons from "./EditButtons";
 
 interface DescriptionTextareaProps {
     data: Channel | undefined;
@@ -103,11 +103,9 @@ function DescriptionTextarea({data}: DescriptionTextareaProps) {
           height: 1.5rem;
         `}>
             <h3>Description</h3>
-            <React.Fragment>
-                <EditButton type="accept" visible={editEnabled} onClick={handleSubmit}
-                            ref={submitButtonRef}/>
-                <EditButton type="cancel" visible={editEnabled} onClick={handleCancel}/>
-            </React.Fragment>
+            <EditButtons editEnabled={editEnabled} submitButtonRef={submitButtonRef}
+                         handleSubmit={handleSubmit} handleCancel={handleCancel}
+            />
         </div>
         <TextareaAutosize id="description" name="description" ref={elementRef}
                           value={value}
