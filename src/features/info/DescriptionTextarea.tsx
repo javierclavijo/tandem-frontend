@@ -6,7 +6,7 @@ import {css} from "@emotion/react";
 import EditButton from "./EditButton";
 import {colors, textSizes} from "../../styles/variables";
 import TextareaAutosize from "react-textarea-autosize";
-import useAuth, {axiosApi} from "../auth/AuthContext";
+import {axiosApi} from "../auth/AuthContext";
 import {useMutation, useQueryClient} from "react-query";
 
 interface DescriptionProps {
@@ -17,24 +17,15 @@ interface DescriptionUpdateData {
     description: string;
 }
 
-function Description({channelData}: DescriptionProps) {
-    const {user} = useAuth();
+function DescriptionTextarea({channelData}: DescriptionProps) {
     const queryClient = useQueryClient();
 
-    const [editable, setEditable] = React.useState<boolean>(false);
     const [editEnabled, setEditEnabled] = React.useState<boolean>(false);
     const [inputValue, setInputValue] = React.useState<string>("");
     const [error, setError] = React.useState<string>("");
 
     const textareaRef = React.useRef<HTMLTextAreaElement>(null);
     const submitButtonRef = React.useRef<HTMLButtonElement>(null);
-
-
-    React.useEffect(() => setEditable(
-        // Check if the user has admin role, set the 'editable' state accordingly
-        !!channelData?.memberships.some(membership =>
-            membership.user?.id === user?.id && membership.role === "Administrator"
-        )), [channelData?.memberships, user]);
 
 
     const updateRequest = async (requestData: DescriptionUpdateData) => {
@@ -127,42 +118,37 @@ function Description({channelData}: DescriptionProps) {
     };
 
 
-    return editable ?
-        <React.Fragment>
-            <div css={css`
-              display: flex;
-              align-items: center;
-              gap: 1rem;
-              width: 100%;
-              height: 1.5rem;
-            `}>
-                <h3>Description</h3>
-                <React.Fragment>
-                    <EditButton type="accept" visible={editEnabled} onClick={handleSubmit}
-                                ref={submitButtonRef}/>
-                    <EditButton type="cancel" visible={editEnabled} onClick={handleCancel}/>
-                </React.Fragment>
-            </div>
-            <TextareaAutosize id="description" name="description" ref={textareaRef}
-                              value={inputValue}
-                              onChange={handleChange}
-                              onFocus={handleFocus}
-                              onBlur={handleBlur}
-                              onKeyDown={handleKeyDown}
-                              minRows={1} maxRows={8}
-                              css={textarea}/>
-            {error ?
-                <p css={css`
-                  color: ${colors.CONTRAST};
-                `}>
-                    {error}
-                </p> :
-                null}
-        </React.Fragment> :
-        <React.Fragment>
+    return <React.Fragment>
+        <div css={css`
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          width: 100%;
+          height: 1.5rem;
+        `}>
             <h3>Description</h3>
-            <p>{channelData?.description}</p>
-        </React.Fragment>
+            <React.Fragment>
+                <EditButton type="accept" visible={editEnabled} onClick={handleSubmit}
+                            ref={submitButtonRef}/>
+                <EditButton type="cancel" visible={editEnabled} onClick={handleCancel}/>
+            </React.Fragment>
+        </div>
+        <TextareaAutosize id="description" name="description" ref={textareaRef}
+                          value={inputValue}
+                          onChange={handleChange}
+                          onFocus={handleFocus}
+                          onBlur={handleBlur}
+                          onKeyDown={handleKeyDown}
+                          minRows={1} maxRows={8}
+                          css={textarea}/>
+        {error ?
+            <p css={css`
+              color: ${colors.CONTRAST};
+            `}>
+                {error}
+            </p> :
+            null}
+    </React.Fragment>
         ;
 }
 
@@ -190,4 +176,4 @@ const textarea = css`
   }
 `;
 
-export default Description;
+export default DescriptionTextarea;
