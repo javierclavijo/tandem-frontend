@@ -4,40 +4,45 @@ import React, {useCallback} from "react";
 import {Channel} from "../../entities/Channel";
 import {css} from "@emotion/react";
 import EditButton from "./EditButton";
-import {colors, textSizes} from "../../styles/variables";
+import {colors} from "../../styles/variables";
 import TextareaAutosize from "react-textarea-autosize";
 import {axiosApi} from "../auth/AuthContext";
 import {useMutation, useQueryClient} from "react-query";
+import {useEdit} from "./hooks";
+import {editElement} from "./channel/styles";
 
-interface DescriptionProps {
-    channelData: Channel | undefined;
+interface DescriptionTextareaProps {
+    data: Channel | undefined;
 }
 
-interface DescriptionUpdateData {
+interface DescriptionTextareaRequestData {
     description: string;
 }
 
-function DescriptionTextarea({channelData}: DescriptionProps) {
+
+function DescriptionTextarea({data}: DescriptionTextareaProps) {
     const queryClient = useQueryClient();
 
-    const [editEnabled, setEditEnabled] = React.useState<boolean>(false);
-    const [inputValue, setInputValue] = React.useState<string>("");
-    const [error, setError] = React.useState<string>("");
+    const {
+        editEnabled, setEditEnabled,
+        inputValue, setInputValue,
+        error, setError,
+        elementRef
+    } = useEdit<HTMLTextAreaElement>();
 
-    const textareaRef = React.useRef<HTMLTextAreaElement>(null);
     const submitButtonRef = React.useRef<HTMLButtonElement>(null);
 
 
-    const updateRequest = async (requestData: DescriptionUpdateData) => {
-        const response = await axiosApi.patch(`/channels/${channelData?.id}/`, requestData);
+    const updateRequest = async (requestData: DescriptionTextareaRequestData) => {
+        const response = await axiosApi.patch(`/channels/${data?.id}/`, requestData);
         return response.data;
     };
 
     const updateMutation = useMutation(updateRequest, {
-        onSuccess: async (data) => {
-            queryClient.setQueryData<Channel | undefined>(["chats", "info", channelData?.id], (old) => {
+        onSuccess: async (requestData) => {
+            queryClient.setQueryData<Channel | undefined>(["chats", "info", data?.id], (old) => {
                 if (old) {
-                    old.description = data.description;
+                    old.description = requestData.description;
                 }
                 return old;
             });
@@ -52,13 +57,13 @@ function DescriptionTextarea({channelData}: DescriptionProps) {
     };
 
     const updateInputValue = useCallback(() => {
-        if (channelData?.description) {
-            setInputValue(channelData.description);
+        if (data?.description) {
+            setInputValue(data.description);
         }
-    }, [channelData?.description]);
+    }, [data?.description]);
 
     // Set data on init and whenever data changes (i.e. after submitting)
-    React.useEffect(updateInputValue, [channelData?.description]);
+    React.useEffect(updateInputValue, [data?.description]);
 
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -77,7 +82,7 @@ function DescriptionTextarea({channelData}: DescriptionProps) {
         if (event.relatedTarget === submitButtonRef?.current) {
             const success = await handleSubmit();
             if (!success) {
-                textareaRef.current?.focus();
+                elementRef?.current?.focus();
             }
         } else {
             handleCancel();
@@ -106,14 +111,14 @@ function DescriptionTextarea({channelData}: DescriptionProps) {
         if (event.metaKey || event.ctrlKey && event.code === "Enter") {
             const success = await handleSubmit();
             if (success) {
-                textareaRef.current?.blur();
+                elementRef.current?.blur();
             } else {
                 event.preventDefault();
             }
 
         } else if (event.code === "Escape") {
             handleCancel();
-            textareaRef.current?.blur();
+            elementRef.current?.blur();
         }
     };
 
@@ -133,14 +138,14 @@ function DescriptionTextarea({channelData}: DescriptionProps) {
                 <EditButton type="cancel" visible={editEnabled} onClick={handleCancel}/>
             </React.Fragment>
         </div>
-        <TextareaAutosize id="description" name="description" ref={textareaRef}
+        <TextareaAutosize id="description" name="description" ref={elementRef}
                           value={inputValue}
                           onChange={handleChange}
                           onFocus={handleFocus}
                           onBlur={handleBlur}
                           onKeyDown={handleKeyDown}
                           minRows={1} maxRows={8}
-                          css={textarea}/>
+                          css={editElement}/>
         {error ?
             <p css={css`
               color: ${colors.CONTRAST};
@@ -152,28 +157,5 @@ function DescriptionTextarea({channelData}: DescriptionProps) {
         ;
 }
 
-
-const textarea = css`
-  width: 100%;
-  height: fit-content;
-  font-size: ${textSizes.M};
-  resize: none;
-  background: none;
-  color: ${colors.WHITE};
-  border: none;
-
-  // Add bottom border with 0 opacity to avoid resizing on focus
-  border-bottom: 1px solid ${colors.PRIMARY}00;
-
-  &:hover:not(:focus) {
-    background: ${colors.WHITE}20;
-    border-radius: 3px;
-  }
-
-  &:focus {
-    outline: none;
-    border-bottom: 1px solid ${colors.LIGHT};
-  }
-`;
 
 export default DescriptionTextarea;

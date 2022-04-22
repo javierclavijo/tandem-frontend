@@ -1,5 +1,5 @@
 import {css} from "@emotion/react";
-import {colors} from "../../../styles/variables";
+import {colors, textSizes} from "../../../styles/variables";
 
 export const infoSection = css`
   background-color: ${colors.PRIMARY};
@@ -58,4 +58,27 @@ export const memberArticle = css`
 export const memberImg = css`
   width: 3rem;
   border-radius: 50%;
+`;
+
+export const editElement = css`
+  width: 100%;
+  height: fit-content;
+  font-size: ${textSizes.M};
+  resize: none;
+  background: none;
+  color: ${colors.WHITE};
+  border: none;
+
+  // Add bottom border with 0 opacity to avoid resizing on focus
+  border-bottom: 1px solid ${colors.PRIMARY}00;
+
+  &:hover:not(:focus) {
+    background: ${colors.WHITE}20;
+    border-radius: 3px;
+  }
+
+  &:focus {
+    outline: none;
+    border-bottom: 1px solid ${colors.LIGHT};
+  }
 `;
