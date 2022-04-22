@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import React, {useCallback} from "react";
+import React from "react";
 import {Channel} from "../../entities/Channel";
 import {css} from "@emotion/react";
 import EditButton from "./EditButton";
@@ -21,16 +21,19 @@ interface DescriptionTextareaRequestData {
 
 
 function DescriptionTextarea({data}: DescriptionTextareaProps) {
+
     const queryClient = useQueryClient();
 
     const {
         editEnabled, setEditEnabled,
-        inputValue, setInputValue,
+        value,
         error, setError,
-        elementRef
-    } = useEdit<HTMLTextAreaElement>();
-
-    const submitButtonRef = React.useRef<HTMLButtonElement>(null);
+        elementRef,
+        submitButtonRef,
+        handleChange,
+        handleFocus,
+        handleCancel,
+    } = useEdit<HTMLTextAreaElement>(data, "description");
 
 
     const updateRequest = async (requestData: DescriptionTextareaRequestData) => {
@@ -50,33 +53,6 @@ function DescriptionTextarea({data}: DescriptionTextareaProps) {
     });
 
 
-    const clearError = () => {
-        if (error) {
-            setError("");
-        }
-    };
-
-    const updateInputValue = useCallback(() => {
-        if (data?.description) {
-            setInputValue(data.description);
-        }
-    }, [data?.description]);
-
-    // Set data on init and whenever data changes (i.e. after submitting)
-    React.useEffect(updateInputValue, [data?.description]);
-
-
-    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        clearError();
-        setInputValue(e.target.value);
-    };
-
-    const handleFocus = () => {
-        setEditEnabled(true);
-        clearError();
-    };
-
-
     const handleBlur = async (event: React.FocusEvent<HTMLTextAreaElement>) => {
         // If the submit button was clicked, submit the value. Else, cancel the editing.
         if (event.relatedTarget === submitButtonRef?.current) {
@@ -90,25 +66,20 @@ function DescriptionTextarea({data}: DescriptionTextareaProps) {
     };
 
     const handleSubmit = async () => {
-        if (!inputValue) {
+        if (!value) {
             setError("Description must have a length between 1 and 2000 characters.");
             return false;
         }
-        const requestData = {description: inputValue};
+        const requestData = {description: value};
         await updateMutation.mutateAsync(requestData);
         setEditEnabled(false);
         return true;
     };
 
-    const handleCancel = () => {
-        updateInputValue();
-        setEditEnabled(false);
-    };
-
     const handleKeyDown = async (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
         // If the Meta or Control key is pressed at the same time as the Enter key, submit the form. If the pressed key
         // is the Escape key, cancel the editing and blur the text area.
-        if (event.metaKey || event.ctrlKey && event.code === "Enter") {
+        if ((event.metaKey || event.ctrlKey) && event.code === "Enter") {
             const success = await handleSubmit();
             if (success) {
                 elementRef.current?.blur();
@@ -139,13 +110,14 @@ function DescriptionTextarea({data}: DescriptionTextareaProps) {
             </React.Fragment>
         </div>
         <TextareaAutosize id="description" name="description" ref={elementRef}
-                          value={inputValue}
+                          value={value}
                           onChange={handleChange}
                           onFocus={handleFocus}
                           onBlur={handleBlur}
                           onKeyDown={handleKeyDown}
                           minRows={1} maxRows={8}
-                          css={editElement}/>
+                          css={editElement}
+        />
         {error ?
             <p css={css`
               color: ${colors.CONTRAST};

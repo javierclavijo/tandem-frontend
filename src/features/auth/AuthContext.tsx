@@ -78,7 +78,7 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
     }, [loginMutation]);
 
 
-    const logout = () => {
+    const logout = React.useCallback(() => {
         localStorage.removeItem("auth-token");
         setToken("");
         setIsLoggedIn(false);
@@ -91,7 +91,7 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
         if (interceptor !== null) {
             axiosApi.interceptors.request.eject(interceptor);
         }
-    };
+    }, [queryClient]);
 
     React.useEffect(() => {
         // Add auth header to requests when token is updated
@@ -123,7 +123,7 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
             login,
             logout
         }),
-        [token, user, error, loading, isLoggedIn, login]);
+        [token, user, error, loading, isLoggedIn, login, logout]);
 
     return (
         <AuthContext.Provider value={memoedValue}>{children}</AuthContext.Provider>

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
+import React, {useCallback} from "react";
 import {Channel} from "../../entities/Channel";
 import {useEdit} from "./hooks";
 import {css} from "@emotion/react";
@@ -16,11 +16,17 @@ interface NameInputRequestData {
 }
 
 function NameInput({data}: NameInputProps) {
+
     const {
         editEnabled, setEditEnabled,
-        inputValue, setInputValue,
-        error, setError
-    } = useEdit();
+        value, setValue,
+        error, setError, clearError,
+        elementRef,
+        handleChange,
+        handleFocus,
+
+    } = useEdit<HTMLInputElement>(data, "name");
+
 
     return (
         <div css={css`
@@ -29,11 +35,15 @@ function NameInput({data}: NameInputProps) {
           flex-direction: column;
           align-items: center;
         `}>
-            <input type="text" id="name" name="name"
+            <input type="text" id="name" name="name" ref={elementRef}
                    css={css`${editElement};
                      text-align: center;
                    `}
+                   value={value}
+                   onChange={handleChange}
+                   onFocus={handleFocus}
             />
+
             {error ?
                 <p css={css`
                   color: ${colors.CONTRAST};

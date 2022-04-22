@@ -12,7 +12,7 @@ function Home() {
         } else {
             navigate("/login");
         }
-    }, [isLoggedIn]);
+    }, [isLoggedIn, navigate]);
 
     return (
         <React.Fragment/>
