@@ -31,7 +31,19 @@ function ChannelMemberListElement({membership}: ChannelMemberListElementProps) {
                   align-items: center;
                   height: 100%;
                 `}>
+                    <span css={css`
+                      display: flex;
+                      gap: 1rem;
+                    `}>
                     <h4>{membership.user?.username}</h4>
+                        {membership.role === "Administrator" ?
+                            <p css={css`
+                              color: ${colors.PRIMARY};
+                            `}>
+                                Admin</p> :
+                            null
+                        }
+                </span>
                     <NavArrowDown color={colors.PRIMARY} width={"1.5rem"} height={"1.5rem"}/>
                 </div>
                 <div css={css`
@@ -50,7 +62,8 @@ function ChannelMemberListElement({membership}: ChannelMemberListElementProps) {
                 </div>
             </div>
         </article>
-    );
+    )
+        ;
 }
 
 export default ChannelMemberListElement;
