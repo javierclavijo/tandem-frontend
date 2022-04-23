@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import React, {useEffect} from "react";
-import {Outlet, useParams} from "react-router-dom";
+import {Outlet, useMatch, useParams} from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import useAuth from "../../auth/AuthContext";
 import {useQueryClient} from "react-query";
@@ -15,6 +15,7 @@ import Nav from "../../../components/Nav/Nav";
 import {baseAppContainerWithoutTabsCss, baseAppContainerWithTabsCss} from "../../../styles/layout";
 import Tabs from "../../../components/Nav/Tabs";
 import ChatRoomHeader from "../room/ChatRoomHeader";
+import ProfileInfoHeader from "../../info/user/ProfileInfoHeader";
 
 
 function ChatList() {
@@ -22,6 +23,7 @@ function ChatList() {
     const queryClient = useQueryClient();
     const {data} = useChatList();
     const params = useParams();
+    const isUserProfile = useMatch("/chats/profile");
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
 
     const [filter, setFilter] = React.useState<string>("");
@@ -91,23 +93,32 @@ function ChatList() {
                 </main>
             </div> :
 
-            // Mobile chat list
-            <div css={baseAppContainerWithTabsCss}>
-                <Nav/>
-                <main css={mainCssMobile}>
-                    <section css={listContainerCssMobile}>
-                        <ChatListFilter setFilter={setFilter}/>
-                        <div css={listElementContainerCss}>
-                            {data?.filter(chat => filter ? chat.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()) : true)
-                                .map(chat =>
-                                    <ChatListElement chat={chat} selected={chat.id === params.id}
-                                                     key={chat.id}/>
-                                )}
-                        </div>
-                    </section>
-                </main>
-                <Tabs/>
-            </div>
+            // User profile
+            isUserProfile ?
+                <div css={baseAppContainerWithoutTabsCss}>
+                    <ProfileInfoHeader/>
+                    <main css={mainCssMobile}>
+                        <Outlet/>
+                    </main>
+                </div> :
+
+                // Mobile chat list
+                <div css={baseAppContainerWithTabsCss}>
+                    <Nav/>
+                    <main css={mainCssMobile}>
+                        <section css={listContainerCssMobile}>
+                            <ChatListFilter setFilter={setFilter}/>
+                            <div css={listElementContainerCss}>
+                                {data?.filter(chat => filter ? chat.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()) : true)
+                                    .map(chat =>
+                                        <ChatListElement chat={chat} selected={chat.id === params.id}
+                                                         key={chat.id}/>
+                                    )}
+                            </div>
+                        </section>
+                    </main>
+                    <Tabs/>
+                </div>
         ;
 }
 
