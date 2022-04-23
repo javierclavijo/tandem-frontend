@@ -9,6 +9,7 @@ import {editElement} from "../channel/styles";
 import EditButtons from "./EditButtons";
 import {axiosApi} from "../../auth/AuthContext";
 import {useMutation, useQueryClient} from "react-query";
+import {Chat} from "../../../entities/Chat";
 
 interface NameInputProps {
     data: Channel | undefined;
@@ -44,6 +45,13 @@ function NameInput({data}: NameInputProps) {
             queryClient.setQueryData<Channel | undefined>(["chats", "info", data?.id], (old) => {
                 if (old) {
                     old.name = requestData.name;
+                }
+                return old;
+            });
+            queryClient.setQueryData<Chat[] | undefined>(["chats", "list"], (old) => {
+                const oldChat = old?.find(chat => chat.id === requestData.id);
+                if (oldChat) {
+                    oldChat.name = requestData.name;
                 }
                 return old;
             });
@@ -105,8 +113,11 @@ function NameInput({data}: NameInputProps) {
                    onFocus={handleFocus}
                    onBlur={handleBlur}
                    onKeyDown={handleKeyDown}
+                   size={value.length}
                    css={css`${editElement};
                      text-align: center;
+                     width: auto;
+                     max-width: 100%;
                    `}
             />
             <EditButtons editEnabled={editEnabled} submitButtonRef={submitButtonRef}
