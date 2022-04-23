@@ -9,10 +9,10 @@ import {useQuery} from "react-query";
 import {Channel} from "../../../entities/Channel";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {css} from "@emotion/react";
-import DescriptionTextarea from "../DescriptionTextarea";
+import DescriptionTextarea from "../components/DescriptionTextarea";
 import {descriptionSection, infoSection, languageItem, languageSection, membersSection, profileImg} from "./styles";
 import ChannelMemberListElement from "./ChannelMemberListElement";
-import NameInput from "../NameInput";
+import NameInput from "../components/NameInput";
 
 const placeholderImg = require("../../../static/images/user_placeholder.png");
 

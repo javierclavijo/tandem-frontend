@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import {Channel} from "../../entities/Channel";
-import {useEdit} from "./hooks";
+import {Channel} from "../../../entities/Channel";
+import {useEdit} from "../hooks";
 import {css} from "@emotion/react";
-import {colors} from "../../styles/variables";
-import {editElement} from "./channel/styles";
+import {colors} from "../../../styles/variables";
+import {editElement} from "../channel/styles";
 import EditButtons from "./EditButtons";
 
 interface NameInputProps {

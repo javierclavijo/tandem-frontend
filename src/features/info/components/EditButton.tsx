@@ -3,7 +3,7 @@
 import React from "react";
 import {css} from "@emotion/react";
 import {Cancel, Check, EditPencil} from "iconoir-react";
-import {colors} from "../../styles/variables";
+import {colors} from "../../../styles/variables";
 
 interface EditButtonProps {
     type: "enable" | "accept" | "cancel";
