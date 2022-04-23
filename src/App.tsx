@@ -9,7 +9,7 @@ import Home from "./features/home/Home";
 import ChatRoom from "./features/chats/room/ChatRoom";
 import {Global} from "@emotion/react";
 import EmptyChatRoom from "./features/chats/room/EmptyChatRoom";
-import ChatInfo from "./features/info/components/ChatInfo";
+import ChatInfo from "./features/info/ChatInfo";
 import {globalStyles} from "./styles/global";
 
 export default function App() {

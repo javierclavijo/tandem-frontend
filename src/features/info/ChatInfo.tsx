@@ -1,7 +1,7 @@
 import React from "react";
-import UserInfo from "../user/UserInfo";
-import ChannelInfo from "../channel/ChannelInfo";
-import {useChat} from "../../chats/hooks";
+import UserInfo from "./user/UserInfo";
+import ChannelInfo from "./channel/ChannelInfo";
+import {useChat} from "../chats/hooks";
 import {useParams} from "react-router-dom";
 
 function ChatInfo() {
