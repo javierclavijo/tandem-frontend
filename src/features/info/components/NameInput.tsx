@@ -42,6 +42,7 @@ function NameInput({data}: NameInputProps) {
 
     const updateMutation = useMutation(updateRequest, {
         onSuccess: async (requestData) => {
+            // Update chat data in all queries
             queryClient.setQueryData<Channel | undefined>(["chats", "info", data?.id], (old) => {
                 if (old) {
                     old.name = requestData.name;
@@ -52,6 +53,12 @@ function NameInput({data}: NameInputProps) {
                 const oldChat = old?.find(chat => chat.id === requestData.id);
                 if (oldChat) {
                     oldChat.name = requestData.name;
+                }
+                return old;
+            });
+            queryClient.setQueryData<Chat | undefined>(["chats", "detail", requestData.id], (old) => {
+                if (old) {
+                    old.name = requestData.name;
                 }
                 return old;
             });
