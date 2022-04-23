@@ -7,7 +7,7 @@ import {h1Css, headerCss, linkCss, navCss, ulCss} from "./styles";
 
 
 function Nav() {
-    const {isLoggedIn} = useAuth();
+    const {user, isLoggedIn} = useAuth();
 
     return (
         <header css={headerCss}>
@@ -17,6 +17,7 @@ function Nav() {
                     {isLoggedIn ?
                         <React.Fragment>
                             <li><NavLink to={"/chats"} css={linkCss}>Chats</NavLink></li>
+                            <li><NavLink to={"/chats/profile"} css={linkCss}>{user?.username}</NavLink></li>
                             <li><Link to={"/logout"} css={linkCss}>Log out</Link></li>
                         </React.Fragment> :
                         <li><Link to={"/login"} css={linkCss}>Log in</Link></li>
