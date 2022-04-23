@@ -9,6 +9,20 @@ import {useMediaQuery} from "react-responsive";
 import {User} from "../../../entities/User";
 import {useMatch} from "react-router-dom";
 import ProfileInfoHeader from "./ProfileInfoHeader";
+import {css} from "@emotion/react";
+import {
+    descriptionSection,
+    infoSection,
+    languageItem,
+    languageSection,
+    membersSection,
+    profileImg
+} from "../channel/styles";
+import NameInput from "../components/NameInput";
+import DescriptionTextarea from "../components/DescriptionTextarea";
+import ChannelMemberListElement from "../channel/ChannelMemberListElement";
+
+const placeholderImg = require("../../../static/images/user_placeholder.png");
 
 interface UserInfoProps {
     id: string;
@@ -21,6 +35,7 @@ function UserInfo({id, url}: UserInfoProps) {
     const isUserProfile = useMatch("/chats/profile");
 
     const {user} = useAuth();
+
     const {data} = useQuery<User>(["chats", "info", id], async () => {
         const response = await axiosApi.get(url);
         return response.data;
@@ -30,25 +45,54 @@ function UserInfo({id, url}: UserInfoProps) {
 
     const [editable, setEditable] = useState<boolean>(false);
 
-    React.useEffect(() => setEditable(
-        // Check if the user has admin role, set the 'editable' state accordingly
-        !!data?.memberships.some(membership =>
-            membership.user?.id === user?.id && membership.role === "Administrator"
-        )), [data?.memberships, user]);
+    React.useEffect(() => setEditable(!!isUserProfile), [isUserProfile]);
 
 
-    return isDesktop ?
-        <div css={chatRoomCss}>
-            {isUserProfile ?
-                <ProfileInfoHeader/> :
-                <ChatRoomHeader id={id}/>
+    return (
+        <div css={css`${isDesktop ? chatRoomCss : chatRoomCssMobile};
+          overflow-y: scroll;
+        `}>
+            {isDesktop ?
+                isUserProfile ?
+                    <ProfileInfoHeader/> :
+                    <ChatRoomHeader id={id}/> :
+                null
             }
-            <p>{data?.description}</p>
-        </div> :
-        <div css={chatRoomCssMobile}>
-            <p>{data?.description}</p>
+            <section css={infoSection}>
+                <img src={placeholderImg} alt="" css={profileImg}/>
+                {editable ? null :
+                    // <NameInput data={data}/> :
+                    <p>{data?.username}</p>
+                }
+                <section css={descriptionSection}>
+                    {editable ? null :
+                        // <DescriptionTextarea data={data}/> :
+                        <React.Fragment>
+                            <h3>Description</h3>
+                            <p>{data?.description}</p>
+                        </React.Fragment>
+                    }
+                </section>
+                <section css={languageSection}>
+                    {/*<div css={languageItem}>*/}
+                    {/*    <h3>Language</h3>*/}
+                    {/*    <p>{data?.language}</p>*/}
+                    {/*</div>*/}
+                    {/*<div css={languageItem}>*/}
+                    {/*    <h3>Level</h3>*/}
+                    {/*    <p>{data?.level}</p>*/}
+                    {/*</div>*/}
+                </section>
+            </section>
+            <section css={membersSection}>
+                <h3>Friends</h3>
+                {/*{data?.memberships.map(membership =>*/}
+                {/*    <ChannelMemberListElement membership={membership} key={membership.url}/>*/}
+                {/*)}*/}
+            </section>
         </div>
-        ;
+    );
+
 }
 
 export default UserInfo;
