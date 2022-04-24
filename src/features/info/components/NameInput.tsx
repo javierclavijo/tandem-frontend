@@ -77,28 +77,30 @@ function NameInput<T>({data, dataKey, updateMutation}: NameInputProps<T>) {
 
 
     return (
-        <div css={css`
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        `}>
-            <input type="text" id="name" name="name" ref={elementRef}
-                   value={value}
-                   onChange={handleChange}
-                   onFocus={handleFocus}
-                   onBlur={handleBlur}
-                   onKeyDown={handleKeyDown}
-                   size={value.length}
-                   css={css`${editElement};
-                     text-align: center;
-                     width: auto;
-                     max-width: 100%;
-                   `}
-            />
-            <EditButtons editEnabled={editEnabled} submitButtonRef={submitButtonRef}
-                         handleSubmit={handleSubmit} handleCancel={handleCancel}
-            />
+        <React.Fragment>
+            <div css={css`
+              width: 100%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            `}>
+                <input type="text" id="name" name="name" ref={elementRef}
+                       value={value}
+                       onChange={handleChange}
+                       onFocus={handleFocus}
+                       onBlur={handleBlur}
+                       onKeyDown={handleKeyDown}
+                       size={value.length}
+                       css={css`${editElement};
+                         text-align: center;
+                         width: auto;
+                         max-width: 100%;
+                       `}
+                />
+                <EditButtons editEnabled={editEnabled} submitButtonRef={submitButtonRef}
+                             handleSubmit={handleSubmit} handleCancel={handleCancel}
+                />
+            </div>
 
             {error ?
                 <p css={css`
@@ -107,7 +109,7 @@ function NameInput<T>({data, dataKey, updateMutation}: NameInputProps<T>) {
                     {error}
                 </p> :
                 null}
-        </div>
+        </React.Fragment>
     );
 }
 
