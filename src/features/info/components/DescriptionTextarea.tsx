@@ -33,7 +33,7 @@ function DescriptionTextarea({data}: DescriptionTextareaProps) {
         handleChange,
         handleFocus,
         handleCancel,
-    } = useEdit<HTMLTextAreaElement>(data, "description");
+    } = useEdit<HTMLTextAreaElement, Channel>(data, "description");
 
 
     const updateRequest = async (requestData: DescriptionTextareaRequestData) => {

@@ -1,5 +1,4 @@
 import React, {useMemo} from "react";
-import {Channel} from "../../entities/Channel";
 
 interface UseEditType<T> {
     editEnabled: boolean;
@@ -16,9 +15,9 @@ interface UseEditType<T> {
     handleCancel: () => void;
 }
 
-export function useEdit<T extends (HTMLInputElement | HTMLTextAreaElement)>(
-    data: Channel | undefined,
-    dataKey: "name" | "description"
+export function useEdit<T extends (HTMLInputElement | HTMLTextAreaElement), S>(
+    data: S | undefined,
+    dataKey: keyof S
 ): UseEditType<T> {
     const [editEnabled, setEditEnabled] = React.useState<boolean>(false);
     const [value, setValue] = React.useState<string>("");
@@ -35,9 +34,11 @@ export function useEdit<T extends (HTMLInputElement | HTMLTextAreaElement)>(
     }, [error]);
 
     const updateInputValue = React.useCallback(() => {
-        if (data?.[dataKey]) {
-            setValue(data?.[dataKey]);
+        const dataValue = data?.[dataKey];
+        if (dataValue && typeof dataValue === "string") {
+            setValue(dataValue);
         }
+
     }, [data, dataKey]);
 
     // Set data on init and whenever data changes (i.e. after submitting)

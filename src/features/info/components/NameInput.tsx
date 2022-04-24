@@ -32,7 +32,7 @@ function NameInput({data}: NameInputProps) {
         handleChange,
         handleFocus,
         handleCancel,
-    } = useEdit<HTMLInputElement>(data, "name");
+    } = useEdit<HTMLInputElement, Channel>(data, "name");
 
 
     const updateRequest = async (requestData: NameInputRequestData) => {
