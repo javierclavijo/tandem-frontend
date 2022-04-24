@@ -12,6 +12,7 @@ import ProfileInfoHeader from "./ProfileInfoHeader";
 import {css} from "@emotion/react";
 import {descriptionSection, infoSection, languageSection, membersSection, profileImg} from "../channel/styles";
 import {UserNameInput} from "../components/NameInput";
+import DescriptionTextarea from "../components/DescriptionTextarea";
 
 const placeholderImg = require("../../../static/images/user_placeholder.png");
 
@@ -38,8 +39,8 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                     <p>{data?.username}</p>
                 }
                 <section css={descriptionSection}>
-                    {editable ? null :
-                        // <DescriptionTextarea data={data}/> :
+                    {editable ?
+                        <DescriptionTextarea data={data}/> :
                         <React.Fragment>
                             <h3>Description</h3>
                             <p>{data?.description}</p>

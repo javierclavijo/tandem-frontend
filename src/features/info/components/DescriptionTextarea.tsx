@@ -10,9 +10,10 @@ import {useMutation, useQueryClient} from "react-query";
 import {useEdit} from "../hooks";
 import {editElement} from "../channel/styles";
 import EditButtons from "./EditButtons";
+import {User} from "../../../entities/User";
 
 interface DescriptionTextareaProps {
-    data: Channel;
+    data: Channel | User;
 }
 
 interface DescriptionTextareaRequestData {
@@ -33,7 +34,7 @@ function DescriptionTextarea({data}: DescriptionTextareaProps) {
         handleChange,
         handleFocus,
         handleCancel,
-    } = useEdit<HTMLTextAreaElement, Channel>(data, "description");
+    } = useEdit<HTMLTextAreaElement, Channel | User>(data, "description");
 
 
     const updateRequest = async (requestData: DescriptionTextareaRequestData) => {
