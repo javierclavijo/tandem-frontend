@@ -11,13 +11,14 @@ import {colors, textSizes} from "../../../styles/variables";
 interface ChatListElementProps {
     chat: Chat;
     selected: boolean;
+    latestMessageIsOwn: boolean;
 }
 
-function ChatListElement({chat, selected}: ChatListElementProps) {
+function ChatListElement({chat, selected, latestMessageIsOwn}: ChatListElementProps) {
     return (
         <div css={css`display: grid;
           border-bottom: 1px solid ${colors.LIGHT};
-          color: ${selected? colors.WHITE: colors.DARK};
+          color: ${selected ? colors.WHITE : colors.DARK};
           width: 100%;
           background-color: ${selected ? colors.PRIMARY : colors.WHITE};
           padding: 0 1rem;
@@ -55,7 +56,7 @@ function ChatListElement({chat, selected}: ChatListElementProps) {
                       overflow: hidden;
                       white-space: nowrap;
                     `}>
-                    {chat.messages[0].author.username}: {chat.messages[0].content}
+                    {latestMessageIsOwn ? "You" : chat.messages[0].author.username}: {chat.messages[0].content}
                     </span>
                 </div>
             </div>

@@ -19,7 +19,7 @@ import ProfileInfoHeader from "../../info/user/ProfileInfoHeader";
 
 
 function ChatList() {
-    const {token} = useAuth();
+    const {token, user} = useAuth();
     const queryClient = useQueryClient();
     const {data} = useChatList();
     const params = useParams();
@@ -75,8 +75,11 @@ function ChatList() {
                     <div css={listElementContainerCss}>
                         {data?.filter(chat => filter ? chat.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()) : true)
                             .map(chat =>
-                                <ChatListElement chat={chat} selected={chat.id === params.id}
-                                                 key={chat.id}/>
+                                <ChatListElement chat={chat}
+                                                 selected={chat.id === params.id}
+                                                 latestMessageIsOwn={chat.messages[0].author.id === user?.id}
+                                                 key={chat.id}
+                                />
                             )}
                     </div>
                 </section>
@@ -111,8 +114,11 @@ function ChatList() {
                             <div css={listElementContainerCss}>
                                 {data?.filter(chat => filter ? chat.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()) : true)
                                     .map(chat =>
-                                        <ChatListElement chat={chat} selected={chat.id === params.id}
-                                                         key={chat.id}/>
+                                        <ChatListElement chat={chat}
+                                                         selected={chat.id === params.id}
+                                                         latestMessageIsOwn={chat.messages[0].author.id === user?.id}
+                                                         key={chat.id}
+                                        />
                                     )}
                             </div>
                         </section>
