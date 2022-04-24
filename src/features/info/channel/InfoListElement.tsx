@@ -1,8 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import {Membership} from "../../../entities/Membership";
-import {memberArticle, memberImg} from "./styles";
+import {infoListElementArticle, infoListElementImg} from "./styles";
 import {css} from "@emotion/react";
 import {NavArrowDown} from "iconoir-react";
 import {colors} from "../../../styles/variables";
@@ -10,14 +9,16 @@ import {colors} from "../../../styles/variables";
 const placeholderImg = require("../../../static/images/user_placeholder.png");
 
 
-interface ChannelMemberListElementProps {
-    membership: Membership;
+interface InfoListElementProps {
+    name: string,
+    additionalInfo?: string,
+    description: string
 }
 
-function ChannelMemberListElement({membership}: ChannelMemberListElementProps) {
+function InfoListElement({name, additionalInfo, description}: InfoListElementProps) {
     return (
-        <article css={memberArticle} key={membership.url}>
-            <img src={placeholderImg} alt="" css={memberImg}/>
+        <article css={infoListElementArticle}>
+            <img src={placeholderImg} alt="" css={infoListElementImg}/>
             <div css={css`
               display: flex;
               flex-direction: column;
@@ -35,12 +36,13 @@ function ChannelMemberListElement({membership}: ChannelMemberListElementProps) {
                       display: flex;
                       gap: 1rem;
                     `}>
-                    <h4>{membership.user?.username}</h4>
-                        {membership.role === "Administrator" ?
+                    <h4>{name}</h4>
+                        {additionalInfo ?
                             <p css={css`
                               color: ${colors.PRIMARY};
                             `}>
-                                Admin</p> :
+                                {additionalInfo}
+                            </p> :
                             null
                         }
                 </span>
@@ -57,7 +59,7 @@ function ChannelMemberListElement({membership}: ChannelMemberListElementProps) {
                       white-space: nowrap;
                       max-width: 14rem;
                     `}>
-                        {membership.user?.description}
+                        {description}
                     </p>
                 </div>
             </div>
@@ -66,4 +68,4 @@ function ChannelMemberListElement({membership}: ChannelMemberListElementProps) {
         ;
 }
 
-export default ChannelMemberListElement;
+export default InfoListElement;

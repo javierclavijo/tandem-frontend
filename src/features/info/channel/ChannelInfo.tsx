@@ -10,8 +10,8 @@ import {Channel} from "../../../entities/Channel";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import DescriptionTextarea from "../components/DescriptionTextarea";
-import {descriptionSection, infoSection, languageItem, languageSection, membersSection, profileImg} from "./styles";
-import ChannelMemberListElement from "./ChannelMemberListElement";
+import {descriptionSection, infoSection, languageItem, languageSection, listSection, profileImg} from "./styles";
+import InfoListElement from "./InfoListElement";
 import {ChannelNameInput} from "../components/NameInput";
 
 const placeholderImg = require("../../../static/images/user_placeholder.png");
@@ -72,10 +72,16 @@ function ChannelInfo({chat}: { chat: Chat }) {
                     </div>
                 </section>
             </section>
-            <section css={membersSection}>
+            <section css={listSection}>
                 <h3>Members</h3>
                 {data?.memberships.map(membership =>
-                    <ChannelMemberListElement membership={membership} key={membership.url}/>
+                    membership.user ?
+                        <InfoListElement name={membership.user?.username}
+                                         additionalInfo={membership.role === "Administrator" ? "Admin" : undefined}
+                                         description={membership.user.description}
+                                         key={membership.url}
+                        />
+                        : null
                 )}
             </section>
         </div>

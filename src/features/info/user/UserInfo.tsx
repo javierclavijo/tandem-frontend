@@ -10,7 +10,7 @@ import {User} from "../../../entities/User";
 import {useMatch} from "react-router-dom";
 import ProfileInfoHeader from "./ProfileInfoHeader";
 import {css} from "@emotion/react";
-import {descriptionSection, infoSection, languageSection, membersSection, profileImg} from "../channel/styles";
+import {descriptionSection, infoSection, languageSection, listSection, profileImg} from "../channel/styles";
 import {UserNameInput} from "../components/NameInput";
 import DescriptionTextarea from "../components/DescriptionTextarea";
 
@@ -58,10 +58,10 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                     {/*</div>*/}
                 </section>
             </section>
-            <section css={membersSection}>
+            <section css={listSection}>
                 <h3>Friends</h3>
                 {/*{data?.memberships.map(membership =>*/}
-                {/*    <ChannelMemberListElement membership={membership} key={membership.url}/>*/}
+                {/*    <InfoListElement membership={membership} key={membership.url}/>*/}
                 {/*)}*/}
             </section>
         </div>

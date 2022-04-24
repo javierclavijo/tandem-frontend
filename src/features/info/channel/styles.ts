@@ -39,7 +39,7 @@ export const languageItem = css`
   justify-content: space-between;
 `;
 
-export const membersSection = css`
+export const listSection = css`
   padding: 1rem;
   background-color: ${colors.WHITE};
   color: ${colors.DARK};
@@ -49,13 +49,13 @@ export const membersSection = css`
   gap: 1rem;
 `;
 
-export const memberArticle = css`
+export const infoListElementArticle = css`
   width: 100%;
   display: flex;
   gap: 1rem;
 `;
 
-export const memberImg = css`
+export const infoListElementImg = css`
   width: 3rem;
   border-radius: 50%;
 `;
