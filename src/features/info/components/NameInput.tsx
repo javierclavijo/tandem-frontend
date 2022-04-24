@@ -18,6 +18,7 @@ interface NameInputProps<T> {
     updateMutation: UseMutationResult<any, unknown, any, unknown>;
 }
 
+
 function NameInput<T>({data, dataKey, updateMutation}: NameInputProps<T>) {
 
     const {
@@ -110,6 +111,7 @@ function NameInput<T>({data, dataKey, updateMutation}: NameInputProps<T>) {
     );
 }
 
+
 export function ChannelNameInput({data}: { data: Channel }) {
 
     const queryClient = useQueryClient();
@@ -121,7 +123,8 @@ export function ChannelNameInput({data}: { data: Channel }) {
 
     const updateMutation = useMutation(updateRequest, {
         onSuccess: async (requestData) => {
-            // Update chat data in all queries
+            // Update chat data in the channel's detail query, and also in the chat list and chat detail queries, to
+            // update the header and the chat list
             queryClient.setQueryData<Channel | undefined>(["chats", "info", data?.id], (old) => {
                 if (old) {
                     old.name = requestData.name;
@@ -160,23 +163,10 @@ export function UserNameInput({data}: { data: User }) {
 
     const updateMutation = useMutation(updateRequest, {
         onSuccess: async (requestData) => {
-            // Update chat data in all queries
+            // Update chat data in logged-in user's query
             queryClient.setQueryData<User | undefined>(["users", "me"], (old) => {
                 if (old) {
                     old.username = requestData.username;
-                }
-                return old;
-            });
-            queryClient.setQueryData<Chat[] | undefined>(["chats", "list"], (old) => {
-                const oldChat = old?.find(chat => chat.id === requestData.id);
-                if (oldChat) {
-                    oldChat.name = requestData.name;
-                }
-                return old;
-            });
-            queryClient.setQueryData<Chat | undefined>(["chats", "detail", requestData.id], (old) => {
-                if (old) {
-                    old.name = requestData.name;
                 }
                 return old;
             });
