@@ -32,6 +32,9 @@ function NameInput<T>({data, dataKey, updateMutation}: NameInputProps<T>) {
         handleCancel,
     } = useEdit<HTMLInputElement, T>(data, dataKey);
 
+    // Used in handleBlur() to handle the case of submitting through keyboard.
+    const keyboardSubmitRef = React.useRef<boolean>(false);
+
 
     const handleBlur = async (event: React.FocusEvent<HTMLInputElement>) => {
         // If the submit button was clicked, submit the value. Else, cancel the editing.
@@ -40,16 +43,17 @@ function NameInput<T>({data, dataKey, updateMutation}: NameInputProps<T>) {
             if (!success) {
                 elementRef?.current?.focus();
             }
-        } else if (event.relatedTarget) {
-            // Check that the event has a related target to avoid resetting the field's value when the blur event is
-            // caused by a keydown submit event.
+        } else if (keyboardSubmitRef.current) {
+            keyboardSubmitRef.current = false;
+            setEditEnabled(false);
+        } else {
             handleCancel();
         }
     };
 
     const handleSubmit = async () => {
         if (!value) {
-            setError("Description must have a length between 1 and 2000 characters.");
+            setError("Name must have a length between 1 and 50 characters.");
             return false;
         }
         const requestData = {} as any;
@@ -60,15 +64,16 @@ function NameInput<T>({data, dataKey, updateMutation}: NameInputProps<T>) {
     };
 
     const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
-        // If the Enter key is pressed, submit the form. If the pressed key is the Escape key, cancel the editing and blur the text area.
+        // If the Enter key is pressed, submit the form. If the pressed key is the Escape key, cancel the editing and
+        // blur the text area.
         if (event.code === "Enter") {
             const success = await handleSubmit();
             if (success) {
+                keyboardSubmitRef.current = true;
                 elementRef.current?.blur();
             } else {
                 event.preventDefault();
             }
-
         } else if (event.code === "Escape") {
             handleCancel();
             elementRef.current?.blur();

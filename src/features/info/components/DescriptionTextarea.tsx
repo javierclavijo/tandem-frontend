@@ -36,6 +36,9 @@ function DescriptionTextarea({data}: DescriptionTextareaProps) {
         handleCancel,
     } = useEdit<HTMLTextAreaElement, Channel | User>(data, "description");
 
+    // Used in handleBlur() to handle the case of submitting through keyboard.
+    const keyboardSubmitRef = React.useRef<boolean>(false);
+
 
     const updateRequest = async (requestData: DescriptionTextareaRequestData) => {
         const response = await axiosApi.patch(data?.url, requestData);
@@ -61,9 +64,10 @@ function DescriptionTextarea({data}: DescriptionTextareaProps) {
             if (!success) {
                 elementRef?.current?.focus();
             }
-        } else if (event.relatedTarget) {
-            // Check that the event has a related target to avoid resetting the field's value when the blur event is
-            // caused by a keydown submit event.
+        } else if (keyboardSubmitRef.current) {
+            keyboardSubmitRef.current = false;
+            setEditEnabled(false);
+        } else {
             handleCancel();
         }
     };
@@ -85,11 +89,11 @@ function DescriptionTextarea({data}: DescriptionTextareaProps) {
         if ((event.metaKey || event.ctrlKey) && event.code === "Enter") {
             const success = await handleSubmit();
             if (success) {
+                keyboardSubmitRef.current = true;
                 elementRef.current?.blur();
             } else {
                 event.preventDefault();
             }
-
         } else if (event.code === "Escape") {
             handleCancel();
             elementRef.current?.blur();
