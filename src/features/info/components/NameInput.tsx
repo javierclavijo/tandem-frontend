@@ -8,20 +8,17 @@ import {colors} from "../../../styles/variables";
 import {editElement} from "../channel/styles";
 import EditButtons from "./EditButtons";
 import {axiosApi} from "../../auth/AuthContext";
-import {useMutation, useQueryClient} from "react-query";
+import {useMutation, UseMutationResult, useQueryClient} from "react-query";
 import {Chat} from "../../../entities/Chat";
+import {User} from "../../../entities/User";
 
-interface NameInputProps {
-    data: Channel | undefined;
+interface NameInputProps<T> {
+    data: T;
+    dataKey: keyof T;
+    updateMutation: UseMutationResult<any, unknown, any, unknown>;
 }
 
-interface NameInputRequestData {
-    name: string;
-}
-
-function NameInput({data}: NameInputProps) {
-
-    const queryClient = useQueryClient();
+function NameInput<T>({data, dataKey, updateMutation}: NameInputProps<T>) {
 
     const {
         editEnabled, setEditEnabled,
@@ -32,38 +29,7 @@ function NameInput({data}: NameInputProps) {
         handleChange,
         handleFocus,
         handleCancel,
-    } = useEdit<HTMLInputElement, Channel>(data, "name");
-
-
-    const updateRequest = async (requestData: NameInputRequestData) => {
-        const response = await axiosApi.patch(`/channels/${data?.id}/`, requestData);
-        return response.data;
-    };
-
-    const updateMutation = useMutation(updateRequest, {
-        onSuccess: async (requestData) => {
-            // Update chat data in all queries
-            queryClient.setQueryData<Channel | undefined>(["chats", "info", data?.id], (old) => {
-                if (old) {
-                    old.name = requestData.name;
-                }
-                return old;
-            });
-            queryClient.setQueryData<Chat[] | undefined>(["chats", "list"], (old) => {
-                const oldChat = old?.find(chat => chat.id === requestData.id);
-                if (oldChat) {
-                    oldChat.name = requestData.name;
-                }
-                return old;
-            });
-            queryClient.setQueryData<Chat | undefined>(["chats", "detail", requestData.id], (old) => {
-                if (old) {
-                    old.name = requestData.name;
-                }
-                return old;
-            });
-        }
-    });
+    } = useEdit<HTMLInputElement, T>(data, dataKey);
 
 
     const handleBlur = async (event: React.FocusEvent<HTMLInputElement>) => {
@@ -73,7 +39,9 @@ function NameInput({data}: NameInputProps) {
             if (!success) {
                 elementRef?.current?.focus();
             }
-        } else {
+        } else if (event.relatedTarget) {
+            // Check that the event has a related target to avoid resetting the field's value when the blur event is
+            // caused by a keydown submit event.
             handleCancel();
         }
     };
@@ -83,15 +51,14 @@ function NameInput({data}: NameInputProps) {
             setError("Description must have a length between 1 and 2000 characters.");
             return false;
         }
-        const requestData = {name: value};
+        const requestData = {username: value};
         await updateMutation.mutateAsync(requestData);
         setEditEnabled(false);
         return true;
     };
 
     const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
-        // If the Meta or Control key is pressed at the same time as the Enter key, submit the form. If the pressed key
-        // is the Escape key, cancel the editing and blur the text area.
+        // If the Enter key is pressed, submit the form. If the pressed key is the Escape key, cancel the editing and blur the text area.
         if (event.code === "Enter") {
             const success = await handleSubmit();
             if (success) {
@@ -142,4 +109,79 @@ function NameInput({data}: NameInputProps) {
     );
 }
 
-export default NameInput;
+export function ChannelNameInput({data}: { data: Channel }) {
+
+    const queryClient = useQueryClient();
+
+    const updateRequest = async (requestData: { username: string }) => {
+        const response = await axiosApi.patch(data.url, requestData);
+        return response.data;
+    };
+
+    const updateMutation = useMutation(updateRequest, {
+        onSuccess: async (requestData) => {
+            // Update chat data in all queries
+            queryClient.setQueryData<Channel | undefined>(["users", "me"], (old) => {
+                if (old) {
+                    old.name = requestData.name;
+                }
+                return old;
+            });
+            queryClient.setQueryData<Chat[] | undefined>(["chats", "list"], (old) => {
+                const oldChat = old?.find(chat => chat.id === requestData.id);
+                if (oldChat) {
+                    oldChat.name = requestData.name;
+                }
+                return old;
+            });
+            queryClient.setQueryData<Chat | undefined>(["chats", "detail", requestData.id], (old) => {
+                if (old) {
+                    old.name = requestData.name;
+                }
+                return old;
+            });
+        }
+    });
+
+    return <NameInput<Channel> data={data} dataKey="name" updateMutation={updateMutation}/>;
+
+}
+
+
+export function UserNameInput({data}: { data: User }) {
+
+    const queryClient = useQueryClient();
+
+    const updateRequest = async (requestData: { username: string }) => {
+        const response = await axiosApi.patch(data.url, requestData);
+        return response.data;
+    };
+
+    const updateMutation = useMutation(updateRequest, {
+        onSuccess: async (requestData) => {
+            // Update chat data in all queries
+            queryClient.setQueryData<User | undefined>(["chats", "info", data?.id], (old) => {
+                if (old) {
+                    old.username = requestData.username;
+                }
+                return old;
+            });
+            queryClient.setQueryData<Chat[] | undefined>(["chats", "list"], (old) => {
+                const oldChat = old?.find(chat => chat.id === requestData.id);
+                if (oldChat) {
+                    oldChat.name = requestData.name;
+                }
+                return old;
+            });
+            queryClient.setQueryData<Chat | undefined>(["chats", "detail", requestData.id], (old) => {
+                if (old) {
+                    old.name = requestData.name;
+                }
+                return old;
+            });
+        }
+    });
+
+    return <NameInput<User> data={data} dataKey="username" updateMutation={updateMutation}/>;
+
+}

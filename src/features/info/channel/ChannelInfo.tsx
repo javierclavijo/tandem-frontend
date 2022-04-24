@@ -12,7 +12,7 @@ import {css} from "@emotion/react";
 import DescriptionTextarea from "../components/DescriptionTextarea";
 import {descriptionSection, infoSection, languageItem, languageSection, membersSection, profileImg} from "./styles";
 import ChannelMemberListElement from "./ChannelMemberListElement";
-import NameInput from "../components/NameInput";
+import {ChannelNameInput} from "../components/NameInput";
 
 const placeholderImg = require("../../../static/images/user_placeholder.png");
 
@@ -47,13 +47,13 @@ function ChannelInfo({chat}: { chat: Chat }) {
                 null}
             <section css={infoSection}>
                 <img src={placeholderImg} alt="" css={profileImg}/>
-                {editable ?
-                    <NameInput data={data}/> :
+                {editable && data ?
+                    <ChannelNameInput data={data}/> :
                     <p>{data?.name}</p>
                 }
                 <p>Channel · {data?.memberships.length} members</p>
                 <section css={descriptionSection}>
-                    {editable ?
+                    {editable && data ?
                         <DescriptionTextarea data={data}/> :
                         <React.Fragment>
                             <h3>Description</h3>

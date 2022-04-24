@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import React, {useState} from "react";
+import React from "react";
 import {useQuery} from "react-query";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {chatRoomCss, chatRoomCssMobile} from "../../chats/room/styles";
@@ -10,43 +10,16 @@ import {User} from "../../../entities/User";
 import {useMatch} from "react-router-dom";
 import ProfileInfoHeader from "./ProfileInfoHeader";
 import {css} from "@emotion/react";
-import {
-    descriptionSection,
-    infoSection,
-    languageItem,
-    languageSection,
-    membersSection,
-    profileImg
-} from "../channel/styles";
-import NameInput from "../components/NameInput";
-import DescriptionTextarea from "../components/DescriptionTextarea";
-import ChannelMemberListElement from "../channel/ChannelMemberListElement";
+import {descriptionSection, infoSection, languageSection, membersSection, profileImg} from "../channel/styles";
+import {UserNameInput} from "../components/NameInput";
 
 const placeholderImg = require("../../../static/images/user_placeholder.png");
 
-interface UserInfoProps {
-    id: string;
-    url: string;
-}
 
-function UserInfo({id, url}: UserInfoProps) {
+function UserInfo({data, editable}: { data: User, editable: boolean }) {
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
     const isUserProfile = useMatch("/chats/profile");
-
-    const {user} = useAuth();
-
-    const {data} = useQuery<User>(["chats", "info", id], async () => {
-        const response = await axiosApi.get(url);
-        return response.data;
-    }, {
-        staleTime: 15000,
-    });
-
-    const [editable, setEditable] = useState<boolean>(false);
-
-    React.useEffect(() => setEditable(!!isUserProfile), [isUserProfile]);
-
 
     return (
         <div css={css`${isDesktop ? chatRoomCss : chatRoomCssMobile};
@@ -55,13 +28,13 @@ function UserInfo({id, url}: UserInfoProps) {
             {isDesktop ?
                 isUserProfile ?
                     <ProfileInfoHeader/> :
-                    <ChatRoomHeader id={id}/> :
+                    <ChatRoomHeader id={data.id}/> :
                 null
             }
             <section css={infoSection}>
                 <img src={placeholderImg} alt="" css={profileImg}/>
-                {editable ? null :
-                    // <NameInput data={data}/> :
+                {editable && data ?
+                    <UserNameInput data={data}/> :
                     <p>{data?.username}</p>
                 }
                 <section css={descriptionSection}>
@@ -92,7 +65,23 @@ function UserInfo({id, url}: UserInfoProps) {
             </section>
         </div>
     );
-
 }
 
-export default UserInfo;
+export function OwnUserInfo() {
+
+    const {user} = useAuth();
+
+    return user ? <UserInfo data={user} editable={true}/> : null;
+}
+
+export function OtherUserInfo({id, url}: { id: string, url: string }) {
+
+    const {data} = useQuery<User>(["chats", "info", id], async () => {
+        const response = await axiosApi.get(url);
+        return response.data;
+    }, {
+        staleTime: 15000,
+    });
+
+    return data ? <UserInfo data={data} editable={false}/> : null;
+}

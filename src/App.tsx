@@ -11,7 +11,7 @@ import {Global} from "@emotion/react";
 import EmptyChatRoom from "./features/chats/room/EmptyChatRoom";
 import ChatInfo from "./features/info/ChatInfo";
 import {globalStyles} from "./styles/global";
-import Profile from "./features/info/user/Profile";
+import {OwnUserInfo} from "./features/info/user/UserInfo";
 
 export default function App() {
 
@@ -23,7 +23,7 @@ export default function App() {
                 <Route path="/chats" element={<ChatList/>}>
                     <Route path=":id/info" element={<ChatInfo/>}/>
                     <Route path=":id" element={<ChatRoom/>}/>
-                    <Route path="profile" element={<Profile/>}/>
+                    <Route path="profile" element={<OwnUserInfo/>}/>
                     <Route index element={<EmptyChatRoom/>}/>
                 </Route>
                 <Route path="/login" element={<LogIn/>}/>

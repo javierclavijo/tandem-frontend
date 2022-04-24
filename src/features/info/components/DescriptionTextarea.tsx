@@ -12,7 +12,7 @@ import {editElement} from "../channel/styles";
 import EditButtons from "./EditButtons";
 
 interface DescriptionTextareaProps {
-    data: Channel | undefined;
+    data: Channel;
 }
 
 interface DescriptionTextareaRequestData {
@@ -37,7 +37,7 @@ function DescriptionTextarea({data}: DescriptionTextareaProps) {
 
 
     const updateRequest = async (requestData: DescriptionTextareaRequestData) => {
-        const response = await axiosApi.patch(`/channels/${data?.id}/`, requestData);
+        const response = await axiosApi.patch(data?.url, requestData);
         return response.data;
     };
 
@@ -60,7 +60,9 @@ function DescriptionTextarea({data}: DescriptionTextareaProps) {
             if (!success) {
                 elementRef?.current?.focus();
             }
-        } else {
+        } else if (event.relatedTarget) {
+            // Check that the event has a related target to avoid resetting the field's value when the blur event is
+            // caused by a keydown submit event.
             handleCancel();
         }
     };
