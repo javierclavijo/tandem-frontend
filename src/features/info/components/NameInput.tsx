@@ -51,7 +51,8 @@ function NameInput<T>({data, dataKey, updateMutation}: NameInputProps<T>) {
             setError("Description must have a length between 1 and 2000 characters.");
             return false;
         }
-        const requestData = {username: value};
+        const requestData = {} as any;
+        requestData[dataKey] = value;
         await updateMutation.mutateAsync(requestData);
         setEditEnabled(false);
         return true;
@@ -113,7 +114,7 @@ export function ChannelNameInput({data}: { data: Channel }) {
 
     const queryClient = useQueryClient();
 
-    const updateRequest = async (requestData: { username: string }) => {
+    const updateRequest = async (requestData: { name: string }) => {
         const response = await axiosApi.patch(data.url, requestData);
         return response.data;
     };
@@ -121,7 +122,7 @@ export function ChannelNameInput({data}: { data: Channel }) {
     const updateMutation = useMutation(updateRequest, {
         onSuccess: async (requestData) => {
             // Update chat data in all queries
-            queryClient.setQueryData<Channel | undefined>(["users", "me"], (old) => {
+            queryClient.setQueryData<Channel | undefined>(["chats", "info", data?.id], (old) => {
                 if (old) {
                     old.name = requestData.name;
                 }
@@ -160,7 +161,7 @@ export function UserNameInput({data}: { data: User }) {
     const updateMutation = useMutation(updateRequest, {
         onSuccess: async (requestData) => {
             // Update chat data in all queries
-            queryClient.setQueryData<User | undefined>(["chats", "info", data?.id], (old) => {
+            queryClient.setQueryData<User | undefined>(["users", "me"], (old) => {
                 if (old) {
                     old.username = requestData.username;
                 }
