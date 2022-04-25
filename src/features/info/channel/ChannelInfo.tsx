@@ -34,7 +34,7 @@ function ChannelInfo({chat}: { chat: Chat }) {
     React.useEffect(() => setEditable(
         // Check if the user has admin role, set the 'editable' state accordingly
         !!data?.memberships.some(membership =>
-            membership.user?.id === user?.id && membership.role === "Administrator"
+            membership.user?.id === user?.id && membership.role === "A"
         )), [data?.memberships, user]);
 
 
