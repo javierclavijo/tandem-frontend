@@ -5,7 +5,7 @@ import {languageItem} from "../channel/styles";
 import Select, {StylesConfig} from "react-select";
 import {colors} from "../../../styles/variables";
 
-interface Option {
+export interface Option {
     value: string,
     label: string;
 }
@@ -29,13 +29,15 @@ interface LanguageOrLevelSelectProps {
     label: string;
     initialValue: string;
     options: Option[];
+    handleSubmit: (option: Option) => Promise<any>;
 }
 
 
-function InfoSelect({id, label, initialValue, options}: LanguageOrLevelSelectProps) {
+function InfoSelect({id, label, initialValue, options, handleSubmit}: LanguageOrLevelSelectProps) {
     const [value, setValue] = React.useState<Option | null>(null);
 
-    const handleChange = (option: any) => {
+    const onChange = async (option: any) => {
+        await handleSubmit(option);
         setValue(option);
     };
 
@@ -59,7 +61,7 @@ function InfoSelect({id, label, initialValue, options}: LanguageOrLevelSelectPro
             <label htmlFor={id}>{label}</label>
             <Select id={id}
                     value={value}
-                    onChange={handleChange}
+                    onChange={onChange}
                     options={options}
                     styles={styles}
             />

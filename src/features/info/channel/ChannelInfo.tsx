@@ -5,7 +5,7 @@ import {Chat} from "../../../entities/Chat";
 import {chatRoomCss, chatRoomCssMobile} from "../../chats/room/styles";
 import ChatRoomHeader from "../../chats/room/ChatRoomHeader";
 import {useMediaQuery} from "react-responsive";
-import {useQuery} from "react-query";
+import {useMutation, useQuery} from "react-query";
 import {Channel} from "../../../entities/Channel";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {css} from "@emotion/react";
@@ -13,7 +13,7 @@ import DescriptionTextarea from "../components/DescriptionTextarea";
 import {descriptionSection, infoSection, languageSection, listSection, profileImg} from "./styles";
 import InfoListElement from "./InfoListElement";
 import {ChannelNameInput} from "../components/NameInput";
-import InfoSelect, {languageOptions, levelOptions} from "../components/InfoSelect";
+import InfoSelect, {languageOptions, levelOptions, Option} from "../components/InfoSelect";
 
 const placeholderImg = require("../../../static/images/user_placeholder.png");
 
@@ -39,17 +39,22 @@ function ChannelInfo({chat}: { chat: Chat }) {
         )), [data?.memberships, user]);
 
 
-    // const languageUpdateRequest = React.useCallback(async (requestData: { language: string }) => {
-    //     if (data) {
-    //         const response = await axiosApi.patch(data?.url, requestData);
-    //         return response.data;
-    //     }
-    // }, [data]);
-    //
-    // const languageUpdateMutation = useMutation(languageUpdateRequest, {
-    //     onSuccess: async (data) => {
-    //     }
-    // });
+    const languageUpdateRequest = React.useCallback(async (requestData: { language: string }) => {
+        if (data) {
+            const response = await axiosApi.patch(data?.url, requestData);
+            return response.data;
+        }
+    }, [data]);
+
+    const languageUpdateMutation = useMutation(languageUpdateRequest, {
+        onSuccess: async (data) => {
+        }
+    });
+
+    const handleLanguageChange = async (option: Option) => {
+        const requestData = {language: option.value};
+        await languageUpdateMutation.mutateAsync(requestData);
+    };
 
     return (
         <div css={css`${isDesktop ? chatRoomCss : chatRoomCssMobile};
@@ -80,11 +85,13 @@ function ChannelInfo({chat}: { chat: Chat }) {
                                     label="Language"
                                     initialValue={data.language}
                                     options={languageOptions}
+                                    handleSubmit={handleLanguageChange}
                         />
                         <InfoSelect id="level"
                                     label="Level"
                                     initialValue={data.level}
                                     options={levelOptions}
+                                    handleSubmit={handleLanguageChange}
                         />
                     </section> :
                     null
