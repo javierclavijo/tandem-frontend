@@ -29,14 +29,14 @@ export const descriptionSection = css`
 export const languageSection = css`
   width: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
 `;
 
 export const languageItem = css`
-  width: 100%;
+  width: fit-content;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 0.5rem;
 `;
 
 export const listSection = css`

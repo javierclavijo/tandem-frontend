@@ -10,9 +10,10 @@ import {Channel} from "../../../entities/Channel";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import DescriptionTextarea from "../components/DescriptionTextarea";
-import {descriptionSection, infoSection, languageItem, languageSection, listSection, profileImg} from "./styles";
+import {descriptionSection, infoSection, languageSection, listSection, profileImg} from "./styles";
 import InfoListElement from "./InfoListElement";
 import {ChannelNameInput} from "../components/NameInput";
+import InfoSelect, {languageOptions, levelOptions} from "../components/InfoSelect";
 
 const placeholderImg = require("../../../static/images/user_placeholder.png");
 
@@ -38,6 +39,18 @@ function ChannelInfo({chat}: { chat: Chat }) {
         )), [data?.memberships, user]);
 
 
+    // const languageUpdateRequest = React.useCallback(async (requestData: { language: string }) => {
+    //     if (data) {
+    //         const response = await axiosApi.patch(data?.url, requestData);
+    //         return response.data;
+    //     }
+    // }, [data]);
+    //
+    // const languageUpdateMutation = useMutation(languageUpdateRequest, {
+    //     onSuccess: async (data) => {
+    //     }
+    // });
+
     return (
         <div css={css`${isDesktop ? chatRoomCss : chatRoomCssMobile};
           overflow-y: scroll;
@@ -51,7 +64,7 @@ function ChannelInfo({chat}: { chat: Chat }) {
                     <ChannelNameInput data={data}/> :
                     <p>{data?.name}</p>
                 }
-                <p>Channel · {data?.memberships.length} members</p>
+                <p>Channel [{data?.language}][{data?.level}] · {data?.memberships.length} members</p>
                 <section css={descriptionSection}>
                     {editable && data ?
                         <DescriptionTextarea data={data}/> :
@@ -61,16 +74,21 @@ function ChannelInfo({chat}: { chat: Chat }) {
                         </React.Fragment>
                     }
                 </section>
-                <section css={languageSection}>
-                    <div css={languageItem}>
-                        <h3>Language</h3>
-                        <p>{data?.language}</p>
-                    </div>
-                    <div css={languageItem}>
-                        <h3>Level</h3>
-                        <p>{data?.level}</p>
-                    </div>
-                </section>
+                {editable && data ?
+                    <section css={languageSection}>
+                        <InfoSelect id="language"
+                                    label="Language"
+                                    initialValue={data.language}
+                                    options={languageOptions}
+                        />
+                        <InfoSelect id="level"
+                                    label="Level"
+                                    initialValue={data.level}
+                                    options={levelOptions}
+                        />
+                    </section> :
+                    null
+                }
             </section>
             <section css={listSection}>
                 <h3>Members</h3>
@@ -84,8 +102,10 @@ function ChannelInfo({chat}: { chat: Chat }) {
                         : null
                 )}
             </section>
+            ;
         </div>
-    );
+    )
+        ;
 }
 
 export default ChannelInfo;

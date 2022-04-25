@@ -15,11 +15,11 @@ import {User} from "../../../entities/User";
 interface NameInputProps<T> {
     data: T;
     dataKey: keyof T;
-    updateMutation: UseMutationResult<any, unknown, any, unknown>;
+    mutation: UseMutationResult<any, unknown, any, unknown>;
 }
 
 
-function NameInput<T>({data, dataKey, updateMutation}: NameInputProps<T>) {
+function NameInput<T>({data, dataKey, mutation}: NameInputProps<T>) {
 
     const {
         editEnabled, setEditEnabled,
@@ -59,7 +59,7 @@ function NameInput<T>({data, dataKey, updateMutation}: NameInputProps<T>) {
         }
         const requestData = {} as any;
         requestData[dataKey] = value;
-        await updateMutation.mutateAsync(requestData);
+        await mutation.mutateAsync(requestData);
         setEditEnabled(false);
         return true;
     };
@@ -155,7 +155,7 @@ export function ChannelNameInput({data}: { data: Channel }) {
         }
     });
 
-    return <NameInput<Channel> data={data} dataKey="name" updateMutation={updateMutation}/>;
+    return <NameInput<Channel> data={data} dataKey="name" mutation={updateMutation}/>;
 
 }
 
@@ -181,6 +181,6 @@ export function UserNameInput({data}: { data: User }) {
         }
     });
 
-    return <NameInput<User> data={data} dataKey="username" updateMutation={updateMutation}/>;
+    return <NameInput<User> data={data} dataKey="username" mutation={updateMutation}/>;
 
 }
