@@ -77,7 +77,7 @@ function ChannelInfo({chat}: { chat: Chat }) {
                 {data?.memberships.map(membership =>
                     membership.user ?
                         <InfoListElement name={membership.user?.username}
-                                         additionalInfo={membership.role === "Administrator" ? "Admin" : undefined}
+                                         additionalInfo={membership.role === "A" ? "Admin" : undefined}
                                          description={membership.user.description}
                                          key={membership.url}
                         />
