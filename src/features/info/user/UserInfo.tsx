@@ -13,6 +13,7 @@ import {css} from "@emotion/react";
 import {descriptionSection, infoSection, languageSection, listSection, profileImg} from "../channel/styles";
 import {UserNameInput} from "../components/NameInput";
 import DescriptionTextarea from "../components/DescriptionTextarea";
+import InfoListElement from "../channel/InfoListElement";
 
 const placeholderImg = require("../../../static/images/user_placeholder.png");
 
@@ -60,9 +61,22 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
             </section>
             <section css={listSection}>
                 <h3>Friends</h3>
-                {/*{data?.memberships.map(membership =>*/}
-                {/*    <InfoListElement membership={membership} key={membership.url}/>*/}
-                {/*)}*/}
+                {data?.friends.map(friend =>
+                    <InfoListElement name={friend.username}
+                                     description={friend.description}
+                                     key={friend.id}
+                    />
+                )}
+            </section>
+            <section css={listSection}>
+                <h3>Channels</h3>
+                {data?.memberships.map(membership =>
+                    <InfoListElement name={membership.channel.name}
+                                     description={membership.channel.description}
+                                     additionalInfo={membership.role === "A" ? "Admin" : undefined}
+                                     key={membership.id}
+                    />
+                )}
             </section>
         </div>
     );
