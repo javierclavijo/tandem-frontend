@@ -3,7 +3,7 @@
 import React from "react";
 import {Chat} from "../../../entities/Chat";
 import {Link} from "react-router-dom";
-import {elementContentCss, imageContainerCss, imgCss, linkCss} from "./styles";
+import {elementContentCss, imageContainerCss, imgCss, linkCss} from "../styles";
 import {css} from "@emotion/react";
 import {DateTime} from "luxon";
 import {colors, textSizes} from "../../../styles/variables";

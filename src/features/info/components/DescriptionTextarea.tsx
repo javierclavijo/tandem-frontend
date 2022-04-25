@@ -65,6 +65,7 @@ function DescriptionTextarea({data}: DescriptionTextareaProps) {
                 elementRef?.current?.focus();
             }
         } else if (keyboardSubmitRef.current) {
+            // If the blur event was dispatched by the keyboard submit handler, just set 'enabled' to false.
             keyboardSubmitRef.current = false;
             setEditEnabled(false);
         } else {

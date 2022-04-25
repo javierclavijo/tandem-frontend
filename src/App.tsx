@@ -3,7 +3,7 @@
 import React from "react";
 import {Route, Routes} from "react-router-dom";
 import LogIn from "./features/auth/LogIn";
-import ChatList from "./features/chats/list/ChatList";
+import ChatMain from "./features/chats/ChatMain";
 import LogOut from "./features/auth/LogOut";
 import Home from "./features/home/Home";
 import ChatRoom from "./features/chats/room/ChatRoom";
@@ -20,7 +20,7 @@ export default function App() {
         <React.Fragment>
             <Global styles={globalStyles}/>
             <Routes>
-                <Route path="/chats" element={<ChatList/>}>
+                <Route path="/chats" element={<ChatMain/>}>
                     <Route path=":id/info" element={<ChatInfo/>}/>
                     <Route path=":id" element={<ChatRoom/>}/>
                     <Route path="profile" element={<OwnUserInfo/>}/>
