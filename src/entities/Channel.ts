@@ -1,4 +1,16 @@
-import {Membership} from "./Membership";
+export interface ChannelMembershipUser {
+    id: string;
+    url: string;
+    username: string;
+    description: string;
+}
+
+export interface ChannelMembership {
+    id: string,
+    url: string,
+    user: ChannelMembershipUser,
+    role: string,
+}
 
 export interface Channel {
     id: string;
@@ -7,5 +19,5 @@ export interface Channel {
     description: string;
     language: string;
     level: string;
-    memberships: Membership[];
+    memberships: ChannelMembership[];
 }
