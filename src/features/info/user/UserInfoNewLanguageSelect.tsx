@@ -7,7 +7,7 @@ import {useMutation} from "react-query";
 import {css} from "@emotion/react";
 import Select, {StylesConfig} from "react-select";
 import {colors} from "../../../styles/variables";
-import EditButton from "../components/EditButton";
+import EditButton from "../../../components/EditButton/EditButton";
 
 interface UserInfoNewLanguageSelectRequestData {
     language: string;

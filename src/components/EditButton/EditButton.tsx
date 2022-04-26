@@ -8,16 +8,18 @@ interface EditButtonProps {
     type: "enable" | "accept" | "cancel";
     visible: boolean;
     onClick: React.MouseEventHandler<HTMLButtonElement>;
-    color:string;
+    color: string;
 }
 
 const EditButton = React.forwardRef<HTMLButtonElement, EditButtonProps>((
     {type, visible, onClick, color}: EditButtonProps,
-    ref) => {
+    ref?) => {
+    // Edit button component with properties which allows visibility toggling, click event handling and ref forwarding.
+
     return (
         <button ref={ref}
                 onClick={onClick}
-                css={css`${button};
+                css={css`${buttonWithoutBackgroundAndBorder};
                   ${!visible ?
                           `display: none;` : ``
                   }
@@ -32,7 +34,7 @@ const EditButton = React.forwardRef<HTMLButtonElement, EditButtonProps>((
     );
 });
 
-const button = css`
+export const buttonWithoutBackgroundAndBorder = css`
   border: none;
   background: none;
   padding: 0;

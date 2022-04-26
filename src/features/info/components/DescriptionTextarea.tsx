@@ -9,7 +9,7 @@ import {axiosApi} from "../../auth/AuthContext";
 import {useMutation, useQueryClient} from "react-query";
 import {useEdit} from "../hooks";
 import {editElement} from "../channel/styles";
-import EditButtons from "./EditButtons";
+import EditButtons from "../../../components/EditButton/EditButtons";
 import {User} from "../../../entities/User";
 
 interface DescriptionTextareaProps {

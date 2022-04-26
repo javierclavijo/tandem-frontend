@@ -6,7 +6,7 @@ import {useEdit} from "../hooks";
 import {css} from "@emotion/react";
 import {colors} from "../../../styles/variables";
 import {editElement} from "../channel/styles";
-import EditButtons from "./EditButtons";
+import EditButtons from "../../../components/EditButton/EditButtons";
 import {axiosApi} from "../../auth/AuthContext";
 import {useMutation, UseMutationResult, useQueryClient} from "react-query";
 import {Chat} from "../../../entities/Chat";
