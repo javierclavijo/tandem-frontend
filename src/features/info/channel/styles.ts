@@ -26,13 +26,6 @@ export const descriptionSection = css`
   width: 100%;
 `;
 
-export const languageSection = css`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-`;
-
 export const languageItem = css`
   width: fit-content;
   display: flex;

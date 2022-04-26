@@ -10,7 +10,7 @@ import {Channel} from "../../../entities/Channel";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import DescriptionTextarea from "../components/DescriptionTextarea";
-import {descriptionSection, infoSection, languageItem, languageSection, listSection, profileImg} from "./styles";
+import {descriptionSection, infoSection, languageItem, listSection, profileImg} from "./styles";
 import InfoListElement from "./InfoListElement";
 import {ChannelNameInput} from "../components/NameInput";
 import InfoSelect, {languageOptions, levelOptions, Option} from "../components/InfoSelect";
@@ -80,8 +80,11 @@ function ChannelInfo({chat}: { chat: Chat }) {
                     }
                 </section>
                 {editable && data ?
-                    <section css={languageSection}>
-
+                    <section css={css`
+                      width: 100%;
+                      display: flex;
+                      gap: 0.5rem;
+                    `}>
                         <div css={languageItem}>
                             <label htmlFor="language">Language</label>
                             <InfoSelect id="language"

@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import InfoSelect, {languageOptions, levelOptions, Option} from "../components/InfoSelect";
+import InfoSelect, {levelOptions, Option} from "../components/InfoSelect";
 import {UserLanguage} from "../../../entities/User";
 import {axiosApi} from "../../auth/AuthContext";
 import {useMutation} from "react-query";
@@ -34,12 +34,10 @@ function UserInfoEditLanguageSelect({data}: UserInfoLanguageSelectProps) {
     return (
         <section css={css`
           display: flex;
+          align-items: center;
+          gap: 1rem;
         `}>
-            <InfoSelect id={`language-${data.id}`}
-                        initialValue={data.language}
-                        options={languageOptions}
-                        handleSubmit={(option) => handleChange(option, "language")}
-            />
+            <p>{data.language}</p>
             <InfoSelect id={`level-${data.id}`}
                         initialValue={data.level}
                         options={levelOptions}

@@ -16,10 +16,11 @@ interface UserInfoNewLanguageSelectRequestData {
 }
 
 const styles: StylesConfig = {
-    option: (provided, state) => ({
-        ...provided,
-        color: colors.DARK
-    })
+    menu: (base) => ({
+        ...base,
+        width: "max-content",
+        minWidth: "100%"
+    }),
 };
 
 function UserInfoNewLanguageSelect({onClose}: { onClose: () => void }) {
@@ -53,7 +54,7 @@ function UserInfoNewLanguageSelect({onClose}: { onClose: () => void }) {
             return true;
         }
         return false;
-    }, [languageValue, levelValue, user]);
+    }, [languageValue, levelValue, mutation, onClose, user]);
 
     return (
         <div css={css`
@@ -72,6 +73,10 @@ function UserInfoNewLanguageSelect({onClose}: { onClose: () => void }) {
                         onChange={(option: any) => setLanguageValue(option)}
                         onFocus={clearError}
                         options={languageOptions}
+                        isOptionDisabled={(option: any) =>
+                            // Disable the options for languages the user already has
+                            !!user?.languages.find(language => language.language === option.value)}
+                        placeholder="Language"
                         styles={styles}
                 />
                 <Select id={`level-new`}
@@ -79,6 +84,7 @@ function UserInfoNewLanguageSelect({onClose}: { onClose: () => void }) {
                         onChange={(option: any) => setLevelValue(option)}
                         onFocus={clearError}
                         options={levelOptions}
+                        placeholder="Level"
                         styles={styles}
                 />
                 <EditButton type={"accept"} visible={true} onClick={handleSubmit} color={colors.PRIMARY}/>

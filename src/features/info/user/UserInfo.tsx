@@ -10,13 +10,15 @@ import {User} from "../../../entities/User";
 import {useMatch} from "react-router-dom";
 import ProfileInfoHeader from "./ProfileInfoHeader";
 import {css} from "@emotion/react";
-import {descriptionSection, infoSection, languageSection, listSection, profileImg} from "../channel/styles";
+import {descriptionSection, infoSection, listSection, profileImg} from "../channel/styles";
 import {UserNameInput} from "../components/NameInput";
 import DescriptionTextarea from "../components/DescriptionTextarea";
 import InfoListElement from "../channel/InfoListElement";
 import UserInfoEditLanguageSelect from "./UserInfoEditLanguageSelect";
 import ReactModal from "react-modal";
 import UserInfoNewLanguageSelect from "./UserInfoNewLanguageSelect";
+import {colors} from "../../../styles/variables";
+import {Plus} from "iconoir-react";
 
 const placeholderImg = require("../../../static/images/user_placeholder.png");
 
@@ -49,6 +51,14 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                     <UserNameInput data={data}/> :
                     <p>{data?.username}</p>
                 }
+                <p css={css`
+                  display: flex;
+                  gap: 0.5rem;
+                `}>
+                    {data.languages.map(language =>
+                        <span key={language.id}>{language.language} · {language.level}</span>
+                    )}
+                </p>
                 <section css={descriptionSection}>
                     {editable ?
                         <DescriptionTextarea data={data}/> :
@@ -58,10 +68,16 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                         </React.Fragment>
                     }
                 </section>
-                <section css={languageSection}>
-                    <h3>Languages</h3>
-                    {editable ?
+                {editable ?
+                    <section css={css`
+                      width: 100%;
+                      display: flex;
+                      flex-direction: column;
+                      align-items: flex-start;
+                      gap: 0.5rem;
+                    `}>
                         <React.Fragment>
+                            <h3>Languages</h3>
                             {data.languages.map(language => {
                                     if (language.level !== "NA") {
                                         return <UserInfoEditLanguageSelect data={language} key={language.id}/>;
@@ -70,20 +86,21 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                                     }
                                 }
                             )}
-                            <button type="button" onClick={() => setModalIsOpen(true)}>
-                                Add a language
+                            <button type="button"
+                                    onClick={() => setModalIsOpen(true)}
+                                    css={css`
+                                      background: none;
+                                      color: ${colors.WHITE};
+                                      border: none;
+                                      display: flex;
+                                      align-items: center;
+                                    `}
+                            >
+                                Add a language <Plus/>
                             </button>
-                        </React.Fragment> :
-                        <p css={css`
-                          display: flex;
-                          gap: 0.5rem;
-                        `}>
-                            {data.languages.map(language =>
-                                <span>{language.language} · {language.level}</span>
-                            )}
-                        </p>
-                    }
-                </section>
+                        </React.Fragment>
+                    </section> : null
+                }
             </section>
             <section css={listSection}>
                 <h3>Friends</h3>
@@ -109,7 +126,20 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
             isOpen={modalIsOpen}
             onRequestClose={closeModal}
             contentLabel="Add a new language"
+            style={{
+                content: {
+                    margin: "auto",
+                    width: "fit-content",
+                    height: "fit-content",
+                    overflow: "visible",
+                    padding: "1.25rem",
+                }
+            }}
         >
+            <p css={css`
+              margin-bottom: 1rem;
+              color: ${colors.DARK};
+            `}>Add a new language</p>
             <UserInfoNewLanguageSelect onClose={closeModal}/>
         </ReactModal>
     </React.Fragment>

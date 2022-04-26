@@ -21,7 +21,6 @@ export const levelOptions: Option[] = [
     {value: "BE", label: "Beginner"},
     {value: "IN", label: "Intermediate"},
     {value: "AD", label: "Advanced"},
-    {value: "NA", label: "Native"},
 ];
 
 interface LanguageOrLevelSelectProps {
@@ -49,10 +48,15 @@ function InfoSelect({id, initialValue, options, handleSubmit}: LanguageOrLevelSe
     }, [initialValue, options]);
 
     const styles: StylesConfig = {
-        option: (provided, state) => ({
+        option: (provided) => ({
             ...provided,
             color: colors.DARK
-        })
+        }),
+        menu: (base) => ({
+            ...base,
+            width: "max-content",
+            minWidth: "100%"
+        }),
     };
 
     return value ?
