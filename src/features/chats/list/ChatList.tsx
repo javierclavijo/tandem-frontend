@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+
 import React from "react";
 import {listElementContainerCss} from "../styles";
 import ChatListElement from "./ChatListElement";
