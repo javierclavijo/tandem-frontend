@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import {useMutation, useQuery} from "react-query";
+import {useMutation, useQuery, useQueryClient} from "react-query";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {chatRoomCss, chatRoomCssMobile} from "../../chats/room/styles";
 import ChatRoomHeader from "../../chats/room/ChatRoomHeader";
@@ -44,6 +44,7 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
     const isUserProfile = useMatch("/chats/profile");
+    const queryClient = useQueryClient();
 
     // State hook which controls the language creation modal
     const [newLanguageModalIsOpen, setNewLanguageModalIsOpen] = React.useState(false);
@@ -56,7 +57,11 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
         return response.data;
     };
 
-    const deleteMutation = useMutation(deleteRequest);
+    const deleteMutation = useMutation(deleteRequest, {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries<User | undefined>(["users", "me"]);
+        }
+    });
 
     return <React.Fragment>
         <div css={css`${isDesktop ? chatRoomCss : chatRoomCssMobile};

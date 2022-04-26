@@ -3,11 +3,12 @@
 import React from "react";
 import {languageOptions, levelOptions, Option} from "../components/InfoSelect";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
-import {useMutation} from "react-query";
+import {useMutation, useQueryClient} from "react-query";
 import {css} from "@emotion/react";
 import Select, {StylesConfig} from "react-select";
 import {colors} from "../../../styles/variables";
 import EditButton from "../../../components/EditButton/EditButton";
+import {User} from "../../../entities/User";
 
 interface UserInfoNewLanguageSelectRequestData {
     language: string;
@@ -26,6 +27,7 @@ const styles: StylesConfig = {
 function UserInfoNewLanguageSelect({onClose}: { onClose: () => void }) {
 
     const {user} = useAuth();
+    const queryClient = useQueryClient();
 
     const [languageValue, setLanguageValue] = React.useState<Option | null>(null);
     const [levelValue, setLevelValue] = React.useState<Option | null>(null);
@@ -37,7 +39,8 @@ function UserInfoNewLanguageSelect({onClose}: { onClose: () => void }) {
     };
 
     const mutation = useMutation(updateRequest, {
-        onSuccess: async (data) => {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries<User | undefined>(["users", "me"]);
         }
     });
 

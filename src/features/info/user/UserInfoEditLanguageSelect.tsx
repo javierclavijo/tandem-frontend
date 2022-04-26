@@ -2,9 +2,9 @@
 
 import React from "react";
 import InfoSelect, {levelOptions, Option} from "../components/InfoSelect";
-import {UserLanguage} from "../../../entities/User";
+import {User, UserLanguage} from "../../../entities/User";
 import {axiosApi} from "../../auth/AuthContext";
-import {useMutation} from "react-query";
+import {useMutation, useQueryClient} from "react-query";
 import {css} from "@emotion/react";
 
 interface UserInfoLanguageSelectProps {
@@ -12,6 +12,8 @@ interface UserInfoLanguageSelectProps {
 }
 
 function UserInfoEditLanguageSelect({data}: UserInfoLanguageSelectProps) {
+
+    const queryClient = useQueryClient();
 
     const updateRequest = React.useCallback(async (requestData: { language: string }) => {
         if (data) {
@@ -21,7 +23,8 @@ function UserInfoEditLanguageSelect({data}: UserInfoLanguageSelectProps) {
     }, [data]);
 
     const mutation = useMutation(updateRequest, {
-        onSuccess: async (data) => {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries<User | undefined>(["users", "me"]);
         }
     });
 
