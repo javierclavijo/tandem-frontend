@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import {languageItem} from "../channel/styles";
 import Select, {StylesConfig} from "react-select";
 import {colors} from "../../../styles/variables";
 
@@ -27,7 +26,7 @@ export const levelOptions: Option[] = [
 
 interface LanguageOrLevelSelectProps {
     id: string;
-    initialValue: string;
+    initialValue?: string;
     options: Option[];
     handleSubmit: (option: Option) => Promise<any>;
 }

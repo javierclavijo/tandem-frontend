@@ -14,17 +14,26 @@ import {descriptionSection, infoSection, languageSection, listSection, profileIm
 import {UserNameInput} from "../components/NameInput";
 import DescriptionTextarea from "../components/DescriptionTextarea";
 import InfoListElement from "../channel/InfoListElement";
-import UserInfoLanguageSelect from "./UserInfoLanguageSelect";
+import UserInfoEditLanguageSelect from "./UserInfoEditLanguageSelect";
+import ReactModal from "react-modal";
+import UserInfoNewLanguageSelect from "./UserInfoNewLanguageSelect";
 
 const placeholderImg = require("../../../static/images/user_placeholder.png");
 
+ReactModal.setAppElement("#root");
 
 function UserInfo({data, editable}: { data: User, editable: boolean }) {
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
     const isUserProfile = useMatch("/chats/profile");
 
-    return (
+    const [modalIsOpen, setModalIsOpen] = React.useState(false);
+
+    const closeModal = () => {
+        setModalIsOpen(false);
+    };
+
+    return <React.Fragment>
         <div css={css`${isDesktop ? chatRoomCss : chatRoomCssMobile};
           overflow-y: scroll;
         `}>
@@ -52,14 +61,19 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                 <section css={languageSection}>
                     <h3>Languages</h3>
                     {editable ?
-                        data.languages.map(language => {
-                                if (language.level !== "NA") {
-                                    return <UserInfoLanguageSelect data={language}/>;
-                                } else {
-                                    return <span>{language.language} · {language.level}</span>
+                        <React.Fragment>
+                            {data.languages.map(language => {
+                                    if (language.level !== "NA") {
+                                        return <UserInfoEditLanguageSelect data={language} key={language.id}/>;
+                                    } else {
+                                        return <span key={language.id}>{language.language} · {language.level}</span>;
+                                    }
                                 }
-                            }
-                        ) :
+                            )}
+                            <button type="button" onClick={() => setModalIsOpen(true)}>
+                                Add a language
+                            </button>
+                        </React.Fragment> :
                         <p css={css`
                           display: flex;
                           gap: 0.5rem;
@@ -91,7 +105,15 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                 )}
             </section>
         </div>
-    );
+        <ReactModal
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+            contentLabel="Add a new language"
+        >
+            <UserInfoNewLanguageSelect onClose={closeModal}/>
+        </ReactModal>
+    </React.Fragment>
+        ;
 }
 
 export function OwnUserInfo() {

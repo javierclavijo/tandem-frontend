@@ -3,16 +3,16 @@
 import React from "react";
 import {css} from "@emotion/react";
 import {Cancel, Check, EditPencil} from "iconoir-react";
-import {colors} from "../../../styles/variables";
 
 interface EditButtonProps {
     type: "enable" | "accept" | "cancel";
     visible: boolean;
     onClick: React.MouseEventHandler<HTMLButtonElement>;
+    color:string;
 }
 
 const EditButton = React.forwardRef<HTMLButtonElement, EditButtonProps>((
-    {type, visible, onClick}: EditButtonProps,
+    {type, visible, onClick, color}: EditButtonProps,
     ref) => {
     return (
         <button ref={ref}
@@ -23,10 +23,10 @@ const EditButton = React.forwardRef<HTMLButtonElement, EditButtonProps>((
                   }
                 `}>
             {type === "enable" ?
-                <EditPencil color={colors.WHITE} width={"1.5rem"} height={"1.5rem"}/> :
+                <EditPencil color={color} width={"1.5rem"} height={"1.5rem"}/> :
                 type === "accept" ?
-                    <Check color={colors.WHITE} width={"1.5rem"} height={"1.5rem"}/> :
-                    <Cancel color={colors.WHITE} width={"1.5rem"} height={"1.5rem"}/>
+                    <Check color={color} width={"1.5rem"} height={"1.5rem"}/> :
+                    <Cancel color={color} width={"1.5rem"} height={"1.5rem"}/>
             }
         </button>
     );

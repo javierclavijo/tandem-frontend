@@ -105,6 +105,7 @@ function NameInput<T>({data, dataKey, mutation}: NameInputProps<T>) {
                 />
                 <EditButtons editEnabled={editEnabled} submitButtonRef={submitButtonRef}
                              handleSubmit={handleSubmit} handleCancel={handleCancel}
+                             color={colors.WHITE}
                 />
             </div>
 

@@ -113,6 +113,7 @@ function DescriptionTextarea({data}: DescriptionTextareaProps) {
             <h3>Description</h3>
             <EditButtons editEnabled={editEnabled} submitButtonRef={submitButtonRef}
                          handleSubmit={handleSubmit} handleCancel={handleCancel}
+                         color={colors.WHITE}
             />
         </div>
         <TextareaAutosize id="description" name="description" ref={elementRef}

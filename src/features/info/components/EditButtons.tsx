@@ -9,9 +9,10 @@ interface EditButtonsProps {
     submitButtonRef: React.MutableRefObject<HTMLButtonElement | null>;
     handleSubmit: () => Promise<boolean>;
     handleCancel: () => void;
+    color:string;
 }
 
-function EditButtons({editEnabled, submitButtonRef, handleSubmit, handleCancel}: EditButtonsProps) {
+function EditButtons({editEnabled, submitButtonRef, handleSubmit, handleCancel, color}: EditButtonsProps) {
     return (
         <div css={css`
           display: flex;
@@ -19,8 +20,8 @@ function EditButtons({editEnabled, submitButtonRef, handleSubmit, handleCancel}:
           justify-content: center;
         `}>
             <EditButton type="accept" visible={editEnabled} onClick={handleSubmit}
-                        ref={submitButtonRef}/>
-            <EditButton type="cancel" visible={editEnabled} onClick={handleCancel}/>
+                        ref={submitButtonRef} color={color}/>
+            <EditButton type="cancel" visible={editEnabled} onClick={handleCancel} color={color}/>
         </div>
     );
 }

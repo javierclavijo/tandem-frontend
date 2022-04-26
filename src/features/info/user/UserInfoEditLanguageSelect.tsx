@@ -3,8 +3,6 @@
 import React from "react";
 import InfoSelect, {languageOptions, levelOptions, Option} from "../components/InfoSelect";
 import {UserLanguage} from "../../../entities/User";
-import {StylesConfig} from "react-select";
-import {colors} from "../../../styles/variables";
 import {axiosApi} from "../../auth/AuthContext";
 import {useMutation} from "react-query";
 import {css} from "@emotion/react";
@@ -13,7 +11,7 @@ interface UserInfoLanguageSelectProps {
     data: UserLanguage;
 }
 
-function UserInfoLanguageSelect({data}: UserInfoLanguageSelectProps) {
+function UserInfoEditLanguageSelect({data}: UserInfoLanguageSelectProps) {
 
     const updateRequest = React.useCallback(async (requestData: { language: string }) => {
         if (data) {
@@ -33,7 +31,6 @@ function UserInfoLanguageSelect({data}: UserInfoLanguageSelectProps) {
         await mutation.mutateAsync(requestData);
     };
 
-
     return (
         <section css={css`
           display: flex;
@@ -52,4 +49,4 @@ function UserInfoLanguageSelect({data}: UserInfoLanguageSelectProps) {
     );
 }
 
-export default UserInfoLanguageSelect;
+export default UserInfoEditLanguageSelect;
