@@ -21,19 +21,19 @@ export const languageOptions: Option[] = [
 export const levelOptions: Option[] = [
     {value: "BE", label: "Beginner"},
     {value: "IN", label: "Intermediate"},
-    {value: "AD", label: "Advanced"}
+    {value: "AD", label: "Advanced"},
+    {value: "NA", label: "Native"},
 ];
 
 interface LanguageOrLevelSelectProps {
     id: string;
-    label: string;
     initialValue: string;
     options: Option[];
     handleSubmit: (option: Option) => Promise<any>;
 }
 
 
-function InfoSelect({id, label, initialValue, options, handleSubmit}: LanguageOrLevelSelectProps) {
+function InfoSelect({id, initialValue, options, handleSubmit}: LanguageOrLevelSelectProps) {
     const [value, setValue] = React.useState<Option | null>(null);
 
     const onChange = async (option: any) => {
@@ -57,15 +57,12 @@ function InfoSelect({id, label, initialValue, options, handleSubmit}: LanguageOr
     };
 
     return value ?
-        <div css={languageItem}>
-            <label htmlFor={id}>{label}</label>
-            <Select id={id}
-                    value={value}
-                    onChange={onChange}
-                    options={options}
-                    styles={styles}
-            />
-        </div>
+        <Select id={id}
+                value={value}
+                onChange={onChange}
+                options={options}
+                styles={styles}
+        />
         : null;
 }
 

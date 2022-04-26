@@ -10,7 +10,7 @@ import {Channel} from "../../../entities/Channel";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import DescriptionTextarea from "../components/DescriptionTextarea";
-import {descriptionSection, infoSection, languageSection, listSection, profileImg} from "./styles";
+import {descriptionSection, infoSection, languageItem, languageSection, listSection, profileImg} from "./styles";
 import InfoListElement from "./InfoListElement";
 import {ChannelNameInput} from "../components/NameInput";
 import InfoSelect, {languageOptions, levelOptions, Option} from "../components/InfoSelect";
@@ -81,18 +81,23 @@ function ChannelInfo({chat}: { chat: Chat }) {
                 </section>
                 {editable && data ?
                     <section css={languageSection}>
-                        <InfoSelect id="language"
-                                    label="Language"
-                                    initialValue={data.language}
-                                    options={languageOptions}
-                                    handleSubmit={handleLanguageChange}
-                        />
-                        <InfoSelect id="level"
-                                    label="Level"
-                                    initialValue={data.level}
-                                    options={levelOptions}
-                                    handleSubmit={handleLanguageChange}
-                        />
+
+                        <div css={languageItem}>
+                            <label htmlFor="language">Language</label>
+                            <InfoSelect id="language"
+                                        initialValue={data.language}
+                                        options={languageOptions}
+                                        handleSubmit={handleLanguageChange}
+                            />
+                        </div>
+                        <div css={languageItem}>
+                            <label htmlFor="level">Level</label>
+                            <InfoSelect id="level"
+                                        initialValue={data.level}
+                                        options={levelOptions}
+                                        handleSubmit={handleLanguageChange}
+                            />
+                        </div>
                     </section> :
                     null
                 }

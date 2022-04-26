@@ -1,3 +1,10 @@
+export interface UserLanguage {
+    id: string;
+    url: string;
+    language: string;
+    level: string;
+}
+
 export interface UserMembershipChannel {
     id: string;
     url: string;
@@ -21,10 +28,6 @@ export interface NestedUser {
     description: string;
 }
 
-export interface Language {
-    language: string,
-    level: string,
-}
 
 export interface User {
     id: string,
@@ -32,6 +35,6 @@ export interface User {
     username: string,
     description: string,
     friends: NestedUser[],
-    languages: Language[],
+    languages: UserLanguage[],
     memberships: UserMembership[],
 }

@@ -14,6 +14,7 @@ import {descriptionSection, infoSection, languageSection, listSection, profileIm
 import {UserNameInput} from "../components/NameInput";
 import DescriptionTextarea from "../components/DescriptionTextarea";
 import InfoListElement from "../channel/InfoListElement";
+import UserInfoLanguageSelect from "./UserInfoLanguageSelect";
 
 const placeholderImg = require("../../../static/images/user_placeholder.png");
 
@@ -49,14 +50,25 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                     }
                 </section>
                 <section css={languageSection}>
-                    {/*<div css={languageItem}>*/}
-                    {/*    <h3>Language</h3>*/}
-                    {/*    <p>{data?.language}</p>*/}
-                    {/*</div>*/}
-                    {/*<div css={languageItem}>*/}
-                    {/*    <h3>Level</h3>*/}
-                    {/*    <p>{data?.level}</p>*/}
-                    {/*</div>*/}
+                    <h3>Languages</h3>
+                    {editable ?
+                        data.languages.map(language => {
+                                if (language.level !== "NA") {
+                                    return <UserInfoLanguageSelect data={language}/>;
+                                } else {
+                                    return <span>{language.language} · {language.level}</span>
+                                }
+                            }
+                        ) :
+                        <p css={css`
+                          display: flex;
+                          gap: 0.5rem;
+                        `}>
+                            {data.languages.map(language =>
+                                <span>{language.language} · {language.level}</span>
+                            )}
+                        </p>
+                    }
                 </section>
             </section>
             <section css={listSection}>
