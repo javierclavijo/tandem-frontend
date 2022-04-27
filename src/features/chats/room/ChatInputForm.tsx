@@ -26,7 +26,7 @@ function ChatInputForm({chat}: { chat: Chat }) {
             const message = {
                 chat_id: chat.id,
                 content: inputValue,
-                chat_type: chat.chat_type
+                type: chat.type
             };
             sendJsonMessage(message);
             setInputValue("");

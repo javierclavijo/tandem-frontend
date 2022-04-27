@@ -8,9 +8,9 @@ function ChatInfo() {
     const params = useParams();
     const {data} = useChat(params.id as string, undefined);
 
-    return data?.chat_type === "user" ?
+    return data?.type === "user" ?
         <OtherUserInfo id={data?.id} url={data?.info_url}/> :
-        data?.chat_type === "channel" ?
+        data?.type === "channel" ?
             <ChannelInfo chat={data}/> :
             null
         ;

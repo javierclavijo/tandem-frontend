@@ -51,7 +51,7 @@ function UserInfoEditLanguageBadge({data, bg, onDelete}: LanguageBadgeProps) {
         if (initialOption) {
             setValue(initialOption);
         }
-    }, [levelOptions]);
+    }, [data.level]);
 
 
     return (

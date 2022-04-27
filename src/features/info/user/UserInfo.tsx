@@ -50,7 +50,7 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
 
     // State hook which controls the language creation modal
     const [newLanguageModalIsOpen, setNewLanguageModalIsOpen] = React.useState(false);
-    // Is set whenever a language's delete button is selected. Holds the selected language's
+    // Is set whenever a language's delete button is selected. Holds the selected language's data
     const [selectedDeleteLanguage, setSelectedDeleteLanguage] = React.useState<UserLanguage | null>(null);
 
 

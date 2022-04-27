@@ -65,7 +65,7 @@ function ChatRoom() {
                 {data?.messages.map(message => (
                     <ChatRoomMessage message={message}
                                      isOwnMessage={user?.id === message.author.id}
-                                     chat_type={data.chat_type}
+                                     type={data.type}
                                      key={message.id}/>
                 ))}
             </div>
@@ -83,7 +83,7 @@ function ChatRoom() {
                 {data?.messages.map(message => (
                     <ChatRoomMessage message={message}
                                      isOwnMessage={user?.id === message.author.id}
-                                     chat_type={data.chat_type}
+                                     type={data.type}
                                      key={message.id}/>
                 ))}
             </div>

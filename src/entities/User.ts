@@ -37,4 +37,5 @@ export interface User {
     friends: NestedUser[],
     languages: UserLanguage[],
     memberships: UserMembership[],
+    image: string;
 }

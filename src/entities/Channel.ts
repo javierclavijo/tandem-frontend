@@ -15,9 +15,15 @@ export interface ChannelMembership {
 export interface Channel {
     id: string;
     url: string;
-    name: string;
     description: string;
     language: string;
     level: string;
     memberships: ChannelMembership[];
+    image: string;
+    // Convenience attributes which contain info about the chat's channel or user.
+    info_url: string;
+    name: string;
+    // Type attribute, must be 'channel' in practice. Set to 'user' | 'channel' to be able to use it in the Chat
+    // interface.
+    type: "user" | "channel";
 }

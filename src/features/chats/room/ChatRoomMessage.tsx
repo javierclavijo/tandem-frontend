@@ -9,10 +9,10 @@ import {DateTime} from "luxon";
 interface ChatRoomMessageProps {
     message: ChatMessage;
     isOwnMessage: boolean;
-    chat_type: "user" | "channel";
+    type: "user" | "channel";
 }
 
-function ChatRoomMessage({message, isOwnMessage, chat_type}: ChatRoomMessageProps) {
+function ChatRoomMessage({message, isOwnMessage, type}: ChatRoomMessageProps) {
 
     const outerCss = css`
       display: flex;
@@ -67,7 +67,7 @@ function ChatRoomMessage({message, isOwnMessage, chat_type}: ChatRoomMessageProp
                 : null}
             <div
                 css={isOwnMessage ? ownMessageCss : otherMessageCss}>
-                {!isOwnMessage && chat_type === "channel" ?
+                {!isOwnMessage && type === "channel" ?
                     <span css={css`
                       font-size: ${textSizes.S};
                       width: fit-content;
