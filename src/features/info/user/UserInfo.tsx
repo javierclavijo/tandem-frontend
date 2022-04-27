@@ -18,9 +18,10 @@ import ReactModal from "react-modal";
 import UserInfoNewLanguageSelect from "./UserInfoNewLanguageSelect";
 import {colors} from "../../../styles/variables";
 import {Plus} from "iconoir-react";
-import EditButton, {buttonWithoutBackgroundAndBorder} from "../../../components/EditButton/EditButton";
+import {buttonWithoutBackgroundAndBorder} from "../../../components/EditButton/EditButton";
 import LanguageBadge from "../../../components/LanguageBadge/LanguageBadge";
 import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
+import {languages} from "../../../resources/languages";
 
 const placeholderImg = require("../../../static/images/user_placeholder.png");
 
@@ -100,6 +101,7 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                     <h3>Languages</h3>
                     <div css={css`
                       display: flex;
+                      flex-wrap: wrap;
                       gap: 0.5rem;
                     `}>
                         {editable ?
@@ -114,10 +116,8 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                                       align-items: center;
                                       gap: 1rem;
                                     `} key={language.id}>
-                                        <UserInfoEditLanguageBadge data={language} bg={colors.DARK}/>
-                                        <EditButton type={"cancel"} visible={true}
-                                                    onClick={() => setSelectedDeleteLanguage(language)}
-                                                    color={colors.WHITE}/>
+                                        <UserInfoEditLanguageBadge data={language} bg={colors.DARK}
+                                                                   onDelete={() => setSelectedDeleteLanguage(language)}/>
                                     </div>
                                 )}
                                 <button type="button"
@@ -130,7 +130,7 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                                           align-items: center;
                                         `}
                                 >
-                                    Add a language <Plus/>
+                                    Add<Plus/>
                                 </button>
                             </React.Fragment> :
                             data.languages.map(language =>
@@ -207,7 +207,7 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                 <p css={css`
                   margin-bottom: 1rem;
                   color: ${colors.DARK};
-                `}>Delete {selectedDeleteLanguage.language} from your languages?</p>
+                `}>Delete {languages.find(l=>l.key ===selectedDeleteLanguage.language)?.value} from your languages?</p>
                 <div css={css`
                   display: flex;
                   gap: 1rem;

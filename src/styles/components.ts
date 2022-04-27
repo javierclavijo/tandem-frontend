@@ -10,6 +10,7 @@ export const badge = css`
   gap: 0.5rem;
   padding: 0.25rem 0.5rem;
   width: fit-content;
+  height: 2rem;
 `;
 
 export const select: StylesConfig = {

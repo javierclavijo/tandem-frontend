@@ -12,13 +12,15 @@ import {levelOptions, Option} from "../components/InfoSelect";
 import {useMutation, useQueryClient} from "react-query";
 import {axiosApi} from "../../auth/AuthContext";
 import Select from "react-select";
+import EditButton from "../../../components/EditButton/EditButton";
 
 interface LanguageBadgeProps {
     data: UserLanguage;
     bg: string;
+    onDelete: () => void;
 }
 
-function UserInfoEditLanguageBadge({data, bg}: LanguageBadgeProps) {
+function UserInfoEditLanguageBadge({data, bg, onDelete}: LanguageBadgeProps) {
 
     const queryClient = useQueryClient();
     const [value, setValue] = React.useState<Option | null>(null);
@@ -65,6 +67,9 @@ function UserInfoEditLanguageBadge({data, bg}: LanguageBadgeProps) {
                     options={levelOptions}
                     styles={badgeSelect}
             />
+            <EditButton type={"cancel"} visible={true}
+                        onClick={onDelete}
+                        color={colors.WHITE}/>
         </div>
     );
 }
