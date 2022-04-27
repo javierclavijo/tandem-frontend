@@ -25,5 +25,5 @@ export interface Channel {
     name: string;
     // Type attribute, must be 'channel' in practice. Set to 'user' | 'channel' to be able to use it in the Chat
     // interface.
-    type: "user" | "channel";
+    type: "users" | "channels";
 }

@@ -8,7 +8,7 @@ export interface Chat extends UserChat, Channel {
     messages: ChatMessage[]
     info_url: string;
     name: string,
-    type: "user" | "channel",
+    type: "users" | "channels",
 }
 
 export interface UserChat {
@@ -21,5 +21,5 @@ export interface UserChat {
     name: string,
     // Type attribute, must be 'user' in practice. Set to 'user' | 'channel' to be able to use it in the Chat
     // interface.
-    type: "user" | "channel",
+    type: "users" | "channels",
 }
