@@ -3,7 +3,6 @@
 import React, {SyntheticEvent} from "react";
 import {useParams} from "react-router-dom";
 import {messageSortFn, useChat} from "../hooks";
-import {Chat} from "../../../entities/Chat";
 import useAuth from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import ChatRoomMessage from "./ChatRoomMessage";
@@ -21,13 +20,13 @@ function ChatRoom() {
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
 
-    const {data} = useChat(params.id as string, {
+    const {data, chat} = useChat(params.id as string, {
         staleTime: 15000,
         // Whenever query data changes, scroll to the bottom of the chat if it's positioned there to show new
         // messages, then sort messages
         onSuccess: (data) => {
             scrollToBottom();
-            return data.messages.sort((a, b) => messageSortFn(a, b)).reverse();
+            return data?.results.sort((a, b) => messageSortFn(a, b)).reverse();
         },
     });
 
@@ -37,7 +36,7 @@ function ChatRoom() {
         }
     };
 
-    React.useEffect(scrollToBottom, [data?.messages, isScrollBottom]);
+    React.useEffect(scrollToBottom, [data?.results, isScrollBottom]);
 
     const handleScroll = (event: SyntheticEvent) => {
         // On scroll, detect if the user has scrolled to bottom and set isScrollBottomRef.current accordingly. A number
@@ -51,9 +50,9 @@ function ChatRoom() {
         setIsScrollBottom(true);
     }, [data]);
 
-    return isDesktop ?
+    return isDesktop && chat ?
         <div css={chatRoomCss}>
-            <ChatRoomHeader id={data?.id as string}/>
+            <ChatRoomHeader id={chat?.id}/>
             <div ref={messageContainerRef}
                  onScroll={handleScroll}
                  css={css`
@@ -62,33 +61,35 @@ function ChatRoom() {
                    display: flex;
                    flex-direction: column;
                  `}>
-                {data?.messages.map(message => (
+                {data?.results.map(message => (
                     <ChatRoomMessage message={message}
                                      isOwnMessage={user?.id === message.author.id}
-                                     type={data.type}
+                                     type={chat?.type}
                                      key={message.id}/>
                 ))}
             </div>
-            <ChatInputForm chat={data as Chat}/>
+            <ChatInputForm chat={chat}/>
         </div> :
-        <div css={chatRoomCssMobile}>
-            <div ref={messageContainerRef}
-                 onScroll={handleScroll}
-                 css={css`
-                   overflow-y: scroll;
-                   height: 100%;
-                   display: flex;
-                   flex-direction: column;
-                 `}>
-                {data?.messages.map(message => (
-                    <ChatRoomMessage message={message}
-                                     isOwnMessage={user?.id === message.author.id}
-                                     type={data.type}
-                                     key={message.id}/>
-                ))}
+        chat ?
+            <div css={chatRoomCssMobile}>
+                <div ref={messageContainerRef}
+                     onScroll={handleScroll}
+                     css={css`
+                       overflow-y: scroll;
+                       height: 100%;
+                       display: flex;
+                       flex-direction: column;
+                     `}>
+                    {data?.results.map(message => (
+                        <ChatRoomMessage message={message}
+                                         isOwnMessage={user?.id === message.author.id}
+                                         type={chat.type}
+                                         key={message.id}/>
+                    ))}
+                </div>
+                <ChatInputForm chat={chat}/>
             </div>
-            <ChatInputForm chat={data as Chat}/>
-        </div>
+            : null
         ;
 }
 

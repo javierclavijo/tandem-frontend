@@ -11,7 +11,7 @@ import {useChat} from "../hooks";
 
 function ChatRoomHeader({id}: { id: string }) {
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
-    const {data} = useChat(id, {
+    const {chat} = useChat(id, {
         staleTime: 15000,
     });
 
@@ -25,7 +25,7 @@ function ChatRoomHeader({id}: { id: string }) {
               text-decoration: none;
               color: ${colors.WHITE};
             `}>
-                {data?.name}
+                {chat?.name}
             </Link></h2>
         </header>
     );

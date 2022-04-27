@@ -1,7 +1,7 @@
 import {QueryKey, useQuery, UseQueryOptions} from "react-query";
 import {Chat} from "../../entities/Chat";
 import useAuth, {axiosApi} from "../auth/AuthContext";
-import {ChatMessage} from "../../entities/ChatMessage";
+import {ChatMessage, ChatMessageResponse} from "../../entities/ChatMessage";
 import {DateTime} from "luxon";
 import React, {useState} from "react";
 import {User} from "../../entities/User";
@@ -29,7 +29,7 @@ const fetchChatList = async (user: User | undefined) => {
                 ...chat,
                 type: "users",
                 name: other_user.username,
-                info_url: other_user.url
+                infoUrl: other_user.url
             };
         });
         const channelChatsResponse = await axiosApi.get(`/channels/?memberships__user=${user.id}`);
@@ -38,7 +38,7 @@ const fetchChatList = async (user: User | undefined) => {
             return {
                 ...chat,
                 type: "channels",
-                info_url: chat.url
+                infoUrl: chat.url
             };
         });
         return [...userChats, ...channelChats];
@@ -57,10 +57,12 @@ export const useChatList = () => {
 };
 
 export const useChat = (id: string,
-                        queryOptions: Omit<UseQueryOptions<Chat, unknown, Chat, QueryKey>,
+                        queryOptions: Omit<UseQueryOptions<ChatMessageResponse, unknown, ChatMessageResponse, QueryKey>,
                             "queryKey" | "queryFn"> | undefined) => {
+    // Hook which holds the information about a chat and its messages.
+
     const {data: chatList} = useChatList();
-    const [chat, setChat] = useState<Chat>({} as Chat);
+    const [chat, setChat] = useState<Chat | undefined>();
 
     React.useLayoutEffect(() => {
         // Fetch the resource's URL and ID from the chat list
@@ -70,12 +72,17 @@ export const useChat = (id: string,
         }
     }, [chatList, id]);
 
-    return useQuery<Chat>(["chats", "detail", chat.id], async () => {
-            const response = await axiosApi.get(chat.url);
-            return response.data;
+    const query = useQuery<ChatMessageResponse>(["chats", "messages", chat?.id], async () => {
+            if (chat) {
+                const response = await axiosApi.get(chat?.messageUrl);
+                return response.data;
+            }
+            return undefined;
         }, {
             ...queryOptions,
-            enabled: !!chat.id
+            enabled: !!chat?.id
         }
     );
+
+    return {...query, chat};
 };

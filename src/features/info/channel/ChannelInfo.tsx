@@ -25,7 +25,7 @@ function ChannelInfo({chat}: { chat: Chat }) {
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
     const {user} = useAuth();
     const {data} = useQuery<Channel>(["chats", "info", chat.id], async () => {
-        const response = await axiosApi.get(chat.info_url);
+        const response = await axiosApi.get(chat.infoUrl);
         return response.data;
     }, {
         staleTime: 15000,

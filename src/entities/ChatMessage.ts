@@ -9,3 +9,10 @@ export interface ChatMessage {
     content: string,
     timestamp: string
 }
+
+export interface ChatMessageResponse {
+    count: number,
+    next: string | null,
+    previous: string | null,
+    results: ChatMessage[]
+}
