@@ -16,7 +16,7 @@ function ChatInputForm({chat}: { chat: Chat }) {
         sendJsonMessage,
     } = useWebSocket(`${process.env.REACT_APP_WS_URL}/ws/chats/?${token}`, {
         onClose: () => console.error("Chat socket closed unexpectedly"),
-        shouldReconnect: (closeEvent) => true,
+        shouldReconnect: () => true,
         share: true
     });
 
@@ -26,7 +26,7 @@ function ChatInputForm({chat}: { chat: Chat }) {
             const message = {
                 chat_id: chat.id,
                 content: inputValue,
-                type: chat.type
+                chat_type: chat.type
             };
             sendJsonMessage(message);
             setInputValue("");

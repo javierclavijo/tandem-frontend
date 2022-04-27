@@ -16,6 +16,7 @@ import Tabs from "../../components/Nav/Tabs";
 import ChatRoomHeader from "./room/ChatRoomHeader";
 import ProfileInfoHeader from "../info/user/ProfileInfoHeader";
 import ChatList from "./list/ChatList";
+import {ChatMessageResponse} from "../../entities/ChatMessage";
 
 
 function ChatMain() {
@@ -36,7 +37,7 @@ function ChatMain() {
         lastJsonMessage
     } = useWebSocket(`${process.env.REACT_APP_WS_URL}/ws/chats/?${token}`, {
         onClose: () => console.error("Chat socket closed unexpectedly"),
-        shouldReconnect: (closeEvent) => true,
+        shouldReconnect: () => true,
         share: true
     });
 
@@ -59,9 +60,9 @@ function ChatMain() {
                 return old;
             });
 
-            queryClient.setQueryData<Chat | undefined>(["chats", "detail", message.chat_id], (old) => {
+            queryClient.setQueryData<ChatMessageResponse | undefined>(["chats", "messages", message.chat_id], (old) => {
                     if (old !== undefined) {
-                        old.messages.push(message);
+                        old.results.push(message);
                     }
                     return old;
                 }

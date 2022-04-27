@@ -80,7 +80,7 @@ export const useChat = (id: string,
             return undefined;
         }, {
             ...queryOptions,
-            enabled: !!chat?.id
+            enabled: !!chat?.id,
         }
     );
 
