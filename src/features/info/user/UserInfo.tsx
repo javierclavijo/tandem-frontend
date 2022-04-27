@@ -20,6 +20,7 @@ import UserInfoNewLanguageSelect from "./UserInfoNewLanguageSelect";
 import {colors} from "../../../styles/variables";
 import {Plus} from "iconoir-react";
 import EditButton, {buttonWithoutBackgroundAndBorder} from "../../../components/EditButton/EditButton";
+import LanguageBadge from "../../../components/LanguageBadge/LanguageBadge";
 
 const placeholderImg = require("../../../static/images/user_placeholder.png");
 
@@ -39,7 +40,7 @@ const modalStyles = {
 
 
 function UserInfo({data, editable}: { data: User, editable: boolean }) {
-    // General info component. Is used by the OwnUserInfo and OtherUserInfo components, from which it receives the
+    // Generic user info component. Is used by the OwnUserInfo and OtherUserInfo components, from which it receives the
     // user's data and whether the information is editable by the user.
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
@@ -85,14 +86,59 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                     <UserNameInput data={data}/> :
                     <p>{data?.username}</p>
                 }
-                <p css={css`
+
+                {/* Languages
+                Only rendered in the logged-in user's own profile. Contains controls for creating, editing and removing
+                the user's languages */}
+                <section css={css`
+                  width: 100%;
                   display: flex;
+                  flex-direction: column;
+                  align-items: flex-start;
                   gap: 0.5rem;
                 `}>
-                    {data.languages.map(language =>
-                        <span key={language.id}>{language.language} · {language.level}</span>
-                    )}
-                </p>
+                    <h3>Languages</h3>
+                    <div css={css`
+                      display: flex;
+                      gap: 0.5rem;
+                    `}>
+                        {editable ?
+                            <React.Fragment>
+                                {/* Render selects for the user's non-native languages, as native languages can't be edited
+                            by the user */}
+                                {data.languages.filter(language => language.level !== "NA").map(language =>
+                                    <div css={css`
+                                      display: flex;
+                                      align-items: center;
+                                      gap: 1rem;
+                                    `} key={language.id}>
+                                        <UserInfoEditLanguageSelect data={language} key={language.id}/>
+                                        <EditButton type={"cancel"} visible={true}
+                                                    onClick={() => setSelectedDeleteLanguage(language)}
+                                                    color={colors.WHITE}/>
+                                    </div>
+                                )}
+                                <button type="button"
+                                        onClick={() => setNewLanguageModalIsOpen(true)}
+                                        css={css`
+                                          background: none;
+                                          color: ${colors.WHITE};
+                                          border: none;
+                                          display: flex;
+                                          align-items: center;
+                                        `}
+                                >
+                                    Add a language <Plus/>
+                                </button>
+                            </React.Fragment> :
+                            data.languages.map(language =>
+                                <LanguageBadge language={language.language} level={language.level} bg={colors.DARK}
+                                               key={language.id}/>
+                            )
+                        }
+                    </div>
+                </section>
+
                 <section css={descriptionSection}>
                     {editable ?
                         <DescriptionTextarea data={data}/> :
@@ -102,49 +148,6 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                         </React.Fragment>
                     }
                 </section>
-
-                {/* Language edit
-                Only rendered in the logged-in user's own profile. Contains controls for creating, editing and removing
-                the user's languages */}
-                {editable ?
-                    <section css={css`
-                      width: 100%;
-                      display: flex;
-                      flex-direction: column;
-                      align-items: flex-start;
-                      gap: 0.5rem;
-                    `}>
-                        <React.Fragment>
-                            <h3>Languages</h3>
-                            {/* Render selects for the user's non-native languages, as native languages can't be edited
-                            by the user */}
-                            {data.languages.filter(language => language.level !== "NA").map(language =>
-                                <div css={css`
-                                  display: flex;
-                                  align-items: center;
-                                  gap: 1rem;
-                                `} key={language.id}>
-                                    <UserInfoEditLanguageSelect data={language} key={language.id}/>
-                                    <EditButton type={"cancel"} visible={true}
-                                                onClick={() => setSelectedDeleteLanguage(language)}
-                                                color={colors.WHITE}/>
-                                </div>
-                            )}
-                            <button type="button"
-                                    onClick={() => setNewLanguageModalIsOpen(true)}
-                                    css={css`
-                                      background: none;
-                                      color: ${colors.WHITE};
-                                      border: none;
-                                      display: flex;
-                                      align-items: center;
-                                    `}
-                            >
-                                Add a language <Plus/>
-                            </button>
-                        </React.Fragment>
-                    </section> : null
-                }
             </section>
 
             {/* Friends */}

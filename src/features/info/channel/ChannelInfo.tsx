@@ -5,7 +5,7 @@ import {Chat} from "../../../entities/Chat";
 import {chatRoomCss, chatRoomCssMobile} from "../../chats/room/styles";
 import ChatRoomHeader from "../../chats/room/ChatRoomHeader";
 import {useMediaQuery} from "react-responsive";
-import {useMutation, useQuery} from "react-query";
+import {useMutation, useQuery, useQueryClient} from "react-query";
 import {Channel} from "../../../entities/Channel";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {css} from "@emotion/react";
@@ -14,6 +14,8 @@ import {descriptionSection, infoSection, languageItem, listSection, profileImg} 
 import InfoListElement from "./InfoListElement";
 import {ChannelNameInput} from "../components/NameInput";
 import InfoSelect, {languageOptions, levelOptions, Option} from "../components/InfoSelect";
+import LanguageBadge from "../../../components/LanguageBadge/LanguageBadge";
+import {colors} from "../../../styles/variables";
 
 const placeholderImg = require("../../../static/images/user_placeholder.png");
 
@@ -21,6 +23,7 @@ const placeholderImg = require("../../../static/images/user_placeholder.png");
 function ChannelInfo({chat}: { chat: Chat }) {
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
+    const queryClient = useQueryClient();
     const {user} = useAuth();
     const {data} = useQuery<Channel>(["chats", "info", chat.id], async () => {
         const response = await axiosApi.get(chat.info_url);
@@ -47,16 +50,18 @@ function ChannelInfo({chat}: { chat: Chat }) {
     }, [data]);
 
     const languageUpdateMutation = useMutation(languageUpdateRequest, {
-        onSuccess: async (data) => {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries<Channel | undefined>(["chats", "info", data?.id]);
         }
     });
 
-    const handleLanguageChange = async (option: Option) => {
-        const requestData = {language: option.value};
+    const handleChange = async (option: Option, key: keyof Channel) => {
+        const requestData = {} as any;
+        requestData[key] = option.value;
         await languageUpdateMutation.mutateAsync(requestData);
     };
 
-    return (
+    return data ?
         <div css={css`${isDesktop ? chatRoomCss : chatRoomCssMobile};
           overflow-y: scroll;
         `}>
@@ -69,7 +74,8 @@ function ChannelInfo({chat}: { chat: Chat }) {
                     <ChannelNameInput data={data}/> :
                     <p>{data?.name}</p>
                 }
-                <p>Channel [{data?.language}][{data?.level}] · {data?.memberships.length} members</p>
+                <p>Channel · {data?.memberships.length} members</p>
+                <LanguageBadge language={data.language} level={data.level} bg={colors.DARK}/>
                 <section css={descriptionSection}>
                     {editable && data ?
                         <DescriptionTextarea data={data}/> :
@@ -90,7 +96,7 @@ function ChannelInfo({chat}: { chat: Chat }) {
                             <InfoSelect id="language"
                                         initialValue={data.language}
                                         options={languageOptions}
-                                        handleSubmit={handleLanguageChange}
+                                        handleSubmit={(option) => handleChange(option, "language")}
                             />
                         </div>
                         <div css={languageItem}>
@@ -98,7 +104,7 @@ function ChannelInfo({chat}: { chat: Chat }) {
                             <InfoSelect id="level"
                                         initialValue={data.level}
                                         options={levelOptions}
-                                        handleSubmit={handleLanguageChange}
+                                        handleSubmit={(option) => handleChange(option, "level")}
                             />
                         </div>
                     </section> :
@@ -117,9 +123,8 @@ function ChannelInfo({chat}: { chat: Chat }) {
                         : null
                 )}
             </section>
-            ;
-        </div>
-    )
+        </div> :
+        null
         ;
 }
 
