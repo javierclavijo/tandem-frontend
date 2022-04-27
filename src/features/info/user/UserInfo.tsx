@@ -14,13 +14,13 @@ import {descriptionSection, infoSection, listSection, profileImg} from "../chann
 import {UserNameInput} from "../components/NameInput";
 import DescriptionTextarea from "../components/DescriptionTextarea";
 import InfoListElement from "../channel/InfoListElement";
-import UserInfoEditLanguageSelect from "./UserInfoEditLanguageSelect";
 import ReactModal from "react-modal";
 import UserInfoNewLanguageSelect from "./UserInfoNewLanguageSelect";
 import {colors} from "../../../styles/variables";
 import {Plus} from "iconoir-react";
 import EditButton, {buttonWithoutBackgroundAndBorder} from "../../../components/EditButton/EditButton";
 import LanguageBadge from "../../../components/LanguageBadge/LanguageBadge";
+import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
 
 const placeholderImg = require("../../../static/images/user_placeholder.png");
 
@@ -88,8 +88,8 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                 }
 
                 {/* Languages
-                Only rendered in the logged-in user's own profile. Contains controls for creating, editing and removing
-                the user's languages */}
+                If the view is editable, contains controls for creating, editing and removing the user's languages.
+                Else, it only displays the languages */}
                 <section css={css`
                   width: 100%;
                   display: flex;
@@ -106,13 +106,15 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                             <React.Fragment>
                                 {/* Render selects for the user's non-native languages, as native languages can't be edited
                             by the user */}
-                                {data.languages.filter(language => language.level !== "NA").map(language =>
+                                {data.languages.map(language => language.level === "NA" ?
+                                    <LanguageBadge language={language.language} level={language.level} bg={colors.DARK}
+                                                   key={language.id}/> :
                                     <div css={css`
                                       display: flex;
                                       align-items: center;
                                       gap: 1rem;
                                     `} key={language.id}>
-                                        <UserInfoEditLanguageSelect data={language} key={language.id}/>
+                                        <UserInfoEditLanguageBadge data={language} bg={colors.DARK}/>
                                         <EditButton type={"cancel"} visible={true}
                                                     onClick={() => setSelectedDeleteLanguage(language)}
                                                     color={colors.WHITE}/>

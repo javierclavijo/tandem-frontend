@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import Select, {StylesConfig} from "react-select";
-import {colors} from "../../../styles/variables";
+import Select from "react-select";
+import {select} from "../../../styles/components";
 
 export interface Option {
     value: string,
@@ -47,24 +47,12 @@ function InfoSelect({id, initialValue, options, handleSubmit}: LanguageOrLevelSe
         }
     }, [initialValue, options]);
 
-    const styles: StylesConfig = {
-        option: (provided) => ({
-            ...provided,
-            color: colors.DARK
-        }),
-        menu: (base) => ({
-            ...base,
-            width: "max-content",
-            minWidth: "100%"
-        }),
-    };
-
     return value ?
         <Select id={id}
                 value={value}
                 onChange={onChange}
                 options={options}
-                styles={styles}
+                styles={select}
         />
         : null;
 }

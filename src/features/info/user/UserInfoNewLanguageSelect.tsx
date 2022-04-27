@@ -5,24 +5,17 @@ import {languageOptions, levelOptions, Option} from "../components/InfoSelect";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {useMutation, useQueryClient} from "react-query";
 import {css} from "@emotion/react";
-import Select, {StylesConfig} from "react-select";
+import Select from "react-select";
 import {colors} from "../../../styles/variables";
 import EditButton from "../../../components/EditButton/EditButton";
 import {User} from "../../../entities/User";
+import {select} from "../../../styles/components";
 
 interface UserInfoNewLanguageSelectRequestData {
     language: string;
     level: string;
     user: string;
 }
-
-const styles: StylesConfig = {
-    menu: (base) => ({
-        ...base,
-        width: "max-content",
-        minWidth: "100%"
-    }),
-};
 
 function UserInfoNewLanguageSelect({onClose}: { onClose: () => void }) {
 
@@ -80,7 +73,7 @@ function UserInfoNewLanguageSelect({onClose}: { onClose: () => void }) {
                             // Disable the options for languages the user already has
                             !!user?.languages.find(language => language.language === option.value)}
                         placeholder="Language"
-                        styles={styles}
+                        styles={select}
                 />
                 <Select id={`level-new`}
                         value={levelValue}
@@ -88,7 +81,7 @@ function UserInfoNewLanguageSelect({onClose}: { onClose: () => void }) {
                         onFocus={clearError}
                         options={levelOptions}
                         placeholder="Level"
-                        styles={styles}
+                        styles={select}
                 />
                 <EditButton type={"accept"} visible={true} onClick={handleSubmit} color={colors.PRIMARY}/>
                 <EditButton type={"cancel"} visible={true} onClick={onClose} color={colors.PRIMARY}/>
