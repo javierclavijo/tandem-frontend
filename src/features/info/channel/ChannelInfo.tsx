@@ -16,6 +16,7 @@ import {ChannelNameInput} from "../components/NameInput";
 import LanguageBadge from "../../../components/LanguageBadge/LanguageBadge";
 import {colors} from "../../../styles/variables";
 import ChannelEditLanguageBadge from "./ChannelEditLanguageBadge";
+import ImageInput from "../components/ImageInput";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
@@ -49,10 +50,16 @@ function ChannelInfo({chat}: { chat: Chat }) {
                 <ChatRoomHeader id={data?.id as string}/> :
                 null}
             <section css={infoSection}>
-                <img src={data.image ?? defaultImg} alt="" css={profileImg}/>
                 {editable && data ?
-                    <ChannelNameInput data={data}/> :
-                    <p>{data?.name}</p>
+                    <React.Fragment>
+                        <ImageInput image={data.image} defaultImage={defaultImg}
+                                    url={data.url} invalidateQueryKey={["chats", "info", data.id]}/>
+                        <ChannelNameInput data={data}/>
+                    </React.Fragment> :
+                    <React.Fragment>
+                        <img src={data.image ?? defaultImg} alt="" css={profileImg}/>
+                        <p>{data?.name}</p>
+                    </React.Fragment>
                 }
                 <p>Channel · {data?.memberships.length} members</p>
                 {editable ?

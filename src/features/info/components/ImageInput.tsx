@@ -8,7 +8,7 @@ import {css} from "@emotion/react";
 import {colors, textSizes} from "../../../styles/variables";
 
 interface ImageInputProps {
-    image: string,
+    image: string | null,
     defaultImage: string,
     url: string,
     invalidateQueryKey: string | unknown[]
