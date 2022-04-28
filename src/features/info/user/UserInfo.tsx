@@ -23,7 +23,7 @@ import LanguageBadge from "../../../components/LanguageBadge/LanguageBadge";
 import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
 import {languages} from "../../../resources/languages";
 
-const placeholderImg = require("../../../static/images/user_placeholder.png");
+const defaultImg = require("../../../static/images/user_placeholder.png");
 
 // Set the modal's app element to "hide the application from assistive screenreaders and other assistive technologies
 // while the modal is open" (see react-modal docs: https://reactcommunity.org/react-modal/examples/set_app_element/).
@@ -82,7 +82,7 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
             Contains the user's picture, username, languages and description.
             */}
             <section css={infoSection}>
-                <img src={placeholderImg} alt="" css={profileImg}/>
+                <img src={data.image ?? defaultImg} alt="" css={profileImg}/>
                 {editable && data ?
                     <UserNameInput data={data}/> :
                     <p>{data?.username}</p>
@@ -159,6 +159,7 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                     <InfoListElement name={friend.username}
                                      description={friend.description}
                                      key={friend.id}
+                                     image={friend.image}
                     />
                 )}
             </section>
@@ -171,6 +172,7 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                                      description={membership.channel.description}
                                      additionalInfo={membership.role === "A" ? "Admin" : undefined}
                                      key={membership.id}
+                                     image={membership.channel.image}
                     />
                 )}
             </section>
@@ -207,7 +209,8 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                 <p css={css`
                   margin-bottom: 1rem;
                   color: ${colors.DARK};
-                `}>Delete {languages.find(l=>l.key ===selectedDeleteLanguage.language)?.value} from your languages?</p>
+                `}>Delete {languages.find(l => l.key === selectedDeleteLanguage.language)?.value} from your
+                    languages?</p>
                 <div css={css`
                   display: flex;
                   gap: 1rem;

@@ -17,7 +17,7 @@ import LanguageBadge from "../../../components/LanguageBadge/LanguageBadge";
 import {colors} from "../../../styles/variables";
 import ChannelEditLanguageBadge from "./ChannelEditLanguageBadge";
 
-const placeholderImg = require("../../../static/images/user_placeholder.png");
+const defaultImg = require("../../../static/images/user_placeholder.png");
 
 
 function ChannelInfo({chat}: { chat: Chat }) {
@@ -49,7 +49,7 @@ function ChannelInfo({chat}: { chat: Chat }) {
                 <ChatRoomHeader id={data?.id as string}/> :
                 null}
             <section css={infoSection}>
-                <img src={placeholderImg} alt="" css={profileImg}/>
+                <img src={data.image ?? defaultImg} alt="" css={profileImg}/>
                 {editable && data ?
                     <ChannelNameInput data={data}/> :
                     <p>{data?.name}</p>
@@ -77,6 +77,7 @@ function ChannelInfo({chat}: { chat: Chat }) {
                                          additionalInfo={membership.role === "A" ? "Admin" : undefined}
                                          description={membership.user.description}
                                          key={membership.url}
+                                         image={membership.user.image}
                         />
                         : null
                 )}

@@ -12,6 +12,7 @@ export interface UserMembershipChannel {
     description: string;
     language: string;
     level: string;
+    image: string | null;
 }
 
 export interface UserMembership {
@@ -26,6 +27,7 @@ export interface NestedUser {
     url: string;
     username: string;
     description: string;
+    image: string | null;
 }
 
 

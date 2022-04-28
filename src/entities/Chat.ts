@@ -1,28 +1,20 @@
 import {ChatMessage} from "./ChatMessage";
 import {User} from "./User";
-import {Channel} from "./Channel";
 
-export interface Chat extends UserChat, Channel {
+export interface Chat {
     id: string,
     url: string,
     messages: ChatMessage[]
-    infoUrl: string;
-    name: string,
+    image: string | null;
     type: "users" | "channels",
+    name: string,
+    // Contains the URL for the endpoint to fetch the channel's chat messages
     messageUrl: string
+    // Convenience attribute used to have a uniform accessor to the chat's user or channel
+    infoUrl: string;
 }
 
-export interface UserChat {
-    id: string,
-    url: string,
+export interface UserChat extends Chat {
     users: User[],
-    messages: ChatMessage[],
-    // Convenience attributes which contain info about the chat's channel or user, plus the endpoint to fetch the chat's
-    // messages
-    name: string,
-    infoUrl: string,
-    messageUrl: string,
-    // Type attribute, must be 'user' in practice. Set to 'user' | 'channel' to be able to use it in the Chat
-    // interface.
-    type: "users" | "channels",
+    type: "users",
 }

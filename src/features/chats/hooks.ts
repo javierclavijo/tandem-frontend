@@ -22,14 +22,15 @@ export const messageSortFn = (a: ChatMessage, b: ChatMessage) => {
 const fetchChatList = async (user: User | undefined) => {
     if (user) {
         const userChatsResponse = await axiosApi.get(`/user_chats/?users=${user.id}`);
-        // Add additional info to each chat (type, the other user's name and the other user's info URL)
+        // Add additional info to each chat (type, the other user's name, info URL and image)
         const userChats: Chat[] = [...userChatsResponse.data.results].map(chat => {
             const other_user = chat.users.find((u: User) => u.id !== user.id);
             return {
                 ...chat,
                 type: "users",
                 name: other_user.username,
-                infoUrl: other_user.url
+                infoUrl: other_user.url,
+                image: other_user.image
             };
         });
         const channelChatsResponse = await axiosApi.get(`/channels/?memberships__user=${user.id}`);

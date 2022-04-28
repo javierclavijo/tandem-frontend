@@ -6,19 +6,20 @@ import {css} from "@emotion/react";
 import {NavArrowDown} from "iconoir-react";
 import {colors} from "../../../styles/variables";
 
-const placeholderImg = require("../../../static/images/user_placeholder.png");
+const defaultImg = require("../../../static/images/user_placeholder.png");
 
 
 interface InfoListElementProps {
     name: string,
     additionalInfo?: string,
-    description: string
+    description: string,
+    image: string | null
 }
 
-function InfoListElement({name, additionalInfo, description}: InfoListElementProps) {
+function InfoListElement({name, additionalInfo, description, image}: InfoListElementProps) {
     return (
         <article css={infoListElementArticle}>
-            <img src={placeholderImg} alt="" css={infoListElementImg}/>
+            <img src={image ?? defaultImg} alt="" css={infoListElementImg}/>
             <div css={css`
               display: flex;
               flex-direction: column;

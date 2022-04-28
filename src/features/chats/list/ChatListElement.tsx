@@ -8,6 +8,8 @@ import {css} from "@emotion/react";
 import {DateTime} from "luxon";
 import {colors, textSizes} from "../../../styles/variables";
 
+const defaultImg = require("../../../static/images/user_placeholder.png");
+
 interface ChatListElementProps {
     chat: Chat;
     selected: boolean;
@@ -26,7 +28,7 @@ function ChatListElement({chat, selected, latestMessageIsOwn}: ChatListElementPr
         `}>
             <div css={elementContentCss}>
                 <div css={imageContainerCss}>
-                    <img src={require("../../../static/images/user_placeholder.png")} alt=""
+                    <img src={chat.image ?? defaultImg} alt=""
                          css={imgCss}/>
                 </div>
                 <div css={css`
