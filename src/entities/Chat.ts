@@ -14,7 +14,7 @@ export interface Chat {
     infoUrl: string;
 }
 
-export interface UserChat extends Chat {
+export interface FriendChat extends Chat {
     users: User[],
     type: "users",
 }

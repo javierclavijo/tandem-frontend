@@ -23,6 +23,7 @@ import LanguageBadge from "../../../components/LanguageBadge/LanguageBadge";
 import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
 import {languages} from "../../../resources/languages";
 import ImageInput from "../components/ImageInput";
+import {getFriendFromFriendChat} from "../../chats/hooks";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
@@ -164,12 +165,17 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
             {/* Friends */}
             <section css={listSection}>
                 <h3>Friends</h3>
-                {data?.friends.map(friend =>
-                    <InfoListElement name={friend.username}
-                                     description={friend.description}
-                                     key={friend.id}
-                                     image={friend.image}
-                    />
+                {data?.friend_chats.map(chat => {
+                        const friend = getFriendFromFriendChat(data, chat);
+                        if (friend) {
+                            return <InfoListElement name={friend.username}
+                                                    description={friend.description}
+                                                    key={friend.id}
+                                                    image={friend.image}
+                            />;
+                        }
+                        return null;
+                    }
                 )}
             </section>
 

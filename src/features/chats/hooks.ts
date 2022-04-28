@@ -1,5 +1,5 @@
 import {QueryKey, useQuery, UseQueryOptions} from "react-query";
-import {Chat} from "../../entities/Chat";
+import {Chat, FriendChat} from "../../entities/Chat";
 import useAuth, {axiosApi} from "../auth/AuthContext";
 import {ChatMessage, ChatMessageResponse} from "../../entities/ChatMessage";
 import {DateTime} from "luxon";
@@ -19,18 +19,20 @@ export const messageSortFn = (a: ChatMessage, b: ChatMessage) => {
     }
 };
 
+export const getFriendFromFriendChat = (user: User, chat: FriendChat) => chat.users.find((u: User) => u.id !== user.id);
+
 const fetchChatList = async (user: User | undefined) => {
     if (user) {
-        const userChatsResponse = await axiosApi.get(`/user_chats/?users=${user.id}`);
+        const friendChatsResponse = await axiosApi.get(`/friend_chats/?users=${user.id}`);
         // Add additional info to each chat (type, the other user's name, info URL and image)
-        const userChats: Chat[] = [...userChatsResponse.data.results].map(chat => {
-            const other_user = chat.users.find((u: User) => u.id !== user.id);
+        const friendChats: Chat[] = [...friendChatsResponse.data.results].map(chat => {
+            const other_user = getFriendFromFriendChat(user, chat);
             return {
                 ...chat,
                 type: "users",
-                name: other_user.username,
-                infoUrl: other_user.url,
-                image: other_user.image
+                name: other_user?.username,
+                infoUrl: other_user?.url,
+                image: other_user?.image
             };
         });
         const channelChatsResponse = await axiosApi.get(`/channels/?memberships__user=${user.id}`);
@@ -42,7 +44,7 @@ const fetchChatList = async (user: User | undefined) => {
                 infoUrl: chat.url
             };
         });
-        return [...userChats, ...channelChats];
+        return [...friendChats, ...channelChats];
     }
     return [];
 };

@@ -1,3 +1,5 @@
+import {FriendChat} from "./Chat";
+
 export interface UserLanguage {
     id: string;
     url: string;
@@ -22,21 +24,12 @@ export interface UserMembership {
     role: string;
 }
 
-export interface NestedUser {
-    id: string;
-    url: string;
-    username: string;
-    description: string;
-    image: string | null;
-}
-
-
 export interface User {
     id: string,
     url: string,
     username: string,
     description: string,
-    friends: NestedUser[],
+    friend_chats: FriendChat[],
     languages: UserLanguage[],
     memberships: UserMembership[],
     image: string;
