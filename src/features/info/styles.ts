@@ -54,7 +54,6 @@ export const infoListElementArticle = css`
 export const infoListElementImg = css`
   width: 3rem;
   height: 3rem;
-  border-radius: 50%;
   object-fit: cover;
 `;
 
