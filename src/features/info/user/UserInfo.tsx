@@ -78,7 +78,7 @@ export function UserInfo() {
 
     const deleteMutation = useMutation(deleteRequest, {
         onSuccess: async () => {
-            await queryClient.invalidateQueries<User | undefined>(["users", "me"]);
+            await queryClient.invalidateQueries<User | undefined>(["users", user?.id]);
         }
     });
 
@@ -102,7 +102,7 @@ export function UserInfo() {
                 {isEditable && data ?
                     <React.Fragment>
                         <ImageInput image={data.image} defaultImage={defaultImg}
-                                    url={data.url} invalidateQueryKey={["users", "me"]}/>
+                                    url={data.url} invalidateQueryKey={["users", user?.id]}/>
                         <UserNameInput data={data}/>
                     </React.Fragment> :
                     <React.Fragment>

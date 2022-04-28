@@ -27,6 +27,8 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
     const queryClient = useQueryClient();
 
     const [token, setToken] = useState<string>("");
+    const [id, setId] = useState<string>("");
+    const [url, setUrl] = useState<string>("");
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
@@ -34,19 +36,23 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
     const authHeaderInterceptorRef = React.useRef<number | null>(null);
 
 
-    const {data: user} = useQuery<User>(["users", "me"], async () => {
-        const response = await axiosApi.get("/users/me/");
+    const {data: user} = useQuery<User>(["users", id], async () => {
+        const response = await axiosApi.get(url);
         return response.data;
     }, {
-        enabled: Boolean(isLoggedIn),
+        enabled: isLoggedIn && !!url && !!id,
         staleTime: 15000,
     });
 
     React.useEffect(() => {
-        // Fetch token from localStorage on init
-        const token = localStorage.getItem("auth-token");
-        if (token) {
+        // Fetch token, ID and URL from localStorage on init
+        const token = localStorage.getItem("auth_token");
+        const id = localStorage.getItem("user_id");
+        const url = localStorage.getItem("user_url");
+        if (token && id && url) {
             setToken(token);
+            setId(id);
+            setUrl(url);
             setIsLoggedIn(true);
         }
     }, []);
@@ -59,9 +65,12 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
 
     const loginMutation = useMutation(loginRequest, {
         onSuccess: async (data) => {
-            const token = data.token;
-            setToken(token);
-            localStorage.setItem("auth-token", token);
+            setToken(data.token);
+            setId(data.id);
+            setUrl(data.url);
+            localStorage.setItem("auth_token", data.token);
+            localStorage.setItem("user_id", data.id);
+            localStorage.setItem("user_url", data.url);
             setIsLoggedIn(true);
         }
     });
@@ -79,19 +88,21 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
 
 
     const logout = React.useCallback(() => {
-        localStorage.removeItem("auth-token");
+        localStorage.removeItem("auth_token");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("user_url");
         setToken("");
         setIsLoggedIn(false);
 
         // On logout, remove the logged-in user query to avoid keeping the user's data in cache
-        queryClient.removeQueries(["users", "me"], {exact: true});
+        queryClient.removeQueries(["users", id], {exact: true});
 
         // Also, eject the Axios interceptor which appends the Authorization header
         const interceptor = authHeaderInterceptorRef.current;
         if (interceptor !== null) {
             axiosApi.interceptors.request.eject(interceptor);
         }
-    }, [queryClient]);
+    }, [id, queryClient]);
 
     React.useEffect(() => {
         // Add auth header to requests when token is updated
