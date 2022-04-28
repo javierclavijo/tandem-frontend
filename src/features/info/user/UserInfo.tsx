@@ -168,7 +168,7 @@ export function UserInfo() {
 
                 <section css={descriptionSection}>
                     {isEditable ?
-                        <DescriptionTextarea data={data}/> :
+                        <DescriptionTextarea data={data} queryKey={"users"}/> :
                         <React.Fragment>
                             <h3>Description</h3>
                             <p>{data?.description}</p>

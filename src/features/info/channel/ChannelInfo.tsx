@@ -57,7 +57,7 @@ function ChannelInfo() {
                 {editable && data ?
                     <React.Fragment>
                         <ImageInput image={data.image} defaultImage={defaultImg}
-                                    url={data.url} invalidateQueryKey={["chats", "info", data.id]}/>
+                                    url={data.url} invalidateQueryKey={["channels", data.id]}/>
                         <ChannelNameInput data={data}/>
                     </React.Fragment> :
                     <React.Fragment>
@@ -72,7 +72,7 @@ function ChannelInfo() {
                 }
                 <section css={descriptionSection}>
                     {editable && data ?
-                        <DescriptionTextarea data={data}/> :
+                        <DescriptionTextarea data={data} queryKey={"channels"}/> :
                         <React.Fragment>
                             <h3>Description</h3>
                             <p>{data?.description}</p>

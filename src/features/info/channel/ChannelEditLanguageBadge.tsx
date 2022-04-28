@@ -35,7 +35,7 @@ function UserInfoEditLanguageBadge({data, bg}: LanguageBadgeProps) {
 
     const updateMutation = useMutation(updateRequest, {
         onSuccess: async () => {
-            await queryClient.invalidateQueries<Channel | undefined>(["chats", "info", data?.id]);
+            await queryClient.invalidateQueries<Channel | undefined>(["channels", data?.id]);
         }
     });
 
@@ -53,7 +53,7 @@ function UserInfoEditLanguageBadge({data, bg}: LanguageBadgeProps) {
             setLevelValue(initialLevelOption);
             setLanguageValue(initialLanguageOption);
         }
-    }, []);
+    }, [data.language, data.level]);
 
 
     return (

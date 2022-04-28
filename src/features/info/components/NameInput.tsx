@@ -134,7 +134,7 @@ export function ChannelNameInput({data}: { data: Channel }) {
         onSuccess: async (requestData) => {
             // Update chat data in the channel's detail query, and also in the chat list and chat detail queries, to
             // update the header and the chat list
-            queryClient.setQueryData<Channel | undefined>(["chats", "info", data?.id], (old) => {
+            queryClient.setQueryData<Channel | undefined>(["channels", data?.id], (old) => {
                 if (old) {
                     old.name = requestData.name;
                 }
@@ -173,7 +173,7 @@ export function UserNameInput({data}: { data: User }) {
     const updateMutation = useMutation(updateRequest, {
         onSuccess: async (requestData) => {
             // Update chat data in logged-in user's query
-            queryClient.setQueryData<User | undefined>(["users", "me"], (old) => {
+            queryClient.setQueryData<User | undefined>(["users", data.id], (old) => {
                 if (old) {
                     old.username = requestData.username;
                 }
