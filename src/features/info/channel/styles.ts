@@ -14,9 +14,11 @@ export const infoSection = css`
 `;
 
 export const profileImg = css`
-  width: 50%;
+  width: 12rem;
+  height: 12rem;
   max-width: 12rem;
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 export const descriptionSection = css`
@@ -51,7 +53,9 @@ export const infoListElementArticle = css`
 
 export const infoListElementImg = css`
   width: 3rem;
+  height: 3rem;
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 export const editElement = css`
