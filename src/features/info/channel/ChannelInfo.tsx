@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
 import React, {useState} from "react";
-import {Chat} from "../../../entities/Chat";
 import {chatRoomCss, chatRoomCssMobile} from "../../chats/room/styles";
 import ChatRoomHeader from "../../chats/room/ChatRoomHeader";
 import {useMediaQuery} from "react-responsive";
@@ -17,19 +16,24 @@ import LanguageBadge from "../../../components/LanguageBadge/LanguageBadge";
 import {colors} from "../../../styles/variables";
 import ChannelEditLanguageBadge from "./ChannelEditLanguageBadge";
 import ImageInput from "../components/ImageInput";
+import {useParams} from "react-router-dom";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
 
-function ChannelInfo({chat}: { chat: Chat }) {
+function ChannelInfo() {
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
+    const params = useParams();
     const {user} = useAuth();
-    const {data} = useQuery<Channel>(["chats", "info", chat.id], async () => {
-        const response = await axiosApi.get(chat.infoUrl);
+
+    // Holds the channel's data
+    const {data} = useQuery<Channel>(["channels", params.id], async () => {
+        const response = await axiosApi.get(`/channels/${params.id}`);
         return response.data;
     }, {
         staleTime: 15000,
+        enabled: !!params.id
     });
 
 
@@ -89,9 +93,7 @@ function ChannelInfo({chat}: { chat: Chat }) {
                         : null
                 )}
             </section>
-        </div> :
-        null
-        ;
+        </div> : null;
 }
 
 export default ChannelInfo;

@@ -7,7 +7,7 @@ import {chatRoomCss, chatRoomCssMobile} from "../../chats/room/styles";
 import ChatRoomHeader from "../../chats/room/ChatRoomHeader";
 import {useMediaQuery} from "react-responsive";
 import {User, UserLanguage} from "../../../entities/User";
-import {useMatch} from "react-router-dom";
+import {useMatch, useParams} from "react-router-dom";
 import ProfileInfoHeader from "./ProfileInfoHeader";
 import {css} from "@emotion/react";
 import {descriptionSection, infoSection, listSection, profileImg} from "../styles";
@@ -42,19 +42,34 @@ const modalStyles = {
 };
 
 
-function UserInfo({data, editable}: { data: User, editable: boolean }) {
+export function UserInfo() {
     // Generic user info component. Is used by the OwnUserInfo and OtherUserInfo components, from which it receives the
     // user's data and whether the information is editable by the user.
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
     const isUserProfile = useMatch("/chats/profile");
     const queryClient = useQueryClient();
+    const params = useParams();
+    const {user} = useAuth();
 
-    // State hook which controls the language creation modal
+    // Holds the users's data
+    const {data} = useQuery<User>(["users", params.id], async () => {
+        const response = await axiosApi.get(`/users/${params.id}`);
+        return response.data;
+    }, {
+        staleTime: 15000,
+        enabled: !!params.id
+    });
+
+    // Controls whether the info is editable (i.e. if edit controls are displayed)
+    const [isEditable, setIsEditable] = React.useState<boolean>(false);
+    // Controls the language creation modal's rendering
     const [newLanguageModalIsOpen, setNewLanguageModalIsOpen] = React.useState(false);
     // Is set whenever a language's delete button is selected. Holds the selected language's data
     const [selectedDeleteLanguage, setSelectedDeleteLanguage] = React.useState<UserLanguage | null>(null);
 
+    // Set the view as editable if the info's user's ID is the same as the user's
+    React.useEffect(() => setIsEditable(!!user?.id && (user?.id === data?.id)), [user, data]);
 
     const deleteRequest = async (url: string) => {
         const response = await axiosApi.delete(url);
@@ -67,7 +82,7 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
         }
     });
 
-    return <React.Fragment>
+    return data ? <React.Fragment>
         <div css={css`${isDesktop ? chatRoomCss : chatRoomCssMobile};
           overflow-y: scroll;
         `}>
@@ -84,7 +99,7 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
             Contains the user's picture, username, languages and description.
             */}
             <section css={infoSection}>
-                {editable && data ?
+                {isEditable && data ?
                     <React.Fragment>
                         <ImageInput image={data.image} defaultImage={defaultImg}
                                     url={data.url} invalidateQueryKey={["users", "me"]}/>
@@ -114,7 +129,7 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                       flex-wrap: wrap;
                       gap: 0.5rem;
                     `}>
-                        {editable ?
+                        {isEditable ?
                             <React.Fragment>
                                 {/* Render selects for the user's non-native languages, as native languages can't be edited
                             by the user */}
@@ -152,7 +167,7 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
                 </section>
 
                 <section css={descriptionSection}>
-                    {editable ?
+                    {isEditable ?
                         <DescriptionTextarea data={data}/> :
                         <React.Fragment>
                             <h3>Description</h3>
@@ -195,7 +210,7 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
 
         {/* Language creation modal
         Only rendered if the profile is the current user's. Opens when the 'add a language' button is pressed. */}
-        {editable ?
+        {isEditable ?
             <ReactModal
                 isOpen={newLanguageModalIsOpen}
                 onRequestClose={() => setNewLanguageModalIsOpen(false)}
@@ -214,7 +229,7 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
         {/* Language deletion modal
         Only rendered if the profile is the current user's and a language has been selected for deletion (i.e. when a
         language's delete button has been pressed.) */}
-        {editable && selectedDeleteLanguage ?
+        {isEditable && selectedDeleteLanguage ?
             <ReactModal
                 isOpen={!!selectedDeleteLanguage}
                 onRequestClose={() => setSelectedDeleteLanguage(null)}
@@ -245,22 +260,5 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
             </ReactModal> :
             null
         }
-    </React.Fragment>;
-}
-
-export function OwnUserInfo() {
-    // User detail component for the current user. Editable.
-    const {user} = useAuth();
-    return user ? <UserInfo data={user} editable={true}/> : null;
-}
-
-export function OtherUserInfo({id, url}: { id: string, url: string }) {
-    // User detail component for users other than the current user. Non-editable.
-    const {data} = useQuery<User>(["chats", "info", id], async () => {
-        const response = await axiosApi.get(url);
-        return response.data;
-    }, {
-        staleTime: 15000,
-    });
-    return data ? <UserInfo data={data} editable={false}/> : null;
+    </React.Fragment> : null;
 }

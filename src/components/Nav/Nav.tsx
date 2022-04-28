@@ -17,7 +17,7 @@ function Nav() {
                     {isLoggedIn ?
                         <React.Fragment>
                             <li><NavLink to={"/chats"} css={linkCss}>Chats</NavLink></li>
-                            <li><NavLink to={"/chats/profile"} css={linkCss}>{user?.username}</NavLink></li>
+                            <li><NavLink to={`/chats/users/${user?.id}`} css={linkCss}>{user?.username}</NavLink></li>
                             <li><Link to={"/logout"} css={linkCss}>Log out</Link></li>
                         </React.Fragment> :
                         <li><Link to={"/login"} css={linkCss}>Log in</Link></li>
