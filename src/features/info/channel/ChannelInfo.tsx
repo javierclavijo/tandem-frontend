@@ -10,7 +10,7 @@ import {Channel} from "../../../entities/Channel";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import DescriptionTextarea from "../components/DescriptionTextarea";
-import {descriptionSection, infoSection, listSection, profileImg} from "./styles";
+import {descriptionSection, infoSection, listSection, profileImg} from "../styles";
 import InfoListElement from "./InfoListElement";
 import {ChannelNameInput} from "../components/NameInput";
 import LanguageBadge from "../../../components/LanguageBadge/LanguageBadge";

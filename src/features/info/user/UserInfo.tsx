@@ -10,7 +10,7 @@ import {User, UserLanguage} from "../../../entities/User";
 import {useMatch} from "react-router-dom";
 import ProfileInfoHeader from "./ProfileInfoHeader";
 import {css} from "@emotion/react";
-import {descriptionSection, infoSection, listSection, profileImg} from "../channel/styles";
+import {descriptionSection, infoSection, listSection} from "../styles";
 import {UserNameInput} from "../components/NameInput";
 import DescriptionTextarea from "../components/DescriptionTextarea";
 import InfoListElement from "../channel/InfoListElement";
@@ -22,6 +22,7 @@ import {buttonWithoutBackgroundAndBorder} from "../../../components/EditButton/E
 import LanguageBadge from "../../../components/LanguageBadge/LanguageBadge";
 import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
 import {languages} from "../../../resources/languages";
+import ImageInput from "../components/ImageInput";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
@@ -82,7 +83,8 @@ function UserInfo({data, editable}: { data: User, editable: boolean }) {
             Contains the user's picture, username, languages and description.
             */}
             <section css={infoSection}>
-                <img src={data.image ?? defaultImg} alt="" css={profileImg}/>
+                <ImageInput image={data.image} defaultImage={defaultImg}
+                            url={data.url} invalidateQueryKey={['users', 'me']}/>
                 {editable && data ?
                     <UserNameInput data={data}/> :
                     <p>{data?.username}</p>

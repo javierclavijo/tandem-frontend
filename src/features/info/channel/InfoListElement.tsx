@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import {infoListElementArticle, infoListElementImg} from "./styles";
+import {infoListElementArticle, infoListElementImg} from "../styles";
 import {css} from "@emotion/react";
 import {NavArrowDown} from "iconoir-react";
 import {colors} from "../../../styles/variables";
