@@ -44,6 +44,11 @@ export const listSection = css`
   flex-direction: column;
 `;
 
+export const listSectionHeader = css`
+  padding-left: 1rem;
+  padding-bottom: 1rem;
+`;
+
 export const infoListElementInnerContainer = css`
   width: 100%;
   display: flex;

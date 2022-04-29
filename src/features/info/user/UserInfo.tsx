@@ -10,7 +10,7 @@ import {User, UserLanguage} from "../../../entities/User";
 import {useMatch, useParams} from "react-router-dom";
 import ProfileInfoHeader from "./ProfileInfoHeader";
 import {css} from "@emotion/react";
-import {descriptionSection, infoSection, listSection, profileImg} from "../styles";
+import {descriptionSection, infoSection, listSection, listSectionHeader, profileImg} from "../styles";
 import {UserNameInput} from "../components/NameInput";
 import DescriptionTextarea from "../components/DescriptionTextarea";
 import InfoListElement from "../channel/InfoListElement";
@@ -179,7 +179,7 @@ export function UserInfo() {
 
             {/* Friends */}
             <section css={listSection}>
-                <h3>Friends</h3>
+                <h3 css={listSectionHeader}>Friends</h3>
                 {data?.friend_chats.map(chat => {
                         const friend = getFriendFromFriendChat(data, chat);
                         if (friend) {
@@ -193,11 +193,22 @@ export function UserInfo() {
                         return null;
                     }
                 )}
+                {/* Empty list */}
+                {!data?.friend_chats.length ?
+                    <article css={css`
+                      padding: 0.5rem 1rem;
+                    `}>
+                        <p>{isEditable ? "You have not added any friends yet." :
+                            "This user has not added any friends yet."}</p>
+                    </article>
+                    : null}
             </section>
 
             {/* Channels*/}
-            <section css={listSection}>
-                <h3>Channels</h3>
+            <section css={css`${listSection};
+              padding-top: 0;
+            `}>
+                <h3 css={listSectionHeader}>Channels</h3>
                 {data?.memberships.map(membership =>
                     <InfoListElement name={membership.channel.name}
                                      description={membership.channel.description}
@@ -207,6 +218,15 @@ export function UserInfo() {
                                      link={`/chats/channels/${membership.channel.id}`}
                     />
                 )}
+                {/* Empty list */}
+                {!data?.memberships.length ?
+                    <article css={css`
+                      padding: 0.5rem 1rem;
+                    `}>
+                        <p>{isEditable ? "You have not joined any channels yet." :
+                            "This user has not joined any channels yet."}</p>
+                    </article>
+                    : null}
             </section>
         </div>
 

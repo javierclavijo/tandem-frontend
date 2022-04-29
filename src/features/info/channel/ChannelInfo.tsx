@@ -9,7 +9,7 @@ import {Channel} from "../../../entities/Channel";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import DescriptionTextarea from "../components/DescriptionTextarea";
-import {descriptionSection, infoSection, listSection, profileImg} from "../styles";
+import {descriptionSection, infoSection, listSection, listSectionHeader, profileImg} from "../styles";
 import InfoListElement from "./InfoListElement";
 import {ChannelNameInput} from "../components/NameInput";
 import LanguageBadge from "../../../components/LanguageBadge/LanguageBadge";
@@ -81,7 +81,9 @@ function ChannelInfo() {
                 </section>
             </section>
             <section css={listSection}>
-                <h3>Members</h3>
+                <h3 css={listSectionHeader}>
+                    Members
+                </h3>
                 {data?.memberships.map(membership =>
                     membership.user ?
                         <InfoListElement name={membership.user?.username}
@@ -93,6 +95,14 @@ function ChannelInfo() {
                         />
                         : null
                 )}
+                {/* Empty list */}
+                {!data?.memberships.length ?
+                    <article css={css`
+                      padding: 0.5rem 1rem;
+                    `}>
+                        <p>This channel doesn't have any members yet.</p>
+                    </article>
+                    : null}
             </section>
         </div> : null;
 }
