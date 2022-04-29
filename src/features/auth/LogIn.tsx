@@ -5,7 +5,7 @@ import {useForm} from "react-hook-form";
 import useAuth, {LogInRequestData} from "./AuthContext";
 import {useNavigate} from "react-router-dom";
 import {buttonCss, errorCss, formCss, h2Css, inputCss, labelCss, mainCss, sectionCss} from "./styles";
-import Nav from "../../components/Nav/Nav";
+import Nav from "../../components/Nav";
 import {baseAppContainerWithoutTabsCss} from "../../styles/layout";
 
 function LogIn() {

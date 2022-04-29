@@ -19,7 +19,7 @@ import UserInfoNewLanguageSelect from "./UserInfoNewLanguageSelect";
 import {colors} from "../../../styles/variables";
 import {Plus} from "iconoir-react";
 import {buttonWithoutBackgroundAndBorder} from "../../../components/EditButton/EditButton";
-import LanguageBadge from "../../../components/LanguageBadge/LanguageBadge";
+import LanguageBadge from "../../../components/LanguageBadge";
 import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
 import {languages} from "../../../resources/languages";
 import ImageInput from "../components/ImageInput";

@@ -12,7 +12,7 @@ import DescriptionTextarea from "../components/DescriptionTextarea";
 import {descriptionSection, infoSection, listSection, listSectionHeader, profileImg} from "../styles";
 import InfoListElement from "./InfoListElement";
 import {ChannelNameInput} from "../components/NameInput";
-import LanguageBadge from "../../../components/LanguageBadge/LanguageBadge";
+import LanguageBadge from "../../../components/LanguageBadge";
 import {colors} from "../../../styles/variables";
 import ChannelEditLanguageBadge from "./ChannelEditLanguageBadge";
 import ImageInput from "../components/ImageInput";

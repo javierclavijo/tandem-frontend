@@ -5,7 +5,7 @@ import {chatRoomHeaderCss} from "./styles";
 import {Link} from "react-router-dom";
 import {css} from "@emotion/react";
 import {colors} from "../../../styles/variables";
-import BackButton from "../../../components/BackButton/BackButton";
+import BackButton from "../../../components/BackButton";
 import {useMediaQuery} from "react-responsive";
 import {getFriendFromFriendChat, useChat} from "../hooks";
 import useAuth from "../../auth/AuthContext";

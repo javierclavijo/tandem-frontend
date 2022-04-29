@@ -3,10 +3,10 @@
 import React from "react";
 import {css} from "@emotion/react";
 import {FlagIcon} from "react-flag-kit";
-import {colors} from "../../styles/variables";
-import {flagCodes, languages, levels} from "../../resources/languages";
-import {badge} from "../../styles/components";
-import ProficiencyLevelIcon from "../Icons/ProficiencyLevelIcon";
+import {colors} from "../styles/variables";
+import {flagCodes, languages, levels} from "../resources/languages";
+import {badge} from "../styles/components";
+import ProficiencyLevelIcon from "./Icons/ProficiencyLevelIcon";
 
 interface LanguageBadgeProps {
     language: string;

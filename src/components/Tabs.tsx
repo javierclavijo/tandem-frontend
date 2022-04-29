@@ -3,7 +3,7 @@
 import React from "react";
 import {css} from "@emotion/react";
 import {ChatLines, Home, Search} from "iconoir-react";
-import {colors} from "../../styles/variables";
+import {colors} from "../styles/variables";
 
 function Tabs() {
     return (

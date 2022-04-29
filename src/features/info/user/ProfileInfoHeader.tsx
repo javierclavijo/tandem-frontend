@@ -2,7 +2,7 @@
 
 import React from "react";
 import {chatRoomHeaderCss} from "../../chats/room/styles";
-import BackButton from "../../../components/BackButton/BackButton";
+import BackButton from "../../../components/BackButton";
 import {useMediaQuery} from "react-responsive";
 
 function ProfileInfoHeader() {

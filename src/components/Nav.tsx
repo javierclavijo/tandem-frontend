@@ -2,8 +2,9 @@
 
 import React from "react";
 import {Link, NavLink} from "react-router-dom";
-import useAuth from "../../features/auth/AuthContext";
-import {h1Css, headerCss, linkCss, navCss, ulCss} from "./styles";
+import useAuth from "../features/auth/AuthContext";
+import {css} from "@emotion/react";
+import {colors, textSizes} from "../styles/variables";
 
 
 function Nav() {
@@ -27,5 +28,43 @@ function Nav() {
         </header>
     );
 }
+
+
+const headerCss = css`
+  grid-area: header;
+  height: 100%;
+`;
+
+const navCss = css`
+  height: 100%;
+  background: ${colors.PRIMARY};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 3.125rem;
+  box-sizing: border-box;
+`;
+
+const h1Css = css`
+  color: ${colors.WHITE};
+  margin: 0;
+  font-size: ${textSizes.XL};
+`;
+
+const ulCss = css`
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  gap: 20px;
+`;
+
+const linkCss = css`
+  text-decoration: none;
+  color: ${colors.WHITE};
+  font-size: ${textSizes.M};
+`;
+
 
 export default Nav;
