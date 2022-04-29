@@ -97,8 +97,7 @@ function ChatMain() {
                 <section css={isDesktop ? chatRoomCss : chatRoomCssMobile}>
                     {header ?
                         <AltChatHeader {...header}                        />
-                        : null
-                    }
+                        : null}
                     <Outlet context={[header, setHeader]}/>
                 </section>
             </main>
@@ -107,7 +106,9 @@ function ChatMain() {
         // Mobile chat room
         params.id ?
             <div css={baseAppContainerWithoutTabsCss}>
-                <AltChatHeader {...header}/>
+                {header ?
+                    <AltChatHeader {...header}/>
+                    : null}
                 <main css={mainCssMobile}>
                     <Outlet context={[header, setHeader]}/>
                 </main>

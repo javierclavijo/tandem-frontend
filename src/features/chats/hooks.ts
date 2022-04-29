@@ -5,6 +5,8 @@ import {ChatMessage, ChatMessageResponse} from "../../entities/ChatMessage";
 import {DateTime} from "luxon";
 import React, {useState} from "react";
 import {User} from "../../entities/User";
+import {useOutletContext} from "react-router-dom";
+import {ChatHeaderProps} from "./ChatMain";
 
 export const messageSortFn = (a: ChatMessage, b: ChatMessage) => {
     const aDateTime = DateTime.fromISO(a.timestamp);
@@ -88,4 +90,34 @@ export const useChat = (id: string,
     );
 
     return {...query, chat};
+};
+
+export const useSetChatHeader = (chat: Chat | undefined | null) => {
+    /**
+     * Used to set the header's data according to the current view's resource's data, or to set it as null to avoid
+     * rendering it when it shouldn't
+     */
+    const {user} = useAuth();
+    const [, setHeader] = useOutletContext<[ChatHeaderProps | null, React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>]>();
+
+    return React.useEffect(() => {
+        if (chat) {
+            let headerProps;
+            if (chat.type === "users") {
+                const friend = getFriendFromFriendChat(user!, chat as FriendChat);
+                headerProps = {
+                    link: `/chats/users/${friend?.id}`,
+                    name: friend?.username,
+                    image: friend?.image
+                };
+            } else {
+                headerProps = {
+                    link: `/chats/channels/${(chat.id)}`,
+                    name: chat.name,
+                    image: chat.image
+                };
+            }
+            setHeader(headerProps);
+        }
+    }, [chat]);
 };

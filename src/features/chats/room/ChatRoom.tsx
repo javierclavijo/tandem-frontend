@@ -1,15 +1,12 @@
 /** @jsxImportSource @emotion/react */
 
 import React, {SyntheticEvent} from "react";
-import {useOutletContext, useParams} from "react-router-dom";
-import {getFriendFromFriendChat, messageSortFn, useChat} from "../hooks";
+import {useParams} from "react-router-dom";
+import {messageSortFn, useChat, useSetChatHeader} from "../hooks";
 import useAuth from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import ChatRoomMessage from "./ChatRoomMessage";
 import ChatInputForm from "./ChatInputForm";
-import {useMediaQuery} from "react-responsive";
-import {ChatHeaderProps} from "../ChatMain";
-import {FriendChat} from "../../../entities/Chat";
 
 function ChatRoom() {
     const params = useParams();
@@ -17,8 +14,6 @@ function ChatRoom() {
 
     const messageContainerRef = React.useRef<HTMLDivElement>(null);
     const [isScrollBottom, setIsScrollBottom] = React.useState<boolean>(true);
-
-    const [header, setHeader] = useOutletContext<[ChatHeaderProps | null, React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>]>();
 
     const {data, chat} = useChat(params.id as string, {
         staleTime: 15000,
@@ -30,29 +25,7 @@ function ChatRoom() {
         },
     });
 
-    /**
-     * Set the header's data
-     */
-    React.useEffect(() => {
-        if (chat) {
-            let headerProps;
-            if (chat.type === "users") {
-                const friend = getFriendFromFriendChat(user!, chat as FriendChat);
-                headerProps = {
-                    link: `/chats/users/${friend?.id}`,
-                    name: friend?.username,
-                    image: friend?.image
-                };
-            } else {
-                headerProps = {
-                    link: `/chats/channels/${(chat.id)}`,
-                    name: chat.name,
-                    image: chat.image
-                };
-            }
-            setHeader(headerProps);
-        }
-    }, [chat]);
+    useSetChatHeader(chat)
 
     const scrollToBottom = () => {
         if (isScrollBottom) {
