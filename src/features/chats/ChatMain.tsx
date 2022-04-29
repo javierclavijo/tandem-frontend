@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import React, {useEffect} from "react";
-import {Outlet, useMatch, useParams} from "react-router-dom";
+import {Outlet, To, useMatch, useParams} from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import useAuth from "../auth/AuthContext";
 import {useQueryClient} from "react-query";
@@ -13,11 +13,17 @@ import {useMediaQuery} from "react-responsive";
 import Nav from "../../components/Nav";
 import {baseAppContainerWithoutTabsCss, baseAppContainerWithTabsCss} from "../../styles/layout";
 import Tabs from "../../components/Tabs";
-import ChatHeader from "../../components/ChatHeader";
 import ProfileInfoHeader from "../info/user/ProfileInfoHeader";
 import ChatList from "./list/ChatList";
 import {ChatMessageResponse} from "../../entities/ChatMessage";
+import AltChatHeader from "../../components/AltChatHeader";
+import {chatRoomCss, chatRoomCssMobile} from "./room/styles";
 
+export interface ChatHeaderProps {
+    name?: string;
+    link?: To;
+    image?: string | null;
+}
 
 function ChatMain() {
 
@@ -32,6 +38,11 @@ function ChatMain() {
 
     const [filter, setFilter] = React.useState<string>("");
 
+    /**
+     * State to be used in chat header context. This way, the header's data can be obtained from the view components
+     * themselves, without them having to contain the header themselves.
+     */
+    const [header, setHeader] = React.useState<ChatHeaderProps | null>(null);
 
     const {
         lastJsonMessage
@@ -83,16 +94,22 @@ function ChatMain() {
                         null
                     }
                 </section>
-                <Outlet/>
+                <section css={isDesktop ? chatRoomCss : chatRoomCssMobile}>
+                    {header ?
+                        <AltChatHeader {...header}                        />
+                        : null
+                    }
+                    <Outlet context={[header, setHeader]}/>
+                </section>
             </main>
         </div> :
 
         // Mobile chat room
         params.id ?
             <div css={baseAppContainerWithoutTabsCss}>
-                <ChatHeader id={params.id}/>
+                <AltChatHeader {...header}/>
                 <main css={mainCssMobile}>
-                    <Outlet/>
+                    <Outlet context={[header, setHeader]}/>
                 </main>
             </div> :
 
@@ -101,7 +118,7 @@ function ChatMain() {
                 <div css={baseAppContainerWithoutTabsCss}>
                     <ProfileInfoHeader/>
                     <main css={mainCssMobile}>
-                        <Outlet/>
+                        <Outlet context={[header, setHeader]}/>
                     </main>
                 </div> :
 

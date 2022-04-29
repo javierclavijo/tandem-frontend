@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
 
 import React, {SyntheticEvent} from "react";
-import {useParams} from "react-router-dom";
-import {messageSortFn, useChat} from "../hooks";
+import {useOutletContext, useParams} from "react-router-dom";
+import {getFriendFromFriendChat, messageSortFn, useChat} from "../hooks";
 import useAuth from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import ChatRoomMessage from "./ChatRoomMessage";
 import ChatInputForm from "./ChatInputForm";
-import {chatRoomCss, chatRoomCssMobile} from "./styles";
 import {useMediaQuery} from "react-responsive";
-import ChatHeader from "../../../components/ChatHeader";
+import {ChatHeaderProps} from "../ChatMain";
+import {FriendChat} from "../../../entities/Chat";
 
 function ChatRoom() {
     const params = useParams();
@@ -18,17 +18,41 @@ function ChatRoom() {
     const messageContainerRef = React.useRef<HTMLDivElement>(null);
     const [isScrollBottom, setIsScrollBottom] = React.useState<boolean>(true);
 
-    const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
+    const [header, setHeader] = useOutletContext<[ChatHeaderProps | null, React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>]>();
 
     const {data, chat} = useChat(params.id as string, {
         staleTime: 15000,
         // Whenever query data changes, scroll to the bottom of the chat if it's positioned there to show new
-        // messages, then sort messages
+        // messages, then sort messages.
         onSuccess: (data) => {
             scrollToBottom();
             return data?.results.sort((a, b) => messageSortFn(a, b)).reverse();
         },
     });
+
+    /**
+     * Set the header's data
+     */
+    React.useEffect(() => {
+        if (chat) {
+            let headerProps;
+            if (chat.type === "users") {
+                const friend = getFriendFromFriendChat(user!, chat as FriendChat);
+                headerProps = {
+                    link: `/chats/users/${friend?.id}`,
+                    name: friend?.username,
+                    image: friend?.image
+                };
+            } else {
+                headerProps = {
+                    link: `/chats/channels/${(chat.id)}`,
+                    name: chat.name,
+                    image: chat.image
+                };
+            }
+            setHeader(headerProps);
+        }
+    }, [chat]);
 
     const scrollToBottom = () => {
         if (isScrollBottom) {
@@ -50,9 +74,8 @@ function ChatRoom() {
         setIsScrollBottom(true);
     }, [data]);
 
-    return isDesktop && chat ?
-        <div css={chatRoomCss}>
-            <ChatHeader id={chat?.id}/>
+    return chat ?
+        <React.Fragment>
             <div ref={messageContainerRef}
                  onScroll={handleScroll}
                  css={css`
@@ -69,28 +92,8 @@ function ChatRoom() {
                 ))}
             </div>
             <ChatInputForm chat={chat}/>
-        </div> :
-        chat ?
-            <div css={chatRoomCssMobile}>
-                <div ref={messageContainerRef}
-                     onScroll={handleScroll}
-                     css={css`
-                       overflow-y: scroll;
-                       height: 100%;
-                       display: flex;
-                       flex-direction: column;
-                     `}>
-                    {data?.results.map(message => (
-                        <ChatRoomMessage message={message}
-                                         isOwnMessage={user?.id === message.author.id}
-                                         type={chat.type}
-                                         key={message.id}/>
-                    ))}
-                </div>
-                <ChatInputForm chat={chat}/>
-            </div>
-            : null
-        ;
+        </React.Fragment>
+        : null;
 }
 
 export default ChatRoom;
