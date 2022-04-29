@@ -38,7 +38,7 @@ function ChatList({data, filter, userId, selectedId}: ChatListProps) {
             user doesn't have any chats. */}
             {!filteredElements.length ?
                 <article css={css`
-                  padding: 1rem;
+                  padding: 0 1rem 1rem 1rem;
                 `}>
                     <p>
                         {data.length ?
