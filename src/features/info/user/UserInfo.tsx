@@ -38,6 +38,9 @@ const modalStyles = {
         height: "fit-content",
         overflow: "visible",
         padding: "1.25rem",
+    },
+    overlay: {
+        zIndex: 100
     }
 };
 
