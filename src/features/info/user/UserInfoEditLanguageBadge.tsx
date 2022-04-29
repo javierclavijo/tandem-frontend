@@ -3,7 +3,6 @@
 import React from "react";
 import {css} from "@emotion/react";
 import {FlagIcon} from "react-flag-kit";
-import {ThreeStars} from "iconoir-react";
 import {colors} from "../../../styles/variables";
 import {flagCodes, languages} from "../../../resources/languages";
 import {badge, badgeSelect} from "../../../styles/components";
@@ -13,6 +12,7 @@ import {useMutation, useQueryClient} from "react-query";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import Select from "react-select";
 import EditButton from "../../../components/EditButton/EditButton";
+import ProficiencyLevelIcon from "../../../components/Icons/ProficiencyLevelIcon";
 
 interface LanguageBadgeProps {
     data: UserLanguage;
@@ -60,7 +60,7 @@ function UserInfoEditLanguageBadge({data, bg, onDelete}: LanguageBadgeProps) {
             <FlagIcon code={flagCodes.find(x => x.key === data.language)?.value || "AD"} size={24}/>
             <span>{languages.find(l => l.key === data.language)?.value}</span>
             <span>|</span>
-            <ThreeStars color={colors.WHITE} height={24} width={24}/>
+            <ProficiencyLevelIcon level={data.level} color={colors.WHITE} height={24} width={24}/>
             <Select id={`level-${data.id}`}
                     value={value}
                     onChange={onChange}

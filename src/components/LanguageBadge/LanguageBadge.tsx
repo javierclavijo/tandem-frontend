@@ -3,10 +3,10 @@
 import React from "react";
 import {css} from "@emotion/react";
 import {FlagIcon} from "react-flag-kit";
-import {ThreeStars} from "iconoir-react";
 import {colors} from "../../styles/variables";
 import {flagCodes, languages, levels} from "../../resources/languages";
 import {badge} from "../../styles/components";
+import ProficiencyLevelIcon from "../Icons/ProficiencyLevelIcon";
 
 interface LanguageBadgeProps {
     language: string;
@@ -21,7 +21,7 @@ function LanguageBadge({language, level, bg}: LanguageBadgeProps) {
             <FlagIcon code={flagCodes.find(x => x.key === language)?.value || "AD"} size={24}/>
             <span>{languages.find(l => l.key === language)?.value}</span>
             <span>|</span>
-            <ThreeStars color={colors.WHITE} height={24} width={24}/>
+            <ProficiencyLevelIcon level={level} color={colors.WHITE} height={24} width={24}/>
             <span>{levels.find(l => l.key === level)?.value}</span>
         </div>
     );
