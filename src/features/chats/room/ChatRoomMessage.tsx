@@ -12,7 +12,7 @@ interface ChatRoomMessageProps {
     type: "users" | "channels";
 }
 
-function ChatRoomMessage({message, isOwnMessage, type}: ChatRoomMessageProps) {
+function ChatRoomMessage({message, isOwnMessage, type}: ChatRoomMessageProps, ref: React.Ref<HTMLDivElement>) {
 
     const outerCss = css`
       display: flex;
@@ -61,7 +61,7 @@ function ChatRoomMessage({message, isOwnMessage, type}: ChatRoomMessageProps) {
     `;
 
     return (
-        <div css={isOwnMessage ? ownMessageOuterCss : outerCss}>
+        <div css={isOwnMessage ? ownMessageOuterCss : outerCss} ref={ref}>
             {!isOwnMessage ?
                 <div css={speechBubbleOtherMessageCss}/>
                 : null}
@@ -96,4 +96,4 @@ function ChatRoomMessage({message, isOwnMessage, type}: ChatRoomMessageProps) {
     );
 }
 
-export default ChatRoomMessage;
+export default React.forwardRef(ChatRoomMessage);

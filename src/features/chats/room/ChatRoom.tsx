@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import React, {SyntheticEvent} from "react";
+import React, {SyntheticEvent, useEffect} from "react";
 import {useParams} from "react-router-dom";
 import {messageSortFn, useChat, useSetChatHeader} from "../hooks";
 import useAuth from "../../auth/AuthContext";
@@ -9,6 +9,7 @@ import ChatRoomMessage from "./ChatRoomMessage";
 import ChatInputForm from "./ChatInputForm";
 import {useMediaQuery} from "react-responsive";
 import {chatRoomCss, chatRoomCssMobile} from "./styles";
+import {useInView} from "react-intersection-observer";
 
 function ChatRoom() {
     const params = useParams();
@@ -17,6 +18,17 @@ function ChatRoom() {
 
     const messageContainerRef = React.useRef<HTMLDivElement>(null);
     const [isScrollBottom, setIsScrollBottom] = React.useState<boolean>(true);
+
+    /**
+     * Top div ref and intersection observer
+     */
+    const {ref:topRef, inView:topInView} = useInView()
+
+    useEffect(()=> {
+        if (topInView) {
+            console.log('top in view');
+        }
+    })
 
     const {data, chat} = useChat(params.id as string, {
         staleTime: 15000,
@@ -28,7 +40,7 @@ function ChatRoom() {
         },
     });
 
-    useSetChatHeader(chat)
+    useSetChatHeader(chat);
 
     const scrollToBottom = () => {
         if (isScrollBottom) {
@@ -51,7 +63,7 @@ function ChatRoom() {
     }, [data]);
 
     return chat ?
-        <div css={isDesktop? chatRoomCss:chatRoomCssMobile}>
+        <div css={isDesktop ? chatRoomCss : chatRoomCssMobile}>
             <div ref={messageContainerRef}
                  onScroll={handleScroll}
                  css={css`
@@ -60,11 +72,15 @@ function ChatRoom() {
                    display: flex;
                    flex-direction: column;
                  `}>
-                {data?.results.map(message => (
+                <div ref={topRef}/>
+                {data?.results.map((message, index) => (
+                    // Set the ref property for the top message to load more messages when it's visible.
                     <ChatRoomMessage message={message}
                                      isOwnMessage={user?.id === message.author.id}
                                      type={chat?.type}
-                                     key={message.id}/>
+                                     key={message.id}
+                                     ref={index === 0 ? topRef : null}
+                    />
                 ))}
             </div>
             <ChatInputForm chat={chat}/>
