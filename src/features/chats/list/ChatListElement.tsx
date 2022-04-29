@@ -25,6 +25,10 @@ function ChatListElement({chat, selected, latestMessageIsOwn}: ChatListElementPr
           background-color: ${selected ? colors.PRIMARY : colors.WHITE};
           padding: 0 1rem;
           box-sizing: border-box;
+
+          &:hover {
+            ${!selected ? `background-color: ${colors.LIGHT};` : ""}
+          }
         `}>
             <div css={elementContentCss}>
                 <div css={imageContainerCss}>
