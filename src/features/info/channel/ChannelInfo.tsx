@@ -1,9 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
 import React, {useState} from "react";
-import {chatRoomCss, chatRoomCssMobile} from "../../chats/room/styles";
-import ChatHeader from "../../../components/ChatHeader";
-import {useMediaQuery} from "react-responsive";
 import {useQuery} from "react-query";
 import {Channel} from "../../../entities/Channel";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
@@ -16,16 +13,26 @@ import LanguageBadge from "../../../components/LanguageBadge";
 import {colors} from "../../../styles/variables";
 import ChannelEditLanguageBadge from "./ChannelEditLanguageBadge";
 import ImageInput from "../components/ImageInput";
-import {useParams} from "react-router-dom";
+import {useOutletContext, useParams} from "react-router-dom";
+import {ChatHeaderProps} from "../../chats/ChatMain";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
 
 function ChannelInfo() {
 
-    const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
     const params = useParams();
     const {user} = useAuth();
+    const [, setHeader] = useOutletContext<[ChatHeaderProps | null, React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>]>();
+
+    /**
+     * Set header to only render the title 'user info'
+     */
+    React.useEffect(() => {
+        setHeader({
+            title: "Channel info"
+        });
+    }, []);
 
     // Holds the channel's data
     const {data} = useQuery<Channel>(["channels", params.id], async () => {
@@ -47,12 +54,9 @@ function ChannelInfo() {
 
 
     return data ?
-        <div css={css`${isDesktop ? chatRoomCss : chatRoomCssMobile};
+        <div css={css`
           overflow-y: scroll;
         `}>
-            {isDesktop ?
-                <ChatHeader id={data?.id as string}/> :
-                null}
             <section css={infoSection}>
                 {editable && data ?
                     <React.Fragment>

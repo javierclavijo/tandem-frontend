@@ -20,7 +20,7 @@ import AltChatHeader from "../../components/AltChatHeader";
 import {chatRoomCss, chatRoomCssMobile} from "./room/styles";
 
 export interface ChatHeaderProps {
-    name?: string;
+    title?: string;
     link?: To;
     image?: string | null;
 }
@@ -96,7 +96,7 @@ function ChatMain() {
                 </section>
                 <section css={isDesktop ? chatRoomCss : chatRoomCssMobile}>
                     {header ?
-                        <AltChatHeader {...header}                        />
+                        <AltChatHeader {...header}/>
                         : null}
                     <Outlet context={[header, setHeader]}/>
                 </section>

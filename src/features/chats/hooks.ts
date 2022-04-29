@@ -107,13 +107,13 @@ export const useSetChatHeader = (chat: Chat | undefined | null) => {
                 const friend = getFriendFromFriendChat(user!, chat as FriendChat);
                 headerProps = {
                     link: `/chats/users/${friend?.id}`,
-                    name: friend?.username,
+                    title: friend?.username,
                     image: friend?.image
                 };
             } else {
                 headerProps = {
                     link: `/chats/channels/${(chat.id)}`,
-                    name: chat.name,
+                    title: chat.name,
                     image: chat.image
                 };
             }

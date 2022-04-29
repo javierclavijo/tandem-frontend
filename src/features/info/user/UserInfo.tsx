@@ -3,12 +3,8 @@
 import React from "react";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
-import {chatRoomCss, chatRoomCssMobile} from "../../chats/room/styles";
-import ChatHeader from "../../../components/ChatHeader";
-import {useMediaQuery} from "react-responsive";
 import {User, UserLanguage} from "../../../entities/User";
-import {useMatch, useParams} from "react-router-dom";
-import ProfileInfoHeader from "./ProfileInfoHeader";
+import {useOutletContext, useParams} from "react-router-dom";
 import {css} from "@emotion/react";
 import {descriptionSection, infoSection, listSection, listSectionHeader, profileImg} from "../styles";
 import {UserNameInput} from "../components/NameInput";
@@ -24,6 +20,7 @@ import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
 import {languages} from "../../../resources/languages";
 import ImageInput from "../components/ImageInput";
 import {getFriendFromFriendChat} from "../../chats/hooks";
+import {ChatHeaderProps} from "../../chats/ChatMain";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
@@ -51,11 +48,19 @@ export function UserInfo() {
      * user's data and whether the information is editable by the user.
      */
 
-    const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
-    const isUserProfile = useMatch("/chats/profile");
     const queryClient = useQueryClient();
     const params = useParams();
     const {user} = useAuth();
+    const [, setHeader] = useOutletContext<[ChatHeaderProps | null, React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>]>();
+
+    /**
+     * Set header to only render the title 'user info'
+     */
+    React.useEffect(() => {
+        setHeader({
+            title: "User info"
+        });
+    }, []);
 
     /**
      * Holds the users's data
@@ -109,19 +114,11 @@ export function UserInfo() {
         }
     };
 
+
     return data ? <React.Fragment>
-        <div css={css`${isDesktop ? chatRoomCss : chatRoomCssMobile};
+        <div css={css`
           overflow-y: scroll;
         `}>
-            {/* Header
-            Doesn't render in mobile layout, as it's rendered in the main header instead. */}
-            {isDesktop ?
-                isUserProfile ?
-                    <ProfileInfoHeader/> :
-                    <ChatHeader id={data.id}/> :
-                null
-            }
-
             {/* Main user information
             Contains the user's picture, username, languages and description.
             */}

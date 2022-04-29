@@ -25,9 +25,9 @@ function AltChatHeader(props: ChatHeaderProps) {
                   text-decoration: none;
                   color: ${colors.WHITE};
                 `}>
-                    {props.name}
+                    {props.title}
                 </Link> :
-                props.name
+                props.title
             }
             </h2>
         </header>
