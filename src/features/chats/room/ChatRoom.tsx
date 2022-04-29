@@ -7,10 +7,13 @@ import useAuth from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import ChatRoomMessage from "./ChatRoomMessage";
 import ChatInputForm from "./ChatInputForm";
+import {useMediaQuery} from "react-responsive";
+import {chatRoomCss, chatRoomCssMobile} from "./styles";
 
 function ChatRoom() {
     const params = useParams();
     const {user} = useAuth();
+    const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
 
     const messageContainerRef = React.useRef<HTMLDivElement>(null);
     const [isScrollBottom, setIsScrollBottom] = React.useState<boolean>(true);
@@ -48,7 +51,7 @@ function ChatRoom() {
     }, [data]);
 
     return chat ?
-        <React.Fragment>
+        <div css={isDesktop? chatRoomCss:chatRoomCssMobile}>
             <div ref={messageContainerRef}
                  onScroll={handleScroll}
                  css={css`
@@ -65,7 +68,7 @@ function ChatRoom() {
                 ))}
             </div>
             <ChatInputForm chat={chat}/>
-        </React.Fragment>
+        </div>
         : null;
 }
 
