@@ -7,9 +7,9 @@ import {useMutation, useQueryClient} from "react-query";
 import {css} from "@emotion/react";
 import Select from "react-select";
 import {colors} from "../../../styles/variables";
-import EditButton from "../../../components/EditButton/EditButton";
 import {User} from "../../../entities/User";
 import {select} from "../../../styles/components";
+import EditButtons from "../../../components/EditButton/EditButtons";
 
 interface UserInfoNewLanguageSelectRequestData {
     language: string;
@@ -83,8 +83,8 @@ function UserInfoNewLanguageSelect({onClose}: { onClose: () => void }) {
                         placeholder="Level"
                         styles={select}
                 />
-                <EditButton type={"accept"} visible={true} onClick={handleSubmit} color={colors.PRIMARY}/>
-                <EditButton type={"cancel"} visible={true} onClick={onClose} color={colors.PRIMARY}/>
+                <EditButtons editEnabled={true} handleSubmit={handleSubmit} handleCancel={onClose}
+                             color={colors.PRIMARY}/>
             </div>
             {error ?
                 <p css={css`

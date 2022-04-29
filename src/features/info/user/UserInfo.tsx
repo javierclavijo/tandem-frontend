@@ -18,7 +18,7 @@ import ReactModal from "react-modal";
 import UserInfoNewLanguageSelect from "./UserInfoNewLanguageSelect";
 import {colors} from "../../../styles/variables";
 import {Plus} from "iconoir-react";
-import {buttonWithoutBackgroundAndBorder} from "../../../components/EditButton/EditButton";
+import Button from "../../../components/EditButton/Button";
 import LanguageBadge from "../../../components/LanguageBadge";
 import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
 import {languages} from "../../../resources/languages";
@@ -43,8 +43,10 @@ const modalStyles = {
 
 
 export function UserInfo() {
-    // Generic user info component. Is used by the OwnUserInfo and OtherUserInfo components, from which it receives the
-    // user's data and whether the information is editable by the user.
+    /**
+     * Generic user info component. Is used by the OwnUserInfo and OtherUserInfo components, from which it receives the
+     * user's data and whether the information is editable by the user.
+     */
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
     const isUserProfile = useMatch("/chats/profile");
@@ -52,7 +54,9 @@ export function UserInfo() {
     const params = useParams();
     const {user} = useAuth();
 
-    // Holds the users's data
+    /**
+     * Holds the users's data
+     */
     const {data} = useQuery<User>(["users", params.id], async () => {
         const response = await axiosApi.get(`/users/${params.id}`);
         return response.data;
@@ -61,16 +65,29 @@ export function UserInfo() {
         enabled: !!params.id
     });
 
-    // Controls whether the info is editable (i.e. if edit controls are displayed)
+    /**
+     * Controls whether the info is editable (i.e. if edit controls are displayed)
+     */
     const [isEditable, setIsEditable] = React.useState<boolean>(false);
-    // Controls the language creation modal's rendering
+
+    /**
+     * Controls the language creation modal's rendering
+     */
     const [newLanguageModalIsOpen, setNewLanguageModalIsOpen] = React.useState(false);
-    // Is set whenever a language's delete button is selected. Holds the selected language's data
+
+    /**
+     * Is set whenever a language's delete button is selected. Holds the selected language's data
+     */
     const [selectedDeleteLanguage, setSelectedDeleteLanguage] = React.useState<UserLanguage | null>(null);
 
-    // Set the view as editable if the info's user's ID is the same as the user's
+    /**
+     * Set the view as editable if the info's user's ID is the same as the user's
+     */
     React.useEffect(() => setIsEditable(!!user?.id && (user?.id === data?.id)), [user, data]);
 
+    /**
+     * Delete-related functions
+     */
     const deleteRequest = async (url: string) => {
         const response = await axiosApi.delete(url);
         return response.data;
@@ -81,6 +98,13 @@ export function UserInfo() {
             await queryClient.invalidateQueries<User | undefined>(["users", user?.id]);
         }
     });
+
+    const handleDelete = async () => {
+        if (selectedDeleteLanguage) {
+            await deleteMutation.mutateAsync(selectedDeleteLanguage.url);
+            setSelectedDeleteLanguage(null);
+        }
+    };
 
     return data ? <React.Fragment>
         <div css={css`${isDesktop ? chatRoomCss : chatRoomCssMobile};
@@ -267,17 +291,12 @@ export function UserInfo() {
                   display: flex;
                   gap: 1rem;
                 `}>
-                    <button onClick={async () => {
-                        await deleteMutation.mutateAsync(selectedDeleteLanguage.url);
-                        setSelectedDeleteLanguage(null);
-                    }}
-                            css={buttonWithoutBackgroundAndBorder}>
+                    <Button visible={true} onClick={handleDelete}>
                         Delete
-                    </button>
-                    <button onClick={() => setSelectedDeleteLanguage(null)}
-                            css={buttonWithoutBackgroundAndBorder}>
+                    </Button>
+                    <Button visible={true} onClick={() => setSelectedDeleteLanguage(null)}>
                         Cancel
-                    </button>
+                    </Button>
                 </div>
             </ReactModal> :
             null

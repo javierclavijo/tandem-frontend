@@ -11,8 +11,9 @@ import {levelOptions, Option} from "../components/InfoSelect";
 import {useMutation, useQueryClient} from "react-query";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import Select from "react-select";
-import EditButton from "../../../components/EditButton/EditButton";
+import Button from "../../../components/EditButton/Button";
 import ProficiencyLevelIcon from "../../../components/Icons/ProficiencyLevelIcon";
+import {Cancel} from "iconoir-react";
 
 interface LanguageBadgeProps {
     data: UserLanguage;
@@ -67,9 +68,9 @@ function UserInfoEditLanguageBadge({data, bg, onDelete}: LanguageBadgeProps) {
                     options={levelOptions}
                     styles={badgeSelect}
             />
-            <EditButton type={"cancel"} visible={true}
-                        onClick={onDelete}
-                        color={colors.WHITE}/>
+            <Button visible={true} onClick={onDelete}>
+                <Cancel color={colors.WHITE} width={"1.5rem"} height={"1.5rem"}/>
+            </Button>
         </div>
     );
 }

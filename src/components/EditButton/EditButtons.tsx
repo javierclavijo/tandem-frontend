@@ -1,15 +1,16 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import EditButton from "./EditButton";
+import Button from "./Button";
 import {css} from "@emotion/react";
+import {Cancel, Check} from "iconoir-react";
 
 interface EditButtonsProps {
     editEnabled: boolean;
-    submitButtonRef: React.MutableRefObject<HTMLButtonElement | null>;
+    submitButtonRef?: React.MutableRefObject<HTMLButtonElement | null>;
     handleSubmit: () => Promise<boolean>;
     handleCancel: () => void;
-    color:string;
+    color: string;
 }
 
 function EditButtons({editEnabled, submitButtonRef, handleSubmit, handleCancel, color}: EditButtonsProps) {
@@ -19,9 +20,12 @@ function EditButtons({editEnabled, submitButtonRef, handleSubmit, handleCancel, 
           align-items: center;
           justify-content: center;
         `}>
-            <EditButton type="accept" visible={editEnabled} onClick={handleSubmit}
-                        ref={submitButtonRef} color={color}/>
-            <EditButton type="cancel" visible={editEnabled} onClick={handleCancel} color={color}/>
+            <Button visible={editEnabled} onClick={handleSubmit} ref={submitButtonRef}>
+                <Check color={color} width={"1.5rem"} height={"1.5rem"}/>
+            </Button>
+            <Button visible={editEnabled} onClick={handleCancel}>
+                <Cancel color={color} width={"1.5rem"} height={"1.5rem"}/>
+            </Button>
         </div>
     );
 }
