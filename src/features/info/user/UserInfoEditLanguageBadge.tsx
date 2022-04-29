@@ -10,7 +10,7 @@ import {badge, badgeSelect} from "../../../styles/components";
 import {User, UserLanguage} from "../../../entities/User";
 import {levelOptions, Option} from "../components/InfoSelect";
 import {useMutation, useQueryClient} from "react-query";
-import {axiosApi} from "../../auth/AuthContext";
+import useAuth, {axiosApi} from "../../auth/AuthContext";
 import Select from "react-select";
 import EditButton from "../../../components/EditButton/EditButton";
 
@@ -24,7 +24,7 @@ function UserInfoEditLanguageBadge({data, bg, onDelete}: LanguageBadgeProps) {
 
     const queryClient = useQueryClient();
     const [value, setValue] = React.useState<Option | null>(null);
-
+    const {user} = useAuth();
 
     const updateRequest = React.useCallback(async (requestData: { level: string }) => {
         if (data) {
@@ -35,7 +35,7 @@ function UserInfoEditLanguageBadge({data, bg, onDelete}: LanguageBadgeProps) {
 
     const mutation = useMutation(updateRequest, {
         onSuccess: async () => {
-            await queryClient.invalidateQueries<User | undefined>(["users", "me"]);
+            await queryClient.invalidateQueries<User | undefined>(["users", user?.id]);
         }
     });
 

@@ -33,7 +33,7 @@ function UserInfoNewLanguageSelect({onClose}: { onClose: () => void }) {
 
     const mutation = useMutation(updateRequest, {
         onSuccess: async () => {
-            await queryClient.invalidateQueries<User | undefined>(["users", "me"]);
+            await queryClient.invalidateQueries<User | undefined>(["users", user?.id]);
         }
     });
 

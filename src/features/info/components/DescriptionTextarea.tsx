@@ -14,6 +14,7 @@ import {User} from "../../../entities/User";
 
 interface DescriptionTextareaProps {
     data: Channel | User;
+    queryKey: "users" | "channels";
 }
 
 interface DescriptionTextareaRequestData {
@@ -21,7 +22,7 @@ interface DescriptionTextareaRequestData {
 }
 
 
-function DescriptionTextarea({data}: DescriptionTextareaProps) {
+function DescriptionTextarea({data, queryKey}: DescriptionTextareaProps) {
 
     const queryClient = useQueryClient();
 
@@ -47,13 +48,13 @@ function DescriptionTextarea({data}: DescriptionTextareaProps) {
 
     const updateMutation = useMutation(updateRequest, {
         onSuccess: async (requestData) => {
-            queryClient.setQueryData<Channel | undefined>(["chats", "info", data?.id], (old) => {
+            queryClient.setQueryData<Channel | undefined>([queryKey, data?.id], (old) => {
                 if (old) {
                     old.description = requestData.description;
                 }
                 return old;
             });
-        }
+        },
     });
 
 
