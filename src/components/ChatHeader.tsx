@@ -1,19 +1,23 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import {chatRoomHeaderCss} from "./styles";
+import {chatRoomHeaderCss} from "../features/chats/room/styles";
 import {Link} from "react-router-dom";
 import {css} from "@emotion/react";
-import {colors} from "../../../styles/variables";
-import BackButton from "../../../components/BackButton";
+import {colors} from "../styles/variables";
+import BackButton from "./BackButton";
 import {useMediaQuery} from "react-responsive";
-import {getFriendFromFriendChat, useChat} from "../hooks";
-import useAuth from "../../auth/AuthContext";
-import {FriendChat} from "../../../entities/Chat";
+import {getFriendFromFriendChat, useChat} from "../features/chats/hooks";
+import useAuth from "../features/auth/AuthContext";
+import {FriendChat} from "../entities/Chat";
 
-function ChatRoomHeader({id}: { id: string }) {
+interface ChatHeaderProps {
+    id: string;
+}
+
+function ChatHeader(props: ChatHeaderProps) {
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
-    const {chat} = useChat(id, {
+    const {chat} = useChat(props.id, {
         staleTime: 15000,
     });
     const {user} = useAuth();
@@ -27,7 +31,7 @@ function ChatRoomHeader({id}: { id: string }) {
             <h2><Link to={
                 chat?.type === "users" ?
                     `/chats/users/${getFriendFromFriendChat(user, chat as FriendChat)?.id}` :
-                    `/chats/channels/${id}`
+                    `/chats/channels/${(props.id)}`
             } css={css`
               text-decoration: none;
               color: ${colors.WHITE};
@@ -37,4 +41,4 @@ function ChatRoomHeader({id}: { id: string }) {
         </header> : null;
 }
 
-export default ChatRoomHeader;
+export default ChatHeader;

@@ -2,7 +2,7 @@
 
 import React, {useState} from "react";
 import {chatRoomCss, chatRoomCssMobile} from "../../chats/room/styles";
-import ChatRoomHeader from "../../chats/room/ChatRoomHeader";
+import ChatHeader from "../../../components/ChatHeader";
 import {useMediaQuery} from "react-responsive";
 import {useQuery} from "react-query";
 import {Channel} from "../../../entities/Channel";
@@ -51,7 +51,7 @@ function ChannelInfo() {
           overflow-y: scroll;
         `}>
             {isDesktop ?
-                <ChatRoomHeader id={data?.id as string}/> :
+                <ChatHeader id={data?.id as string}/> :
                 null}
             <section css={infoSection}>
                 {editable && data ?

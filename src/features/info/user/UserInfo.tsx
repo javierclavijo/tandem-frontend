@@ -4,7 +4,7 @@ import React from "react";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {chatRoomCss, chatRoomCssMobile} from "../../chats/room/styles";
-import ChatRoomHeader from "../../chats/room/ChatRoomHeader";
+import ChatHeader from "../../../components/ChatHeader";
 import {useMediaQuery} from "react-responsive";
 import {User, UserLanguage} from "../../../entities/User";
 import {useMatch, useParams} from "react-router-dom";
@@ -118,7 +118,7 @@ export function UserInfo() {
             {isDesktop ?
                 isUserProfile ?
                     <ProfileInfoHeader/> :
-                    <ChatRoomHeader id={data.id}/> :
+                    <ChatHeader id={data.id}/> :
                 null
             }
 

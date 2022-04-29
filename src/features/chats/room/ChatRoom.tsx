@@ -9,7 +9,7 @@ import ChatRoomMessage from "./ChatRoomMessage";
 import ChatInputForm from "./ChatInputForm";
 import {chatRoomCss, chatRoomCssMobile} from "./styles";
 import {useMediaQuery} from "react-responsive";
-import ChatRoomHeader from "./ChatRoomHeader";
+import ChatHeader from "../../../components/ChatHeader";
 
 function ChatRoom() {
     const params = useParams();
@@ -52,7 +52,7 @@ function ChatRoom() {
 
     return isDesktop && chat ?
         <div css={chatRoomCss}>
-            <ChatRoomHeader id={chat?.id}/>
+            <ChatHeader id={chat?.id}/>
             <div ref={messageContainerRef}
                  onScroll={handleScroll}
                  css={css`

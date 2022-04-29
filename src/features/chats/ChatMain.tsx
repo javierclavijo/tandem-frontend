@@ -13,7 +13,7 @@ import {useMediaQuery} from "react-responsive";
 import Nav from "../../components/Nav";
 import {baseAppContainerWithoutTabsCss, baseAppContainerWithTabsCss} from "../../styles/layout";
 import Tabs from "../../components/Tabs";
-import ChatRoomHeader from "./room/ChatRoomHeader";
+import ChatHeader from "../../components/ChatHeader";
 import ProfileInfoHeader from "../info/user/ProfileInfoHeader";
 import ChatList from "./list/ChatList";
 import {ChatMessageResponse} from "../../entities/ChatMessage";
@@ -90,7 +90,7 @@ function ChatMain() {
         // Mobile chat room
         params.id ?
             <div css={baseAppContainerWithoutTabsCss}>
-                <ChatRoomHeader id={params.id}/>
+                <ChatHeader id={params.id}/>
                 <main css={mainCssMobile}>
                     <Outlet/>
                 </main>
