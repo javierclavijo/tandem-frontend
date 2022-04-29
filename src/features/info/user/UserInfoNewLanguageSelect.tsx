@@ -9,7 +9,7 @@ import Select from "react-select";
 import {colors} from "../../../styles/variables";
 import {User} from "../../../entities/User";
 import {select} from "../../../styles/components";
-import EditButtons from "../../../components/EditButton/EditButtons";
+import EditButtons from "../../../components/EditButtons";
 
 interface UserInfoNewLanguageSelectRequestData {
     language: string;

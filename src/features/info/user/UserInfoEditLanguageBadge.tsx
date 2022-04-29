@@ -11,7 +11,7 @@ import {levelOptions, Option} from "../components/InfoSelect";
 import {useMutation, useQueryClient} from "react-query";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import Select from "react-select";
-import Button from "../../../components/EditButton/Button";
+import Button from "../../../components/Button";
 import ProficiencyLevelIcon from "../../../components/Icons/ProficiencyLevelIcon";
 import {Cancel} from "iconoir-react";
 

@@ -18,7 +18,7 @@ import ReactModal from "react-modal";
 import UserInfoNewLanguageSelect from "./UserInfoNewLanguageSelect";
 import {colors} from "../../../styles/variables";
 import {Plus} from "iconoir-react";
-import Button from "../../../components/EditButton/Button";
+import Button from "../../../components/Button";
 import LanguageBadge from "../../../components/LanguageBadge";
 import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
 import {languages} from "../../../resources/languages";
