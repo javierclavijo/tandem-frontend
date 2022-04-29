@@ -89,6 +89,7 @@ function ChannelInfo() {
                                          description={membership.user.description}
                                          key={membership.url}
                                          image={membership.user.image}
+                                         link={`/chats/users/${membership.user.id}`}
                         />
                         : null
                 )}

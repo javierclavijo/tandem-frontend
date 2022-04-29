@@ -1,11 +1,12 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import {infoListElementArticle, infoListElementImg} from "../styles";
+import {infoListElementInnerContainer, infoListElementImg} from "../styles";
 import {css} from "@emotion/react";
-import {NavArrowDown} from "iconoir-react";
+import {NavArrowRight} from "iconoir-react";
 import {colors} from "../../../styles/variables";
 import {imageContainerCss} from "../../chats/styles";
+import {Link} from "react-router-dom";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
@@ -14,62 +15,80 @@ interface InfoListElementProps {
     name: string,
     additionalInfo?: string,
     description: string,
-    image: string | null
+    image: string | null,
+    link: string
 }
 
-function InfoListElement({name, additionalInfo, description, image}: InfoListElementProps) {
+function InfoListElement(props: InfoListElementProps) {
     return (
-        <article css={infoListElementArticle}>
-            <div css={imageContainerCss}>
-                <img src={image ?? defaultImg} alt="" css={infoListElementImg}/>
-            </div>
-            <div css={css`
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-              width: 100%;
-            `}>
+        <article css={css`
+          display: grid;
+          grid-template-rows: 1fr;
+          grid-template-columns: 1fr;
+          grid-template-areas: "element";
+          padding: 0.5rem 1rem;
+
+          &:hover {
+            background-color: ${colors.LIGHT};
+          }
+        `}>
+            <div css={infoListElementInnerContainer}>
+                <div css={imageContainerCss}>
+                    <img src={props.image ?? defaultImg} alt="" css={infoListElementImg}/>
+                </div>
                 <div css={css`
                   display: flex;
-                  flex-direction: row;
+                  flex-direction: column;
                   justify-content: space-between;
-                  align-items: center;
-                  height: 100%;
+                  width: 100%;
                 `}>
-                    <span css={css`
+                    <div css={css`
                       display: flex;
-                      gap: 1rem;
+                      flex-direction: row;
+                      justify-content: space-between;
+                      align-items: center;
+                      height: 100%;
                     `}>
-                    <h4>{name}</h4>
-                        {additionalInfo ?
-                            <p css={css`
-                              color: ${colors.PRIMARY};
-                            `}>
-                                {additionalInfo}
-                            </p> :
-                            null
-                        }
-                </span>
-                    <NavArrowDown color={colors.PRIMARY} width={"1.5rem"} height={"1.5rem"}/>
-                </div>
-                <div css={css`
-                  height: 100%;
-                  display: flex;
-                  align-items: center;
-                `}>
-                    <p css={css`
-                      text-overflow: ellipsis;
-                      overflow: hidden;
-                      white-space: nowrap;
-                      max-width: 14rem;
+                        <span css={css`
+                          display: flex;
+                          gap: 1rem;
+                        `}>
+                            <h4>{props.name}</h4>
+                            {props.additionalInfo ?
+                                <p css={css`
+                                  color: ${colors.PRIMARY};
+                                `}>
+                                    {props.additionalInfo}
+                                </p> :
+                                null
+                            }
+                        </span>
+                        <NavArrowRight color={colors.PRIMARY} width={"1.5rem"} height={"1.5rem"}/>
+                    </div>
+                    <div css={css`
+                      height: 100%;
+                      display: flex;
+                      align-items: center;
                     `}>
-                        {description}
-                    </p>
+                        <p css={css`
+                          text-overflow: ellipsis;
+                          overflow: hidden;
+                          white-space: nowrap;
+                          max-width: 14rem;
+                        `}>
+                            {props.description}
+                        </p>
+                    </div>
                 </div>
             </div>
+            <Link to={props.link} css={css`
+              grid-area: element;
+              height: 100%;
+              width: 100%;
+              z-index: 10;
+            `}/>
         </article>
-    )
-        ;
+    );
 }
 
 export default InfoListElement;

@@ -36,19 +36,19 @@ export const languageItem = css`
 `;
 
 export const listSection = css`
-  padding: 1rem;
+  padding: 1rem 0;
   background-color: ${colors.WHITE};
   color: ${colors.DARK};
 
   display: flex;
   flex-direction: column;
-  gap: 1rem;
 `;
 
-export const infoListElementArticle = css`
+export const infoListElementInnerContainer = css`
   width: 100%;
   display: flex;
   gap: 1rem;
+  grid-area: element;
 `;
 
 export const infoListElementImg = css`

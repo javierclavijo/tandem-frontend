@@ -187,6 +187,7 @@ export function UserInfo() {
                                                     description={friend.description}
                                                     key={friend.id}
                                                     image={friend.image}
+                                                    link={`/chats/users/${friend.id}`}
                             />;
                         }
                         return null;
@@ -203,6 +204,7 @@ export function UserInfo() {
                                      additionalInfo={membership.role === "A" ? "Admin" : undefined}
                                      key={membership.id}
                                      image={membership.channel.image}
+                                     link={`/chats/channels/${membership.channel.id}`}
                     />
                 )}
             </section>
