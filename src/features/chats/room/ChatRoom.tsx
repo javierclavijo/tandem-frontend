@@ -9,7 +9,9 @@ import ChatRoomMessage from "./ChatRoomMessage";
 import ChatInputForm from "./ChatInputForm";
 import {useMediaQuery} from "react-responsive";
 import {chatRoomCss, chatRoomCssMobile} from "./styles";
+import {ChatMessageResponse} from "../../../entities/ChatMessage";
 import {useInView} from "react-intersection-observer";
+import {InfiniteData} from "react-query";
 
 function ChatRoom() {
     const params = useParams();
@@ -22,21 +24,24 @@ function ChatRoom() {
     /**
      * Top div ref and intersection observer
      */
-    const {ref:topRef, inView:topInView} = useInView()
+    const {ref: topRef, inView: topInView} = useInView();
 
-    useEffect(()=> {
+    useEffect(() => {
         if (topInView) {
-            console.log('top in view');
+            fetchNextPage();
         }
-    })
+    }, [topInView]);
 
-    const {data, chat} = useChat(params.id as string, {
+    const {data, chat, fetchNextPage, isSuccess} = useChat(params.id as string, {
         staleTime: 15000,
         // Whenever query data changes, scroll to the bottom of the chat if it's positioned there to show new
         // messages, then sort messages.
-        onSuccess: (data) => {
-            scrollToBottom();
-            return data?.results.sort((a, b) => messageSortFn(a, b)).reverse();
+        onSuccess: (data: InfiniteData<ChatMessageResponse>) => {
+            data.pages.forEach(page =>
+                page.results.sort((a, b) => messageSortFn(a, b)).reverse()
+            );
+            data.pages.reverse();
+            return data;
         },
     });
 
@@ -48,7 +53,7 @@ function ChatRoom() {
         }
     };
 
-    React.useEffect(scrollToBottom, [data?.results, isScrollBottom]);
+    React.useEffect(scrollToBottom, [data, isScrollBottom]);
 
     const handleScroll = (event: SyntheticEvent) => {
         // On scroll, detect if the user has scrolled to bottom and set isScrollBottomRef.current accordingly. A number
@@ -72,16 +77,20 @@ function ChatRoom() {
                    display: flex;
                    flex-direction: column;
                  `}>
+                {/* Top div, used to load more messages when visible. */}
                 <div ref={topRef}/>
-                {data?.results.map((message, index) => (
-                    // Set the ref property for the top message to load more messages when it's visible.
-                    <ChatRoomMessage message={message}
-                                     isOwnMessage={user?.id === message.author.id}
-                                     type={chat?.type}
-                                     key={message.id}
-                                     ref={index === 0 ? topRef : null}
-                    />
-                ))}
+                {data?.pages.map((page, index) =>
+                    <React.Fragment key={`page-${index}`}>
+                        {page.results.map((message, index) => (
+                            <ChatRoomMessage message={message}
+                                             isOwnMessage={user?.id === message.author.id}
+                                             type={chat?.type}
+                                             key={message.id}
+                            />
+                        ))}
+                    </React.Fragment>
+                )
+                }
             </div>
             <ChatInputForm chat={chat}/>
         </div>

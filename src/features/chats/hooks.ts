@@ -1,4 +1,4 @@
-import {QueryKey, useQuery, UseQueryOptions} from "react-query";
+import {useInfiniteQuery, UseInfiniteQueryOptions, useQuery} from "react-query";
 import {Chat, FriendChat} from "../../entities/Chat";
 import useAuth, {axiosApi} from "../auth/AuthContext";
 import {ChatMessage, ChatMessageResponse} from "../../entities/ChatMessage";
@@ -62,8 +62,7 @@ export const useChatList = () => {
 };
 
 export const useChat = (id: string,
-                        queryOptions: Omit<UseQueryOptions<ChatMessageResponse, unknown, ChatMessageResponse, QueryKey>,
-                            "queryKey" | "queryFn"> | undefined) => {
+                        queryOptions: Omit<UseInfiniteQueryOptions, any> | undefined) => {
     // Hook which holds the information about a chat and its messages.
 
     const {data: chatList} = useChatList();
@@ -77,15 +76,18 @@ export const useChat = (id: string,
         }
     }, [chatList, id]);
 
-    const query = useQuery<ChatMessageResponse>(["chats", "messages", chat?.id], async () => {
+    const query = useInfiniteQuery<ChatMessageResponse>(["chats", "messages", chat?.id], async ({pageParam = 1}) => {
             if (chat) {
-                const response = await axiosApi.get(chat?.messageUrl);
+                console.log('pageparam: '+ pageParam)
+                const response = await axiosApi.get(chat?.messageUrl + `&page=${pageParam}`);
                 return response.data;
             }
             return undefined;
         }, {
             ...queryOptions,
             enabled: !!chat?.id,
+            getPreviousPageParam: firstPage => firstPage.previousPageNumber ?? undefined,
+            getNextPageParam: lastPage => lastPage.nextPageNumber ?? undefined
         }
     );
 

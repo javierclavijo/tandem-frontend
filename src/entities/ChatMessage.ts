@@ -14,5 +14,7 @@ export interface ChatMessageResponse {
     count: number,
     next: string | null,
     previous: string | null,
-    results: ChatMessage[]
+    results: ChatMessage[],
+    nextPageNumber: number | null,
+    previousPageNumber: number | null
 }
