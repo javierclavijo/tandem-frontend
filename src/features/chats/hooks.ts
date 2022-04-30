@@ -52,6 +52,9 @@ const fetchChatList = async (user: User | undefined) => {
 };
 
 export const useChatList = () => {
+    /**
+     * Holds the information about the user's chat list.
+     */
     const {user} = useAuth();
     return useQuery<Chat[]>(["chats", "list"], () => fetchChatList(user), {
         // Whenever data is either fetched or updated with setQueryData(), sort chats according to their latest messages
@@ -63,7 +66,9 @@ export const useChatList = () => {
 
 export const useChat = (id: string,
                         queryOptions: Omit<UseInfiniteQueryOptions, any> | undefined) => {
-    // Hook which holds the information about a chat and its messages.
+    /**
+     * Holds the information about a chat and its messages.
+     */
 
     const {data: chatList} = useChatList();
     const [chat, setChat] = useState<Chat | undefined>();
@@ -93,11 +98,11 @@ export const useChat = (id: string,
     return {...query, chat};
 };
 
-export const useSetChatHeader = (chat: Chat | undefined | null) => {
+export const useSetChatRoomHeader = (chat: Chat | undefined | null) => {
     /**
-     * Used to set the header's data according to the current view's resource's data, or to set it as null to avoid
-     * rendering it when it shouldn't
+     * Sets the chat header according to the current view's resource's data. Used in ChatRoom component.
      */
+
     const {user} = useAuth();
     const [, setHeader] = useOutletContext<[ChatHeaderProps | null, React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>]>();
 

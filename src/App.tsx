@@ -12,19 +12,28 @@ import EmptyChatRoom from "./features/chats/room/EmptyChatRoom";
 import {globalStyles} from "./styles/global";
 import {UserInfo} from "./features/info/user/UserInfo";
 import ChannelInfo from "./features/info/channel/ChannelInfo";
+import {useMediaQuery} from "react-responsive";
+import ChatList from "./features/chats/ChatList";
 
 export default function App() {
 
+    const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
 
     return (
         <React.Fragment>
             <Global styles={globalStyles}/>
             <Routes>
                 <Route path="/chats" element={<ChatMain/>}>
+                    {/* User and channel info views */}
                     <Route path="users/:id" element={<UserInfo/>}/>
                     <Route path="channels/:id" element={<ChannelInfo/>}/>
+
+                    {/* Chat room view */}
                     <Route path=":id" element={<ChatRoom/>}/>
-                    <Route index element={<EmptyChatRoom/>}/>
+
+                    {/* Chat list view. If the viewport has desktop dimensions, render the empty chat room view, as the
+                    chat list is displayed outside the router's outlet. */}
+                    <Route index element={isDesktop ? <EmptyChatRoom/> : <ChatList/>}/>
                 </Route>
                 <Route path="/login" element={<LogIn/>}/>
                 <Route path="/logout" element={<LogOut/>}/>

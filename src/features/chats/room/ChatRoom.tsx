@@ -2,7 +2,7 @@
 
 import React from "react";
 import {useParams} from "react-router-dom";
-import {useChat, useSetChatHeader} from "../hooks";
+import {useChat, useSetChatRoomHeader} from "../hooks";
 import useAuth from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import ChatRoomMessage from "./ChatRoomMessage";
@@ -35,7 +35,7 @@ function ChatRoom() {
     /**
      * Set the chat header's data.
      */
-    useSetChatHeader(chat);
+    useSetChatRoomHeader(chat);
 
 
     return chat && data ?
