@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import {Outlet, useLocation, useParams} from "react-router-dom";
+import {Outlet, useParams} from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import useAuth from "../auth/AuthContext";
 import {InfiniteData, useQueryClient} from "react-query";
@@ -22,22 +22,12 @@ function ChatMain() {
     const queryClient = useQueryClient();
     const params = useParams();
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
-    const location = useLocation();
 
     /**
      * State used by the router outlet context which controls the header's state. This way, the header's data can be
      * obtained from the view components, without them having to contain the header themselves.
      */
     const [header, setHeader] = React.useState<ChatHeaderProps | null>(null);
-
-
-    /**
-     * Set the header to null by default when location changes. Avoids displaying the header in views where it is not
-     * used.
-     */
-    React.useEffect(() => {
-        setHeader(null);
-    }, [location]);
 
     /**
      * Holds the WebSocket connection to the server.
@@ -107,7 +97,7 @@ function ChatMain() {
          * current route.
          */
         <div css={params.id ? baseAppContainerWithoutTabsCss : baseAppContainerWithTabsCss}>
-            {header ?
+            {params.id && header ?
                 <ChatHeader {...header}/> :
                 <Nav/>}
             <main css={mainCssMobile}>
