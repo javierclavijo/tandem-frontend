@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import React, {useEffect} from "react";
-import {Outlet, To, useMatch, useParams} from "react-router-dom";
+import {Outlet, useMatch, useParams} from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import useAuth from "../auth/AuthContext";
 import {InfiniteData, useQueryClient} from "react-query";
@@ -16,14 +16,8 @@ import Tabs from "../../components/Tabs";
 import ProfileInfoHeader from "../info/user/ProfileInfoHeader";
 import ChatList from "./list/ChatList";
 import {ChatMessageResponse} from "../../entities/ChatMessage";
-import ChatHeader from "../../components/ChatHeader";
+import ChatHeader, {ChatHeaderProps} from "../../components/ChatHeader";
 import {chatRoomCss, chatRoomCssMobile} from "./room/styles";
-
-export interface ChatHeaderProps {
-    title?: string;
-    link?: To;
-    image?: string | null;
-}
 
 function ChatMain() {
 

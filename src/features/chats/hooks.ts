@@ -6,7 +6,7 @@ import {DateTime} from "luxon";
 import React, {useState} from "react";
 import {User} from "../../entities/User";
 import {useOutletContext} from "react-router-dom";
-import {ChatHeaderProps} from "./ChatMain";
+import {ChatHeaderProps} from "../../components/ChatHeader";
 
 export const messageSortFn = (a: ChatMessage, b: ChatMessage) => {
     const aDateTime = DateTime.fromISO(a.timestamp);

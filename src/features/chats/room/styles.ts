@@ -25,6 +25,7 @@ export const chatRoomHeaderCss = css`
   background-color: ${colors.PRIMARY};
   display: flex;
   align-items: center;
+  gap: 1rem;
   padding: 1rem;
   box-sizing: border-box;
   color: ${colors.WHITE};

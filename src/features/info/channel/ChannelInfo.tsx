@@ -14,7 +14,7 @@ import {colors} from "../../../styles/variables";
 import ChannelEditLanguageBadge from "./ChannelEditLanguageBadge";
 import ImageInput from "../components/ImageInput";
 import {useOutletContext, useParams} from "react-router-dom";
-import {ChatHeaderProps} from "../../chats/ChatMain";
+import {ChatHeaderProps} from "../../../components/ChatHeader";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 

@@ -20,7 +20,7 @@ import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
 import {languages} from "../../../resources/languages";
 import ImageInput from "../components/ImageInput";
 import {getFriendFromFriendChat} from "../../chats/hooks";
-import {ChatHeaderProps} from "../../chats/ChatMain";
+import {ChatHeaderProps} from "../../../components/ChatHeader";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 

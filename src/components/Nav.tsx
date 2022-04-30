@@ -78,16 +78,18 @@ const userImage = css`
   height: 100%;
   width: 100%;
   object-fit: cover;
+  flex: 1 0 auto;
 `;
 
 const imageContainer = css`
-  max-height: 3rem;
-  max-width: 3rem;
+  height: 3rem;
+  width: 3rem;
   overflow: hidden;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1 0 auto;
 `;
 
 
