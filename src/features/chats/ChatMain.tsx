@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import React, {useEffect} from "react";
-import {Outlet, useMatch, useParams} from "react-router-dom";
+import {Outlet, useParams} from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import useAuth from "../auth/AuthContext";
 import {InfiniteData, useQueryClient} from "react-query";
@@ -12,7 +12,6 @@ import {useMediaQuery} from "react-responsive";
 import Nav from "../../components/Nav";
 import {baseAppContainerWithoutTabsCss, baseAppContainerWithTabsCss} from "../../styles/layout";
 import Tabs from "../../components/Tabs";
-import ProfileInfoHeader from "../info/user/ProfileInfoHeader";
 import {ChatMessageResponse} from "../../entities/ChatMessage";
 import ChatHeader, {ChatHeaderProps} from "../../components/ChatHeader";
 import {chatRoomCss, chatRoomCssMobile} from "./room/styles";
@@ -24,7 +23,6 @@ function ChatMain() {
     const queryClient = useQueryClient();
     const params = useParams();
 
-    const isUserProfile = useMatch("/chats/profile");
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
 
     const {data} = useChatList();
@@ -103,23 +101,14 @@ function ChatMain() {
                 </main>
             </div> :
 
-            // User profile
-            isUserProfile ?
-                <div css={baseAppContainerWithoutTabsCss}>
-                    <ProfileInfoHeader/>
-                    <main css={mainCssMobile}>
-                        <Outlet context={[header, setHeader]}/>
-                    </main>
-                </div> :
-
-                // Mobile chat list
-                <div css={baseAppContainerWithTabsCss}>
-                    <Nav/>
-                    <main css={mainCssMobile}>
-                        <ChatList data={data} user={user}/>
-                    </main>
-                    <Tabs/>
-                </div>
+            // Mobile chat list
+            <div css={baseAppContainerWithTabsCss}>
+                <Nav/>
+                <main css={mainCssMobile}>
+                    <ChatList data={data} user={user}/>
+                </main>
+                <Tabs/>
+            </div>
         ;
 }
 
