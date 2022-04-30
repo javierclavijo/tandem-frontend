@@ -78,7 +78,6 @@ export const useChat = (id: string,
 
     const query = useInfiniteQuery<ChatMessageResponse>(["chats", "messages", chat?.id], async ({pageParam = 1}) => {
             if (chat) {
-                console.log('pageparam: '+ pageParam)
                 const response = await axiosApi.get(chat?.messageUrl + `&page=${pageParam}`);
                 return response.data;
             }
@@ -121,5 +120,5 @@ export const useSetChatHeader = (chat: Chat | undefined | null) => {
             }
             setHeader(headerProps);
         }
-    }, [chat]);
+    }, [chat, setHeader, user]);
 };

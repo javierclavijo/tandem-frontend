@@ -4,7 +4,7 @@ import React, {useEffect} from "react";
 import {Outlet, To, useMatch, useParams} from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import useAuth from "../auth/AuthContext";
-import {useQueryClient} from "react-query";
+import {InfiniteData, useQueryClient} from "react-query";
 import {useChatList} from "./hooks";
 import {Chat} from "../../entities/Chat";
 import {listContainerCss, listContainerCssMobile, mainCss, mainCssMobile} from "./styles";
@@ -71,9 +71,13 @@ function ChatMain() {
                 return old;
             });
 
-            queryClient.setQueryData<ChatMessageResponse | undefined>(["chats", "messages", message.chat_id], (old) => {
+            queryClient.setQueryData<InfiniteData<ChatMessageResponse> | undefined>(
+                ["chats", "messages", message.chat_id], (old) => {
                     if (old !== undefined) {
-                        old.results.push(message);
+                        // Add the message to the first page, reassign the page in the array so that the
+                        // bottom-scrolling effect hook is triggered.
+                        const firstPage = {...old.pages[0]};
+                        old.pages[0] = {...firstPage, results: [...firstPage.results, message]};
                     }
                     return old;
                 }
