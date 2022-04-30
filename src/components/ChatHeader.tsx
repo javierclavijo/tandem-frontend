@@ -38,11 +38,12 @@ function ChatHeader(props: ChatHeaderProps) {
                   align-items: center;
                   gap: 1rem;
                 `}>
-                    <div css={imageContainer}>
-                        <img src={props.image ?? defaultImg} alt=""
-                             css={userImage}
-                        />
-                    </div>
+                    {props.image || props.image === null ?
+                        <div css={imageContainer}>
+                            <img src={props.image ?? defaultImg} alt=""
+                                 css={userImage}
+                            />
+                        </div> : null}
                     <h2>{props.title}</h2>
                 </div>
                 {props.link ?
