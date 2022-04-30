@@ -6,14 +6,14 @@ import ChatListElement from "./ChatListElement";
 import {Chat} from "../../../entities/Chat";
 import {css} from "@emotion/react";
 
-interface ChatListProps {
+interface ChatListElementsProps {
     data: Chat[];
     filter: string;
     userId: string;
     selectedId?: string;
 }
 
-function ChatList({data, filter, userId, selectedId}: ChatListProps) {
+function ChatListElements({data, filter, userId, selectedId}: ChatListElementsProps) {
     /*
      * Chat list component, used in ChatMain. Allows filtering chats by name.
      */
@@ -50,4 +50,4 @@ function ChatList({data, filter, userId, selectedId}: ChatListProps) {
     );
 }
 
-export default ChatList;
+export default ChatListElements;

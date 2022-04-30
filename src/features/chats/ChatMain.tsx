@@ -7,17 +7,16 @@ import useAuth from "../auth/AuthContext";
 import {InfiniteData, useQueryClient} from "react-query";
 import {useChatList} from "./hooks";
 import {Chat} from "../../entities/Chat";
-import {listContainerCss, listContainerCssMobile, mainCss, mainCssMobile} from "./styles";
-import ChatListFilter from "./list/ChatListFilter";
+import {mainCss, mainCssMobile} from "./styles";
 import {useMediaQuery} from "react-responsive";
 import Nav from "../../components/Nav";
 import {baseAppContainerWithoutTabsCss, baseAppContainerWithTabsCss} from "../../styles/layout";
 import Tabs from "../../components/Tabs";
 import ProfileInfoHeader from "../info/user/ProfileInfoHeader";
-import ChatList from "./list/ChatList";
 import {ChatMessageResponse} from "../../entities/ChatMessage";
 import ChatHeader, {ChatHeaderProps} from "../../components/ChatHeader";
 import {chatRoomCss, chatRoomCssMobile} from "./room/styles";
+import ChatList from "./ChatList";
 
 function ChatMain() {
 
@@ -29,8 +28,6 @@ function ChatMain() {
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
 
     const {data} = useChatList();
-
-    const [filter, setFilter] = React.useState<string>("");
 
     /**
      * State to be used in chat header context. This way, the header's data can be obtained from the view components
@@ -85,13 +82,7 @@ function ChatMain() {
         <div css={baseAppContainerWithoutTabsCss}>
             <Nav/>
             <main css={mainCss}>
-                <section css={listContainerCss}>
-                    <ChatListFilter setFilter={setFilter}/>
-                    {data && user ?
-                        <ChatList data={data} filter={filter} selectedId={params.id} userId={user?.id}/> :
-                        null
-                    }
-                </section>
+                <ChatList data={data} user={user}/>
                 <section css={isDesktop ? chatRoomCss : chatRoomCssMobile}>
                     {header ?
                         <ChatHeader {...header}/>
@@ -125,13 +116,7 @@ function ChatMain() {
                 <div css={baseAppContainerWithTabsCss}>
                     <Nav/>
                     <main css={mainCssMobile}>
-                        <section css={listContainerCssMobile}>
-                            <ChatListFilter setFilter={setFilter}/>
-                            {data && user ?
-                                <ChatList data={data} filter={filter} selectedId={params.id} userId={user?.id}/> :
-                                null
-                            }
-                        </section>
+                        <ChatList data={data} user={user}/>
                     </main>
                     <Tabs/>
                 </div>
