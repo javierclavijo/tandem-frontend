@@ -16,7 +16,7 @@ import Tabs from "../../components/Tabs";
 import ProfileInfoHeader from "../info/user/ProfileInfoHeader";
 import ChatList from "./list/ChatList";
 import {ChatMessageResponse} from "../../entities/ChatMessage";
-import AltChatHeader from "../../components/AltChatHeader";
+import ChatHeader from "../../components/ChatHeader";
 import {chatRoomCss, chatRoomCssMobile} from "./room/styles";
 
 export interface ChatHeaderProps {
@@ -100,7 +100,7 @@ function ChatMain() {
                 </section>
                 <section css={isDesktop ? chatRoomCss : chatRoomCssMobile}>
                     {header ?
-                        <AltChatHeader {...header}/>
+                        <ChatHeader {...header}/>
                         : null}
                     <Outlet context={[header, setHeader]}/>
                 </section>
@@ -111,7 +111,7 @@ function ChatMain() {
         params.id ?
             <div css={baseAppContainerWithoutTabsCss}>
                 {header ?
-                    <AltChatHeader {...header}/>
+                    <ChatHeader {...header}/>
                     : null}
                 <main css={mainCssMobile}>
                     <Outlet context={[header, setHeader]}/>
