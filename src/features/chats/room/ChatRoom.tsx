@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import React, {SyntheticEvent, useEffect} from "react";
+import React, {useEffect} from "react";
 import {useParams} from "react-router-dom";
 import {messageSortFn, useChat, useSetChatHeader} from "../hooks";
 import useAuth from "../../auth/AuthContext";
@@ -28,14 +28,10 @@ function ChatRoom() {
     const messageContainerRef = React.useRef<HTMLDivElement>(null);
 
     /**
-     * State which controls whether the bottom of the chat is currently visible.
-     */
-    const [isScrollBottom, setIsScrollBottom] = React.useState<boolean>(true);
-
-    /**
      * Top div ref and intersection observer. Used to fetch more messages whenever the user scrolls to the top.
      */
     const {ref: topRef, inView: topInView} = useInView();
+    const {ref: bottomRef, inView: bottomInView} = useInView();
 
     /**
      * Infinite query which fetches and holds the chat's messages.
@@ -48,6 +44,9 @@ function ChatRoom() {
             data.pages.forEach(page =>
                 page.results.sort((a, b) => messageSortFn(a, b)).reverse()
             );
+            if (bottomInView) {
+                scrollToBottom()
+            }
             return data;
         },
     });
@@ -76,39 +75,21 @@ function ChatRoom() {
      * Function to scroll to the bottom of the chat.
      */
     const scrollToBottom = React.useCallback(() => {
-        if (isScrollBottom) {
-            messageContainerRef.current?.scrollTo(0, messageContainerRef.current.scrollHeight);
-        }
-    }, [isScrollBottom, messageContainerRef]);
+        messageContainerRef.current?.scrollTo(0, messageContainerRef.current.scrollHeight);
+    }, []);
 
     /**
      * Scrolls to the bottom of the chat whenever the first page of the chat is updated (when a message is received or
      * sent), but only if the user is at the bottom of the chat and the update is not due to fetching the next page.
      */
-    React.useEffect(scrollToBottom, [firstPage, isScrollBottom, scrollToBottom]);
-
-    /**
-     * On scroll, detect if the user has scrolled to bottom and set isScrollBottomRef.current accordingly. A number
-     * of px are subtracted to have a bit of margin
-     */
-    const handleScroll = (event: SyntheticEvent) => {
-
-        const element = event.target as HTMLDivElement;
-        setIsScrollBottom(element.offsetHeight + element.scrollTop >= element.scrollHeight - 100);
-    };
-
-    /**
-     * When another chat is selected, set the property to scroll to the bottom again.
-     */
-    React.useEffect(() => {
-        setIsScrollBottom(true);
-    }, [data]);
+    React.useLayoutEffect(() => {
+        scrollToBottom();
+    }, [firstPage, scrollToBottom]);
 
 
     return chat && data ?
         <div css={isDesktop ? chatRoomCss : chatRoomCssMobile}>
             <div ref={messageContainerRef}
-                 onScroll={handleScroll}
                  css={css`
                    overflow-y: scroll;
                    height: 100%;
@@ -118,13 +99,15 @@ function ChatRoom() {
                 {/* Top div, used to load more messages when visible. */}
                 <div ref={topRef}/>
                 {/* Clone the query's pages array and reverse it, as messages are in reverse timestamp order. */}
-                {[...data?.pages].reverse().map((page, index) =>
-                    <React.Fragment key={`page-${index}`}>
-                        {page.results.map((message) => (
+                {[...data?.pages].reverse().map((page, pageIndex) =>
+                    <React.Fragment key={`page-${pageIndex}`}>
+                        {page.results.map((message, messageIndex) => (
                             <ChatRoomMessage message={message}
                                              isOwnMessage={user?.id === message.author.id}
                                              type={chat?.type}
                                              key={message.id}
+                                             ref={pageIndex === data?.pages.length - 1 &&
+                                             messageIndex === page.results.length - 1 ? bottomRef : null}
                             />
                         ))}
                     </React.Fragment>
