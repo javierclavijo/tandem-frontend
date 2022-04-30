@@ -60,7 +60,7 @@ export function UserInfo() {
         setHeader({
             title: "User info"
         });
-    }, []);
+    }, [setHeader]);
 
     /**
      * Holds the users's data

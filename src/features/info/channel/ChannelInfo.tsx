@@ -32,7 +32,7 @@ function ChannelInfo() {
         setHeader({
             title: "Channel info"
         });
-    }, []);
+    }, [setHeader]);
 
     // Holds the channel's data
     const {data} = useQuery<Channel>(["channels", params.id], async () => {
