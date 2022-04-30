@@ -4,8 +4,15 @@ import React from "react";
 import {css} from "@emotion/react";
 import {colors} from "../../../styles/variables";
 import {chatRoomCss, chatRoomHeaderCss} from "./styles";
+import {useOutletContext} from "react-router-dom";
+import {ChatHeaderProps} from "../../../components/ChatHeader";
 
 function EmptyChatRoom() {
+
+    const [, setHeader] = useOutletContext<[ChatHeaderProps | null, React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>]>();
+
+    React.useEffect(() => setHeader(null), [setHeader]);
+
     return (
         <div css={chatRoomCss}>
             <header css={chatRoomHeaderCss}>
