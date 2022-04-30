@@ -5,7 +5,6 @@ import {Outlet, useParams} from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import useAuth from "../auth/AuthContext";
 import {InfiniteData, useQueryClient} from "react-query";
-import {useChatList} from "./hooks";
 import {Chat} from "../../entities/Chat";
 import {mainCss, mainCssMobile} from "./styles";
 import {useMediaQuery} from "react-responsive";
@@ -19,17 +18,15 @@ import ChatList from "./ChatList";
 
 function ChatMain() {
 
-    const {token, user} = useAuth();
+    const {token} = useAuth();
     const queryClient = useQueryClient();
     const params = useParams();
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
 
-    const {data} = useChatList();
-
     /**
-     * State to be used in chat header context. This way, the header's data can be obtained from the view components
-     * themselves, without them having to contain the header themselves.
+     * State used by the router outlet context which controls the header's state. This way, the header's data can be
+     * obtained from the view components, without them having to contain the header themselves.
      */
     const [header, setHeader] = React.useState<ChatHeaderProps | null>(null);
 
@@ -76,11 +73,13 @@ function ChatMain() {
 
 
     return isDesktop ?
-        // Desktop
+        /**
+         * Desktop
+         */
         <div css={baseAppContainerWithoutTabsCss}>
             <Nav/>
             <main css={mainCss}>
-                <ChatList data={data} user={user}/>
+                <ChatList/>
                 <section css={isDesktop ? chatRoomCss : chatRoomCssMobile}>
                     {header ?
                         <ChatHeader {...header}/>
@@ -90,7 +89,9 @@ function ChatMain() {
             </main>
         </div> :
 
-        // Mobile chat room
+        /**
+         * Mobile chat room, user detail and channel detail views.
+         */
         params.id ?
             <div css={baseAppContainerWithoutTabsCss}>
                 {header ?
@@ -101,15 +102,16 @@ function ChatMain() {
                 </main>
             </div> :
 
-            // Mobile chat list
+            /**
+             * Mobile chat list
+             */
             <div css={baseAppContainerWithTabsCss}>
                 <Nav/>
                 <main css={mainCssMobile}>
-                    <ChatList data={data} user={user}/>
+                    <ChatList/>
                 </main>
                 <Tabs/>
-            </div>
-        ;
+            </div>;
 }
 
 export default ChatMain;
