@@ -62,7 +62,7 @@ function ChatList() {
                   margin-bottom: 1rem;
                   color: ${colors.DARK};
                 `}>Create a new channel</h3>
-                <ChannelCreationForm/>
+                <ChannelCreationForm closeModal={() => setIsChannelCreationModalOpen(false)}/>
             </ReactModal>
         </React.Fragment>
     );
