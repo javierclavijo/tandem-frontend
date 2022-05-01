@@ -14,6 +14,7 @@ export interface ChatHeaderProps {
     title?: string;
     link?: To;
     image?: string | null;
+    actions?: JSX.Element;
 }
 
 function ChatHeader(props: ChatHeaderProps) {
@@ -22,38 +23,45 @@ function ChatHeader(props: ChatHeaderProps) {
 
     return (
         <header css={chatRoomHeaderCss}>
-            {!isDesktop ?
-                <BackButton to="/chats"/> :
-                null
-            }
             <div css={css`
-              display: grid;
-              grid-template-rows: 1fr;
-              grid-template-columns: 1fr;
-              grid-template-areas: "element";
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
             `}>
+                {!isDesktop ?
+                    <BackButton to="/chats"/> :
+                    null
+                }
                 <div css={css`
-                  grid-area: element;
-                  display: flex;
-                  align-items: center;
-                  gap: 1rem;
+                  display: grid;
+                  grid-template-rows: 1fr;
+                  grid-template-columns: 1fr;
+                  grid-template-areas: "element";
                 `}>
-                    {props.image || props.image === null ?
-                        <div css={imageContainer}>
-                            <img src={props.image ?? defaultImg} alt=""
-                                 css={userImage}
-                            />
-                        </div> : null}
-                    <h2>{props.title}</h2>
-                </div>
-                {props.link ?
-                    <Link to={props.link} css={css`
+                    <div css={css`
                       grid-area: element;
-                      z-index: 10;
-                      width: auto;
-                      height: auto;
-                    `}/> : null}
+                      display: flex;
+                      align-items: center;
+                      gap: 1rem;
+                    `}>
+                        {props.image || props.image === null ?
+                            <div css={imageContainer}>
+                                <img src={props.image ?? defaultImg} alt=""
+                                     css={userImage}
+                                />
+                            </div> : null}
+                        <h2>{props.title}</h2>
+                    </div>
+                    {props.link ?
+                        <Link to={props.link} css={css`
+                          grid-area: element;
+                          z-index: 10;
+                          width: auto;
+                          height: auto;
+                        `}/> : null}
+                </div>
             </div>
+            {props.actions}
         </header>
     );
 }

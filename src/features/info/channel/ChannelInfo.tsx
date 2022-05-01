@@ -13,31 +13,39 @@ import LanguageBadge from "../../../components/LanguageBadge";
 import {colors} from "../../../styles/variables";
 import ChannelEditLanguageBadge from "./ChannelEditLanguageBadge";
 import ImageInput from "../components/ImageInput";
-import {useOutletContext, useParams} from "react-router-dom";
+import {useLocation, useOutletContext, useParams} from "react-router-dom";
 import {ChatHeaderProps} from "../../../components/ChatHeader";
 import Button from "../../../components/Button";
 import {FastArrowDownBox, FastArrowUpBox} from "iconoir-react";
+import {CopyToClipboard} from "react-copy-to-clipboard";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
 
 function ChannelInfo() {
+    /**
+     * Displays a channel's details: image, name, language and level, description and members.
+     */
 
     const queryClient = useQueryClient();
     const params = useParams();
     const {user} = useAuth();
+    const location = useLocation();
     const [, setHeader] = useOutletContext<[ChatHeaderProps | null, React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>]>();
 
     /**
-     * Set header to only render the title 'user info'
+     * Controls whether the channel is editable by the user.
      */
-    React.useEffect(() => {
-        setHeader({
-            title: "Channel info"
-        });
-    }, [setHeader]);
+    const [editable, setEditable] = useState<boolean>(false);
 
-    // Holds the channel's data
+    /**
+     * Used to show a 'copied to clipboard' text whenever the user copies the channel's link.
+     */
+    const [copied, setCopied] = React.useState<boolean>(false);
+
+    /**
+     * Query which fetches and holds the channel's data
+     */
     const {data} = useQuery<Channel>(["channels", params.id], async () => {
         const response = await axiosApi.get(`/channels/${params.id}`);
         return response.data;
@@ -46,11 +54,41 @@ function ChannelInfo() {
         enabled: !!params.id
     });
 
+    /**
+     * Sets the header to render the title 'user info', plus a 'share' button which copies the channel's URL to the
+     * clipboard on click.
+     */
+    React.useEffect(() => {
+        setHeader({
+            title: "Channel info",
+            actions: (
+                <React.Fragment>
+                    <CopyToClipboard text={window.location.href} onCopy={() => setCopied(true)}>
+                        <p>{!copied ? "Share" : "Copied to clipboard"}</p>
+                    </CopyToClipboard>
+                </React.Fragment>
+            )
+        });
+    }, [copied, location.pathname, setHeader]);
 
-    const [editable, setEditable] = useState<boolean>(false);
+    /**
+     *  Sets a timeout of 1.5 seconds to clear the 'copied to clipboard' message whenever the user copies the channel's
+     *  link.
+     */
+    React.useEffect(() => {
+            if (copied) {
+                let timeout = setTimeout(() => setCopied(false), 1500);
+                return () => {
+                    clearTimeout(timeout);
+                };
+            }
+        }, [copied]
+    );
 
+    /**
+     * Checks if the user has admin role, then sets the 'editable' state if applicable.
+     */
     React.useEffect(() => setEditable(
-        // Check if the user has admin role, set the 'editable' state accordingly
         !!data?.memberships.some(membership =>
             membership.user?.id === user?.id && membership.role === "A"
         )), [data?.memberships, user]);
@@ -72,7 +110,16 @@ function ChannelInfo() {
         }
     });
 
+    /**
+     * Executes the mutation to promote users to moderators.
+     * @param url The URL for the user's membership.
+     */
     const demoteUser = async (url: string) => await updateMembershipMutation.mutateAsync({url, role: "U"});
+
+    /**
+     * Executes the mutation to demote moderators to regular users.
+     * @param url The URL for the user's membership.
+     */
     const promoteUser = async (url: string) => await updateMembershipMutation.mutateAsync({url, role: "M"});
 
 
@@ -141,9 +188,7 @@ function ChannelInfo() {
                                                          </Button> : null}
                                              </React.Fragment>
                                          }
-                        />
-                        : null
-                )}
+                        /> : null)}
                 {/* Empty list */}
                 {!data?.memberships.length ?
                     <article css={css`
