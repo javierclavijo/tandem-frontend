@@ -31,6 +31,7 @@ export const listContainerCss = css`
 
   background-color: ${colors.WHITE};
   width: 100%;
+  position: relative;
 `;
 
 export const listContainerCssMobile = css`
@@ -41,6 +42,7 @@ export const listContainerCssMobile = css`
   background-color: ${colors.WHITE};
   width: 100%;
   max-height: calc(100vh - 8rem);
+  position: relative;
 `;
 
 export const listElementContainerCss = css`

@@ -21,25 +21,13 @@ import {languages} from "../../../resources/languages";
 import ImageInput from "../components/ImageInput";
 import {getFriendFromFriendChat} from "../../chats/hooks";
 import {ChatHeaderProps} from "../../../components/ChatHeader";
+import {modal} from "../../../styles/components";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
 // Set the modal's app element to "hide the application from assistive screenreaders and other assistive technologies
 // while the modal is open" (see react-modal docs: https://reactcommunity.org/react-modal/examples/set_app_element/).
 ReactModal.setAppElement("#root");
-
-const modalStyles = {
-    content: {
-        margin: "auto",
-        width: "fit-content",
-        height: "fit-content",
-        overflow: "visible",
-        padding: "1.25rem",
-    },
-    overlay: {
-        zIndex: 100
-    }
-};
 
 
 export function UserInfo() {
@@ -261,7 +249,7 @@ export function UserInfo() {
                 isOpen={newLanguageModalIsOpen}
                 onRequestClose={() => setNewLanguageModalIsOpen(false)}
                 contentLabel="Add a new language"
-                style={modalStyles}
+                style={modal}
             >
                 <p css={css`
                   margin-bottom: 1rem;
@@ -280,7 +268,7 @@ export function UserInfo() {
                 isOpen={!!selectedDeleteLanguage}
                 onRequestClose={() => setSelectedDeleteLanguage(null)}
                 contentLabel="Delete language"
-                style={modalStyles}
+                style={modal}
             >
                 <p css={css`
                   margin-bottom: 1rem;

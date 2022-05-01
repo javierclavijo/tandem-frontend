@@ -49,3 +49,15 @@ export const badgeSelect: StylesConfig = {
         display: "none",
     }),
 };
+export const modal = {
+    content: {
+        margin: "auto",
+        width: "fit-content",
+        height: "fit-content",
+        overflow: "visible",
+        padding: "1.25rem",
+    },
+    overlay: {
+        zIndex: 100
+    }
+};
