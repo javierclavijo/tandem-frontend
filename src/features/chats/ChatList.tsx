@@ -14,6 +14,7 @@ import {css} from "@emotion/react";
 import {colors} from "../../styles/variables";
 import ReactModal from "react-modal";
 import {modal} from "../../styles/components";
+import ChannelCreationForm from "./ChannelCreationForm";
 
 
 function ChatList() {
@@ -57,10 +58,11 @@ function ChatList() {
                 contentLabel="Add a new language"
                 style={modal}
             >
-                <p css={css`
+                <h3 css={css`
                   margin-bottom: 1rem;
                   color: ${colors.DARK};
-                `}>Create a new channel</p>
+                `}>Create a new channel</h3>
+                <ChannelCreationForm/>
             </ReactModal>
         </React.Fragment>
     );
