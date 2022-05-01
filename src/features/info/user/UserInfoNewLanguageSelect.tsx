@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import {languageOptions, levelOptions, Option} from "../components/InfoSelect";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {useMutation, useQueryClient} from "react-query";
 import {css} from "@emotion/react";
@@ -10,6 +9,7 @@ import {colors} from "../../../styles/variables";
 import {User} from "../../../entities/User";
 import {select} from "../../../styles/components";
 import EditButtons from "../../../components/EditButtons";
+import {languageOptions, levelOptions, Option} from "../../../resources/languages";
 
 interface UserInfoNewLanguageSelectRequestData {
     language: string;
