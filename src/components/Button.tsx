@@ -1,12 +1,14 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import {css} from "@emotion/react";
+import {css, SerializedStyles} from "@emotion/react";
+import {textSizes} from "../styles/variables";
 
 interface EditButtonProps {
     visible: boolean;
     onClick: React.MouseEventHandler<HTMLButtonElement>;
-    children: JSX.Element | JSX.Element[] | string;
+    css?: SerializedStyles;
+    children: JSX.Element | (JSX.Element | string)[] | string;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, EditButtonProps>((
@@ -20,6 +22,7 @@ const Button = React.forwardRef<HTMLButtonElement, EditButtonProps>((
         <button ref={ref}
                 onClick={props.onClick}
                 css={css`${buttonWithoutBackgroundAndBorder};
+                  ${props.css};
                   ${!props.visible ?
                           `display: none;` : ``
                   }
@@ -36,6 +39,9 @@ export const buttonWithoutBackgroundAndBorder = css`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  gap: 0.5rem;
+  font-size: ${textSizes.S};
 `;
 
 export default Button;

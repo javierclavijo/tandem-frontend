@@ -16,22 +16,31 @@ interface InfoListElementProps {
     additionalInfo?: string,
     description: string,
     image: string | null,
-    link: string
+    link: string,
+    buttons?: JSX.Element
 }
 
 function InfoListElement(props: InfoListElementProps) {
-    return (
-        <article css={css`
-          display: grid;
-          grid-template-rows: 1fr;
-          grid-template-columns: 1fr;
-          grid-template-areas: "element";
-          padding: 0.5rem 1rem;
+    /**
+     * List element for lists in channel and user info components. Admits a 'buttons' JSX prop which is made visible on
+     * hover.
+     */
+    const [displayButtons, setDisplayButtons] = React.useState<boolean>(false);
 
-          &:hover {
-            background-color: ${colors.LIGHT};
-          }
-        `}>
+    return (
+        <article onMouseEnter={() => setDisplayButtons(true)}
+                 onMouseLeave={() => setDisplayButtons(false)}
+                 css={css`
+                   display: grid;
+                   grid-template-rows: 1fr;
+                   grid-template-columns: 1fr;
+                   grid-template-areas: "element";
+                   padding: 0.5rem 1rem;
+
+                   &:hover {
+                     background-color: ${colors.LIGHT};
+                   }
+                 `}>
             <div css={infoListElementInnerContainer}>
                 <div css={imageContainerCss}>
                     <img src={props.image ?? defaultImg} alt="" css={infoListElementImg}/>
@@ -63,7 +72,24 @@ function InfoListElement(props: InfoListElementProps) {
                                 null
                             }
                         </span>
-                        <NavArrowRight color={colors.PRIMARY} width={"1.5rem"} height={"1.5rem"}/>
+                        <div css={css`
+                          display: flex;
+                          justify-content: space-between;
+                          align-items: center;
+                          gap: 1rem;`}
+                        >
+                            <div css={css`
+                              display: flex;
+                              justify-content: space-between;
+                              align-items: center;
+                              gap: 1rem;
+                              z-index: 10;
+                              visibility: ${displayButtons ? "visible" : "hidden"};
+                            `}>
+                                {props.buttons}
+                            </div>
+                            <NavArrowRight color={colors.PRIMARY} width={"1.5rem"} height={"1.5rem"}/>
+                        </div>
                     </div>
                     <div css={css`
                       height: 100%;
@@ -85,7 +111,7 @@ function InfoListElement(props: InfoListElementProps) {
               grid-area: element;
               height: 100%;
               width: 100%;
-              z-index: 10;
+              z-index: 5;
             `}/>
         </article>
     );
