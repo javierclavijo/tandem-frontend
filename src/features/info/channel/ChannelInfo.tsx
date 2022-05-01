@@ -17,7 +17,7 @@ import {useLocation, useOutletContext, useParams} from "react-router-dom";
 import {ChatHeaderProps} from "../../../components/ChatHeader";
 import Button from "../../../components/Button";
 import {FastArrowDownBox, FastArrowUpBox} from "iconoir-react";
-import {CopyToClipboard} from "react-copy-to-clipboard";
+import ShareLink from "../../../components/ShareLink";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
@@ -39,11 +39,6 @@ function ChannelInfo() {
     const [editable, setEditable] = useState<boolean>(false);
 
     /**
-     * Used to show a 'copied to clipboard' text whenever the user copies the channel's link.
-     */
-    const [copied, setCopied] = React.useState<boolean>(false);
-
-    /**
      * Query which fetches and holds the channel's data
      */
     const {data} = useQuery<Channel>(["channels", params.id], async () => {
@@ -61,29 +56,10 @@ function ChannelInfo() {
     React.useEffect(() => {
         setHeader({
             title: "Channel info",
-            actions: (
-                <React.Fragment>
-                    <CopyToClipboard text={window.location.href} onCopy={() => setCopied(true)}>
-                        <p>{!copied ? "Share" : "Copied to clipboard"}</p>
-                    </CopyToClipboard>
-                </React.Fragment>
+            actions: (<ShareLink link={window.location.href}/>
             )
         });
-    }, [copied, location.pathname, setHeader]);
-
-    /**
-     *  Sets a timeout of 1.5 seconds to clear the 'copied to clipboard' message whenever the user copies the channel's
-     *  link.
-     */
-    React.useEffect(() => {
-            if (copied) {
-                let timeout = setTimeout(() => setCopied(false), 1500);
-                return () => {
-                    clearTimeout(timeout);
-                };
-            }
-        }, [copied]
-    );
+    }, [location.pathname, setHeader]);
 
     /**
      * Checks if the user has admin role, then sets the 'editable' state if applicable.
