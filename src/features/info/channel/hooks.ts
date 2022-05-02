@@ -1,6 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {Channel} from "../../../entities/Channel";
-import {axiosApi} from "../../auth/AuthContext";
+import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {useNavigate} from "react-router-dom";
 import React, {useCallback, useMemo} from "react";
 
@@ -85,4 +85,66 @@ export function useChangeUserRole(channelId: string | undefined) {
         handlePromoteUser,
         handleDemoteUser
     }), [handleDemoteUser, handlePromoteUser]);
+}
+
+export function useJoinChannel(channel: Channel | undefined) {
+
+    const queryClient = useQueryClient();
+    const {user} = useAuth();
+
+    /**
+     * Creates a membership for the user in the provided channel.
+     */
+    const joinChannelRequest = async () => {
+        if (channel) {
+            return await axiosApi.post("/memberships/", {
+                "user": user?.url,
+                "channel": channel?.url
+            });
+        }
+    };
+
+    /**
+     * Sends the request to join the channel.
+     */
+    const joinChannelMutation = useMutation(joinChannelRequest, {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries(["channels", channel?.id]);
+            await queryClient.invalidateQueries(["chats", "list"]);
+        }
+    });
+
+    return useCallback(async () => {
+        await joinChannelMutation.mutateAsync();
+    }, [joinChannelMutation]);
+}
+
+export function useLeaveChannel(channel: Channel | undefined) {
+
+    const queryClient = useQueryClient();
+    const {user} = useAuth();
+
+    /**
+     * Finds and deletes the user's membership in the provided channel.
+     */
+    const leaveChannelRequest = async () => {
+        const userMembership = channel?.memberships.find(membership => membership.user.id === user?.id);
+        if (userMembership) {
+            return await axiosApi.delete(userMembership.url);
+        }
+    };
+
+    /**
+     * Sends the request to leave the channel.
+     */
+    const leaveChannelMutation = useMutation(leaveChannelRequest, {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries(["channels", channel?.id]);
+            await queryClient.invalidateQueries(["chats", "list"]);
+        }
+    });
+
+    return useCallback(async () => {
+        await leaveChannelMutation.mutateAsync();
+    }, [leaveChannelMutation]);
 }

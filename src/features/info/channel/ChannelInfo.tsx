@@ -11,14 +11,14 @@ import LanguageBadge from "../../../components/LanguageBadge";
 import {colors, textSizes} from "../../../styles/variables";
 import ChannelEditLanguageBadge from "./ChannelEditLanguageBadge";
 import ImageInput from "../components/ImageInput";
-import {useLocation, useOutletContext, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useOutletContext, useParams} from "react-router-dom";
 import {ChatHeaderProps} from "../../../components/ChatHeader";
 import Button, {buttonWithoutBackgroundAndBorder} from "../../../components/Button";
 import {FastArrowDownBox, FastArrowUpBox} from "iconoir-react";
 import ShareLink from "../../../components/ShareLink";
 import {modal, modalButton} from "../../../styles/components";
 import ReactModal from "react-modal";
-import {useChangeUserRole, useChannel, useDeleteChannel} from "./hooks";
+import {useChangeUserRole, useChannel, useDeleteChannel, useJoinChannel, useLeaveChannel} from "./hooks";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
@@ -36,6 +36,7 @@ function ChannelInfo() {
     const {user} = useAuth();
     const location = useLocation();
     const [, setHeader] = useOutletContext<[ChatHeaderProps | null, React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>]>();
+    const navigate = useNavigate();
 
     /**
      * Controls whether the user is a member of the channel, and their role in case they are.
@@ -58,9 +59,18 @@ function ChannelInfo() {
     const [deletionModalIsOpen, setDeletionModalIsOpen] = React.useState<boolean>(false);
 
     /**
+     * Controls whether the channel leave confirmation modal is open.
+     */
+    const [leaveChannelModalIsOpen, setLeaveChannelModalIsOpen] = React.useState<boolean>(false);
+
+    /**
      * Query which fetches and holds the channel's data
      */
     const {data} = useChannel(params.id);
+
+
+    const handleJoinChannel = useJoinChannel(data);
+    const handleLeaveChannel = useLeaveChannel(data);
 
     /**
      * Sets the header to render the title 'user info', plus a 'share' button which copies the channel's URL to the
@@ -77,17 +87,19 @@ function ChannelInfo() {
                   gap: 1rem;
                 `}>
                     {!userRole ?
-                        <button type="button" css={css`${buttonWithoutBackgroundAndBorder};
-                          font-size: ${textSizes.S};
-                          color: white;
-                        `}>
+                        <button type="button" onClick={handleJoinChannel}
+                                css={css`${buttonWithoutBackgroundAndBorder};
+                                  font-size: ${textSizes.S};
+                                  color: white;
+                                `}>
                             Join channel
                         </button> :
-                        !userIsAdmin ?
-                            <button type="button" css={css`${buttonWithoutBackgroundAndBorder};
-                              font-size: ${textSizes.S};
-                              color: white;
-                            `}>
+                        !userIsAdmin() ?
+                            <button type="button" onClick={() => setLeaveChannelModalIsOpen(true)}
+                                    css={css`${buttonWithoutBackgroundAndBorder};
+                                      font-size: ${textSizes.S};
+                                      color: white;
+                                    `}>
                                 Leave channel
                             </button> : null}
                     {userIsAdmin() ?
@@ -101,7 +113,7 @@ function ChannelInfo() {
                     <ShareLink link={window.location.href}/>
                 </div>
         });
-    }, [location.pathname, userRole, setHeader, userIsAdmin]);
+    }, [location.pathname, userRole, setHeader, userIsAdmin, handleJoinChannel]);
 
     /**
      * Checks if the user is a member of the channel and set the 'isMember' state if applicable. If the user is also an
@@ -229,7 +241,40 @@ function ChannelInfo() {
                     </button>
                 </div>
             </ReactModal>
+
+            {/* Channel leave confirmation modal */}
+            <ReactModal
+                isOpen={leaveChannelModalIsOpen}
+                onRequestClose={() => setLeaveChannelModalIsOpen(false)}
+                contentLabel="Leave channel"
+                style={modal}
+            >
+                <p css={css`
+                  margin-bottom: 1rem;
+                `}>
+                    Leave channel?</p>
+                <div css={css`
+                  display: flex;
+                  gap: 1rem;
+                `}>
+                    <button onClick={async () => {
+                        await handleLeaveChannel();
+                        setLeaveChannelModalIsOpen(false);
+                        navigate("/chats/");
+                    }}
+                            css={modalButton}>
+                        Leave
+                    </button>
+                    <button onClick={() => setLeaveChannelModalIsOpen(false)}
+                            css={css`${modalButton};
+                              background-color: ${colors.DARK}60;
+                            `}>
+                        Cancel
+                    </button>
+                </div>
+            </ReactModal>
         </div> : null;
+
 }
 
 export default ChannelInfo;
