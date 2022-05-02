@@ -1,9 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import {useMutation, useQueryClient} from "react-query";
-import {Channel} from "../../../entities/Channel";
-import useAuth, {axiosApi} from "../../auth/AuthContext";
+import useAuth from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import DescriptionTextarea from "../components/DescriptionTextarea";
 import {descriptionSection, infoSection, listSection, listSectionHeader, profileImg} from "../styles";
@@ -20,7 +18,7 @@ import {FastArrowDownBox, FastArrowUpBox} from "iconoir-react";
 import ShareLink from "../../../components/ShareLink";
 import {modal, modalButton} from "../../../styles/components";
 import ReactModal from "react-modal";
-import {useChannel, useDeleteChannel} from "./hooks";
+import {useChangeUserRole, useChannel, useDeleteChannel} from "./hooks";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
@@ -34,7 +32,6 @@ function ChannelInfo() {
      * Displays a channel's details: image, name, language and level, description and members.
      */
 
-    const queryClient = useQueryClient();
     const params = useParams();
     const {user} = useAuth();
     const location = useLocation();
@@ -123,34 +120,9 @@ function ChannelInfo() {
     const handleDelete = useDeleteChannel(data);
 
     /**
-     * Request function to promote users to moderators or demote them to regular users.
+     * User role changing handlers.
      */
-    const updateMembershipRequest = async (args: { url: string, role: string }) => {
-        const response = await axiosApi.patch(args.url, {role: args.role});
-        return response.data;
-    };
-
-    /**
-     * Mutation to promote/demote users. Invalidates the channel detail query on success.
-     */
-    const updateMembershipMutation = useMutation(updateMembershipRequest, {
-        onSuccess: async () => {
-            await queryClient.invalidateQueries<Channel>(["channels", params.id]);
-        }
-    });
-
-    /**
-     * Executes the mutation to promote users to moderators.
-     * @param url The URL for the user's membership.
-     */
-    const demoteUser = async (url: string) => await updateMembershipMutation.mutateAsync({url, role: "U"});
-
-    /**
-     * Executes the mutation to demote moderators to regular users.
-     * @param url The URL for the user's membership.
-     */
-    const promoteUser = async (url: string) => await updateMembershipMutation.mutateAsync({url, role: "M"});
-
+    const {handlePromoteUser, handleDemoteUser} = useChangeUserRole(params.id);
 
     return data ?
         <div css={css`
@@ -205,14 +177,14 @@ function ChannelInfo() {
                                                  regular user. If they are admin, show nothing. */}
                                                  {membership.role === "U" ?
                                                      <Button visible={true}
-                                                             onClick={async () => await promoteUser(membership.url)}>
+                                                             onClick={async () => await handlePromoteUser(membership.url)}>
                                                          Promote
                                                          <FastArrowUpBox color={colors.PRIMARY} height={"1.5rem"}
                                                                          width={"1.5rem"}/>
                                                      </Button> :
                                                      membership.role === "M" ?
                                                          <Button visible={true}
-                                                                 onClick={async () => await demoteUser(membership.url)}>
+                                                                 onClick={async () => await handleDemoteUser(membership.url)}>
                                                              Demote
                                                              <FastArrowDownBox color={colors.PRIMARY} height={"1.5rem"}
                                                                                width={"1.5rem"}/>
