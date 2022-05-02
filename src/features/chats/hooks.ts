@@ -8,9 +8,13 @@ import {User} from "../../entities/User";
 import {useOutletContext} from "react-router-dom";
 import {ChatHeaderProps} from "../../components/ChatHeader";
 
-export const messageSortFn = (a: ChatMessage, b: ChatMessage) => {
-    const aDateTime = DateTime.fromISO(a.timestamp);
-    const bDateTime = DateTime.fromISO(b.timestamp);
+export const messageSortFn = (a: ChatMessage | undefined, b: ChatMessage | undefined) => {
+    /**
+     * Sorts messages or chats according to sent datetime. If the message is undefined (usually due to a chat having
+     * no messages, which shouldn't happen in practice), the current datetime is used.
+     */
+    const aDateTime = a?.timestamp ? DateTime.fromISO(a.timestamp) : DateTime.now();
+    const bDateTime = b?.timestamp ? DateTime.fromISO(b.timestamp) : DateTime.now();
 
     if (aDateTime > bDateTime) {
         return -1;

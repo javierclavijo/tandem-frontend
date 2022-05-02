@@ -52,7 +52,10 @@ function ChatListElement({chat, selected, latestMessageIsOwn}: ChatListElementPr
                         <span css={css`
                           font-size: ${textSizes.S};
                         `}>
-                            {DateTime.fromISO(chat.messages[0].timestamp).toLocaleString(DateTime.DATE_SHORT)}
+                            {/* If the chat has messages, show the date when the latest message was sent. */}
+                            {chat.messages.length ?
+                                DateTime.fromISO(chat.messages[0].timestamp).toLocaleString(DateTime.DATE_SHORT) :
+                                null}
                         </span>
                     </span>
                     <span css={css`
@@ -62,7 +65,13 @@ function ChatListElement({chat, selected, latestMessageIsOwn}: ChatListElementPr
                       overflow: hidden;
                       white-space: nowrap;
                     `}>
-                    {latestMessageIsOwn ? "You" : chat.messages[0].author.username}: {chat.messages[0].content}
+                        {/* If there's messages in the chat, show the first message and its author's username, or 'You'
+                        if the current user is the author. */}
+                        {chat.messages.length ?
+                            latestMessageIsOwn ? `You: ${chat.messages[0].content}` :
+                                `${chat.messages[0].author.username}: ${chat.messages[0].content}` :
+                            null
+                        }
                     </span>
                 </div>
             </div>

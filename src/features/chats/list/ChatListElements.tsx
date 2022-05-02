@@ -30,7 +30,7 @@ function ChatListElements({data, filter, userId, selectedId}: ChatListElementsPr
             {filteredElements.map(chat =>
                 <ChatListElement chat={chat}
                                  selected={chat.id === selectedId}
-                                 latestMessageIsOwn={chat.messages[0].author.id === userId}
+                                 latestMessageIsOwn={chat.messages[0]?.author.id === userId}
                                  key={chat.id}
                 />
             )}
