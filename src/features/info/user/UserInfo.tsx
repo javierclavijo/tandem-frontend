@@ -1,9 +1,8 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import {useMutation, useQueryClient} from "react-query";
-import useAuth, {axiosApi} from "../../auth/AuthContext";
-import {User, UserLanguage} from "../../../entities/User";
+import useAuth from "../../auth/AuthContext";
+import {UserLanguage} from "../../../entities/User";
 import {useOutletContext, useParams} from "react-router-dom";
 import {css} from "@emotion/react";
 import {descriptionSection, infoSection, listSection, listSectionHeader, profileImg} from "../styles";
@@ -14,7 +13,7 @@ import ReactModal from "react-modal";
 import UserInfoNewLanguageSelect from "./UserInfoNewLanguageSelect";
 import {colors} from "../../../styles/variables";
 import {Plus} from "iconoir-react";
-import Button from "../../../components/Button";
+import Button, {buttonWithoutBackgroundAndBorder} from "../../../components/Button";
 import LanguageBadge from "../../../components/LanguageBadge";
 import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
 import {languages} from "../../../resources/languages";
@@ -22,7 +21,7 @@ import ImageInput from "../components/ImageInput";
 import {getFriendFromFriendChat} from "../../chats/hooks";
 import {ChatHeaderProps} from "../../../components/ChatHeader";
 import {modal} from "../../../styles/components";
-import {useUser} from "./hooks";
+import {useDeleteUserLanguage, useUser} from "./hooks";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
@@ -37,7 +36,6 @@ export function UserInfo() {
      * user's data and whether the information is editable by the user.
      */
 
-    const queryClient = useQueryClient();
     const params = useParams();
     const {user} = useAuth();
     const [, setHeader] = useOutletContext<[ChatHeaderProps | null, React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>]>();
@@ -77,26 +75,9 @@ export function UserInfo() {
     React.useEffect(() => setIsEditable(!!user?.id && (user?.id === data?.id)), [user, data]);
 
     /**
-     * Delete-related functions
+     * Language deletion handler
      */
-    const deleteRequest = async (url: string) => {
-        const response = await axiosApi.delete(url);
-        return response.data;
-    };
-
-    const deleteMutation = useMutation(deleteRequest, {
-        onSuccess: async () => {
-            await queryClient.invalidateQueries<User | undefined>(["users", user?.id]);
-        }
-    });
-
-    const handleDelete = async () => {
-        if (selectedDeleteLanguage) {
-            await deleteMutation.mutateAsync(selectedDeleteLanguage.url);
-            setSelectedDeleteLanguage(null);
-        }
-    };
-
+    const handleDeleteLanguage = useDeleteUserLanguage(selectedDeleteLanguage, setSelectedDeleteLanguage);
 
     return data ? <React.Fragment>
         <div css={css`
@@ -154,14 +135,9 @@ export function UserInfo() {
                                 )}
                                 <button type="button"
                                         onClick={() => setNewLanguageModalIsOpen(true)}
-                                        css={css`
-                                          background: none;
-                                          color: ${colors.WHITE};
-                                          border: none;
-                                          display: flex;
-                                          align-items: center;
-                                        `}
-                                >
+                                        css={css`${buttonWithoutBackgroundAndBorder};
+                                          color: ${colors.WHITE}
+                                        `}>
                                     Add<Plus/>
                                 </button>
                             </React.Fragment> :
@@ -274,7 +250,7 @@ export function UserInfo() {
                   display: flex;
                   gap: 1rem;
                 `}>
-                    <Button visible={true} onClick={handleDelete}>
+                    <Button visible={true} onClick={handleDeleteLanguage}>
                         Delete
                     </Button>
                     <Button visible={true} onClick={() => setSelectedDeleteLanguage(null)}>
