@@ -13,14 +13,19 @@ import LanguageBadge from "../../../components/LanguageBadge";
 import {colors} from "../../../styles/variables";
 import ChannelEditLanguageBadge from "./ChannelEditLanguageBadge";
 import ImageInput from "../components/ImageInput";
-import {useLocation, useOutletContext, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useOutletContext, useParams} from "react-router-dom";
 import {ChatHeaderProps} from "../../../components/ChatHeader";
 import Button from "../../../components/Button";
 import {FastArrowDownBox, FastArrowUpBox} from "iconoir-react";
 import ShareLink from "../../../components/ShareLink";
+import {modal, modalButton} from "../../../styles/components";
+import ReactModal from "react-modal";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
+// Set the modal's app element to "hide the application from assistive screenreaders and other assistive technologies
+// while the modal is open" (see react-modal docs: https://reactcommunity.org/react-modal/examples/set_app_element/).
+ReactModal.setAppElement("#root");
 
 function ChannelInfo() {
     /**
@@ -28,6 +33,7 @@ function ChannelInfo() {
      */
 
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
     const params = useParams();
     const {user} = useAuth();
     const location = useLocation();
@@ -37,6 +43,11 @@ function ChannelInfo() {
      * Controls whether the channel is editable by the user.
      */
     const [editable, setEditable] = useState<boolean>(false);
+
+    /**
+     * Controls whether the channel deletion confirmation modal is open.
+     */
+    const [deletionModalIsOpen, setDeletionModalIsOpen] = React.useState<boolean>(false);
 
     /**
      * Query which fetches and holds the channel's data
@@ -56,10 +67,19 @@ function ChannelInfo() {
     React.useEffect(() => {
         setHeader({
             title: "Channel info",
-            actions: (<ShareLink link={window.location.href}/>
-            )
+            actions:
+                <div css={css`
+                  display: flex;
+                  gap: 1rem;
+                `}>
+                    {editable ?
+                        <Button visible={true} onClick={() => setDeletionModalIsOpen(true)}>
+                            Delete
+                        </Button> : null}
+                    <ShareLink link={window.location.href}/>
+                </div>
         });
-    }, [location.pathname, setHeader]);
+    }, [editable, location.pathname, setHeader]);
 
     /**
      * Checks if the user has admin role, then sets the 'editable' state if applicable.
@@ -68,6 +88,30 @@ function ChannelInfo() {
         !!data?.memberships.some(membership =>
             membership.user?.id === user?.id && membership.role === "A"
         )), [data?.memberships, user]);
+
+    /**
+     * Deletes the channel.
+     */
+    const deleteChannelRequest = async () => {
+        if (data) {
+            return await axiosApi.delete(data?.url);
+        }
+    };
+
+    /**
+     * Sends the request to delete the channel.
+     */
+    const deleteChannelMutation = useMutation(deleteChannelRequest, {
+        onSuccess: () => queryClient.invalidateQueries(["chats", "list"])
+    });
+
+    /**
+     * Handles deletion, sending the deletion request and navigating back to the chat list.
+     */
+    const onDeleteClick = async () => {
+        await deleteChannelMutation.mutateAsync();
+        navigate("/chats/");
+    };
 
     /**
      * Request function to promote users to moderators or demote them to regular users.
@@ -176,6 +220,34 @@ function ChannelInfo() {
                     </article>
                     : null}
             </section>
+
+            {/* Channel deletion confirmation modal */}
+            <ReactModal
+                isOpen={deletionModalIsOpen}
+                onRequestClose={() => setDeletionModalIsOpen(false)}
+                contentLabel="Delete channel"
+                style={modal}
+            >
+                <p css={css`
+                  margin-bottom: 1rem;
+                `}>
+                    Delete channel?</p>
+                <div css={css`
+                  display: flex;
+                  gap: 1rem;
+                `}>
+                    <button onClick={onDeleteClick}
+                            css={modalButton}>
+                        Delete
+                    </button>
+                    <button onClick={() => setDeletionModalIsOpen(false)}
+                            css={css`${modalButton};
+                              background-color: ${colors.DARK}60;
+                            `}>
+                        Cancel
+                    </button>
+                </div>
+            </ReactModal>
         </div> : null;
 }
 
