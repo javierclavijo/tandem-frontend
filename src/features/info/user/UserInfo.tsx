@@ -11,7 +11,7 @@ import DescriptionTextarea from "../components/DescriptionTextarea";
 import InfoListElement from "../components/InfoListElement";
 import ReactModal from "react-modal";
 import UserInfoNewLanguageSelect from "./UserInfoNewLanguageSelect";
-import {colors} from "../../../styles/variables";
+import {colors, textSizes} from "../../../styles/variables";
 import {Plus} from "iconoir-react";
 import Button, {buttonWithoutBackgroundAndBorder} from "../../../components/Button";
 import LanguageBadge from "../../../components/LanguageBadge";
@@ -41,15 +41,6 @@ export function UserInfo() {
     const [, setHeader] = useOutletContext<[ChatHeaderProps | null, React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>]>();
 
     /**
-     * Set header to only render the title 'user info'
-     */
-    React.useEffect(() => {
-        setHeader({
-            title: "User info"
-        });
-    }, [setHeader]);
-
-    /**
      * Holds the user's data
      */
     const {data} = useUser(params.id);
@@ -58,6 +49,12 @@ export function UserInfo() {
      * Controls whether the info is editable (i.e. if edit controls are displayed)
      */
     const [isEditable, setIsEditable] = React.useState<boolean>(false);
+
+    /**
+     * Controls whether the user is a friend of the current user. Used to render the 'chat with user' button.
+     * Set to true by default to avoid rendering the button on the first render.
+     */
+    const [isFriend, setIsFriend] = React.useState<boolean>(true);
 
     /**
      * Controls the language creation modal's rendering
@@ -70,14 +67,46 @@ export function UserInfo() {
     const [selectedDeleteLanguage, setSelectedDeleteLanguage] = React.useState<UserLanguage | null>(null);
 
     /**
-     * Set the view as editable if the info's user's ID is the same as the user's
+     * Set the view as editable if the info's user's ID is the same as the user's. If not, check if the user is a friend
+     * of the current user (i.e. has a friend chat with them).
      */
-    React.useEffect(() => setIsEditable(!!user?.id && (user?.id === data?.id)), [user, data]);
+    React.useEffect(() => {
+        const isCurrentUser = !!user?.id && (user?.id === data?.id);
+        setIsEditable(isCurrentUser);
+        if (data && !isCurrentUser) {
+            const isFriendOfCurrentUser = data?.friend_chats.some(chat =>
+                chat.users.some(chatUser =>
+                    chatUser.id === user?.id));
+            setIsFriend(isFriendOfCurrentUser);
+        }
+    }, [user, data]);
 
     /**
      * Language deletion handler
      */
     const handleDeleteLanguage = useDeleteUserLanguage(selectedDeleteLanguage, setSelectedDeleteLanguage);
+
+    /**
+     * Set header to render the title 'user info', plus a button to chat with the user if the user is not already a
+     * friend of the current user (i.e. doesn't have any friend chats with them).
+     */
+    React.useEffect(() => {
+        setHeader({
+            title: "User info",
+            actions:
+                <React.Fragment>
+                    {!isFriend ?
+                        <button type="button" onClick={() => console.log("befriended user")}
+                                css={css`${buttonWithoutBackgroundAndBorder};
+                                  font-size: ${textSizes.S};
+                                  color: white;
+                                `}>
+                            Chat with user
+                        </button> : null}
+                </React.Fragment>
+        });
+    }, [isFriend, setHeader]);
+
 
     return data ? <React.Fragment>
         <div css={css`
