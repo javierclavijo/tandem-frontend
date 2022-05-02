@@ -7,6 +7,11 @@ export const globalStyles = css`
     margin: 0;
   }
 
+  // Override normalize.css line-height rule, which in some cases causes elements to misalign.
+  :where(html) {
+    line-height: normal;
+  }
+
   body {
     margin: 0;
     background-color: ${colors.LIGHT};

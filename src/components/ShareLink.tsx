@@ -1,5 +1,10 @@
+/** @jsxImportSource @emotion/react */
+
 import React from "react";
 import {CopyToClipboard} from "react-copy-to-clipboard";
+import {buttonWithoutBackgroundAndBorder} from "./Button";
+import {css} from "@emotion/react";
+import {colors} from "../styles/variables";
 
 interface ShareLinkProps {
     link: string;
@@ -32,7 +37,11 @@ function ShareLink(props: ShareLinkProps) {
 
     return (
         <CopyToClipboard text={props.link} onCopy={() => setCopied(true)}>
-            <p>{!copied ? "Share" : "Copied to clipboard"}</p>
+            <button type="button" css={css`${buttonWithoutBackgroundAndBorder};
+              color: ${colors.WHITE};
+            `}>
+                {!copied ? "Share" : "Copied to clipboard"}
+            </button>
         </CopyToClipboard>
     );
 }

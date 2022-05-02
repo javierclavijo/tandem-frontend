@@ -10,12 +10,12 @@ import {descriptionSection, infoSection, listSection, listSectionHeader, profile
 import InfoListElement from "./InfoListElement";
 import {ChannelNameInput} from "../components/NameInput";
 import LanguageBadge from "../../../components/LanguageBadge";
-import {colors} from "../../../styles/variables";
+import {colors, textSizes} from "../../../styles/variables";
 import ChannelEditLanguageBadge from "./ChannelEditLanguageBadge";
 import ImageInput from "../components/ImageInput";
 import {useLocation, useNavigate, useOutletContext, useParams} from "react-router-dom";
 import {ChatHeaderProps} from "../../../components/ChatHeader";
-import Button from "../../../components/Button";
+import Button, {buttonWithoutBackgroundAndBorder} from "../../../components/Button";
 import {FastArrowDownBox, FastArrowUpBox} from "iconoir-react";
 import ShareLink from "../../../components/ShareLink";
 import {modal, modalButton} from "../../../styles/components";
@@ -73,9 +73,13 @@ function ChannelInfo() {
                   gap: 1rem;
                 `}>
                     {editable ?
-                        <Button visible={true} onClick={() => setDeletionModalIsOpen(true)}>
+                        <button onClick={() => setDeletionModalIsOpen(true)} css={css`
+                          ${buttonWithoutBackgroundAndBorder};
+                          font-size: ${textSizes.S};
+                          color: white;
+                        `}>
                             Delete
-                        </Button> : null}
+                        </button> : null}
                     <ShareLink link={window.location.href}/>
                 </div>
         });
