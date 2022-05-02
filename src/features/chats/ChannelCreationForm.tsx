@@ -4,7 +4,7 @@ import React from "react";
 import {Controller, useForm} from "react-hook-form";
 import Select from "react-select";
 import {languageOptions, levelOptions} from "../../resources/languages";
-import {select} from "../../styles/components";
+import {modalButton, select} from "../../styles/components";
 import {css} from "@emotion/react";
 import {colors, textSizes} from "../../styles/variables";
 import {axiosApi} from "../auth/AuthContext";
@@ -22,7 +22,7 @@ interface ChannelCreationRequestData {
 function ChannelCreationForm({closeModal}: { closeModal: () => void }) {
 
     const queryClient = useQueryClient();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const {register, handleSubmit, control, formState: {errors}} = useForm();
 
     const request = async (data: ChannelCreationRequestData) => await axiosApi.post("/channels/", data);
@@ -41,7 +41,7 @@ function ChannelCreationForm({closeModal}: { closeModal: () => void }) {
         if (response.status === 201) {
             // If the channel has been created successfully, close the modal and navigate to its detail page.
             closeModal();
-            navigate(`/chats/channels/${response.data.id}`)
+            navigate(`/chats/channels/${response.data.id}`);
         }
     };
 
@@ -108,17 +108,21 @@ function ChannelCreationForm({closeModal}: { closeModal: () => void }) {
                         <p css={errorCss}>Proficiency level is required.</p> : null}
                 </div>
             </fieldset>
-            <button type="submit" css={css`
-              width: fit-content;
-              padding: 0.5rem;
-              border-radius: 3px;
-              border: none;
-              background-color: ${colors.PRIMARY};
-              color: ${colors.WHITE};
-              font-size: ${textSizes.M};
+            <div css={css`
+              display: flex;
+              gap: 1rem;
+              justify-content: space-between;
             `}>
-                Create channel
-            </button>
+                <button type="submit" css={modalButton}>
+                    Create channel
+                </button>
+                <button type="button" onClick={closeModal}
+                        css={css`${modalButton};
+                          background-color: ${colors.DARK}60;
+                        `}>
+                    Cancel
+                </button>
+            </div>
         </form>
     );
 }

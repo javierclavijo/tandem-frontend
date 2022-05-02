@@ -1,6 +1,6 @@
 import {css} from "@emotion/react";
 import {StylesConfig} from "react-select";
-import {colors} from "./variables";
+import {colors, textSizes} from "./variables";
 
 export const badge = css`
   display: flex;
@@ -49,6 +49,7 @@ export const badgeSelect: StylesConfig = {
         display: "none",
     }),
 };
+
 export const modal = {
     content: {
         margin: "auto",
@@ -61,3 +62,15 @@ export const modal = {
         zIndex: 100
     }
 };
+
+export const modalButton = css`
+  width: fit-content;
+  padding: 0.5rem;
+  border-radius: 3px;
+  border: none;
+  background-color: ${colors.PRIMARY};
+  color: ${colors.WHITE};
+  font-size: ${textSizes.M};
+  cursor: pointer;
+`;
+
