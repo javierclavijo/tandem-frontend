@@ -115,7 +115,9 @@ function ChannelInfo() {
                         <p>{data?.name}</p>
                     </React.Fragment>
                 }
-                <p>Channel · {data?.memberships.length} members</p>
+                <p>Channel ·&nbsp;
+                    {data?.memberships.length} {data?.memberships.length === 1 ? "member" : "members"}
+                </p>
                 {editable ?
                     <ChannelEditLanguageBadge data={data} bg={colors.DARK}/> :
                     <LanguageBadge language={data.language} level={data.level} bg={colors.DARK}/>

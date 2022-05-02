@@ -125,6 +125,7 @@ function DescriptionTextarea({data, queryKey}: DescriptionTextareaProps) {
                           onKeyDown={handleKeyDown}
                           minRows={1} maxRows={8}
                           css={editElement}
+                          placeholder="Add a description..."
         />
         {error ?
             <p css={css`
