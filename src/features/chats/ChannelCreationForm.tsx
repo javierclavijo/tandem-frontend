@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import {useForm, Controller} from "react-hook-form";
+import {Controller, useForm} from "react-hook-form";
 import Select from "react-select";
 import {languageOptions, levelOptions} from "../../resources/languages";
 import {select} from "../../styles/components";
@@ -10,6 +10,7 @@ import {colors, textSizes} from "../../styles/variables";
 import {axiosApi} from "../auth/AuthContext";
 import {useMutation, useQueryClient} from "react-query";
 import {errorCss} from "../auth/styles";
+import {useNavigate} from "react-router-dom";
 
 
 interface ChannelCreationRequestData {
@@ -21,12 +22,10 @@ interface ChannelCreationRequestData {
 function ChannelCreationForm({closeModal}: { closeModal: () => void }) {
 
     const queryClient = useQueryClient();
+    const navigate = useNavigate()
     const {register, handleSubmit, control, formState: {errors}} = useForm();
 
-    const request = async (data: ChannelCreationRequestData) => {
-        const response = await axiosApi.post("/channels/", data);
-        return response.data;
-    };
+    const request = async (data: ChannelCreationRequestData) => await axiosApi.post("/channels/", data);
 
     const mutation = useMutation(request, {
         onSuccess: () => queryClient.invalidateQueries(["chats", "list"])
@@ -38,8 +37,11 @@ function ChannelCreationForm({closeModal}: { closeModal: () => void }) {
             language: data.language.value,
             level: data.level.value
         });
-        if (response.success) {
+        debugger
+        if (response.status === 201) {
+            // If the channel has been created successfully, close the modal and navigate to its detail page.
             closeModal();
+            navigate(`/chats/channels/${response.data.id}`)
         }
     };
 
