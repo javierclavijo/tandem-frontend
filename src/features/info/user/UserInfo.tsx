@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import {useMutation, useQuery, useQueryClient} from "react-query";
+import {useMutation, useQueryClient} from "react-query";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {User, UserLanguage} from "../../../entities/User";
 import {useOutletContext, useParams} from "react-router-dom";
@@ -22,6 +22,7 @@ import ImageInput from "../components/ImageInput";
 import {getFriendFromFriendChat} from "../../chats/hooks";
 import {ChatHeaderProps} from "../../../components/ChatHeader";
 import {modal} from "../../../styles/components";
+import {useUser} from "./hooks";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
@@ -51,15 +52,9 @@ export function UserInfo() {
     }, [setHeader]);
 
     /**
-     * Holds the users's data
+     * Holds the user's data
      */
-    const {data} = useQuery<User>(["users", params.id], async () => {
-        const response = await axiosApi.get(`/users/${params.id}`);
-        return response.data;
-    }, {
-        staleTime: 15000,
-        enabled: !!params.id
-    });
+    const {data} = useUser(params.id);
 
     /**
      * Controls whether the info is editable (i.e. if edit controls are displayed)

@@ -15,7 +15,7 @@ interface UseEditType<T> {
     handleCancel: () => void;
 }
 
-export function useEdit<T extends (HTMLInputElement | HTMLTextAreaElement), S>(
+export function useEditField<T extends (HTMLInputElement | HTMLTextAreaElement), S>(
     data: S | undefined,
     dataKey: keyof S
 ): UseEditType<T> {

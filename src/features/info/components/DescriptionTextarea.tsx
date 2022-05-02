@@ -7,7 +7,7 @@ import {colors} from "../../../styles/variables";
 import TextareaAutosize from "react-textarea-autosize";
 import {axiosApi} from "../../auth/AuthContext";
 import {useMutation, useQueryClient} from "react-query";
-import {useEdit} from "../hooks";
+import {useEditField} from "./hooks";
 import {editElement} from "../styles";
 import EditButtons from "../../../components/EditButtons";
 import {User} from "../../../entities/User";
@@ -35,7 +35,7 @@ function DescriptionTextarea({data, queryKey}: DescriptionTextareaProps) {
         handleChange,
         handleFocus,
         handleCancel,
-    } = useEdit<HTMLTextAreaElement, Channel | User>(data, "description");
+    } = useEditField<HTMLTextAreaElement, Channel | User>(data, "description");
 
     // Used in handleBlur() to handle the case of submitting through keyboard.
     const keyboardSubmitRef = React.useRef<boolean>(false);

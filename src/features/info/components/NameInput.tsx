@@ -2,7 +2,7 @@
 
 import React from "react";
 import {Channel} from "../../../entities/Channel";
-import {useEdit} from "../hooks";
+import {useEditField} from "./hooks";
 import {css} from "@emotion/react";
 import {colors} from "../../../styles/variables";
 import {editElement} from "../styles";
@@ -30,7 +30,7 @@ function NameInput<T>({data, dataKey, mutation}: NameInputProps<T>) {
         handleChange,
         handleFocus,
         handleCancel,
-    } = useEdit<HTMLInputElement, T>(data, dataKey);
+    } = useEditField<HTMLInputElement, T>(data, dataKey);
 
     // Used in handleBlur() to handle the case of submitting through keyboard.
     const keyboardSubmitRef = React.useRef<boolean>(false);

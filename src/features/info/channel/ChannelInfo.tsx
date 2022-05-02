@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import {useMutation, useQuery, useQueryClient} from "react-query";
+import {useMutation, useQueryClient} from "react-query";
 import {Channel} from "../../../entities/Channel";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import {css} from "@emotion/react";
@@ -20,6 +20,7 @@ import {FastArrowDownBox, FastArrowUpBox} from "iconoir-react";
 import ShareLink from "../../../components/ShareLink";
 import {modal, modalButton} from "../../../styles/components";
 import ReactModal from "react-modal";
+import {useChannel} from "./hooks";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
@@ -63,13 +64,7 @@ function ChannelInfo() {
     /**
      * Query which fetches and holds the channel's data
      */
-    const {data} = useQuery<Channel>(["channels", params.id], async () => {
-        const response = await axiosApi.get(`/channels/${params.id}`);
-        return response.data;
-    }, {
-        staleTime: 15000,
-        enabled: !!params.id
-    });
+    const {data} = useChannel(params.id);
 
     /**
      * Sets the header to render the title 'user info', plus a 'share' button which copies the channel's URL to the
