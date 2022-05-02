@@ -5,7 +5,7 @@ import useAuth from "../../auth/AuthContext";
 import {css} from "@emotion/react";
 import DescriptionTextarea from "../components/DescriptionTextarea";
 import {descriptionSection, infoSection, listSection, listSectionHeader, profileImg} from "../styles";
-import InfoListElement from "./InfoListElement";
+import InfoListElement from "../components/InfoListElement";
 import {ChannelNameInput} from "../components/NameInput";
 import LanguageBadge from "../../../components/LanguageBadge";
 import {colors, textSizes} from "../../../styles/variables";

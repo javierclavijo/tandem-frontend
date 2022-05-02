@@ -8,7 +8,7 @@ import {css} from "@emotion/react";
 import {descriptionSection, infoSection, listSection, listSectionHeader, profileImg} from "../styles";
 import {UserNameInput} from "../components/NameInput";
 import DescriptionTextarea from "../components/DescriptionTextarea";
-import InfoListElement from "../channel/InfoListElement";
+import InfoListElement from "../components/InfoListElement";
 import ReactModal from "react-modal";
 import UserInfoNewLanguageSelect from "./UserInfoNewLanguageSelect";
 import {colors} from "../../../styles/variables";
