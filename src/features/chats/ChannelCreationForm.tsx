@@ -2,6 +2,7 @@
 
 import React from "react";
 import {Controller, useForm} from "react-hook-form";
+import {ErrorMessage} from "@hookform/error-message";
 import Select from "react-select";
 import {languageOptions, levelOptions} from "../../resources/languages";
 import {modalButton, select} from "../../styles/components";
@@ -11,6 +12,7 @@ import {axiosApi} from "../auth/AuthContext";
 import {useMutation, useQueryClient} from "react-query";
 import {errorCss} from "../auth/styles";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
 
 
 interface ChannelCreationRequestData {
@@ -19,11 +21,15 @@ interface ChannelCreationRequestData {
     level: string,
 }
 
+interface ServerErrorResponse {
+    [key: string]: string[];
+}
+
 function ChannelCreationForm({closeModal}: { closeModal: () => void }) {
 
     const queryClient = useQueryClient();
     const navigate = useNavigate();
-    const {register, handleSubmit, control, formState: {errors}} = useForm();
+    const {register, handleSubmit, control, formState: {errors}, setError} = useForm();
 
     const request = async (data: ChannelCreationRequestData) => await axiosApi.post("/channels/", data);
 
@@ -32,16 +38,32 @@ function ChannelCreationForm({closeModal}: { closeModal: () => void }) {
     });
 
     const onSubmit = async (data: any) => {
-        const response = await mutation.mutateAsync({
-            name: data.name,
-            language: data.language.value,
-            level: data.level.value
-        });
-        debugger
-        if (response.status === 201) {
-            // If the channel has been created successfully, close the modal and navigate to its detail page.
-            closeModal();
-            navigate(`/chats/channels/${response.data.id}`);
+        try {
+            const response = await mutation.mutateAsync({
+                name: data.name,
+                language: data.language.value,
+                level: data.level.value
+            });
+            if (response.status === 201) {
+                // If the channel has been created successfully, close the modal and navigate to its detail page.
+                closeModal();
+                navigate(`/chats/channels/${response.data.id}`);
+            }
+        } catch (e) {
+            if (axios.isAxiosError(e) && e.response) {
+                // If the server returned any errors, set them in the form. The server returns errors as string arrays,
+                // so we must first iterate over the response's entries, and then over the entries' values, setting the
+                // error's key as the error's field's name.
+                Object.entries(e.response.data as ServerErrorResponse).forEach(([key, value]) =>
+                    value.forEach(valueError => setError(key, {
+                            type: "focus",
+                            // Capitalize the message's first letter before setting it as the error message
+                            message: valueError[0].toUpperCase() + valueError.substring(1)
+                        }, {
+                            shouldFocus: true
+                        })
+                    ));
+            }
         }
     };
 
@@ -51,7 +73,8 @@ function ChannelCreationForm({closeModal}: { closeModal: () => void }) {
           flex-direction: column;
           gap: 1rem;
         `}>
-            <input {...register("name", {required: true, maxLength: 64})} placeholder="Channel name" css={css`
+            <input {...register("name", {required: "Name is required", maxLength: 64})} required={true}
+                   placeholder="Channel name" css={css`
               font-size: ${textSizes.M};
               border-radius: 3px;
               border: 1px solid ${colors.DARK}50;
@@ -59,8 +82,11 @@ function ChannelCreationForm({closeModal}: { closeModal: () => void }) {
               outline: none;
               color: ${colors.DARK};
             `}/>
-            {errors.name?.type === "required" ?
-                <p css={errorCss}>Channel name is required.</p> : null}
+            <ErrorMessage
+                errors={errors}
+                name="name"
+                render={({message}) => <p css={errorCss}>{message}</p>}
+            />
             <fieldset css={css`
               border: none;
               padding: 0;
@@ -75,7 +101,7 @@ function ChannelCreationForm({closeModal}: { closeModal: () => void }) {
                     <Controller
                         control={control}
                         name="language"
-                        rules={{required: true}}
+                        rules={{required: "Language is required"}}
                         render={({field}) =>
                             <Select id={`new-channel-language`}
                                     {...field}
@@ -84,8 +110,11 @@ function ChannelCreationForm({closeModal}: { closeModal: () => void }) {
                                     styles={select}
                             />}
                     />
-                    {errors.language?.type === "required" ?
-                        <p css={errorCss}>Language is required.</p> : null}
+                    <ErrorMessage
+                        errors={errors}
+                        name="language"
+                        render={({message}) => <p css={errorCss}>{message}</p>}
+                    />
                 </div>
                 <div css={css`
                   display: flex;
@@ -95,7 +124,7 @@ function ChannelCreationForm({closeModal}: { closeModal: () => void }) {
                     <Controller
                         control={control}
                         name="level"
-                        rules={{required: true}}
+                        rules={{required: "Proficiency level is required"}}
                         render={({field}) =>
                             <Select id={`new-channel-level`}
                                     {...field}
@@ -104,8 +133,11 @@ function ChannelCreationForm({closeModal}: { closeModal: () => void }) {
                                     styles={select}
                             />}
                     />
-                    {errors.level?.type === "required" ?
-                        <p css={errorCss}>Proficiency level is required.</p> : null}
+                    <ErrorMessage
+                        errors={errors}
+                        name="level"
+                        render={({message}) => <p css={errorCss}>{message}</p>}
+                    />
                 </div>
             </fieldset>
             <div css={css`
