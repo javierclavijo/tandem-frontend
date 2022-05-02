@@ -40,6 +40,11 @@ function ChannelInfo() {
     const [, setHeader] = useOutletContext<[ChatHeaderProps | null, React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>]>();
 
     /**
+     * Controls whether the user is a member of the channel.
+     */
+    const [isMember, setIsMember] = React.useState<boolean>(false);
+
+    /**
      * Controls whether the channel is editable by the user.
      */
     const [editable, setEditable] = useState<boolean>(false);
@@ -86,12 +91,16 @@ function ChannelInfo() {
     }, [editable, location.pathname, setHeader]);
 
     /**
-     * Checks if the user has admin role, then sets the 'editable' state if applicable.
+     * Checks if the user is a member of the channel and set the 'isMember' state if applicable. If the user is also an
+     * admin, set the 'editable' state to true.
      */
-    React.useEffect(() => setEditable(
-        !!data?.memberships.some(membership =>
-            membership.user?.id === user?.id && membership.role === "A"
-        )), [data?.memberships, user]);
+    React.useEffect(() => {
+        const userMembership = data?.memberships.find(membership => membership.user.id === user?.id);
+        if (userMembership) {
+            setIsMember(true);
+            setEditable(userMembership.role === "A");
+        }
+    }, [data?.memberships, user]);
 
     /**
      * Deletes the channel.
