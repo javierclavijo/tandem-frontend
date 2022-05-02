@@ -73,6 +73,27 @@ function ChannelInfo() {
     const handleLeaveChannel = useLeaveChannel(data);
 
     /**
+     * Checks if the user is a member of the channel and set the 'isMember' state if applicable. If the user is also an
+     * admin, set the user role state.
+     */
+    React.useEffect(() => {
+        const userMembership = data?.memberships.find(membership => membership.user.id === user?.id);
+        if (userMembership) {
+            setUserRole(userMembership.role);
+        }
+    }, [data?.memberships, user]);
+
+    /**
+     * Channel deletion handler.
+     */
+    const handleDelete = useDeleteChannel(data);
+
+    /**
+     * User role changing handlers.
+     */
+    const {handlePromoteUser, handleDemoteUser} = useChangeUserRole(params.id);
+
+    /**
      * Sets the header to render the title 'user info', plus a 'share' button which copies the channel's URL to the
      * clipboard on click. If the user is admin, add a button to delete the channel. Finally, a 'join channel' button is
      * added for users who are not members of the channel, and a 'leave channel' button is added for those who are
@@ -115,26 +136,6 @@ function ChannelInfo() {
         });
     }, [location.pathname, userRole, setHeader, userIsAdmin, handleJoinChannel]);
 
-    /**
-     * Checks if the user is a member of the channel and set the 'isMember' state if applicable. If the user is also an
-     * admin, set the user role state.
-     */
-    React.useEffect(() => {
-        const userMembership = data?.memberships.find(membership => membership.user.id === user?.id);
-        if (userMembership) {
-            setUserRole(userMembership.role);
-        }
-    }, [data?.memberships, user]);
-
-    /**
-     * Channel deletion handler.
-     */
-    const handleDelete = useDeleteChannel(data);
-
-    /**
-     * User role changing handlers.
-     */
-    const {handlePromoteUser, handleDemoteUser} = useChangeUserRole(params.id);
 
     return data ?
         <div css={css`
