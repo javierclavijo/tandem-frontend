@@ -8,6 +8,7 @@ export const chatRoomCss = css`
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  height: 100%;
 `;
 
 export const chatRoomCssMobile = css`
@@ -17,6 +18,7 @@ export const chatRoomCssMobile = css`
   flex-direction: column;
   max-height: 100%;
   min-height: 0;
+  height: 100%;
 `;
 
 export const chatRoomHeaderCss = css`
