@@ -5,7 +5,6 @@ import {chatRoomHeaderCss} from "../features/chats/room/styles";
 import BackButton from "./BackButton";
 import {Link, To} from "react-router-dom";
 import {css} from "@emotion/react";
-import {useMediaQuery} from "react-responsive";
 
 const defaultImg = require("../static/images/user_placeholder.png");
 
@@ -19,8 +18,6 @@ export interface ChatHeaderProps {
 
 function ChatHeader(props: ChatHeaderProps) {
 
-    const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
-
     return (
         <header css={chatRoomHeaderCss}>
             <div css={css`
@@ -28,10 +25,7 @@ function ChatHeader(props: ChatHeaderProps) {
               align-items: center;
               gap: 0.5rem;
             `}>
-                {!isDesktop ?
-                    <BackButton to="/chats"/> :
-                    null
-                }
+                <BackButton/>
                 <div css={css`
                   display: grid;
                   grid-template-rows: 1fr;

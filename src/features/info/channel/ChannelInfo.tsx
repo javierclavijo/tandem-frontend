@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import React, {useState} from "react";
+import React from "react";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {Channel} from "../../../entities/Channel";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
@@ -27,6 +27,7 @@ const defaultImg = require("../../../static/images/user_placeholder.png");
 // while the modal is open" (see react-modal docs: https://reactcommunity.org/react-modal/examples/set_app_element/).
 ReactModal.setAppElement("#root");
 
+
 function ChannelInfo() {
     /**
      * Displays a channel's details: image, name, language and level, description and members.
@@ -40,14 +41,19 @@ function ChannelInfo() {
     const [, setHeader] = useOutletContext<[ChatHeaderProps | null, React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>]>();
 
     /**
-     * Controls whether the user is a member of the channel.
+     * Controls whether the user is a member of the channel, and their role in case they are.
      */
-    const [isMember, setIsMember] = React.useState<boolean>(false);
+    const [userRole, setUserRole] = React.useState<string | null>(null);
 
     /**
-     * Controls whether the channel is editable by the user.
+     * Convenience function which determines if the user is staff (admin or moderator).
      */
-    const [editable, setEditable] = useState<boolean>(false);
+    const userIsStaff = React.useCallback(() => userRole === "A" || userRole === "M", [userRole]);
+
+    /**
+     * Convenience function which determines if the user is the channel's admin.
+     */
+    const userIsAdmin = React.useCallback(() => userRole === "A", [userRole]);
 
     /**
      * Controls whether the channel deletion confirmation modal is open.
@@ -67,7 +73,9 @@ function ChannelInfo() {
 
     /**
      * Sets the header to render the title 'user info', plus a 'share' button which copies the channel's URL to the
-     * clipboard on click.
+     * clipboard on click. If the user is admin, add a button to delete the channel. Finally, a 'join channel' button is
+     * added for users who are not members of the channel, and a 'leave channel' button is added for those who are
+     * members (except for admins).
      */
     React.useEffect(() => {
         setHeader({
@@ -77,7 +85,21 @@ function ChannelInfo() {
                   display: flex;
                   gap: 1rem;
                 `}>
-                    {editable ?
+                    {!userRole ?
+                        <button type="button" css={css`${buttonWithoutBackgroundAndBorder};
+                          font-size: ${textSizes.S};
+                          color: white;
+                        `}>
+                            Join channel
+                        </button> :
+                        !userIsAdmin ?
+                            <button type="button" css={css`${buttonWithoutBackgroundAndBorder};
+                              font-size: ${textSizes.S};
+                              color: white;
+                            `}>
+                                Leave channel
+                            </button> : null}
+                    {userIsAdmin() ?
                         <button onClick={() => setDeletionModalIsOpen(true)} css={css`
                           ${buttonWithoutBackgroundAndBorder};
                           font-size: ${textSizes.S};
@@ -88,17 +110,16 @@ function ChannelInfo() {
                     <ShareLink link={window.location.href}/>
                 </div>
         });
-    }, [editable, location.pathname, setHeader]);
+    }, [location.pathname, userRole, setHeader, userIsAdmin]);
 
     /**
      * Checks if the user is a member of the channel and set the 'isMember' state if applicable. If the user is also an
-     * admin, set the 'editable' state to true.
+     * admin, set the user role state.
      */
     React.useEffect(() => {
         const userMembership = data?.memberships.find(membership => membership.user.id === user?.id);
         if (userMembership) {
-            setIsMember(true);
-            setEditable(userMembership.role === "A");
+            setUserRole(userMembership.role);
         }
     }, [data?.memberships, user]);
 
@@ -161,7 +182,7 @@ function ChannelInfo() {
           overflow-y: scroll;
         `}>
             <section css={infoSection}>
-                {editable && data ?
+                {userIsStaff() && data ?
                     <React.Fragment>
                         <ImageInput image={data.image} defaultImage={defaultImg}
                                     url={data.url} invalidateQueryKey={["channels", data.id]}/>
@@ -175,12 +196,12 @@ function ChannelInfo() {
                 <p>Channel ·&nbsp;
                     {data?.memberships.length} {data?.memberships.length === 1 ? "member" : "members"}
                 </p>
-                {editable ?
+                {userIsStaff() ?
                     <ChannelEditLanguageBadge data={data} bg={colors.DARK}/> :
                     <LanguageBadge language={data.language} level={data.level} bg={colors.DARK}/>
                 }
                 <section css={descriptionSection}>
-                    {editable && data ?
+                    {userIsStaff() && data ?
                         <DescriptionTextarea data={data} queryKey={"channels"}/> :
                         <React.Fragment>
                             <h3>Description</h3>
