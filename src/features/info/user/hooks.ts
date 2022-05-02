@@ -1,7 +1,7 @@
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {User, UserLanguage} from "../../../entities/User";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
-import React from "react";
+import React, {useCallback} from "react";
 
 /**
  * Holds a user's data
@@ -41,4 +41,31 @@ export function useDeleteUserLanguage(selectedDeleteLanguage: UserLanguage | nul
             setSelectedDeleteLanguage(null);
         }
     }, [deleteMutation, selectedDeleteLanguage, setSelectedDeleteLanguage]);
+}
+
+
+export function useCreateChatWithUser(otherUser: User | undefined) {
+
+    const queryClient = useQueryClient();
+
+    /**
+     * Creates a chat for the current user with the provided user.
+     */
+    const createChatRequest = async () => {
+        if (otherUser) {
+            return await axiosApi.post("/friend_chats/", {users: [otherUser.id]});
+        }
+    };
+
+    /**
+     * Sends the request to create the chat with the user.
+     */
+    const createChatMutation = useMutation(createChatRequest, {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries(["users", otherUser?.id]);
+            await queryClient.invalidateQueries(["chats", "list"]);
+        }
+    });
+
+    return useCallback(async () => await createChatMutation.mutateAsync(), [createChatMutation]);
 }

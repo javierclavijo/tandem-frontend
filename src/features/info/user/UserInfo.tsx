@@ -3,7 +3,7 @@
 import React from "react";
 import useAuth from "../../auth/AuthContext";
 import {UserLanguage} from "../../../entities/User";
-import {useOutletContext, useParams} from "react-router-dom";
+import {useNavigate, useOutletContext, useParams} from "react-router-dom";
 import {css} from "@emotion/react";
 import {descriptionSection, infoSection, listSection, listSectionHeader, profileImg} from "../styles";
 import {UserNameInput} from "../components/NameInput";
@@ -21,7 +21,7 @@ import ImageInput from "../components/ImageInput";
 import {getFriendFromFriendChat} from "../../chats/hooks";
 import {ChatHeaderProps} from "../../../components/ChatHeader";
 import {modal} from "../../../styles/components";
-import {useDeleteUserLanguage, useUser} from "./hooks";
+import {useCreateChatWithUser, useDeleteUserLanguage, useUser} from "./hooks";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
@@ -38,6 +38,7 @@ export function UserInfo() {
 
     const params = useParams();
     const {user} = useAuth();
+    const navigate = useNavigate();
     const [, setHeader] = useOutletContext<[ChatHeaderProps | null, React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>]>();
 
     /**
@@ -87,6 +88,11 @@ export function UserInfo() {
     const handleDeleteLanguage = useDeleteUserLanguage(selectedDeleteLanguage, setSelectedDeleteLanguage);
 
     /**
+     * Handler which creates a chat with the user.
+     */
+    const handleCreateChatWithUser = useCreateChatWithUser(data);
+
+    /**
      * Set header to render the title 'user info', plus a button to chat with the user if the user is not already a
      * friend of the current user (i.e. doesn't have any friend chats with them).
      */
@@ -96,7 +102,11 @@ export function UserInfo() {
             actions:
                 <React.Fragment>
                     {!isFriend ?
-                        <button type="button" onClick={() => console.log("befriended user")}
+                        <button type="button" onClick={async () => {
+                            debugger
+                            const response = await handleCreateChatWithUser();
+                            navigate(`/chats/${response?.data.id}`);
+                        }}
                                 css={css`${buttonWithoutBackgroundAndBorder};
                                   font-size: ${textSizes.S};
                                   color: white;
@@ -105,7 +115,7 @@ export function UserInfo() {
                         </button> : null}
                 </React.Fragment>
         });
-    }, [isFriend, setHeader]);
+    }, [data?.id, handleCreateChatWithUser, isFriend, navigate, setHeader]);
 
 
     return data ? <React.Fragment>
