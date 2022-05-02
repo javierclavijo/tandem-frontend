@@ -13,14 +13,14 @@ import LanguageBadge from "../../../components/LanguageBadge";
 import {colors, textSizes} from "../../../styles/variables";
 import ChannelEditLanguageBadge from "./ChannelEditLanguageBadge";
 import ImageInput from "../components/ImageInput";
-import {useLocation, useNavigate, useOutletContext, useParams} from "react-router-dom";
+import {useLocation, useOutletContext, useParams} from "react-router-dom";
 import {ChatHeaderProps} from "../../../components/ChatHeader";
 import Button, {buttonWithoutBackgroundAndBorder} from "../../../components/Button";
 import {FastArrowDownBox, FastArrowUpBox} from "iconoir-react";
 import ShareLink from "../../../components/ShareLink";
 import {modal, modalButton} from "../../../styles/components";
 import ReactModal from "react-modal";
-import {useChannel} from "./hooks";
+import {useChannel, useDeleteChannel} from "./hooks";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
@@ -35,7 +35,6 @@ function ChannelInfo() {
      */
 
     const queryClient = useQueryClient();
-    const navigate = useNavigate();
     const params = useParams();
     const {user} = useAuth();
     const location = useLocation();
@@ -119,28 +118,9 @@ function ChannelInfo() {
     }, [data?.memberships, user]);
 
     /**
-     * Deletes the channel.
+     * Channel deletion handler.
      */
-    const deleteChannelRequest = async () => {
-        if (data) {
-            return await axiosApi.delete(data?.url);
-        }
-    };
-
-    /**
-     * Sends the request to delete the channel.
-     */
-    const deleteChannelMutation = useMutation(deleteChannelRequest, {
-        onSuccess: () => queryClient.invalidateQueries(["chats", "list"])
-    });
-
-    /**
-     * Handles deletion, sending the deletion request and navigating back to the chat list.
-     */
-    const onDeleteClick = async () => {
-        await deleteChannelMutation.mutateAsync();
-        navigate("/chats/");
-    };
+    const handleDelete = useDeleteChannel(data);
 
     /**
      * Request function to promote users to moderators or demote them to regular users.
@@ -265,7 +245,7 @@ function ChannelInfo() {
                   display: flex;
                   gap: 1rem;
                 `}>
-                    <button onClick={onDeleteClick}
+                    <button onClick={handleDelete}
                             css={modalButton}>
                         Delete
                     </button>
