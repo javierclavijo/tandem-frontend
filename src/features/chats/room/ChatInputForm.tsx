@@ -24,6 +24,7 @@ function ChatInputForm({chat}: { chat: Chat }) {
         event.preventDefault();
         if (inputValue) {
             const message = {
+                type: 'chat_message',
                 chat_id: chat.id,
                 content: inputValue,
                 chat_type: chat.type

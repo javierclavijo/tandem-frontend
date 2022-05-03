@@ -3,10 +3,11 @@ import {Chat, FriendChat} from "../../entities/Chat";
 import useAuth, {axiosApi} from "../auth/AuthContext";
 import {ChatMessage, ChatMessageResponse} from "../../entities/ChatMessage";
 import {DateTime} from "luxon";
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {User} from "../../entities/User";
 import {useOutletContext} from "react-router-dom";
 import {ChatHeaderProps} from "../../components/ChatHeader";
+import useWebSocket from "react-use-websocket";
 
 export const messageSortFn = (a: ChatMessage | undefined, b: ChatMessage | undefined) => {
     /**
@@ -131,3 +132,26 @@ export const useSetChatRoomHeader = (chat: Chat | undefined | null) => {
         }
     }, [chat, setHeader, user]);
 };
+
+export function useJoinWSChat() {
+    /**
+     * Sends a message through the WS connection
+     */
+    const {token} = useAuth();
+
+    const {
+        sendJsonMessage,
+    } = useWebSocket(`${process.env.REACT_APP_WS_URL}/ws/chats/?${token}`, {
+        onClose: () => console.error("Chat socket closed unexpectedly"),
+        shouldReconnect: () => true,
+        share: true
+    });
+
+    return useCallback((id: string) => {
+        const message = {
+            chat_id: id,
+            type: "join_chat"
+        };
+        sendJsonMessage(message);
+    }, [sendJsonMessage]);
+}

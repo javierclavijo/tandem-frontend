@@ -78,7 +78,7 @@ function ChannelInfo() {
         if (response?.status === 201 && params?.id) {
             navigate(`/chats/${params.id}`);
         }
-    }, [data?.id, joinChannelMutation, navigate]);
+    }, [params?.id, joinChannelMutation, navigate]);
 
     const handleLeaveChannel = React.useCallback(async () => {
         await leaveChannelMutation.mutateAsync();

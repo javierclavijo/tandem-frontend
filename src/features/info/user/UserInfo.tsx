@@ -18,7 +18,7 @@ import LanguageBadge from "../../../components/LanguageBadge";
 import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
 import {languages} from "../../../resources/languages";
 import ImageInput from "../components/ImageInput";
-import {getFriendFromFriendChat} from "../../chats/hooks";
+import {getFriendFromFriendChat, useJoinWSChat} from "../../chats/hooks";
 import {ChatHeaderProps} from "../../../components/ChatHeader";
 import {modal} from "../../../styles/components";
 import {useCreateChatWithUser, useDeleteUserLanguage, useUser} from "./hooks";
@@ -92,15 +92,20 @@ export function UserInfo() {
      */
     const createChatMutation = useCreateChatWithUser(data);
 
+    const joinWSChat = useJoinWSChat();
+
     /**
      * Click event handler to create chat.
      */
     const onClickChatCreate = React.useCallback(async () => {
         const response = await createChatMutation.mutateAsync();
-        if (response?.status === 201 && response?.data?.id) {
-            navigate(`/chats/${response.data.id}`);
+        const newChatId = response?.data?.id;
+        if (response?.status === 201 && newChatId) {
+            joinWSChat(newChatId);
+            debugger
+            navigate(`/chats/${newChatId}`);
         }
-    }, [createChatMutation, navigate]);
+    }, [createChatMutation, navigate, joinWSChat]);
 
     /**
      * Set header to render the title 'user info', plus a button to chat with the user if the user is not already a
