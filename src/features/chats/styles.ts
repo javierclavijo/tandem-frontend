@@ -84,5 +84,5 @@ export const imageContainerCss = css`
   width: 3rem;
   overflow: hidden;
   border-radius: 50%;
-  flex: 1 0 auto;
+  flex: 0 0 auto;
 `;

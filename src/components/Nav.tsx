@@ -5,21 +5,25 @@ import {Link, NavLink} from "react-router-dom";
 import useAuth from "../features/auth/AuthContext";
 import {css} from "@emotion/react";
 import {colors, textSizes} from "../styles/variables";
+import {useMediaQuery} from "react-responsive";
 
 const defaultImg = require("../static/images/user_placeholder.png");
 
 function Nav() {
+
     const {user, isLoggedIn} = useAuth();
+    const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
 
     return (
         <header css={header}>
             <nav css={nav}>
                 <h1 css={title}>ChatApp</h1>
                 <ul css={navList}>
-                    {isLoggedIn ?
+                    {isLoggedIn  && isDesktop?
                         <React.Fragment>
                             <li><NavLink to={"/chats"} css={linkCss}>Chats</NavLink></li>
                             <li><NavLink to={`/chats/users/${user?.id}`} css={linkCss}>{user?.username}</NavLink></li>
+                            <li><NavLink to={"/search"} css={linkCss}>Search</NavLink></li>
                             <li><Link to={"/logout"} css={linkCss}>Log out</Link></li>
                             <li>
                                 <div css={imageContainer}>

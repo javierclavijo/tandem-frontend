@@ -39,7 +39,7 @@ function ChatListElement({chat, selected, latestMessageIsOwn}: ChatListElementPr
                   display: flex;
                   flex-direction: column;
                   justify-content: space-between;
-                  width: calc(100% - 3.75rem);
+                  width: 100%;
                   height: 100%;
                 `}>
                     <span css={css`
