@@ -102,7 +102,6 @@ export function UserInfo() {
         const newChatId = response?.data?.id;
         if (response?.status === 201 && newChatId) {
             joinWSChat(newChatId);
-            debugger
             navigate(`/chats/${newChatId}`);
         }
     }, [createChatMutation, navigate, joinWSChat]);
