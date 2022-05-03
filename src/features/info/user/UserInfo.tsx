@@ -95,10 +95,10 @@ export function UserInfo() {
     /**
      * Click event handler to create chat.
      */
-    const onClickChatCreate = async () => {
+    const onClickChatCreate = React.useCallback(async () => {
         const response = await handleCreateChatWithUser();
         navigate(`/chats/${response?.data?.id}`);
-    };
+    },[]);
 
     /**
      * Set header to render the title 'user info', plus a button to chat with the user if the user is not already a
@@ -119,7 +119,7 @@ export function UserInfo() {
                         </button> : null}
                 </React.Fragment>
         });
-    }, [data?.id, isFriend, navigate, setHeader]);
+    }, [data?.id, isFriend, navigate, setHeader, onClickChatCreate]);
 
 
     return data ? <React.Fragment>
