@@ -205,14 +205,14 @@ function ChannelInfo() {
                                                  {/* If the user is a regular user, show a button to promote them to
                                                  moderator. If they are a moderator, show a button to demote them to
                                                  regular user. If they are admin, show nothing. */}
-                                                 {membership.role === "U" ?
+                                                 {userIsAdmin() && membership.role === "U" ?
                                                      <Button visible={true}
                                                              onClick={async () => await handlePromoteUser(membership.url)}>
                                                          Promote
                                                          <FastArrowUpBox color={colors.PRIMARY} height={"1.5rem"}
                                                                          width={"1.5rem"}/>
                                                      </Button> :
-                                                     membership.role === "M" ?
+                                                     userIsAdmin() && membership.role === "M" ?
                                                          <Button visible={true}
                                                                  onClick={async () => await handleDemoteUser(membership.url)}>
                                                              Demote
