@@ -81,7 +81,7 @@ function ChannelInfo() {
             joinWSChat(params.id);
             navigate(`/chats/${params.id}`);
         }
-    }, [params?.id, joinChannelMutation, navigate]);
+    }, [params?.id, joinChannelMutation, navigate, joinWSChat]);
 
     const handleLeaveChannel = React.useCallback(async () => {
         await leaveChannelMutation.mutateAsync();
