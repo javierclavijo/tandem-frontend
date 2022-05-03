@@ -14,6 +14,7 @@ import {UserInfo} from "./features/info/user/UserInfo";
 import ChannelInfo from "./features/info/channel/ChannelInfo";
 import {useMediaQuery} from "react-responsive";
 import ChatList from "./features/chats/ChatList";
+import Search from "./features/search/Search";
 
 export default function App() {
 
@@ -35,6 +36,7 @@ export default function App() {
                     chat list is displayed outside the router's outlet. */}
                     <Route index element={isDesktop ? <EmptyChatRoom/> : <ChatList/>}/>
                 </Route>
+                <Route path="/search" element={<Search/>}/>
                 <Route path="/login" element={<LogIn/>}/>
                 <Route path="/logout" element={<LogOut/>}/>
                 <Route path="/" element={<Home/>}/>
