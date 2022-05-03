@@ -15,6 +15,8 @@ function Search() {
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
 
+    const [searchQuery, setSearchQuery] = React.useState<string>("");
+
     return (
         <div css={isDesktop ? baseAppContainerWithoutTabsCss : baseAppContainerWithTabsCss}>
             <Nav/>
@@ -28,7 +30,7 @@ function Search() {
                   gap: 1rem;
                 `}>
                     <h2>Find Users & Channels</h2>
-                    <SearchPanel/>
+                    <SearchPanel searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
                 </header>
                 <div css={css`
                   background-color: ${colors.WHITE};
@@ -46,9 +48,9 @@ function Search() {
                       flex-direction: row;
                       flex-wrap: wrap;
                     `}>
-                        <SearchElement name={"paco"} languages={["DE"]} description={"lorem ipsum noseque nosecuanto"}/>
-                        <SearchElement name={"paco"} languages={["DE"]} description={"lorem ipsum noseque nosecuanto"}/>
-                        <SearchElement name={"paco"} languages={["DE"]} description={"lorem ipsum noseque nosecuanto"}/>
+                        <SearchElement id="paco1" name={"paco"} languages={["DE"]} description={"lorem ipsum noseque nosecuanto"}/>
+                        <SearchElement id="paco2" name={"paco"} languages={["DE"]} description={"lorem ipsum noseque nosecuanto"}/>
+                        <SearchElement id="paco3" name={"paco"} languages={["DE"]} description={"lorem ipsum noseque nosecuanto"}/>
                     </div>
                 </div>
             </main>

@@ -7,6 +7,7 @@ import {noBorderAndBgSelectDark, searchSelect} from "../../styles/components";
 import {css} from "@emotion/react";
 import {Search} from "iconoir-react";
 import {colors, textSizes} from "../../styles/variables";
+import {buttonWithoutBackgroundAndBorder} from "../../components/Button";
 
 
 const selectTypeOptions: Option[] = [
@@ -15,7 +16,21 @@ const selectTypeOptions: Option[] = [
     {value: "channels", label: "Channels"},
 ];
 
-function SearchPanel() {
+interface SearchPanelProps {
+    searchQuery: string;
+    setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+}
+
+function SearchPanel(props: SearchPanelProps) {
+
+    const [inputValue, setInputValue] = React.useState<string>("");
+
+    const handleSearch = () => {
+        if (inputValue) {
+            props.setSearchQuery(inputValue);
+        }
+    };
+
     return (
         <div css={css`
           display: flex;
@@ -32,13 +47,16 @@ function SearchPanel() {
               padding: 0.25rem 0.5rem;
               border-radius: 3px;
             `}>
-                <input type="text" name="search-query" placeholder="Search..." css={css`
-                  background: none;
-                  outline: none;
-                  border: none;
-                  width: auto;
-                  font-size: ${textSizes.M};
-                `}/>
+                <input type="text" name="search-query" placeholder="Search..."
+                       value={inputValue}
+                       onChange={(e) => setInputValue(e.target.value)}
+                       css={css`
+                         background: none;
+                         outline: none;
+                         border: none;
+                         width: auto;
+                         font-size: ${textSizes.M};
+                       `}/>
                 <div css={css`
                   display: flex;
                   align-items: center;
@@ -48,7 +66,12 @@ function SearchPanel() {
                             placeholder="Type"
                             styles={noBorderAndBgSelectDark}
                     />
-                    <Search color={colors.PRIMARY} width={"1.5rem"} height={"1.5rem"}/>
+                    <button type="button"
+                            onClick={handleSearch}
+                            css={buttonWithoutBackgroundAndBorder}
+                    >
+                        <Search color={colors.PRIMARY} width={"1.5rem"} height={"1.5rem"}/>
+                    </button>
                 </div>
             </div>
             <div css={css`

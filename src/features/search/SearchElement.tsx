@@ -10,6 +10,7 @@ import {NavArrowRight} from "iconoir-react";
 const defaultImg = require("../../static/images/user_placeholder.png");
 
 interface SearchElementProps {
+    id: string;
     name: string;
     languages: string[];
     description: string;
@@ -64,7 +65,8 @@ function SearchElement(props: SearchElementProps) {
                 </div>
                 <div css={css``}>
                     {props.languages.map(language =>
-                        <FlagIcon code={flagCodes.find(x => x.key === language)?.value || "AD"} size={24}/>)}
+                        <FlagIcon code={flagCodes.find(x => x.key === language)?.value || "AD"} size={24}
+                                  key={`${props.id}-${language}`}/>)}
                 </div>
                 <p>{props.description}</p>
             </div>
