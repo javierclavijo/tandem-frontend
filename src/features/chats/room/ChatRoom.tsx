@@ -52,10 +52,10 @@ function ChatRoom() {
                                 loader={<p>Loading...</p>}
                                 dataLength={data.pages.length}
                                 scrollableTarget="chat-messages-container"
-                                style={{display: "flex", flexDirection: "column-reverse"}}
+                                style={{display: "flex", flexDirection: "column"}}
                                 inverse={true}
                 >
-                    {data?.pages.map((page, pageIndex) =>
+                    {[...data?.pages].reverse().map((page, pageIndex) =>
                         <React.Fragment key={`page-${pageIndex}`}>
                             {[...page.results].reverse().map((message) => (
                                 <ChatRoomMessage message={message}

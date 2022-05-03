@@ -66,7 +66,7 @@ function ChatMain() {
                         // Add the message to the first page, reassign the page in the array so that the
                         // bottom-scrolling effect hook is triggered.
                         const firstPage = {...old.pages[0]};
-                        old.pages[0] = {...firstPage, results: [...firstPage.results, message]};
+                        old.pages[0] = {...firstPage, results: [message, ...firstPage.results]};
                     }
                     return old;
                 }
