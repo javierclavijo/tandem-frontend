@@ -1,7 +1,7 @@
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {User, UserLanguage} from "../../../entities/User";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
-import React, {useCallback} from "react";
+import React from "react";
 
 /**
  * Holds a user's data
@@ -51,21 +51,19 @@ export function useCreateChatWithUser(otherUser: User | undefined) {
     /**
      * Creates a chat for the current user with the provided user.
      */
-    const createChatRequest = async () => {
+    const createChatRequest = React.useCallback(async () => {
         if (otherUser) {
             return await axiosApi.post("/friend_chats/", {users: [otherUser.id]});
         }
-    };
+    }, [otherUser]);
 
     /**
      * Sends the request to create the chat with the user.
      */
-    const createChatMutation = useMutation(createChatRequest, {
+    return useMutation(createChatRequest, {
         onSuccess: async () => {
             await queryClient.invalidateQueries(["users", otherUser?.id]);
             await queryClient.invalidateQueries(["chats", "list"]);
         }
     });
-
-    return useCallback(async () => await createChatMutation.mutateAsync(), [createChatMutation]);
 }

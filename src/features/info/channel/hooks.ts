@@ -107,16 +107,12 @@ export function useJoinChannel(channel: Channel | undefined) {
     /**
      * Sends the request to join the channel.
      */
-    const joinChannelMutation = useMutation(joinChannelRequest, {
+    return useMutation(joinChannelRequest, {
         onSuccess: async () => {
             await queryClient.invalidateQueries(["channels", channel?.id]);
             await queryClient.invalidateQueries(["chats", "list"]);
         }
     });
-
-    return useCallback(async () => {
-        await joinChannelMutation.mutateAsync();
-    }, [joinChannelMutation]);
 }
 
 export function useLeaveChannel(channel: Channel | undefined) {
@@ -137,14 +133,10 @@ export function useLeaveChannel(channel: Channel | undefined) {
     /**
      * Sends the request to leave the channel.
      */
-    const leaveChannelMutation = useMutation(leaveChannelRequest, {
+    return useMutation(leaveChannelRequest, {
         onSuccess: async () => {
             await queryClient.invalidateQueries(["channels", channel?.id]);
             await queryClient.invalidateQueries(["chats", "list"]);
         }
     });
-
-    return useCallback(async () => {
-        await leaveChannelMutation.mutateAsync();
-    }, [leaveChannelMutation]);
 }

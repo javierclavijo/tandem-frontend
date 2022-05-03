@@ -69,8 +69,22 @@ function ChannelInfo() {
     const {data} = useChannel(params.id);
 
 
-    const handleJoinChannel = useJoinChannel(data);
-    const handleLeaveChannel = useLeaveChannel(data);
+    const joinChannelMutation = useJoinChannel(data);
+
+    const leaveChannelMutation = useLeaveChannel(data);
+
+    const handleJoinChannel = React.useCallback(async () => {
+        const response = await joinChannelMutation.mutateAsync();
+        if (response?.status === 201 && params?.id) {
+            navigate(`/chats/${params.id}`);
+        }
+    }, [data?.id, joinChannelMutation, navigate]);
+
+    const handleLeaveChannel = React.useCallback(async () => {
+        await leaveChannelMutation.mutateAsync();
+        setLeaveChannelModalIsOpen(false);
+        navigate("/chats/");
+    }, [leaveChannelMutation, navigate]);
 
     /**
      * Checks if the user is a member of the channel and set the 'isMember' state if applicable. If the user is also an
@@ -134,7 +148,7 @@ function ChannelInfo() {
                     <ShareLink link={window.location.href}/>
                 </div>
         });
-    }, [location.pathname, userRole, setHeader, userIsAdmin, handleJoinChannel]);
+    }, [location.pathname, userRole, setHeader, userIsAdmin]);
 
 
     return data ?
@@ -258,11 +272,7 @@ function ChannelInfo() {
                   display: flex;
                   gap: 1rem;
                 `}>
-                    <button onClick={async () => {
-                        await handleLeaveChannel();
-                        setLeaveChannelModalIsOpen(false);
-                        navigate("/chats/");
-                    }}
+                    <button onClick={handleLeaveChannel}
                             css={modalButton}>
                         Leave
                     </button>

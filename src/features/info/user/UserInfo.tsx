@@ -88,17 +88,19 @@ export function UserInfo() {
     const handleDeleteLanguage = useDeleteUserLanguage(selectedDeleteLanguage, setSelectedDeleteLanguage);
 
     /**
-     * Handler which creates a chat with the user.
+     * Mutation which creates a chat with the user.
      */
-    const handleCreateChatWithUser = useCreateChatWithUser(data);
+    const createChatMutation = useCreateChatWithUser(data);
 
     /**
      * Click event handler to create chat.
      */
     const onClickChatCreate = React.useCallback(async () => {
-        const response = await handleCreateChatWithUser();
-        navigate(`/chats/${response?.data?.id}`);
-    },[]);
+        const response = await createChatMutation.mutateAsync();
+        if (response?.status === 201 && response?.data?.id) {
+            navigate(`/chats/${response.data.id}`);
+        }
+    }, [createChatMutation, navigate]);
 
     /**
      * Set header to render the title 'user info', plus a button to chat with the user if the user is not already a
@@ -119,7 +121,7 @@ export function UserInfo() {
                         </button> : null}
                 </React.Fragment>
         });
-    }, [data?.id, isFriend, navigate, setHeader, onClickChatCreate]);
+    }, [isFriend, setHeader]);
 
 
     return data ? <React.Fragment>
