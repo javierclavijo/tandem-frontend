@@ -19,6 +19,7 @@ import ShareLink from "../../../components/ShareLink";
 import {modal, modalButton} from "../../../styles/components";
 import ReactModal from "react-modal";
 import {useChangeUserRole, useChannel, useDeleteChannel, useJoinChannel, useLeaveChannel} from "./hooks";
+import {useJoinWSChat} from "../../chats/hooks";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
@@ -68,6 +69,7 @@ function ChannelInfo() {
      */
     const {data} = useChannel(params.id);
 
+    const joinWSChat = useJoinWSChat();
 
     const joinChannelMutation = useJoinChannel(data);
 
@@ -76,6 +78,7 @@ function ChannelInfo() {
     const handleJoinChannel = React.useCallback(async () => {
         const response = await joinChannelMutation.mutateAsync();
         if (response?.status === 201 && params?.id) {
+            joinWSChat(params.id);
             navigate(`/chats/${params.id}`);
         }
     }, [params?.id, joinChannelMutation, navigate]);
