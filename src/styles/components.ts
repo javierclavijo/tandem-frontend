@@ -22,7 +22,20 @@ export const select: StylesConfig = {
     }),
 };
 
-export const badgeSelect: StylesConfig = {
+export const searchSelect: StylesConfig = {
+    // Styles for react-select component
+    menu: (provided) => ({
+        ...provided,
+        width: "max-content",
+        minWidth: "100%"
+    }),
+    container: (provided) => ({
+        ...provided,
+        width: "100%",
+    })
+};
+
+export const noBorderAndBgSelectWhite: StylesConfig = {
     // Styles for react-select component
     menu: (provided) => ({
         ...provided,
@@ -47,6 +60,18 @@ export const badgeSelect: StylesConfig = {
     indicatorSeparator: (provided) => ({
         ...provided,
         display: "none",
+    }),
+};
+
+export const noBorderAndBgSelectDark: StylesConfig = {
+    ...noBorderAndBgSelectWhite,
+    dropdownIndicator: (provided) => ({
+        ...provided,
+        color: colors.DARK
+    }),
+    singleValue: (provided) => ({
+        ...provided,
+        color: colors.DARK
     }),
 };
 

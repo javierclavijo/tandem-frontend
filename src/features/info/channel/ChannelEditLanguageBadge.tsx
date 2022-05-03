@@ -5,7 +5,7 @@ import {css} from "@emotion/react";
 import {FlagIcon} from "react-flag-kit";
 import {colors} from "../../../styles/variables";
 import {flagCodes, languageOptions, levelOptions, Option} from "../../../resources/languages";
-import {badge, badgeSelect} from "../../../styles/components";
+import {badge, noBorderAndBgSelectWhite} from "../../../styles/components";
 import {UserLanguage} from "../../../entities/User";
 import {useMutation, useQueryClient} from "react-query";
 import {axiosApi} from "../../auth/AuthContext";
@@ -66,7 +66,7 @@ function UserInfoEditLanguageBadge({data, bg}: LanguageBadgeProps) {
                         await handleChange(option, "language");
                     }}
                     options={languageOptions}
-                    styles={badgeSelect}
+                    styles={noBorderAndBgSelectWhite}
             />
             <span>|</span>
             <ProficiencyLevelIcon level={data.level} color={colors.WHITE} height={24} width={24}/>
@@ -77,7 +77,7 @@ function UserInfoEditLanguageBadge({data, bg}: LanguageBadgeProps) {
                         await handleChange(option, "level");
                     }}
                     options={levelOptions}
-                    styles={badgeSelect}
+                    styles={noBorderAndBgSelectWhite}
             />
         </div>
     );

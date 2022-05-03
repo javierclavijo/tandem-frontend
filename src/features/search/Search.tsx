@@ -3,9 +3,10 @@
 import React from "react";
 import {baseAppContainerWithoutTabsCss, baseAppContainerWithTabsCss} from "../../styles/layout";
 import Nav from "../../components/Nav";
-import {mainCss} from "../chats/styles";
+import {mainCss, mainCssMobile} from "../chats/styles";
 import {useMediaQuery} from "react-responsive";
 import Tabs from "../../components/Tabs";
+import SearchPanel from "./SearchPanel";
 
 function Search() {
 
@@ -14,7 +15,8 @@ function Search() {
     return (
         <div css={isDesktop ? baseAppContainerWithoutTabsCss : baseAppContainerWithTabsCss}>
             <Nav/>
-            <main css={mainCss}>
+            <main css={isDesktop ? mainCss : mainCssMobile}>
+                <SearchPanel/>
                 <div>Search!</div>
             </main>
             {!isDesktop ?

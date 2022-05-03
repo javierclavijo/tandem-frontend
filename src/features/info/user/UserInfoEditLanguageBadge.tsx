@@ -5,7 +5,7 @@ import {css} from "@emotion/react";
 import {FlagIcon} from "react-flag-kit";
 import {colors} from "../../../styles/variables";
 import {flagCodes, languages, levelOptions, Option} from "../../../resources/languages";
-import {badge, badgeSelect} from "../../../styles/components";
+import {badge, noBorderAndBgSelectWhite} from "../../../styles/components";
 import {User, UserLanguage} from "../../../entities/User";
 import {useMutation, useQueryClient} from "react-query";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
@@ -65,7 +65,7 @@ function UserInfoEditLanguageBadge({data, bg, onDelete}: LanguageBadgeProps) {
                     value={value}
                     onChange={onChange}
                     options={levelOptions}
-                    styles={badgeSelect}
+                    styles={noBorderAndBgSelectWhite}
             />
             <Button visible={true} onClick={onDelete}>
                 <Cancel color={colors.WHITE} width={"1.5rem"} height={"1.5rem"}/>
