@@ -93,6 +93,14 @@ export function UserInfo() {
     const handleCreateChatWithUser = useCreateChatWithUser(data);
 
     /**
+     * Click event handler to create chat.
+     */
+    const onClickChatCreate = async () => {
+        const response = await handleCreateChatWithUser();
+        navigate(`/chats/${response?.data?.id}`);
+    };
+
+    /**
      * Set header to render the title 'user info', plus a button to chat with the user if the user is not already a
      * friend of the current user (i.e. doesn't have any friend chats with them).
      */
@@ -102,11 +110,7 @@ export function UserInfo() {
             actions:
                 <React.Fragment>
                     {!isFriend ?
-                        <button type="button" onClick={async () => {
-                            debugger
-                            const response = await handleCreateChatWithUser();
-                            navigate(`/chats/${response?.data.id}`);
-                        }}
+                        <button type="button" onClick={onClickChatCreate}
                                 css={css`${buttonWithoutBackgroundAndBorder};
                                   font-size: ${textSizes.S};
                                   color: white;
@@ -115,7 +119,7 @@ export function UserInfo() {
                         </button> : null}
                 </React.Fragment>
         });
-    }, [data?.id, handleCreateChatWithUser, isFriend, navigate, setHeader]);
+    }, [data?.id, isFriend, navigate, setHeader]);
 
 
     return data ? <React.Fragment>
