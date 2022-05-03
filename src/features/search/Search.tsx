@@ -10,12 +10,41 @@ import {searchMain, searchMainMobile} from "./styles";
 import {css} from "@emotion/react";
 import {colors} from "../../styles/variables";
 import SearchElement from "./SearchElement";
+import {useInfiniteQuery} from "react-query";
+import {User} from "../../entities/User";
+import {axiosApi} from "../auth/AuthContext";
+
+
+export interface UserSearchResponse {
+    count: number,
+    next: string | null,
+    previous: string | null,
+    results: User[],
+    nextPageNumber: number | null,
+    previousPageNumber: number | null
+}
+
 
 function Search() {
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
 
     const [searchQuery, setSearchQuery] = React.useState<string>("");
+
+    const {
+        data: users,
+        fetchNextPage: fetchNextUsersPage
+    } = useInfiniteQuery<UserSearchResponse>(["users", "search", searchQuery], async () => {
+        const response = await axiosApi.get("/users/", {
+            params: {
+                name: searchQuery,
+                description: searchQuery
+            }
+        });
+        return response.data;
+    }, {
+        staleTime: 30000,
+    });
 
     return (
         <div css={isDesktop ? baseAppContainerWithoutTabsCss : baseAppContainerWithTabsCss}>
@@ -48,9 +77,12 @@ function Search() {
                       flex-direction: row;
                       flex-wrap: wrap;
                     `}>
-                        <SearchElement id="paco1" name={"paco"} languages={["DE"]} description={"lorem ipsum noseque nosecuanto"}/>
-                        <SearchElement id="paco2" name={"paco"} languages={["DE"]} description={"lorem ipsum noseque nosecuanto"}/>
-                        <SearchElement id="paco3" name={"paco"} languages={["DE"]} description={"lorem ipsum noseque nosecuanto"}/>
+                        <SearchElement id="paco1" name={"paco"} languages={["DE"]}
+                                       description={"lorem ipsum noseque nosecuanto"}/>
+                        <SearchElement id="paco2" name={"paco"} languages={["DE"]}
+                                       description={"lorem ipsum noseque nosecuanto"}/>
+                        <SearchElement id="paco3" name={"paco"} languages={["DE"]}
+                                       description={"lorem ipsum noseque nosecuanto"}/>
                     </div>
                 </div>
             </main>
