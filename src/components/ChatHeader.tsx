@@ -74,7 +74,7 @@ const imageContainer = css`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 1 0 auto;
+  flex: 0 0 auto;
 `;
 
 

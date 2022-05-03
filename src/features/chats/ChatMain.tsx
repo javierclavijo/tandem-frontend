@@ -6,7 +6,7 @@ import useWebSocket from "react-use-websocket";
 import useAuth from "../auth/AuthContext";
 import {InfiniteData, useQueryClient} from "react-query";
 import {Chat} from "../../entities/Chat";
-import {mainCss, mainCssMobile} from "./styles";
+import {chatMain, chatMainMobile} from "./styles";
 import {useMediaQuery} from "react-responsive";
 import Nav from "../../components/Nav";
 import {baseAppContainerWithoutTabsCss, baseAppContainerWithTabsCss} from "../../styles/layout";
@@ -81,7 +81,7 @@ function ChatMain() {
          */
         <div css={baseAppContainerWithoutTabsCss}>
             <Nav/>
-            <main css={mainCss}>
+            <main css={chatMain}>
                 <ChatList/>
                 <section css={isDesktop ? chatRoomCss : chatRoomCssMobile}>
                     {header ?
@@ -100,7 +100,7 @@ function ChatMain() {
             {params.id && header ?
                 <ChatHeader {...header}/> :
                 <Nav/>}
-            <main css={mainCssMobile}>
+            <main css={chatMainMobile}>
                 <Outlet context={[header, setHeader]}/>
             </main>
             {!params.id ?

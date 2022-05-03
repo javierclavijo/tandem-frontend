@@ -1,7 +1,7 @@
 import {css} from "@emotion/react";
 import {colors} from "../../styles/variables";
 
-export const mainCss = css`
+export const chatMain = css`
   grid-area: main;
   height: 100%;
   max-height: 100%;
@@ -16,7 +16,7 @@ export const mainCss = css`
   box-sizing: border-box;
 `;
 
-export const mainCssMobile = css`
+export const chatMainMobile = css`
   grid-area: main;
   max-height: 100%;
   min-height: 0;

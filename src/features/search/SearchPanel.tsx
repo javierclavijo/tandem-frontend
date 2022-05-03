@@ -18,8 +18,6 @@ const selectTypeOptions: Option[] = [
 function SearchPanel() {
     return (
         <div css={css`
-          padding: 1rem;
-          background-color: ${colors.WHITE};
           display: flex;
           flex-direction: column;
           gap: 1rem;
