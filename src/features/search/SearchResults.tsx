@@ -28,18 +28,18 @@ function SearchResults(props: SearchResultsProps) {
                             scrollableTarget="search-results-container"
                             style={{display: "flex", flexDirection: "column"}}
             >
-                {[...props.data?.pages].map((page, pageIndex) =>
-                    <React.Fragment key={`page-${pageIndex}`}>
-                        {[...page.results].map((element) => (
-                            <SearchResultElement id={`${element.id}`}
-                                                 name={element.username}
-                                                 languages={element.languages.map(l => l.language)}
-                                                 description={element.description}
-                                                 image={element.image}
-                                                 key={`${element.id}`}/>
-                        ))}
-                    </React.Fragment>
-                )}
+                {/*{[...props.data?.pages].map((page, pageIndex) =>*/}
+                {/*    <React.Fragment key={`page-${pageIndex}`}>*/}
+                {/*        {[...page.results].map((element) => (*/}
+                {/*            <SearchResultElement id={`${element.id}`}*/}
+                {/*                                 name={element.username}*/}
+                {/*                                 languages={element.languages.map(l => l.language)}*/}
+                {/*                                 description={element.description}*/}
+                {/*                                 image={element.image}*/}
+                {/*                                 key={`${element.id}`}/>*/}
+                {/*        ))}*/}
+                {/*    </React.Fragment>*/}
+                {/*)}*/}
             </InfiniteScroll>
         </div> : null;
 }

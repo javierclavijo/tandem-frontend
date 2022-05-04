@@ -14,7 +14,17 @@ import {User} from "../../entities/User";
 import {axiosApi} from "../auth/AuthContext";
 import SearchResults from "./SearchResults";
 import qs from "qs";
+import {Option} from "../../resources/languages";
 
+
+/**
+ * Options for the search type select. Used in the search query's key and URL, and to determine which controls to render
+ * in the search panel.
+ */
+export const searchTypeOptions = {
+    USERS: {value: "users", label: "Users"},
+    CHANNELS: {value: "channels", label: "Channels"}
+};
 
 export interface UserSearchResponse {
     count: number,
@@ -30,6 +40,8 @@ export interface SearchParams {
     nativeLanguages?: string[] | null;
     learningLanguages?: string[] | null;
     learningLanguagesLevel?: string | null;
+    channelLanguages?: string[] | null;
+    channelLevels?: string[] | null;
 }
 
 
@@ -37,22 +49,37 @@ function Search() {
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
 
+    /**
+     * Search params state.
+     */
     const [searchParams, setSearchParams] = React.useState<SearchParams>({});
+
+    /**
+     * Search type state.
+     */
+    const [searchType, setSearchType] = React.useState<Option>(searchTypeOptions.USERS);
 
     const {
         data,
         fetchNextPage,
         hasNextPage,
         refetch
-    } = useInfiniteQuery<UserSearchResponse>(["users", "search", searchParams], async ({pageParam = 1}) => {
-        const response = await axiosApi.get("/users/", {
-            params: {
-                search: searchParams?.search ?? null,
-                native_language: searchParams.nativeLanguages,
-                learning_language: searchParams.learningLanguages,
-                level: searchParams.learningLanguagesLevel,
-                page: pageParam
-            },
+    } = useInfiniteQuery<UserSearchResponse>([searchType.value, "search", searchParams], async ({pageParam = 1}) => {
+        const params = searchType === searchTypeOptions.USERS ? {
+            page: pageParam,
+            search: searchParams?.search ?? null,
+            native_language: searchParams.nativeLanguages,
+            learning_language: searchParams.learningLanguages,
+            level: searchParams.learningLanguagesLevel,
+        } : {
+            page: pageParam,
+            search: searchParams?.search ?? null,
+            language: searchParams?.channelLanguages,
+            level: searchParams?.channelLevels,
+        };
+
+        const response = await axiosApi.get(`/${searchType.value}/`, {
+            params: params,
             paramsSerializer: params => qs.stringify(params, {arrayFormat: "repeat"})
         });
         return response.data;
@@ -63,11 +90,11 @@ function Search() {
     });
 
     /**
-     * Refetch the query whenever the params ref's value is updated.
+     * Refetch the query whenever the params or search type state is updated.
      */
     React.useEffect(() => {
         refetch();
-    }, [searchParams]);
+    }, [searchParams, searchType]);
 
     return (
         <div css={isDesktop ? baseAppContainerWithoutTabsCss : baseAppContainerWithTabsCss}>
@@ -82,7 +109,9 @@ function Search() {
                   gap: 1rem;
                 `}>
                     <h2>Find Users & Channels</h2>
-                    <SearchPanel setSearchParams={setSearchParams}/>
+                    <SearchPanel setSearchParams={setSearchParams}
+                                 searchType={searchType}
+                                 setSearchType={setSearchType}/>
                 </header>
                 <div css={css`
                   height: 100%;
