@@ -24,6 +24,9 @@ interface SearchPanelProps {
 function SearchPanel(props: SearchPanelProps) {
 
     const [inputValue, setInputValue] = React.useState<string>("");
+    const [nativeLanguages, setNativeLanguages] = React.useState<Option[] | null>(null);
+    const [learningLanguages, setLearningLanguages] = React.useState<Option[] | null>(null);
+    const [learningLanguagesLevel, setLearningLanguagesLevel] = React.useState<Option | null>(null);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -47,6 +50,7 @@ function SearchPanel(props: SearchPanelProps) {
               padding: 0.25rem 0.5rem;
               border-radius: 3px;
             `}>
+                {/* Search input. */}
                 <input type="search" name="search-query" placeholder="Search..."
                        value={inputValue}
                        onChange={(e) => setInputValue(e.target.value)}
@@ -61,11 +65,14 @@ function SearchPanel(props: SearchPanelProps) {
                   display: flex;
                   align-items: center;
                 `}>
+                    {/* Search type select. Allows the user to choose between searching for users and for channels. */}
                     <Select id={`search-type`}
                             options={selectTypeOptions}
                             placeholder="Type"
                             styles={noBorderAndBgSelectDark}
                     />
+
+                    {/* Submit button. */}
                     <button type="submit"
                             css={buttonWithoutBackgroundAndBorder}
                     >
@@ -73,21 +80,37 @@ function SearchPanel(props: SearchPanelProps) {
                     </button>
                 </div>
             </div>
-            <div css={css`
-              display: flex;
-              gap: 1rem;
-            `}>
-                <Select id={`search-language`}
-                        options={languageOptions}
-                        placeholder="Language"
-                        styles={searchSelect}
-                />
-                <Select id={`search-level`}
-                        options={levelOptions}
-                        placeholder="Level"
-                        styles={searchSelect}
-                />
-            </div>
+
+            {/* Native languages multi-select.
+             Automatically disables options which are selected as learning languages. */}
+            <Select id={`native-languages`} isMulti={true}
+                    value={nativeLanguages}
+                    options={languageOptions}
+                    onChange={(options: any) => setNativeLanguages(options)}
+                    isOptionDisabled={(option) => !!learningLanguages?.includes(option as Option)}
+                    placeholder="Native languages"
+                    styles={searchSelect}
+            />
+
+            {/* Learning languages multi-select.
+             Automatically disables options which are selected as native languages. */}
+            <Select id={`learning-languages`} isMulti={true}
+                    value={learningLanguages}
+                    options={languageOptions}
+                    onChange={(options: any) => setLearningLanguages(options)}
+                    isOptionDisabled={(option) => !!nativeLanguages?.includes(option as Option)}
+                    placeholder="Learning languages"
+                    styles={searchSelect}
+            />
+
+            {/* Learning languages level select. */}
+            <Select id={`learning-languages-level`}
+                    value={learningLanguagesLevel}
+                    options={levelOptions}
+                    onChange={(option: any) => setLearningLanguagesLevel(option)}
+                    placeholder="Learning languages level"
+                    styles={searchSelect}
+            />
         </form>
     );
 }
