@@ -17,7 +17,7 @@ interface SearchElementProps {
     image?: string;
 }
 
-function SearchElement(props: SearchElementProps) {
+function SearchResultElement(props: SearchElementProps) {
     return (
         <article css={css`
           display: flex;
@@ -74,4 +74,4 @@ function SearchElement(props: SearchElementProps) {
     );
 }
 
-export default SearchElement;
+export default SearchResultElement;

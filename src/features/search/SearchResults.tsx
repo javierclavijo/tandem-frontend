@@ -5,7 +5,7 @@ import {css} from "@emotion/react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {FetchNextPageOptions, InfiniteData, InfiniteQueryObserverResult} from "react-query";
 import {UserSearchResponse} from "./Search";
-import SearchElement from "./SearchElement";
+import SearchResultElement from "./SearchResultElement";
 
 interface SearchResultsProps {
     data: InfiniteData<UserSearchResponse> | undefined;
@@ -31,11 +31,11 @@ function SearchResults(props: SearchResultsProps) {
                 {[...props.data?.pages].map((page, pageIndex) =>
                     <React.Fragment key={`page-${pageIndex}`}>
                         {[...page.results].map((element) => (
-                            <SearchElement id={`${element.id}`}
-                                           name={element.username}
-                                           languages={element.languages.map(l => l.language)}
-                                           description={element.description}
-                                           key={`${element.id}`}/>
+                            <SearchResultElement id={`${element.id}`}
+                                                 name={element.username}
+                                                 languages={element.languages.map(l => l.language)}
+                                                 description={element.description}
+                                                 key={`${element.id}`}/>
                         ))}
                     </React.Fragment>
                 )}
