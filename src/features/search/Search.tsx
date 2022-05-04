@@ -37,21 +37,20 @@ function Search() {
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
 
-    const searchParamsRef = React.useRef<SearchParams>({});
+    const [searchParams, setSearchParams] = React.useState<SearchParams>({});
 
     const {
         data,
         fetchNextPage,
         hasNextPage,
         refetch
-    } = useInfiniteQuery<UserSearchResponse>(["users", "search", searchParamsRef.current], async ({pageParam = 1}) => {
-        const params = searchParamsRef.current;
+    } = useInfiniteQuery<UserSearchResponse>(["users", "search", searchParams], async ({pageParam = 1}) => {
         const response = await axiosApi.get("/users/", {
             params: {
-                search: params?.search ?? null,
-                native_language: params.nativeLanguages,
-                learning_language: params.learningLanguages,
-                level: params.learningLanguagesLevel,
+                search: searchParams?.search ?? null,
+                native_language: searchParams.nativeLanguages,
+                learning_language: searchParams.learningLanguages,
+                level: searchParams.learningLanguagesLevel,
                 page: pageParam
             },
             paramsSerializer: params => qs.stringify(params, {arrayFormat: "repeat"})
@@ -62,6 +61,13 @@ function Search() {
         getPreviousPageParam: firstPage => firstPage.previousPageNumber ?? undefined,
         getNextPageParam: lastPage => lastPage.nextPageNumber ?? undefined
     });
+
+    /**
+     * Refetch the query whenever the params ref's value is updated.
+     */
+    React.useEffect(() => {
+        refetch();
+    }, [searchParams]);
 
     return (
         <div css={isDesktop ? baseAppContainerWithoutTabsCss : baseAppContainerWithTabsCss}>
@@ -76,7 +82,7 @@ function Search() {
                   gap: 1rem;
                 `}>
                     <h2>Find Users & Channels</h2>
-                    <SearchPanel searchParamsRef={searchParamsRef} refetch={refetch}/>
+                    <SearchPanel setSearchParams={setSearchParams}/>
                 </header>
                 <div css={css`
                   height: 100%;

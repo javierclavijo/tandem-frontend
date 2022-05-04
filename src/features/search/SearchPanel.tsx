@@ -8,8 +8,7 @@ import {css} from "@emotion/react";
 import {Search} from "iconoir-react";
 import {colors, textSizes} from "../../styles/variables";
 import {buttonWithoutBackgroundAndBorder} from "../../components/Button";
-import {SearchParams, UserSearchResponse} from "./Search";
-import {InfiniteData, QueryObserverResult, RefetchOptions, RefetchQueryFilters} from "react-query";
+import {SearchParams} from "./Search";
 
 
 const selectTypeOptions: Option[] = [
@@ -18,29 +17,33 @@ const selectTypeOptions: Option[] = [
 ];
 
 interface SearchPanelProps {
-    searchParamsRef: React.MutableRefObject<SearchParams | null>;
-    refetch: <TPageData>(options?: ((RefetchOptions & RefetchQueryFilters<TPageData>) | undefined)) => Promise<QueryObserverResult<InfiniteData<UserSearchResponse>, unknown>>;
+    setSearchParams: React.Dispatch<React.SetStateAction<SearchParams>>;
 }
 
 function SearchPanel(props: SearchPanelProps) {
 
     const [inputValue, setInputValue] = React.useState<string>("");
+
+    /**
+     * User search select values.
+     */
     const [nativeLanguages, setNativeLanguages] = React.useState<Option[] | null>(null);
     const [learningLanguages, setLearningLanguages] = React.useState<Option[] | null>(null);
     const [learningLanguagesLevel, setLearningLanguagesLevel] = React.useState<Option | null>(null);
 
-    const formRef = React.useRef<HTMLFormElement>(null);
-
+    /**
+     * Sets the search params ref value.
+     * @param [e]: The search form's submit event.
+     */
     const handleSubmit = (e?: FormEvent<HTMLFormElement>) => {
         e?.preventDefault();
-        props.searchParamsRef.current = {
+        props.setSearchParams({
             search: inputValue,
             nativeLanguages: nativeLanguages?.map(language => language.value),
             learningLanguages: learningLanguages?.map(language => language.value),
             // Check that at least a learning language is selected before adding the level param.
             learningLanguagesLevel: learningLanguages?.length ? learningLanguagesLevel?.value : null
-        };
-        props.refetch();
+        });
     };
 
     /**
@@ -49,7 +52,7 @@ function SearchPanel(props: SearchPanelProps) {
     React.useEffect(handleSubmit, [nativeLanguages, learningLanguages, learningLanguagesLevel]);
 
     return (
-        <form onSubmit={handleSubmit} ref={formRef} css={css`
+        <form onSubmit={handleSubmit} css={css`
           display: flex;
           flex-direction: column;
           gap: 1rem;
