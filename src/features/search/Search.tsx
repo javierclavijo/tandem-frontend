@@ -9,10 +9,10 @@ import SearchPanel from "./SearchPanel";
 import {searchMain, searchMainMobile} from "./styles";
 import {css} from "@emotion/react";
 import {colors} from "../../styles/variables";
-import SearchElement from "./SearchElement";
 import {useInfiniteQuery} from "react-query";
 import {User} from "../../entities/User";
 import {axiosApi} from "../auth/AuthContext";
+import SearchResults from "./SearchResults";
 
 
 export interface UserSearchResponse {
@@ -32,8 +32,9 @@ function Search() {
     const [searchQuery, setSearchQuery] = React.useState<string>("");
 
     const {
-        data: users,
-        fetchNextPage: fetchNextUsersPage
+        data,
+        fetchNextPage,
+        hasNextPage
     } = useInfiniteQuery<UserSearchResponse>(["users", "search", searchQuery], async () => {
         const response = await axiosApi.get("/users/", {
             params: {
@@ -72,18 +73,7 @@ function Search() {
                     `}>
                         Users
                     </h3>
-                    <div css={css`
-                      display: flex;
-                      flex-direction: row;
-                      flex-wrap: wrap;
-                    `}>
-                        <SearchElement id="paco1" name={"paco"} languages={["DE"]}
-                                       description={"lorem ipsum noseque nosecuanto"}/>
-                        <SearchElement id="paco2" name={"paco"} languages={["DE"]}
-                                       description={"lorem ipsum noseque nosecuanto"}/>
-                        <SearchElement id="paco3" name={"paco"} languages={["DE"]}
-                                       description={"lorem ipsum noseque nosecuanto"}/>
-                    </div>
+                    <SearchResults data={data} fetchNextPage={fetchNextPage} hasNextPage={hasNextPage}/>
                 </div>
             </main>
             {!isDesktop ?
