@@ -9,6 +9,8 @@ import {Search} from "iconoir-react";
 import {colors, textSizes} from "../../styles/variables";
 import {buttonWithoutBackgroundAndBorder} from "../../components/Button";
 import {ChannelSearchParams, searchTypeOptions, UserSearchParams} from "./Search";
+import {useSearchParams} from "react-router-dom";
+import qs from "qs";
 
 
 interface SearchPanelProps {
@@ -19,6 +21,8 @@ interface SearchPanelProps {
 }
 
 function SearchPanel(props: SearchPanelProps) {
+
+    let [searchParams, setSearchParams] = useSearchParams();
 
     /**
      * Search query input value.
@@ -39,26 +43,42 @@ function SearchPanel(props: SearchPanelProps) {
     const [channelLevels, setChannelLevels] = React.useState<Option[] | null>(null);
 
     /**
+     * Set the values to the route's search params on init.
+     */
+    React.useEffect(() => {
+        const searchType = searchParams.get("type");
+        setInputValue(searchParams.get("search") ?? "");
+        if (searchType === searchTypeOptions.USERS.value) {
+        } else if (searchType === searchTypeOptions.CHANNELS.value) {
+
+        }
+    }, []);
+
+    /**
      * Sets the corresponding search params state's value.
      * @param [e]: The search form's submit event.
      */
     const handleSubmit = (e?: FormEvent<HTMLFormElement>) => {
         e?.preventDefault();
         if (props.searchType === searchTypeOptions.USERS) {
-            props.setUserSearchParams({
+            const params = qs.stringify({
+                type: props.searchType.value,
                 search: inputValue,
                 nativeLanguages: nativeLanguages?.map(language => language.value),
                 learningLanguages: learningLanguages?.map(language => language.value),
                 // Check that at least a learning language is selected before adding the level param.
                 learningLanguagesLevel: learningLanguages?.length ? learningLanguagesLevel?.value : null
             });
+            setSearchParams(params);
         } else {
-            props.setChannelSearchParams({
+            const params = qs.stringify({
+                type: props.searchType.value,
                 search: inputValue,
                 languages: channelLanguages?.map(language => language.value),
                 // Check that at least a learning language is selected before adding the level params.
                 levels: channelLevels?.length ? channelLevels.map(level => level.value) : null
             });
+            setSearchParams(params);
         }
     };
 
