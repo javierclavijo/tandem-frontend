@@ -13,7 +13,6 @@ import {InfiniteData, QueryObserverResult, RefetchOptions, RefetchQueryFilters} 
 
 
 const selectTypeOptions: Option[] = [
-    {value: "all", label: "All"},
     {value: "users", label: "Users"},
     {value: "channels", label: "Channels"},
 ];
@@ -30,24 +29,31 @@ function SearchPanel(props: SearchPanelProps) {
     const [learningLanguages, setLearningLanguages] = React.useState<Option[] | null>(null);
     const [learningLanguagesLevel, setLearningLanguagesLevel] = React.useState<Option | null>(null);
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const formRef = React.useRef<HTMLFormElement>(null);
+
+    const handleSubmit = (e?: FormEvent<HTMLFormElement>) => {
+        e?.preventDefault();
         props.searchParamsRef.current = {
             search: inputValue,
             nativeLanguages: nativeLanguages?.map(language => language.value),
             learningLanguages: learningLanguages?.map(language => language.value),
-            learningLanguagesLevel: learningLanguagesLevel?.value
+            // Check that at least a learning language is selected before adding the level param.
+            learningLanguagesLevel: learningLanguages?.length ? learningLanguagesLevel?.value : null
         };
-        await props.refetch();
+        props.refetch();
     };
 
+    /**
+     * Submit the search whenever any select's values are updated.
+     */
+    React.useEffect(handleSubmit, [nativeLanguages, learningLanguages, learningLanguagesLevel]);
+
     return (
-        <form onSubmit={handleSubmit}
-              css={css`
-                display: flex;
-                flex-direction: column;
-                gap: 1rem;
-              `}>
+        <form onSubmit={handleSubmit} ref={formRef} css={css`
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        `}>
             <div css={css`
               display: flex;
               width: auto;
@@ -76,6 +82,7 @@ function SearchPanel(props: SearchPanelProps) {
                     {/* Search type select. Allows the user to choose between searching for users and for channels. */}
                     <Select id={`search-type`}
                             options={selectTypeOptions}
+                            defaultValue={selectTypeOptions[0]}
                             placeholder="Type"
                             styles={noBorderAndBgSelectDark}
                     />
@@ -94,7 +101,7 @@ function SearchPanel(props: SearchPanelProps) {
             <Select id={`native-languages`} isMulti={true}
                     value={nativeLanguages}
                     options={languageOptions}
-                    onChange={(options: any) => setNativeLanguages(options)}
+                    onChange={async (options: any) => setNativeLanguages(options)}
                     isOptionDisabled={(option) => !!learningLanguages?.includes(option as Option)}
                     placeholder="Native languages"
                     styles={searchSelect}
@@ -105,7 +112,7 @@ function SearchPanel(props: SearchPanelProps) {
             <Select id={`learning-languages`} isMulti={true}
                     value={learningLanguages}
                     options={languageOptions}
-                    onChange={(options: any) => setLearningLanguages(options.length ? options : null)}
+                    onChange={async (options: any) => setLearningLanguages(options.length ? options : null)}
                     isOptionDisabled={(option) => !!nativeLanguages?.includes(option as Option)}
                     placeholder="Learning languages"
                     styles={searchSelect}
@@ -115,7 +122,7 @@ function SearchPanel(props: SearchPanelProps) {
             <Select id={`learning-languages-level`}
                     value={learningLanguagesLevel}
                     options={levelOptions}
-                    onChange={(option: any) => setLearningLanguagesLevel(option)}
+                    onChange={async (option: any) => setLearningLanguagesLevel(option)}
                     isDisabled={!learningLanguages}
                     placeholder="Learning languages level"
                     styles={searchSelect}
