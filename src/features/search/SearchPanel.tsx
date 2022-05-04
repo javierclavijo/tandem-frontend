@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
+import React, {FormEvent} from "react";
 import Select from "react-select";
 import {languageOptions, levelOptions, Option} from "../../resources/languages";
 import {noBorderAndBgSelectDark, searchSelect} from "../../styles/components";
@@ -25,18 +25,18 @@ function SearchPanel(props: SearchPanelProps) {
 
     const [inputValue, setInputValue] = React.useState<string>("");
 
-    const handleSearch = () => {
-        if (inputValue) {
-            props.setSearchQuery(inputValue);
-        }
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        props.setSearchQuery(inputValue);
     };
 
     return (
-        <div css={css`
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-        `}>
+        <form onSubmit={handleSubmit}
+              css={css`
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+              `}>
             <div css={css`
               display: flex;
               width: auto;
@@ -47,7 +47,7 @@ function SearchPanel(props: SearchPanelProps) {
               padding: 0.25rem 0.5rem;
               border-radius: 3px;
             `}>
-                <input type="text" name="search-query" placeholder="Search..."
+                <input type="search" name="search-query" placeholder="Search..."
                        value={inputValue}
                        onChange={(e) => setInputValue(e.target.value)}
                        css={css`
@@ -66,8 +66,7 @@ function SearchPanel(props: SearchPanelProps) {
                             placeholder="Type"
                             styles={noBorderAndBgSelectDark}
                     />
-                    <button type="button"
-                            onClick={handleSearch}
+                    <button type="submit"
                             css={buttonWithoutBackgroundAndBorder}
                     >
                         <Search color={colors.PRIMARY} width={"1.5rem"} height={"1.5rem"}/>
@@ -89,7 +88,7 @@ function SearchPanel(props: SearchPanelProps) {
                         styles={searchSelect}
                 />
             </div>
-        </div>
+        </form>
     );
 }
 

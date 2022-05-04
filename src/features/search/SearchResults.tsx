@@ -35,6 +35,7 @@ function SearchResults(props: SearchResultsProps) {
                                                  name={element.username}
                                                  languages={element.languages.map(l => l.language)}
                                                  description={element.description}
+                                                 image={element.image}
                                                  key={`${element.id}`}/>
                         ))}
                     </React.Fragment>
