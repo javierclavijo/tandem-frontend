@@ -13,6 +13,7 @@ import {useInfiniteQuery} from "react-query";
 import {User} from "../../entities/User";
 import {axiosApi} from "../auth/AuthContext";
 import SearchResults from "./SearchResults";
+import qs from "qs";
 
 
 export interface UserSearchResponse {
@@ -26,9 +27,9 @@ export interface UserSearchResponse {
 
 export interface SearchParams {
     search?: string;
-    nativeLanguages?: string[];
-    learningLanguages?: string[];
-    learningLanguagesLevel?: string;
+    nativeLanguages?: string[] | null;
+    learningLanguages?: string[] | null;
+    learningLanguagesLevel?: string | null;
 }
 
 
@@ -48,8 +49,12 @@ function Search() {
         const response = await axiosApi.get("/users/", {
             params: {
                 search: params?.search ?? null,
+                native_language: params.nativeLanguages,
+                learning_language: params.learningLanguages,
+                level: params.learningLanguagesLevel,
                 page: pageParam
-            }
+            },
+            paramsSerializer: params => qs.stringify(params, {arrayFormat: "repeat"})
         });
         return response.data;
     }, {

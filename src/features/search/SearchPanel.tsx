@@ -30,12 +30,15 @@ function SearchPanel(props: SearchPanelProps) {
     const [learningLanguages, setLearningLanguages] = React.useState<Option[] | null>(null);
     const [learningLanguagesLevel, setLearningLanguagesLevel] = React.useState<Option | null>(null);
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         props.searchParamsRef.current = {
-            search: inputValue
+            search: inputValue,
+            nativeLanguages: nativeLanguages?.map(language => language.value),
+            learningLanguages: learningLanguages?.map(language => language.value),
+            learningLanguagesLevel: learningLanguagesLevel?.value
         };
-        props.refetch();
+        await props.refetch();
     };
 
     return (
@@ -102,7 +105,7 @@ function SearchPanel(props: SearchPanelProps) {
             <Select id={`learning-languages`} isMulti={true}
                     value={learningLanguages}
                     options={languageOptions}
-                    onChange={(options: any) => setLearningLanguages(options)}
+                    onChange={(options: any) => setLearningLanguages(options.length ? options : null)}
                     isOptionDisabled={(option) => !!nativeLanguages?.includes(option as Option)}
                     placeholder="Learning languages"
                     styles={searchSelect}
@@ -113,6 +116,7 @@ function SearchPanel(props: SearchPanelProps) {
                     value={learningLanguagesLevel}
                     options={levelOptions}
                     onChange={(option: any) => setLearningLanguagesLevel(option)}
+                    isDisabled={!learningLanguages}
                     placeholder="Learning languages level"
                     styles={searchSelect}
             />
