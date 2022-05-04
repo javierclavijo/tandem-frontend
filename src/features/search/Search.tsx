@@ -12,14 +12,14 @@ import {colors} from "../../styles/variables";
 import {useInfiniteQuery} from "react-query";
 import {User} from "../../entities/User";
 import {axiosApi} from "../auth/AuthContext";
-import SearchResults from "./SearchResults";
+import {ChannelSearchResults, UserSearchResults} from "./SearchResults";
 import qs from "qs";
 import {Option} from "../../resources/languages";
+import {Channel} from "../../entities/Channel";
 
 
 /**
- * Options for the search type select. Used in the search query's key and URL, and to determine which controls to render
- * in the search panel.
+ * Options for the search type select.
  */
 export const searchTypeOptions = {
     USERS: {value: "users", label: "Users"},
@@ -31,6 +31,15 @@ export interface UserSearchResponse {
     next: string | null,
     previous: string | null,
     results: User[],
+    nextPageNumber: number | null,
+    previousPageNumber: number | null
+}
+
+export interface ChannelSearchResponse {
+    count: number,
+    next: string | null,
+    previous: string | null,
+    results: Channel[],
     nextPageNumber: number | null,
     previousPageNumber: number | null
 }
@@ -60,26 +69,41 @@ function Search() {
     const [searchType, setSearchType] = React.useState<Option>(searchTypeOptions.USERS);
 
     const {
-        data,
-        fetchNextPage,
-        hasNextPage,
-        refetch
-    } = useInfiniteQuery<UserSearchResponse>([searchType.value, "search", searchParams], async ({pageParam = 1}) => {
-        const params = searchType === searchTypeOptions.USERS ? {
-            page: pageParam,
-            search: searchParams?.search ?? null,
-            native_language: searchParams.nativeLanguages,
-            learning_language: searchParams.learningLanguages,
-            level: searchParams.learningLanguagesLevel,
-        } : {
-            page: pageParam,
-            search: searchParams?.search ?? null,
-            language: searchParams?.channelLanguages,
-            level: searchParams?.channelLevels,
-        };
+        data: usersData,
+        fetchNextPage: fetchNextUsersPage,
+        hasNextPage: hasNextUsersPage,
+        refetch: refetchUsers
+    } = useInfiniteQuery<UserSearchResponse>(["users", "search", searchParams], async ({pageParam = 1}) => {
+        const response = await axiosApi.get(`/users/`, {
+            params: {
+                page: pageParam,
+                search: searchParams?.search ?? null,
+                native_language: searchParams.nativeLanguages,
+                learning_language: searchParams.learningLanguages,
+                level: searchParams.learningLanguagesLevel,
+            },
+            paramsSerializer: params => qs.stringify(params, {arrayFormat: "repeat"})
+        });
+        return response.data;
+    }, {
+        staleTime: 30000,
+        getPreviousPageParam: firstPage => firstPage.previousPageNumber ?? undefined,
+        getNextPageParam: lastPage => lastPage.nextPageNumber ?? undefined
+    });
 
-        const response = await axiosApi.get(`/${searchType.value}/`, {
-            params: params,
+    const {
+        data: channelsData,
+        fetchNextPage: fetchNextChannelsPage,
+        hasNextPage: hasNextChannelsPage,
+        refetch: refetchChannels
+    } = useInfiniteQuery<ChannelSearchResponse>(["channels", "search", searchParams], async ({pageParam = 1}) => {
+        const response = await axiosApi.get(`/channels/`, {
+            params: {
+                page: pageParam,
+                search: searchParams?.search ?? null,
+                language: searchParams?.channelLanguages,
+                level: searchParams?.channelLevels,
+            },
             paramsSerializer: params => qs.stringify(params, {arrayFormat: "repeat"})
         });
         return response.data;
@@ -93,7 +117,11 @@ function Search() {
      * Refetch the query whenever the params or search type state is updated.
      */
     React.useEffect(() => {
-        refetch();
+        if (searchType === searchTypeOptions.USERS) {
+            refetchUsers();
+        } else {
+            refetchChannels();
+        }
     }, [searchParams, searchType]);
 
     return (
@@ -121,14 +149,29 @@ function Search() {
                   gap: 1rem;
                   overflow-y: scroll;
                 `}>
-                    <h3 css={css`
-                      padding: 1rem 1rem 0 1rem;
-                    `}>
-                        Users
-                    </h3>
-                    <SearchResults data={data}
-                                   fetchNextPage={fetchNextPage}
-                                   hasNextPage={hasNextPage}/>
+                    {searchType === searchTypeOptions.USERS ?
+                        <React.Fragment>
+                            <h3 css={css`
+                              padding: 1rem 1rem 0 1rem;
+                            `}>
+                                {searchType === searchTypeOptions.USERS ? "Users" : "Channels"}
+                            </h3>
+                            <UserSearchResults data={usersData}
+                                               fetchNextPage={fetchNextUsersPage}
+                                               hasNextPage={hasNextUsersPage}/>
+                        </React.Fragment> :
+                        <React.Fragment>
+                            <h3 css={css`
+                              padding: 1rem 1rem 0 1rem;
+                            `}>
+                                {searchType === searchTypeOptions.USERS ? "Users" : "Channels"}
+                            </h3>
+                            <ChannelSearchResults data={channelsData}
+                                                  fetchNextPage={fetchNextChannelsPage}
+                                                  hasNextPage={hasNextChannelsPage}/>
+                        </React.Fragment>
+                    }
+
                 </div>
             </main>
             {!isDesktop ?

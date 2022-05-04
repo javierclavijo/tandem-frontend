@@ -14,7 +14,7 @@ interface SearchElementProps {
     name: string;
     languages: string[];
     description: string;
-    image?: string;
+    image?: string | null;
 }
 
 function SearchResultElement(props: SearchElementProps) {
