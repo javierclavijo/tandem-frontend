@@ -35,16 +35,18 @@ function Search() {
         data,
         fetchNextPage,
         hasNextPage
-    } = useInfiniteQuery<UserSearchResponse>(["users", "search", searchQuery], async () => {
+    } = useInfiniteQuery<UserSearchResponse>(["users", "search", searchQuery], async ({pageParam = 1}) => {
         const response = await axiosApi.get("/users/", {
             params: {
-                name: searchQuery,
-                description: searchQuery
+                search: searchQuery ?? null,
+                page: pageParam ?? null
             }
         });
         return response.data;
     }, {
         staleTime: 30000,
+        getPreviousPageParam: firstPage => firstPage.previousPageNumber ?? undefined,
+        getNextPageParam: lastPage => lastPage.nextPageNumber ?? undefined
     });
 
     return (
@@ -63,17 +65,21 @@ function Search() {
                     <SearchPanel searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
                 </header>
                 <div css={css`
+                  height: 100%;
                   background-color: ${colors.WHITE};
                   display: flex;
                   flex-direction: column;
                   gap: 1rem;
+                  overflow-y: scroll;
                 `}>
                     <h3 css={css`
                       padding: 1rem 1rem 0 1rem;
                     `}>
                         Users
                     </h3>
-                    <SearchResults data={data} fetchNextPage={fetchNextPage} hasNextPage={hasNextPage}/>
+                    <SearchResults data={data}
+                                   fetchNextPage={fetchNextPage}
+                                   hasNextPage={hasNextPage}/>
                 </div>
             </main>
             {!isDesktop ?
