@@ -44,13 +44,17 @@ export interface ChannelSearchResponse {
     previousPageNumber: number | null
 }
 
-export interface SearchParams {
+export interface UserSearchParams {
     search?: string;
     nativeLanguages?: string[] | null;
     learningLanguages?: string[] | null;
     learningLanguagesLevel?: string | null;
-    channelLanguages?: string[] | null;
-    channelLevels?: string[] | null;
+}
+
+export interface ChannelSearchParams {
+    search?: string;
+    languages?: string[] | null;
+    levels?: string[] | null;
 }
 
 
@@ -61,7 +65,8 @@ function Search() {
     /**
      * Search params state.
      */
-    const [searchParams, setSearchParams] = React.useState<SearchParams>({});
+    const [userSearchParams, setUserSearchParams] = React.useState<UserSearchParams>({});
+    const [channelSearchParams, setChannelSearchParams] = React.useState<ChannelSearchParams>({});
 
     /**
      * Search type state.
@@ -73,14 +78,14 @@ function Search() {
         fetchNextPage: fetchNextUsersPage,
         hasNextPage: hasNextUsersPage,
         refetch: refetchUsers
-    } = useInfiniteQuery<UserSearchResponse>(["users", "search", searchParams], async ({pageParam = 1}) => {
+    } = useInfiniteQuery<UserSearchResponse>(["users", "search", userSearchParams], async ({pageParam = 1}) => {
         const response = await axiosApi.get(`/users/`, {
             params: {
                 page: pageParam,
-                search: searchParams?.search ?? null,
-                native_language: searchParams.nativeLanguages,
-                learning_language: searchParams.learningLanguages,
-                level: searchParams.learningLanguagesLevel,
+                search: userSearchParams.search ?? null,
+                native_language: userSearchParams.nativeLanguages,
+                learning_language: userSearchParams.learningLanguages,
+                level: userSearchParams.learningLanguagesLevel,
             },
             paramsSerializer: params => qs.stringify(params, {arrayFormat: "repeat"})
         });
@@ -96,13 +101,13 @@ function Search() {
         fetchNextPage: fetchNextChannelsPage,
         hasNextPage: hasNextChannelsPage,
         refetch: refetchChannels
-    } = useInfiniteQuery<ChannelSearchResponse>(["channels", "search", searchParams], async ({pageParam = 1}) => {
+    } = useInfiniteQuery<ChannelSearchResponse>(["channels", "search", channelSearchParams], async ({pageParam = 1}) => {
         const response = await axiosApi.get(`/channels/`, {
             params: {
                 page: pageParam,
-                search: searchParams?.search ?? null,
-                language: searchParams?.channelLanguages,
-                level: searchParams?.channelLevels,
+                search: channelSearchParams?.search ?? null,
+                language: channelSearchParams?.languages,
+                level: channelSearchParams?.levels,
             },
             paramsSerializer: params => qs.stringify(params, {arrayFormat: "repeat"})
         });
@@ -114,7 +119,7 @@ function Search() {
     });
 
     /**
-     * Refetch the query whenever the params or search type state is updated.
+     * Refetch the queries whenever the params or search type state is updated.
      */
     React.useEffect(() => {
         if (searchType === searchTypeOptions.USERS) {
@@ -122,7 +127,7 @@ function Search() {
         } else {
             refetchChannels();
         }
-    }, [searchParams, searchType]);
+    }, [userSearchParams, channelSearchParams, searchType]);
 
     return (
         <div css={isDesktop ? baseAppContainerWithoutTabsCss : baseAppContainerWithTabsCss}>
@@ -137,7 +142,8 @@ function Search() {
                   gap: 1rem;
                 `}>
                     <h2>Find Users & Channels</h2>
-                    <SearchPanel setSearchParams={setSearchParams}
+                    <SearchPanel setUserSearchParams={setUserSearchParams}
+                                 setChannelSearchParams={setChannelSearchParams}
                                  searchType={searchType}
                                  setSearchType={setSearchType}/>
                 </header>

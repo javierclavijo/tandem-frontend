@@ -8,11 +8,12 @@ import {css} from "@emotion/react";
 import {Search} from "iconoir-react";
 import {colors, textSizes} from "../../styles/variables";
 import {buttonWithoutBackgroundAndBorder} from "../../components/Button";
-import {SearchParams, searchTypeOptions} from "./Search";
+import {ChannelSearchParams, searchTypeOptions, UserSearchParams} from "./Search";
 
 
 interface SearchPanelProps {
-    setSearchParams: React.Dispatch<React.SetStateAction<SearchParams>>;
+    setUserSearchParams: React.Dispatch<React.SetStateAction<UserSearchParams>>;
+    setChannelSearchParams: React.Dispatch<React.SetStateAction<ChannelSearchParams>>;
     searchType: Option;
     setSearchType: React.Dispatch<React.SetStateAction<Option>>;
 }
@@ -38,25 +39,27 @@ function SearchPanel(props: SearchPanelProps) {
     const [channelLevels, setChannelLevels] = React.useState<Option[] | null>(null);
 
     /**
-     * Sets the search params ref value.
+     * Sets the corresponding search params state's value.
      * @param [e]: The search form's submit event.
      */
     const handleSubmit = (e?: FormEvent<HTMLFormElement>) => {
         e?.preventDefault();
-        const params = props.searchType === searchTypeOptions.USERS ? {
-            search: inputValue,
-            nativeLanguages: nativeLanguages?.map(language => language.value),
-            learningLanguages: learningLanguages?.map(language => language.value),
-            // Check that at least a learning language is selected before adding the level param.
-            learningLanguagesLevel: learningLanguages?.length ? learningLanguagesLevel?.value : null
-        } : {
-            search: inputValue,
-            channelLanguages: channelLanguages?.map(language => language.value),
-            // Check that at least a learning language is selected before adding the level params.
-            channelLevels: channelLevels?.length ? channelLevels.map(level => level.value) : null
-        };
-
-        props.setSearchParams(params);
+        if (props.searchType === searchTypeOptions.USERS) {
+            props.setUserSearchParams({
+                search: inputValue,
+                nativeLanguages: nativeLanguages?.map(language => language.value),
+                learningLanguages: learningLanguages?.map(language => language.value),
+                // Check that at least a learning language is selected before adding the level param.
+                learningLanguagesLevel: learningLanguages?.length ? learningLanguagesLevel?.value : null
+            });
+        } else {
+            props.setChannelSearchParams({
+                search: inputValue,
+                languages: channelLanguages?.map(language => language.value),
+                // Check that at least a learning language is selected before adding the level params.
+                levels: channelLevels?.length ? channelLevels.map(level => level.value) : null
+            });
+        }
     };
 
     /**
