@@ -141,7 +141,7 @@ function Search() {
                                  searchType={searchType}
                                  setSearchType={setSearchType}/>
                 </header>
-                <div css={css`
+                <section css={css`
                   height: 100%;
                   background-color: ${colors.WHITE};
                   display: flex;
@@ -151,33 +151,23 @@ function Search() {
                 `}>
                     {searchType === searchTypeOptions.USERS ?
                         <React.Fragment>
-                            <h3 css={css`
-                              padding: 1rem 1rem 0 1rem;
-                            `}>
-                                {searchType === searchTypeOptions.USERS ? "Users" : "Channels"}
-                            </h3>
                             <UserSearchResults data={usersData}
                                                fetchNextPage={fetchNextUsersPage}
                                                hasNextPage={hasNextUsersPage}/>
                         </React.Fragment> :
                         <React.Fragment>
-                            <h3 css={css`
-                              padding: 1rem 1rem 0 1rem;
-                            `}>
-                                {searchType === searchTypeOptions.USERS ? "Users" : "Channels"}
-                            </h3>
                             <ChannelSearchResults data={channelsData}
                                                   fetchNextPage={fetchNextChannelsPage}
                                                   hasNextPage={hasNextChannelsPage}/>
                         </React.Fragment>
                     }
-
-                </div>
+                </section>
             </main>
             {!isDesktop ?
                 <Tabs/> : null}
         </div>
     );
 }
+
 
 export default Search;
