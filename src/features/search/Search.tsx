@@ -24,22 +24,31 @@ export interface UserSearchResponse {
     previousPageNumber: number | null
 }
 
+export interface SearchParams {
+    search?: string;
+    nativeLanguages?: string[];
+    learningLanguages?: string[];
+    learningLanguagesLevel?: string;
+}
+
 
 function Search() {
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
 
-    const [searchQuery, setSearchQuery] = React.useState<string>("");
+    const searchParamsRef = React.useRef<SearchParams>({});
 
     const {
         data,
         fetchNextPage,
-        hasNextPage
-    } = useInfiniteQuery<UserSearchResponse>(["users", "search", searchQuery], async ({pageParam = 1}) => {
+        hasNextPage,
+        refetch
+    } = useInfiniteQuery<UserSearchResponse>(["users", "search", searchParamsRef.current], async ({pageParam = 1}) => {
+        const params = searchParamsRef.current;
         const response = await axiosApi.get("/users/", {
             params: {
-                search: searchQuery ?? null,
-                page: pageParam ?? null
+                search: params?.search ?? null,
+                page: pageParam
             }
         });
         return response.data;
@@ -62,7 +71,7 @@ function Search() {
                   gap: 1rem;
                 `}>
                     <h2>Find Users & Channels</h2>
-                    <SearchPanel searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+                    <SearchPanel searchParamsRef={searchParamsRef} refetch={refetch}/>
                 </header>
                 <div css={css`
                   height: 100%;

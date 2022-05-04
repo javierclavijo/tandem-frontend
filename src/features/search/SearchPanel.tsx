@@ -8,6 +8,8 @@ import {css} from "@emotion/react";
 import {Search} from "iconoir-react";
 import {colors, textSizes} from "../../styles/variables";
 import {buttonWithoutBackgroundAndBorder} from "../../components/Button";
+import {SearchParams, UserSearchResponse} from "./Search";
+import {InfiniteData, QueryObserverResult, RefetchOptions, RefetchQueryFilters} from "react-query";
 
 
 const selectTypeOptions: Option[] = [
@@ -17,8 +19,8 @@ const selectTypeOptions: Option[] = [
 ];
 
 interface SearchPanelProps {
-    searchQuery: string;
-    setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+    searchParamsRef: React.MutableRefObject<SearchParams | null>;
+    refetch: <TPageData>(options?: ((RefetchOptions & RefetchQueryFilters<TPageData>) | undefined)) => Promise<QueryObserverResult<InfiniteData<UserSearchResponse>, unknown>>;
 }
 
 function SearchPanel(props: SearchPanelProps) {
@@ -30,7 +32,10 @@ function SearchPanel(props: SearchPanelProps) {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        props.setSearchQuery(inputValue);
+        props.searchParamsRef.current = {
+            search: inputValue
+        };
+        props.refetch();
     };
 
     return (
