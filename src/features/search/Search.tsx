@@ -19,7 +19,7 @@ import {Channel} from "../../entities/Channel";
 
 
 /**
- * Options for the search type select.
+ * Options for the search type select. Includes a search panel and the search results list.
  */
 export const searchTypeOptions = {
     USERS: {value: "users", label: "Users"},
@@ -57,7 +57,9 @@ export interface ChannelSearchParams {
     levels?: string[] | null;
 }
 
-
+/**
+ * Main search component.
+ */
 function Search() {
 
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
@@ -73,6 +75,9 @@ function Search() {
      */
     const [searchType, setSearchType] = React.useState<Option>(searchTypeOptions.USERS);
 
+    /**
+     * User search query. Enabled only if the search type is set to 'users'.
+     */
     const {
         data: usersData,
         fetchNextPage: fetchNextUsersPage,
@@ -93,9 +98,13 @@ function Search() {
     }, {
         staleTime: 30000,
         getPreviousPageParam: firstPage => firstPage.previousPageNumber ?? undefined,
-        getNextPageParam: lastPage => lastPage.nextPageNumber ?? undefined
+        getNextPageParam: lastPage => lastPage.nextPageNumber ?? undefined,
+        enabled: searchType === searchTypeOptions.USERS
     });
 
+    /**
+     * Channel search query. Enabled only if the search type is set to 'channels'.
+     */
     const {
         data: channelsData,
         fetchNextPage: fetchNextChannelsPage,
@@ -115,7 +124,8 @@ function Search() {
     }, {
         staleTime: 30000,
         getPreviousPageParam: firstPage => firstPage.previousPageNumber ?? undefined,
-        getNextPageParam: lastPage => lastPage.nextPageNumber ?? undefined
+        getNextPageParam: lastPage => lastPage.nextPageNumber ?? undefined,
+        enabled: searchType === searchTypeOptions.CHANNELS
     });
 
     /**

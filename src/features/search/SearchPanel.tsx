@@ -20,7 +20,12 @@ interface SearchPanelProps {
     setSearchType: React.Dispatch<React.SetStateAction<Option>>;
 }
 
-function SearchPanel(props: SearchPanelProps) {
+/**
+ * Holds the search form controls for search type and term, languages and levels. Fetches the URL search params on init and
+ * sets them whenever the form is submitted. Conditionally renders search controls depending on the chosen search type
+ * (users by default).
+ */
+function SearchPanel({setUserSearchParams, setChannelSearchParams, searchType, setSearchType}: SearchPanelProps) {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -57,7 +62,7 @@ function SearchPanel(props: SearchPanelProps) {
             setInputValue(searchParams.get("search") ?? "");
 
             if (searchType === searchTypeOptions.USERS.value) {
-                props.setSearchType(searchTypeOptions.USERS);
+                setSearchType(searchTypeOptions.USERS);
                 setNativeLanguages(languageOptions.filter(option =>
                     searchParams.getAll("nativeLanguages").includes(option.value)));
                 setLearningLanguages(languageOptions.filter(option =>
@@ -67,25 +72,25 @@ function SearchPanel(props: SearchPanelProps) {
                     setLearningLanguagesLevel(level);
                 }
             } else if (searchType === searchTypeOptions.CHANNELS.value) {
-                props.setSearchType(searchTypeOptions.CHANNELS);
+                setSearchType(searchTypeOptions.CHANNELS);
                 setChannelLanguages(languageOptions.filter(option =>
-                    searchParams.getAll("language").includes(option.value)));
+                    searchParams.getAll("languages").includes(option.value)));
                 setChannelLevels(levelOptions.filter(option =>
-                    searchParams.getAll("level").includes(option.value)));
+                    searchParams.getAll("levels").includes(option.value)));
             }
             setAreInitialValuesSet(true);
         }
-    }, [areInitialValuesSet, props, searchParams]);
+    }, [areInitialValuesSet, setSearchType, searchParams]);
 
     /**
-     * Sets the corresponding search params in the URL, plus the search params state itself.
+     * Sets the corresponding URL search params, plus the query search params state itself.
      * @param [e]: The search form's submit event.
      */
     const handleSubmit = React.useCallback((e?: FormEvent<HTMLFormElement>) => {
         e?.preventDefault();
-        if (props.searchType === searchTypeOptions.USERS) {
+        if (searchType === searchTypeOptions.USERS) {
             const params = {
-                type: searchTypeOptions.USERS,
+                type: searchTypeOptions.USERS.value,
                 search: inputValue,
                 nativeLanguages: nativeLanguages?.map(language => language.value),
                 learningLanguages: learningLanguages?.map(language => language.value),
@@ -93,20 +98,20 @@ function SearchPanel(props: SearchPanelProps) {
                 learningLanguagesLevel: learningLanguages?.length ? learningLanguagesLevel?.value : null
             };
             setSearchParams(qs.stringify(params, {arrayFormat: "repeat"}));
-            props.setUserSearchParams(params);
+            setUserSearchParams(params);
         } else {
             const params = {
-                type: searchTypeOptions.CHANNELS,
+                type: searchTypeOptions.CHANNELS.value,
                 search: inputValue,
-                language: channelLanguages?.map(language => language.value),
+                languages: channelLanguages?.map(language => language.value),
                 // Check that at least a learning language is selected before adding the level params.
-                level: channelLevels?.length ? channelLevels.map(level => level.value) : null
+                levels: channelLevels?.length ? channelLevels.map(level => level.value) : null
             };
             setSearchParams(qs.stringify(params, {arrayFormat: "repeat"}));
-            props.setChannelSearchParams(params);
+            setChannelSearchParams(params);
         }
     }, [channelLanguages, channelLevels, inputValue, learningLanguages, learningLanguagesLevel?.value,
-        nativeLanguages, props.searchType, props.setUserSearchParams, props.setChannelSearchParams, setSearchParams]);
+        nativeLanguages, searchType, setUserSearchParams, setChannelSearchParams, setSearchParams]);
 
     /**
      * Submit the search whenever any select's values are updated, but only if the initial values from search params
@@ -121,7 +126,7 @@ function SearchPanel(props: SearchPanelProps) {
         channelLanguages,
         channelLevels,
         areInitialValuesSet,
-        props.searchType,
+        searchType,
         handleSubmit
     ]);
 
@@ -158,9 +163,9 @@ function SearchPanel(props: SearchPanelProps) {
                 `}>
                     {/* Search type select. Allows the user to toggle between user and channel search. */}
                     <Select id={`search-type`}
-                            value={props.searchType}
+                            value={searchType}
                             options={[searchTypeOptions.USERS, searchTypeOptions.CHANNELS]}
-                            onChange={(option: any) => props.setSearchType(option)}
+                            onChange={(option: any) => setSearchType(option)}
                             defaultValue={searchTypeOptions.USERS}
                             placeholder="Type"
                             styles={noBorderAndBgSelectDark}
@@ -175,7 +180,7 @@ function SearchPanel(props: SearchPanelProps) {
                 </div>
             </div>
 
-            {props.searchType === searchTypeOptions.USERS ?
+            {searchType === searchTypeOptions.USERS ?
 
                 /**
                  * User search controls.
@@ -210,7 +215,7 @@ function SearchPanel(props: SearchPanelProps) {
                             value={learningLanguagesLevel}
                             options={levelOptions}
                             onChange={async (option: any) => setLearningLanguagesLevel(option)}
-                            isDisabled={!learningLanguages}
+                            isDisabled={!learningLanguages || !learningLanguages.length}
                             placeholder="Learning languages level"
                             styles={searchSelect}
                     />
@@ -236,7 +241,7 @@ function SearchPanel(props: SearchPanelProps) {
                             value={channelLevels}
                             options={levelOptions}
                             onChange={async (options: any) => setChannelLevels(options)}
-                            isDisabled={!channelLanguages}
+                            isDisabled={!channelLanguages || !channelLanguages.length}
                             placeholder="Channel levels"
                             styles={searchSelect}
                     />
