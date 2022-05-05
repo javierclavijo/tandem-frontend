@@ -82,7 +82,6 @@ function SearchPanel(props: SearchPanelProps) {
      * @param [e]: The search form's submit event.
      */
     const handleSubmit = React.useCallback((e?: FormEvent<HTMLFormElement>) => {
-        console.log(props)
         e?.preventDefault();
         if (props.searchType === searchTypeOptions.USERS) {
             const params = {
@@ -106,7 +105,8 @@ function SearchPanel(props: SearchPanelProps) {
             setSearchParams(qs.stringify(params, {arrayFormat: "repeat"}));
             props.setChannelSearchParams(params);
         }
-    }, [channelLanguages, channelLevels, inputValue, learningLanguages, learningLanguagesLevel?.value, nativeLanguages, props, setSearchParams]);
+    }, [channelLanguages, channelLevels, inputValue, learningLanguages, learningLanguagesLevel?.value,
+        nativeLanguages, props.searchType, props.setUserSearchParams, props.setChannelSearchParams, setSearchParams]);
 
     /**
      * Submit the search whenever any select's values are updated, but only if the initial values from search params
@@ -122,6 +122,7 @@ function SearchPanel(props: SearchPanelProps) {
         channelLevels,
         areInitialValuesSet,
         props.searchType,
+        handleSubmit
     ]);
 
     return (
