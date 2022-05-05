@@ -26,10 +26,7 @@ function SearchResultElement(props: SearchElementProps) {
           grid-template-columns: 1fr;
           grid-template-rows: 1fr;
           grid-template-areas: 'element';
-
           width: 100%;
-          padding: 0.5rem 1rem;
-          box-sizing: border-box;
 
           &:hover {
             background-color: ${colors.LIGHT};
@@ -40,6 +37,8 @@ function SearchResultElement(props: SearchElementProps) {
               display: flex;
               flex-direction: row;
               gap: 1rem;
+              padding: 1.5rem;
+              box-sizing: border-box;
             `}>
                 <div css={css`
                   height: 4.5rem;

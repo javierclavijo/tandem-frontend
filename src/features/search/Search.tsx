@@ -183,18 +183,30 @@ function Search() {
                       flex-direction: column;
                       gap: 1rem;
                     `}>
-                        {searchType === searchTypeOptions.USERS ?
-                            <React.Fragment>
-                                <UserSearchResults data={usersData}
-                                                   fetchNextPage={fetchNextUsersPage}
-                                                   hasNextPage={hasNextUsersPage}/>
-                            </React.Fragment> :
-                            <React.Fragment>
-                                <ChannelSearchResults data={channelsData}
-                                                      fetchNextPage={fetchNextChannelsPage}
-                                                      hasNextPage={hasNextChannelsPage}/>
-                            </React.Fragment>
-                        }
+                        <h3 css={css`
+                          padding: 1rem 1rem 0 1rem;
+                        `}>
+                            {searchType === searchTypeOptions.USERS ? "Users" : "Channels"}
+                        </h3>
+                        <div css={css`
+                          display: grid;
+                          @media (min-width: 1024px) {
+                            grid-template-columns: repeat(3, 1fr);
+                          }
+                        `}>
+                            {searchType === searchTypeOptions.USERS ?
+                                <React.Fragment>
+                                    <UserSearchResults data={usersData}
+                                                       fetchNextPage={fetchNextUsersPage}
+                                                       hasNextPage={hasNextUsersPage}/>
+                                </React.Fragment> :
+                                <React.Fragment>
+                                    <ChannelSearchResults data={channelsData}
+                                                          fetchNextPage={fetchNextChannelsPage}
+                                                          hasNextPage={hasNextChannelsPage}/>
+                                </React.Fragment>
+                            }
+                        </div>
                     </section>
                 </InfiniteScroll>
             </main>
