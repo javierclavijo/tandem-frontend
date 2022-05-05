@@ -19,6 +19,15 @@ interface ChannelSearchResultsProps {
     hasNextPage: boolean | undefined;
 }
 
+function NotFound() {
+    return (
+        <p css={css`
+          padding: 1rem;
+        `}>
+            No results.
+        </p>
+    );
+}
 
 export function UserSearchResults(props: UserSearchResultsProps) {
     return props.data ?
@@ -39,6 +48,8 @@ export function UserSearchResults(props: UserSearchResultsProps) {
                         ))}
                     </React.Fragment>
                 )}
+                {props.data?.pages.length === 0 || props.data?.pages[0].results.length === 0 ?
+                    <NotFound/> : null}
             </div>
         </React.Fragment> : null;
 }
@@ -63,6 +74,8 @@ export function ChannelSearchResults(props: ChannelSearchResultsProps) {
                         ))}
                     </React.Fragment>
                 )}
+                {props.data?.pages.length === 0 || props.data?.pages[0].results.length === 0 ?
+                    <NotFound/> : null}
             </div>
         </React.Fragment> : null;
 }
