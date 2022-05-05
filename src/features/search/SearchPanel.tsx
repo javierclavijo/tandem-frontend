@@ -89,24 +89,28 @@ function SearchPanel({setUserSearchParams, setChannelSearchParams, searchType, s
     const handleSubmit = React.useCallback((e?: FormEvent<HTMLFormElement>) => {
         e?.preventDefault();
         if (searchType === searchTypeOptions.USERS) {
-            const params = {
+            const params: any = {
                 type: searchTypeOptions.USERS.value,
                 search: inputValue,
                 nativeLanguages: nativeLanguages?.map(language => language.value),
                 learningLanguages: learningLanguages?.map(language => language.value),
-                // Check that at least a learning language is selected before adding the level param.
-                learningLanguagesLevel: learningLanguages?.length ? learningLanguagesLevel?.value : null
             };
+            // Check that at least a learning language is selected before adding the level param.
+            if (learningLanguages?.length) {
+                params.learningLanguagesLevel = learningLanguagesLevel?.value;
+            }
             setSearchParams(qs.stringify(params, {arrayFormat: "repeat"}));
             setUserSearchParams(params);
         } else {
-            const params = {
+            const params: any = {
                 type: searchTypeOptions.CHANNELS.value,
                 search: inputValue,
                 languages: channelLanguages?.map(language => language.value),
-                // Check that at least a learning language is selected before adding the level params.
-                levels: channelLevels?.length ? channelLevels.map(level => level.value) : null
             };
+            // Check that at least a learning language is selected before adding the level params.
+            if (channelLevels?.length) {
+                params.levels = channelLevels.map(level => level.value);
+            }
             setSearchParams(qs.stringify(params, {arrayFormat: "repeat"}));
             setChannelSearchParams(params);
         }
