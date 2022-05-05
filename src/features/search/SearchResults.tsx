@@ -44,7 +44,8 @@ export function UserSearchResults(props: UserSearchResultsProps) {
                                                  languages={element.languages.map(l => l.language)}
                                                  description={element.description}
                                                  image={element.image}
-                                                 key={`${element.id}`}/>
+                                                 key={`${element.id}`}
+                                                 link={`/chats/users/${element.id}`}/>
                         ))}
                     </React.Fragment>
                 )}
@@ -70,7 +71,8 @@ export function ChannelSearchResults(props: ChannelSearchResultsProps) {
                                                  languages={[element.language]}
                                                  description={element.description}
                                                  image={element.image}
-                                                 key={`${element.id}`}/>
+                                                 key={`${element.id}`}
+                                                 link={`/chats/channels/${element.id}`}/>
                         ))}
                     </React.Fragment>
                 )}
