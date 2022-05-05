@@ -73,6 +73,10 @@ export const noBorderAndBgSelectDark: StylesConfig = {
         ...provided,
         color: colors.DARK
     }),
+    container: (provided) => ({
+        ...provided,
+        flex: '1 0 auto'
+    }),
 };
 
 export const modal = {

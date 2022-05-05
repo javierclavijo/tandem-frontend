@@ -141,16 +141,19 @@ function SearchPanel({setUserSearchParams, setChannelSearchParams, searchType, s
           display: flex;
           flex-direction: column;
           gap: 1rem;
+          align-items: center;
         `}>
             <div css={css`
               display: flex;
-              width: auto;
               justify-content: space-between;
               align-items: center;
               gap: 1rem;
-              background-color: ${colors.LIGHT};
+              height: 3rem;
+              width: 100%;
               padding: 0.25rem 0.5rem;
+              box-sizing: border-box;
               border-radius: 3px;
+              background-color: ${colors.LIGHT};
             `}>
                 {/* Search input. */}
                 <DebounceInput type="search" name="search-query" placeholder="Search..."
@@ -162,12 +165,14 @@ function SearchPanel({setUserSearchParams, setChannelSearchParams, searchType, s
                                  background: none;
                                  outline: none;
                                  border: none;
-                                 width: auto;
+                                 flex: 1 1 auto;
+                                 min-width: 4rem;
                                  font-size: ${textSizes.M};
                                `}/>
                 <div css={css`
                   display: flex;
                   align-items: center;
+                  flex: 0 0 auto;
                 `}>
                     {/* Search type select. Allows the user to toggle between user and channel search. */}
                     <Select id={`search-type`}
@@ -181,80 +186,90 @@ function SearchPanel({setUserSearchParams, setChannelSearchParams, searchType, s
 
                     {/* Submit button. */}
                     <button type="submit"
-                            css={buttonWithoutBackgroundAndBorder}
-                    >
+                            css={css`${buttonWithoutBackgroundAndBorder};
+                              flex: 0 0 auto;
+                            `}>
                         <Search color={colors.PRIMARY} width={"1.5rem"} height={"1.5rem"}/>
                     </button>
                 </div>
             </div>
+            <div css={css`
+              width: 100%;
+              display: flex;
+              flex-direction: column;
+              gap: 1rem;
 
-            {searchType === searchTypeOptions.USERS ?
-
-                /**
-                 * User search controls.
-                 */
-                <React.Fragment>
-                    {/* User native languages multi-select.
+              @media (min-width: 1024px) {
+                flex-direction: row;
+              }
+            `}>
+                {searchType === searchTypeOptions.USERS ?
+                    /**
+                     * User search controls.
+                     */
+                    <React.Fragment>
+                        {/* User native languages multi-select.
                         Automatically disables options which are selected as learning languages. */}
-                    <Select id={`native-languages`} isMulti={true}
-                            value={nativeLanguages}
-                            options={languageOptions}
-                            onChange={(options: any) => setNativeLanguages(options)}
-                            isOptionDisabled={(option) => !!learningLanguages?.includes(option as Option)}
-                            placeholder="Native languages"
-                            styles={searchSelect}
-                    />
+                        <Select id={`native-languages`} isMulti={true}
+                                value={nativeLanguages}
+                                options={languageOptions}
+                                onChange={(options: any) => setNativeLanguages(options)}
+                                isOptionDisabled={(option) => !!learningLanguages?.includes(option as Option)}
+                                placeholder="Mother tongue(s)"
+                                styles={searchSelect}
+                        />
 
-                    {/* User learning languages multi-select.
+                        {/* User learning languages multi-select.
                         Automatically disables options which are selected as native languages.
                         Is set to null if no option is selected, as the level select is not disabled if the language
                         state is set to an empty array. */}
-                    <Select id={`learning-languages`} isMulti={true}
-                            value={learningLanguages}
-                            options={languageOptions}
-                            onChange={(options: any) => setLearningLanguages(options.length ? options : null)}
-                            isOptionDisabled={(option) => !!nativeLanguages?.includes(option as Option)}
-                            placeholder="Learning languages"
-                            styles={searchSelect}
-                    />
+                        <Select id={`learning-languages`} isMulti={true}
+                                value={learningLanguages}
+                                options={languageOptions}
+                                onChange={(options: any) => setLearningLanguages(options.length ? options : null)}
+                                isOptionDisabled={(option) => !!nativeLanguages?.includes(option as Option)}
+                                placeholder="Is learning..."
+                                styles={searchSelect}
+                        />
 
-                    {/* User learning languages levels select. */}
-                    <Select id={`learning-languages-levels`} isMulti={true}
-                            value={learningLanguagesLevels}
-                            options={levelOptions}
-                            onChange={async (option: any) => setLearningLanguagesLevels(option)}
-                            isDisabled={!learningLanguages || !learningLanguages.length}
-                            placeholder="Learning languages levels"
-                            styles={searchSelect}
-                    />
-                </React.Fragment> :
+                        {/* User learning languages levels select. */}
+                        <Select id={`learning-languages-levels`} isMulti={true}
+                                value={learningLanguagesLevels}
+                                options={levelOptions}
+                                onChange={async (option: any) => setLearningLanguagesLevels(option)}
+                                isDisabled={!learningLanguages || !learningLanguages.length}
+                                placeholder="Level(s)"
+                                styles={searchSelect}
+                        />
+                    </React.Fragment> :
 
-                /**
-                 * Channel search controls.
-                 */
-                <React.Fragment>
-                    {/* Channel language multi-select.
+                    /**
+                     * Channel search controls.
+                     */
+                    <React.Fragment>
+                        {/* Channel language multi-select.
                         Is set to null if no option is selected, as the level select is not disabled if the language
                         state is set to an empty array. */}
-                    <Select id={`channel-languages`} isMulti={true}
-                            value={channelLanguages}
-                            options={languageOptions}
-                            onChange={(options: any) => setChannelLanguages(options.length ? options : null)}
-                            placeholder="Channel languages"
-                            styles={searchSelect}
-                    />
+                        <Select id={`channel-languages`} isMulti={true}
+                                value={channelLanguages}
+                                options={languageOptions}
+                                onChange={(options: any) => setChannelLanguages(options.length ? options : null)}
+                                placeholder="Language(s)"
+                                styles={searchSelect}
+                        />
 
-                    {/* Channel level select. */}
-                    <Select id={`channel-levels`} isMulti={true}
-                            value={channelLevels}
-                            options={levelOptions}
-                            onChange={async (options: any) => setChannelLevels(options)}
-                            isDisabled={!channelLanguages || !channelLanguages.length}
-                            placeholder="Channel levels"
-                            styles={searchSelect}
-                    />
-                </React.Fragment>
-            }
+                        {/* Channel level select. */}
+                        <Select id={`channel-levels`} isMulti={true}
+                                value={channelLevels}
+                                options={levelOptions}
+                                onChange={async (options: any) => setChannelLevels(options)}
+                                isDisabled={!channelLanguages || !channelLanguages.length}
+                                placeholder="Level(s)"
+                                styles={searchSelect}
+                        />
+                    </React.Fragment>
+                }
+            </div>
         </form>
     );
 }
