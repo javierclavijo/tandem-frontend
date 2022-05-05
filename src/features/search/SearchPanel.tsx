@@ -39,7 +39,7 @@ function SearchPanel({setUserSearchParams, setChannelSearchParams, searchType, s
      */
     const [nativeLanguages, setNativeLanguages] = React.useState<Option[] | null>(null);
     const [learningLanguages, setLearningLanguages] = React.useState<Option[] | null>(null);
-    const [learningLanguagesLevel, setLearningLanguagesLevel] = React.useState<Option | null>(null);
+    const [learningLanguagesLevels, setLearningLanguagesLevels] = React.useState<Option[] | null>(null);
 
     /**
      * Channel search controls values.
@@ -67,9 +67,10 @@ function SearchPanel({setUserSearchParams, setChannelSearchParams, searchType, s
                     searchParams.getAll("nativeLanguages").includes(option.value)));
                 setLearningLanguages(languageOptions.filter(option =>
                     searchParams.getAll("learningLanguages").includes(option.value)));
-                const level = levelOptions.find(option => searchParams.get("learningLanguagesLevel") === option.value);
-                if (level) {
-                    setLearningLanguagesLevel(level);
+                const levels = levelOptions.filter(option =>
+                    searchParams.getAll("learningLanguagesLevels").includes(option.value));
+                if (levels) {
+                    setLearningLanguagesLevels(levels);
                 }
             } else if (searchType === searchTypeOptions.CHANNELS.value) {
                 setSearchType(searchTypeOptions.CHANNELS);
@@ -97,7 +98,7 @@ function SearchPanel({setUserSearchParams, setChannelSearchParams, searchType, s
             };
             // Check that at least a learning language is selected before adding the level param.
             if (learningLanguages?.length) {
-                params.learningLanguagesLevel = learningLanguagesLevel?.value;
+                params.learningLanguagesLevels = learningLanguagesLevels?.map(level => level.value);
             }
             setSearchParams(qs.stringify(params, {arrayFormat: "repeat"}));
             setUserSearchParams(params);
@@ -114,7 +115,7 @@ function SearchPanel({setUserSearchParams, setChannelSearchParams, searchType, s
             setSearchParams(qs.stringify(params, {arrayFormat: "repeat"}));
             setChannelSearchParams(params);
         }
-    }, [channelLanguages, channelLevels, inputValue, learningLanguages, learningLanguagesLevel?.value,
+    }, [channelLanguages, channelLevels, inputValue, learningLanguages, learningLanguagesLevels,
         nativeLanguages, searchType, setUserSearchParams, setChannelSearchParams, setSearchParams]);
 
     /**
@@ -126,7 +127,7 @@ function SearchPanel({setUserSearchParams, setChannelSearchParams, searchType, s
     }, [
         nativeLanguages,
         learningLanguages,
-        learningLanguagesLevel,
+        learningLanguagesLevels,
         channelLanguages,
         channelLevels,
         areInitialValuesSet,
@@ -214,13 +215,13 @@ function SearchPanel({setUserSearchParams, setChannelSearchParams, searchType, s
                             styles={searchSelect}
                     />
 
-                    {/* User learning languages level select. */}
-                    <Select id={`learning-languages-level`}
-                            value={learningLanguagesLevel}
+                    {/* User learning languages levels select. */}
+                    <Select id={`learning-languages-levels`} isMulti={true}
+                            value={learningLanguagesLevels}
                             options={levelOptions}
-                            onChange={async (option: any) => setLearningLanguagesLevel(option)}
+                            onChange={async (option: any) => setLearningLanguagesLevels(option)}
                             isDisabled={!learningLanguages || !learningLanguages.length}
-                            placeholder="Learning languages level"
+                            placeholder="Learning languages levels"
                             styles={searchSelect}
                     />
                 </React.Fragment> :

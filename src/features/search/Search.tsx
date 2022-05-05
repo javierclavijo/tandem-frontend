@@ -48,7 +48,7 @@ export interface UserSearchParams {
     search?: string;
     nativeLanguages?: string[] | null;
     learningLanguages?: string[] | null;
-    learningLanguagesLevel?: string | null;
+    learningLanguagesLevels?: string[] | null;
 }
 
 export interface ChannelSearchParams {
@@ -90,7 +90,7 @@ function Search() {
                 search: userSearchParams.search ?? null,
                 native_language: userSearchParams.nativeLanguages,
                 learning_language: userSearchParams.learningLanguages,
-                level: userSearchParams.learningLanguagesLevel,
+                level: userSearchParams.learningLanguagesLevels,
             },
             paramsSerializer: params => qs.stringify(params, {arrayFormat: "repeat"})
         });
