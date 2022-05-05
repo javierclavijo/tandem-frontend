@@ -35,23 +35,21 @@ export function UserSearchResults(props: UserSearchResultsProps) {
             <h3 css={resultsHeader}>
                 Users
             </h3>
-            <div id="user-search-results-container" css={resultsContainer}>
-                {[...props.data?.pages].map((page, pageIndex) =>
-                    <React.Fragment key={`page-${pageIndex}`}>
-                        {[...page.results].map((element) => (
-                            <SearchResultElement id={`${element.id}`}
-                                                 name={element.username}
-                                                 languages={element.languages.map(l => l.language)}
-                                                 description={element.description}
-                                                 image={element.image}
-                                                 key={`${element.id}`}
-                                                 link={`/chats/users/${element.id}`}/>
-                        ))}
-                    </React.Fragment>
-                )}
-                {props.data?.pages.length === 0 || props.data?.pages[0].results.length === 0 ?
-                    <NotFound/> : null}
-            </div>
+            {[...props.data?.pages].map((page, pageIndex) =>
+                <React.Fragment key={`page-${pageIndex}`}>
+                    {[...page.results].map((element) => (
+                        <SearchResultElement id={`${element.id}`}
+                                             name={element.username}
+                                             languages={element.languages.map(l => l.language)}
+                                             description={element.description}
+                                             image={element.image}
+                                             key={`${element.id}`}
+                                             link={`/chats/users/${element.id}`}/>
+                    ))}
+                </React.Fragment>
+            )}
+            {props.data?.pages.length === 0 || props.data?.pages[0].results.length === 0 ?
+                <NotFound/> : null}
         </React.Fragment> : null;
 }
 
@@ -62,33 +60,23 @@ export function ChannelSearchResults(props: ChannelSearchResultsProps) {
             <h3 css={resultsHeader}>
                 Channels
             </h3>
-            <div id="channel-search-results-container" css={resultsContainer}>
-                {[...props.data?.pages].map((page, pageIndex) =>
-                    <React.Fragment key={`page-${pageIndex}`}>
-                        {[...page.results].map((element) => (
-                            <SearchResultElement id={`${element.id}`}
-                                                 name={element.name}
-                                                 languages={[element.language]}
-                                                 description={element.description}
-                                                 image={element.image}
-                                                 key={`${element.id}`}
-                                                 link={`/chats/channels/${element.id}`}/>
-                        ))}
-                    </React.Fragment>
-                )}
-                {props.data?.pages.length === 0 || props.data?.pages[0].results.length === 0 ?
-                    <NotFound/> : null}
-            </div>
+            {[...props.data?.pages].map((page, pageIndex) =>
+                <React.Fragment key={`page-${pageIndex}`}>
+                    {[...page.results].map((element) => (
+                        <SearchResultElement id={`${element.id}`}
+                                             name={element.name}
+                                             languages={[element.language]}
+                                             description={element.description}
+                                             image={element.image}
+                                             key={`${element.id}`}
+                                             link={`/chats/channels/${element.id}`}/>
+                    ))}
+                </React.Fragment>
+            )}
+            {props.data?.pages.length === 0 || props.data?.pages[0].results.length === 0 ?
+                <NotFound/> : null}
         </React.Fragment> : null;
 }
-
-
-const resultsContainer = css`
-  overflow: auto;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-`;
 
 const resultsHeader = css`
   padding: 1rem 1rem 0 1rem;
