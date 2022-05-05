@@ -16,6 +16,7 @@ import {ChannelSearchResults, UserSearchResults} from "./SearchResults";
 import qs from "qs";
 import {Option} from "../../resources/languages";
 import {Channel} from "../../entities/Channel";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 
 /**
@@ -142,42 +143,60 @@ function Search() {
     return (
         <div css={isDesktop ? baseAppContainerWithoutTabsCss : baseAppContainerWithTabsCss}>
             <Nav/>
-            <main css={isDesktop ? searchMain : searchMainMobile}>
-                <header css={css`
-                  padding: 1rem;
-                  background-color: ${colors.WHITE};
-                  color: ${colors.DARK};
-                  display: flex;
-                  flex-direction: column;
-                  gap: 1rem;
-                `}>
-                    <h2>Find Users & Channels</h2>
-                    <SearchPanel setUserSearchParams={setUserSearchParams}
-                                 setChannelSearchParams={setChannelSearchParams}
-                                 searchType={searchType}
-                                 setSearchType={setSearchType}/>
-                </header>
-                <section css={css`
-                  height: 100%;
-                  background-color: ${colors.WHITE};
-                  display: flex;
-                  flex-direction: column;
-                  gap: 1rem;
-                  overflow-y: scroll;
-                `}>
-                    {searchType === searchTypeOptions.USERS ?
-                        <React.Fragment>
-                            <UserSearchResults data={usersData}
-                                               fetchNextPage={fetchNextUsersPage}
-                                               hasNextPage={hasNextUsersPage}/>
-                        </React.Fragment> :
-                        <React.Fragment>
-                            <ChannelSearchResults data={channelsData}
-                                                  fetchNextPage={fetchNextChannelsPage}
-                                                  hasNextPage={hasNextChannelsPage}/>
-                        </React.Fragment>
-                    }
-                </section>
+            <main id="search-main" css={css`${isDesktop ? searchMain : searchMainMobile};
+              overflow: auto;
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+            `}>
+                {/* Infinite scroll component. Includes the search panel and results. Its properties are assigned
+                conditionally based on the selected search type. */}
+                <InfiniteScroll
+                    next={searchType === searchTypeOptions.USERS ? fetchNextUsersPage : fetchNextChannelsPage}
+                    hasMore={searchType === searchTypeOptions.USERS ? hasNextUsersPage ?? false : hasNextChannelsPage ?? false}
+                    loader={<p>Loading...</p>}
+                    dataLength={searchType === searchTypeOptions.USERS ? usersData?.pages.length ?? 0 : channelsData?.pages.length ?? 0}
+                    scrollableTarget="search-main"
+                    style={{display: "flex", flexDirection: "column", gap: "1rem"}}
+                >
+                    {/* Heading and search panel. */}
+                    <header css={css`
+                      padding: 1rem;
+                      background-color: ${colors.WHITE};
+                      color: ${colors.DARK};
+                      display: flex;
+                      flex-direction: column;
+                      gap: 1rem;
+                    `}>
+                        <h2>Find Users & Channels</h2>
+                        <SearchPanel setUserSearchParams={setUserSearchParams}
+                                     setChannelSearchParams={setChannelSearchParams}
+                                     searchType={searchType}
+                                     setSearchType={setSearchType}/>
+                    </header>
+
+                    {/* Search results. */}
+                    <section css={css`
+                      height: 100%;
+                      background-color: ${colors.WHITE};
+                      display: flex;
+                      flex-direction: column;
+                      gap: 1rem;
+                    `}>
+                        {searchType === searchTypeOptions.USERS ?
+                            <React.Fragment>
+                                <UserSearchResults data={usersData}
+                                                   fetchNextPage={fetchNextUsersPage}
+                                                   hasNextPage={hasNextUsersPage}/>
+                            </React.Fragment> :
+                            <React.Fragment>
+                                <ChannelSearchResults data={channelsData}
+                                                      fetchNextPage={fetchNextChannelsPage}
+                                                      hasNextPage={hasNextChannelsPage}/>
+                            </React.Fragment>
+                        }
+                    </section>
+                </InfiniteScroll>
             </main>
             {!isDesktop ?
                 <Tabs/> : null}

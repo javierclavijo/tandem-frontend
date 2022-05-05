@@ -2,7 +2,6 @@
 
 import React from "react";
 import {css} from "@emotion/react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import {FetchNextPageOptions, InfiniteData, InfiniteQueryObserverResult} from "react-query";
 import {ChannelSearchResponse, UserSearchResponse} from "./Search";
 import SearchResultElement from "./SearchResultElement";
@@ -28,26 +27,18 @@ export function UserSearchResults(props: UserSearchResultsProps) {
                 Users
             </h3>
             <div id="user-search-results-container" css={resultsContainer}>
-                <InfiniteScroll next={props.fetchNextPage}
-                                hasMore={!!props.hasNextPage}
-                                loader={<p>Loading...</p>}
-                                dataLength={props.data.pages.length}
-                                scrollableTarget="user-search-results-container"
-                                style={{display: "flex", flexDirection: "column"}}
-                >
-                    {[...props.data?.pages].map((page, pageIndex) =>
-                        <React.Fragment key={`page-${pageIndex}`}>
-                            {[...page.results].map((element) => (
-                                <SearchResultElement id={`${element.id}`}
-                                                     name={element.username}
-                                                     languages={element.languages.map(l => l.language)}
-                                                     description={element.description}
-                                                     image={element.image}
-                                                     key={`${element.id}`}/>
-                            ))}
-                        </React.Fragment>
-                    )}
-                </InfiniteScroll>
+                {[...props.data?.pages].map((page, pageIndex) =>
+                    <React.Fragment key={`page-${pageIndex}`}>
+                        {[...page.results].map((element) => (
+                            <SearchResultElement id={`${element.id}`}
+                                                 name={element.username}
+                                                 languages={element.languages.map(l => l.language)}
+                                                 description={element.description}
+                                                 image={element.image}
+                                                 key={`${element.id}`}/>
+                        ))}
+                    </React.Fragment>
+                )}
             </div>
         </React.Fragment> : null;
 }
@@ -60,26 +51,18 @@ export function ChannelSearchResults(props: ChannelSearchResultsProps) {
                 Channels
             </h3>
             <div id="channel-search-results-container" css={resultsContainer}>
-                <InfiniteScroll next={props.fetchNextPage}
-                                hasMore={!!props.hasNextPage}
-                                loader={<p>Loading...</p>}
-                                dataLength={props.data.pages.length}
-                                scrollableTarget="channel-search-results-container"
-                                style={{display: "flex", flexDirection: "column"}}
-                >
-                    {[...props.data?.pages].map((page, pageIndex) =>
-                        <React.Fragment key={`page-${pageIndex}`}>
-                            {[...page.results].map((element) => (
-                                <SearchResultElement id={`${element.id}`}
-                                                     name={element.name}
-                                                     languages={[element.language]}
-                                                     description={element.description}
-                                                     image={element.image}
-                                                     key={`${element.id}`}/>
-                            ))}
-                        </React.Fragment>
-                    )}
-                </InfiniteScroll>
+                {[...props.data?.pages].map((page, pageIndex) =>
+                    <React.Fragment key={`page-${pageIndex}`}>
+                        {[...page.results].map((element) => (
+                            <SearchResultElement id={`${element.id}`}
+                                                 name={element.name}
+                                                 languages={[element.language]}
+                                                 description={element.description}
+                                                 image={element.image}
+                                                 key={`${element.id}`}/>
+                        ))}
+                    </React.Fragment>
+                )}
             </div>
         </React.Fragment> : null;
 }
