@@ -1,5 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from "react-query";
-import {User, UserLanguage} from "../../../entities/User";
+import {User} from "../../../entities/User";
 import useAuth, {axiosApi} from "../../auth/AuthContext";
 import React from "react";
 
@@ -16,8 +16,7 @@ export function useUser(id: string | undefined) {
     });
 }
 
-export function useDeleteUserLanguage(selectedDeleteLanguage: UserLanguage | null,
-                                      setSelectedDeleteLanguage: React.Dispatch<React.SetStateAction<UserLanguage | null>>) {
+export function useDeleteUserLanguage() {
     const queryClient = useQueryClient();
     const {user} = useAuth();
 
@@ -29,18 +28,11 @@ export function useDeleteUserLanguage(selectedDeleteLanguage: UserLanguage | nul
         return response.data;
     };
 
-    const deleteMutation = useMutation(deleteRequest, {
+    return useMutation(deleteRequest, {
         onSuccess: async () => {
             await queryClient.invalidateQueries<User | undefined>(["users", user?.id]);
         }
     });
-
-    return React.useCallback(async () => {
-        if (selectedDeleteLanguage) {
-            await deleteMutation.mutateAsync(selectedDeleteLanguage.url);
-            setSelectedDeleteLanguage(null);
-        }
-    }, [deleteMutation, selectedDeleteLanguage, setSelectedDeleteLanguage]);
 }
 
 

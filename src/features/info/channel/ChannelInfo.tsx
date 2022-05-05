@@ -71,23 +71,23 @@ function ChannelInfo() {
 
     const joinWSChat = useJoinWSChat();
 
-    const joinChannelMutation = useJoinChannel(data);
+    const {mutateAsync: joinMutateAsync} = useJoinChannel(data);
 
-    const leaveChannelMutation = useLeaveChannel(data);
+    const {mutateAsync: leaveMutateAsync} = useLeaveChannel(data);
 
     const handleJoinChannel = React.useCallback(async () => {
-        const response = await joinChannelMutation.mutateAsync();
+        const response = await joinMutateAsync();
         if (response?.status === 201 && params?.id) {
             joinWSChat(params.id);
             navigate(`/chats/${params.id}`);
         }
-    }, [params?.id, joinChannelMutation, navigate, joinWSChat]);
+    }, [params?.id, joinMutateAsync, navigate, joinWSChat]);
 
     const handleLeaveChannel = React.useCallback(async () => {
-        await leaveChannelMutation.mutateAsync();
+        await leaveMutateAsync();
         setLeaveChannelModalIsOpen(false);
         navigate("/chats/");
-    }, [leaveChannelMutation, navigate]);
+    }, [leaveMutateAsync, navigate]);
 
     /**
      * Checks if the user is a member of the channel and set the 'isMember' state if applicable. If the user is also an

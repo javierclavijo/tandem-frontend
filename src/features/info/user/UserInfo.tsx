@@ -85,12 +85,20 @@ export function UserInfo() {
     /**
      * Language deletion handler
      */
-    const handleDeleteLanguage = useDeleteUserLanguage(selectedDeleteLanguage, setSelectedDeleteLanguage);
+    const {mutateAsync: deletionMutateAsync} = useDeleteUserLanguage();
 
     /**
      * Mutation which creates a chat with the user.
      */
-    const createChatMutation = useCreateChatWithUser(data);
+    const {mutateAsync: creationMutateAsync} = useCreateChatWithUser(data);
+
+    const handleDeleteLanguage = React.useCallback(async () => {
+        if (selectedDeleteLanguage) {
+            await deletionMutateAsync(selectedDeleteLanguage.url);
+            setSelectedDeleteLanguage(null);
+        }
+    }, [deletionMutateAsync, selectedDeleteLanguage, setSelectedDeleteLanguage]);
+
 
     const joinWSChat = useJoinWSChat();
 
@@ -98,13 +106,13 @@ export function UserInfo() {
      * Click event handler to create chat.
      */
     const onClickChatCreate = React.useCallback(async () => {
-        const response = await createChatMutation.mutateAsync();
+        const response = await creationMutateAsync();
         const newChatId = response?.data?.id;
         if (response?.status === 201 && newChatId) {
             joinWSChat(newChatId);
             navigate(`/chats/${newChatId}`);
         }
-    }, [createChatMutation, navigate, joinWSChat]);
+    }, [creationMutateAsync, navigate, joinWSChat]);
 
     /**
      * Set header to render the title 'user info', plus a button to chat with the user if the user is not already a
