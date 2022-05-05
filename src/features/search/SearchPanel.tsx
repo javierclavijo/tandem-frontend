@@ -11,6 +11,7 @@ import {buttonWithoutBackgroundAndBorder} from "../../components/Button";
 import {ChannelSearchParams, searchTypeOptions, UserSearchParams} from "./Search";
 import {useSearchParams} from "react-router-dom";
 import qs from "qs";
+import {DebounceInput} from "react-debounce-input";
 
 
 interface SearchPanelProps {
@@ -152,16 +153,18 @@ function SearchPanel({setUserSearchParams, setChannelSearchParams, searchType, s
               border-radius: 3px;
             `}>
                 {/* Search input. */}
-                <input type="search" name="search-query" placeholder="Search..."
-                       value={inputValue}
-                       onChange={(e) => setInputValue(e.target.value)}
-                       css={css`
-                         background: none;
-                         outline: none;
-                         border: none;
-                         width: auto;
-                         font-size: ${textSizes.M};
-                       `}/>
+                <DebounceInput type="search" name="search-query" placeholder="Search..."
+                               minLength={2}
+                               debounceTimeout={300}
+                               value={inputValue}
+                               onChange={(e) => setInputValue(e.target.value)}
+                               css={css`
+                                 background: none;
+                                 outline: none;
+                                 border: none;
+                                 width: auto;
+                                 font-size: ${textSizes.M};
+                               `}/>
                 <div css={css`
                   display: flex;
                   align-items: center;
