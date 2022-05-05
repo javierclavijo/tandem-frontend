@@ -151,7 +151,7 @@ function ChannelInfo() {
                     <ShareLink link={window.location.href}/>
                 </div>
         });
-    }, [location.pathname, userRole, setHeader, userIsAdmin]);
+    }, [location.pathname, userRole, setHeader, userIsAdmin, handleJoinChannel]);
 
 
     return data ?

@@ -125,7 +125,7 @@ export function UserInfo() {
                         </button> : null}
                 </React.Fragment>
         });
-    }, [isFriend, setHeader]);
+    }, [isFriend, setHeader, onClickChatCreate]);
 
 
     return data ? <React.Fragment>

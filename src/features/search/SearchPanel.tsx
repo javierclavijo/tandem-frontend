@@ -22,7 +22,7 @@ interface SearchPanelProps {
 
 function SearchPanel(props: SearchPanelProps) {
 
-    let [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     /**
      * Search query input value.
@@ -43,54 +43,85 @@ function SearchPanel(props: SearchPanelProps) {
     const [channelLevels, setChannelLevels] = React.useState<Option[] | null>(null);
 
     /**
-     * Set the values to the route's search params on init.
+     * Controls whether the values have already been set according to the route's search params (i.e. if the hook below
+     * has been executed)
      */
-    React.useEffect(() => {
-        const searchType = searchParams.get("type");
-        setInputValue(searchParams.get("search") ?? "");
-        if (searchType === searchTypeOptions.USERS.value) {
-        } else if (searchType === searchTypeOptions.CHANNELS.value) {
-
-        }
-    }, []);
+    const [areInitialValuesSet, setAreInitialValuesSet] = React.useState<boolean>(false);
 
     /**
-     * Sets the corresponding search params state's value.
+     * Set the values to the route's search params on init. Select values must be found in the option arrays first.
+     */
+    React.useEffect(() => {
+        if (!areInitialValuesSet) {
+            const searchType = searchParams.get("type");
+            setInputValue(searchParams.get("search") ?? "");
+
+            if (searchType === searchTypeOptions.USERS.value) {
+                props.setSearchType(searchTypeOptions.USERS);
+                setNativeLanguages(languageOptions.filter(option =>
+                    searchParams.getAll("nativeLanguages").includes(option.value)));
+                setLearningLanguages(languageOptions.filter(option =>
+                    searchParams.getAll("learningLanguages").includes(option.value)));
+                const level = levelOptions.find(option => searchParams.get("learningLanguagesLevel") === option.value);
+                if (level) {
+                    setLearningLanguagesLevel(level);
+                }
+            } else if (searchType === searchTypeOptions.CHANNELS.value) {
+                props.setSearchType(searchTypeOptions.CHANNELS);
+                setChannelLanguages(languageOptions.filter(option =>
+                    searchParams.getAll("language").includes(option.value)));
+                setChannelLevels(levelOptions.filter(option =>
+                    searchParams.getAll("level").includes(option.value)));
+            }
+            setAreInitialValuesSet(true);
+        }
+    }, [areInitialValuesSet, props, searchParams]);
+
+    /**
+     * Sets the corresponding search params in the URL, plus the search params state itself.
      * @param [e]: The search form's submit event.
      */
-    const handleSubmit = (e?: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = React.useCallback((e?: FormEvent<HTMLFormElement>) => {
+        console.log(props)
         e?.preventDefault();
         if (props.searchType === searchTypeOptions.USERS) {
-            const params = qs.stringify({
-                type: props.searchType.value,
+            const params = {
+                type: searchTypeOptions.USERS,
                 search: inputValue,
                 nativeLanguages: nativeLanguages?.map(language => language.value),
                 learningLanguages: learningLanguages?.map(language => language.value),
                 // Check that at least a learning language is selected before adding the level param.
                 learningLanguagesLevel: learningLanguages?.length ? learningLanguagesLevel?.value : null
-            });
-            setSearchParams(params);
+            };
+            setSearchParams(qs.stringify(params, {arrayFormat: "repeat"}));
+            props.setUserSearchParams(params);
         } else {
-            const params = qs.stringify({
-                type: props.searchType.value,
+            const params = {
+                type: searchTypeOptions.CHANNELS,
                 search: inputValue,
-                languages: channelLanguages?.map(language => language.value),
+                language: channelLanguages?.map(language => language.value),
                 // Check that at least a learning language is selected before adding the level params.
-                levels: channelLevels?.length ? channelLevels.map(level => level.value) : null
-            });
-            setSearchParams(params);
+                level: channelLevels?.length ? channelLevels.map(level => level.value) : null
+            };
+            setSearchParams(qs.stringify(params, {arrayFormat: "repeat"}));
+            props.setChannelSearchParams(params);
         }
-    };
+    }, [channelLanguages, channelLevels, inputValue, learningLanguages, learningLanguagesLevel?.value, nativeLanguages, props, setSearchParams]);
 
     /**
-     * Submit the search whenever any select's values are updated.
+     * Submit the search whenever any select's values are updated, but only if the initial values from search params
+     * have been set already.
      */
-    React.useEffect(handleSubmit, [
+    React.useEffect(() => {
+        if (areInitialValuesSet) handleSubmit();
+    }, [
         nativeLanguages,
         learningLanguages,
         learningLanguagesLevel,
         channelLanguages,
-        channelLevels
+        channelLevels,
+        areInitialValuesSet,
+        props.searchType,
     ]);
 
     return (

@@ -68,7 +68,13 @@ function SearchResultElement(props: SearchElementProps) {
                         <FlagIcon code={flagCodes.find(x => x.key === language)?.value || "AD"} size={24}
                                   key={`${props.id}-${language}`}/>)}
                 </div>
-                <p>{props.description}</p>
+                <p css={css`
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                  white-space: nowrap;
+                  max-width: 14rem;`}>
+                    {props.description}
+                </p>
             </div>
         </article>
     );

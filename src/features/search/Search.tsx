@@ -127,7 +127,7 @@ function Search() {
         } else {
             refetchChannels();
         }
-    }, [userSearchParams, channelSearchParams, searchType]);
+    }, [userSearchParams, channelSearchParams, searchType, refetchChannels, refetchUsers]);
 
     return (
         <div css={isDesktop ? baseAppContainerWithoutTabsCss : baseAppContainerWithTabsCss}>
