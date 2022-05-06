@@ -92,7 +92,6 @@ function SearchResultElement(props: SearchElementProps) {
             </div>
             <Link to={props.link} css={css`
               grid-area: element;
-              z-index: 10;
             `}/>
         </article>
     );
