@@ -15,6 +15,7 @@ import ChannelInfo from "./features/info/channel/ChannelInfo";
 import {useMediaQuery} from "react-responsive";
 import ChatList from "./features/chats/ChatList";
 import Search from "./features/search/Search";
+import Register from "./features/auth/Register";
 
 export default function App() {
 
@@ -38,6 +39,7 @@ export default function App() {
                 </Route>
                 <Route path="/search" element={<Search/>}/>
                 <Route path="/login" element={<LogIn/>}/>
+                <Route path="/register" element={<Register/>}/>
                 <Route path="/logout" element={<LogOut/>}/>
                 <Route path="/" element={<Home/>}/>
             </Routes>

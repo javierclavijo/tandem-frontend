@@ -1,17 +1,24 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
-import {useForm} from "react-hook-form";
-import useAuth, {LogInRequestData} from "./AuthContext";
+import React from 'react';
+import useAuth, {axiosApi, LogInRequestData} from "./AuthContext";
 import {Link, useNavigate} from "react-router-dom";
-import {buttonCss, errorCss, formCss, h2Css, inputCss, labelCss, mainCss, sectionCss} from "./styles";
-import Nav from "../../components/Nav";
+import {useForm} from "react-hook-form";
 import {baseAppContainerWithoutTabsCss} from "../../styles/layout";
+import Nav from "../../components/Nav";
+import {buttonCss, errorCss, formCss, h2Css, inputCss, labelCss, mainCss, sectionCss} from "./styles";
 import {ErrorMessage} from "@hookform/error-message";
+import {useMutation} from "react-query";
 import {css} from "@emotion/react";
 import {colors} from "../../styles/variables";
 
-function LogIn() {
+
+interface RegisterRequestData extends LogInRequestData {
+    confirmPassword: string;
+}
+
+
+function Register() {
 
     const {isLoggedIn, login, error} = useAuth();
     const navigate = useNavigate();
@@ -23,17 +30,34 @@ function LogIn() {
         setError,
         clearErrors,
         handleSubmit,
-    } = useForm<LogInRequestData>();
+    } = useForm<RegisterRequestData>();
 
-    const onSubmit = async (data: LogInRequestData) => {
-        login(data);
-    };
+
+    const registerRequest = async (data: LogInRequestData) => {
+        return await axiosApi.post('/users', data)
+    }
+
+    const {mutateAsync: registerMutateAsync} = useMutation(registerRequest)
+
+    const onSubmit = (data: RegisterRequestData) => {
+        if (data.password !== data.confirmPassword) {
+            setError("password", {
+                type: "server",
+                message: error
+            });
+            return;
+        }
+        const response = registerMutateAsync({
+            username: data.username,
+            password: data.password
+        })
+    }
 
     React.useEffect(() => {
         if (error) {
             setError("password", {
                 type: "server",
-                message: error
+                message: "Passwords don't match."
             });
         } else {
             clearErrors();
@@ -52,7 +76,7 @@ function LogIn() {
             <Nav/>
             <main css={mainCss}>
                 <section css={sectionCss}>
-                    <h2 css={h2Css}>Log in</h2>
+                    <h2 css={h2Css}>Sign In</h2>
                     <form css={formCss} onSubmit={handleSubmit(onSubmit)}>
                         <label css={labelCss}
                                htmlFor="username">
@@ -80,17 +104,30 @@ function LogIn() {
                             render={({message}) => <p css={errorCss}>{message}</p>}
                         />
 
+                        <label css={labelCss}
+                               htmlFor="confirm-password">
+                            Confirm password
+                            <input type="password" id="confirm-password"
+                                   css={inputCss}
+                                   {...register("confirmPassword", {required: "Password confirmation is required"})}/>
+                        </label>
+                        <ErrorMessage
+                            errors={errors}
+                            name="confirmPassword"
+                            render={({message}) => <p css={errorCss}>{message}</p>}
+                        />
+
                         <button type="submit"
-                                css={buttonCss}>Log in
+                                css={buttonCss}>Sign in
                         </button>
-                        <Link to={'/register'} css={css`
+                        <Link to={'/login'} css={css`
                           color: ${colors.PRIMARY};
 
                           &:visited {
                             color: ${colors.PRIMARY};
                           }
                         `}>
-                            Sign in
+                            Log in
                         </Link>
                     </form>
                 </section>
@@ -99,4 +136,4 @@ function LogIn() {
     );
 }
 
-export default LogIn;
+export default Register;

@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import {Link, NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import useAuth from "../features/auth/AuthContext";
 import {css} from "@emotion/react";
 import {colors, textSizes} from "../styles/variables";
@@ -19,12 +19,12 @@ function Nav() {
             <nav css={nav}>
                 <h1 css={title}>ChatApp</h1>
                 <ul css={navList}>
-                    {isLoggedIn  && isDesktop?
+                    {isLoggedIn && isDesktop ?
                         <React.Fragment>
                             <li><NavLink to={"/chats"} css={linkCss}>Chats</NavLink></li>
                             <li><NavLink to={`/chats/users/${user?.id}`} css={linkCss}>{user?.username}</NavLink></li>
                             <li><NavLink to={"/search"} css={linkCss}>Search</NavLink></li>
-                            <li><Link to={"/logout"} css={linkCss}>Log out</Link></li>
+                            <li><NavLink to={"/logout"} css={linkCss}>Log out</NavLink></li>
                             <li>
                                 <div css={imageContainer}>
                                     <img src={user?.image ?? defaultImg} alt={user?.username}
@@ -33,7 +33,10 @@ function Nav() {
                                 </div>
                             </li>
                         </React.Fragment> :
-                        <li><Link to={"/login"} css={linkCss}>Log in</Link></li>
+                        <React.Fragment>
+                            <li><NavLink to={"/login"} css={linkCss}>Log in</NavLink></li>
+                            <li><NavLink to={"/register"} css={linkCss}>Sign in</NavLink></li>
+                        </React.Fragment>
                     }
                 </ul>
             </nav>
