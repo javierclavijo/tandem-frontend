@@ -21,9 +21,10 @@ interface ChannelCreationRequestData {
     level: string,
 }
 
-interface ServerErrorResponse {
+export interface ServerErrorResponse {
     [key: string]: string[];
 }
+
 
 function ChannelCreationForm({closeModal}: { closeModal: () => void }) {
 

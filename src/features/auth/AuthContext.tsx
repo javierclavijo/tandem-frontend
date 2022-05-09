@@ -9,7 +9,7 @@ interface AuthContextType {
     error: string;
     loading: boolean;
     isLoggedIn: boolean;
-    login: (requestData: LogInRequestData) => void;
+    login: (requestData: LogInRequestData) => Promise<any>;
     logout: () => void;
 }
 
@@ -59,12 +59,12 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
 
     const loginRequest = async (data: LogInRequestData) => {
         const url = `${process.env.REACT_APP_API_URL as string}/api-token-auth/`;
-        const response = await axiosApi.post(url, data);
-        return response.data;
+        return await axiosApi.post(url, data);
     };
 
     const loginMutation = useMutation(loginRequest, {
-        onSuccess: async (data) => {
+        onSuccess: async (response) => {
+            const data = response.data;
             setToken(data.token);
             setId(data.id);
             setUrl(data.url);
@@ -76,14 +76,16 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
     });
 
     const login = React.useCallback(async (data: LogInRequestData) => {
+        let response;
         setLoading(true);
         try {
-            await loginMutation.mutateAsync(data);
+            response = await loginMutation.mutateAsync(data);
         } catch (e) {
             setError("Incorrect username or password.");
         } finally {
             setLoading(false);
         }
+        return response;
     }, [loginMutation]);
 
 
