@@ -58,7 +58,7 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
     }, []);
 
     const loginRequest = async (data: LogInRequestData) => {
-        return await axiosApi.post("api-token-auth", data);
+        return await axiosApi.post("api-token-auth/", data);
     };
 
     const loginMutation = useMutation(loginRequest, {
