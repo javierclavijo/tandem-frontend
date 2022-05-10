@@ -85,7 +85,7 @@ function Search() {
         hasNextPage: hasNextUsersPage,
         refetch: refetchUsers
     } = useInfiniteQuery<UserSearchResponse>(["users", "search", userSearchParams], async ({pageParam = 1}) => {
-        const response = await axiosApi.get(`/users/`, {
+        const response = await axiosApi.get(`users/`, {
             params: {
                 page: pageParam,
                 search: userSearchParams.search ?? null,
@@ -112,7 +112,7 @@ function Search() {
         hasNextPage: hasNextChannelsPage,
         refetch: refetchChannels
     } = useInfiniteQuery<ChannelSearchResponse>(["channels", "search", channelSearchParams], async ({pageParam = 1}) => {
-        const response = await axiosApi.get(`/channels/`, {
+        const response = await axiosApi.get(`channels/`, {
             params: {
                 page: pageParam,
                 search: channelSearchParams?.search ?? null,

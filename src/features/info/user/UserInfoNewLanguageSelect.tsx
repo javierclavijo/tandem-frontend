@@ -27,7 +27,7 @@ function UserInfoNewLanguageSelect({onClose}: { onClose: () => void }) {
     const [error, setError] = React.useState<string>("");
 
     const updateRequest = async (requestData: UserInfoNewLanguageSelectRequestData) => {
-        const response = await axiosApi.post("/user_languages/", requestData);
+        const response = await axiosApi.post("user_languages/", requestData);
         return response.data;
     };
 

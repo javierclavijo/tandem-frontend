@@ -46,7 +46,7 @@ function Register() {
     } = useForm<RegisterFormData>();
 
     const registerRequest = async (data: RegisterRequestData) => {
-        return await axiosApi.post("/users/", data);
+        return await axiosApi.post("users/", data);
     };
 
     const {mutateAsync: registerMutateAsync} = useMutation(registerRequest);

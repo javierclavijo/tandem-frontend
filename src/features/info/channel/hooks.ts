@@ -9,7 +9,7 @@ import React, {useCallback, useMemo} from "react";
  */
 export function useChannel(id: string | undefined) {
     return useQuery<Channel>(["channels", id], async () => {
-        const response = await axiosApi.get(`/channels/${id}`);
+        const response = await axiosApi.get(`channels/${id}`);
         return response.data;
     }, {
         staleTime: 15000,
@@ -97,7 +97,7 @@ export function useJoinChannel(channel: Channel | undefined) {
      */
     const joinChannelRequest = async () => {
         if (channel) {
-            return await axiosApi.post("/memberships/", {
+            return await axiosApi.post("memberships/", {
                 "user": user?.url,
                 "channel": channel?.url
             });

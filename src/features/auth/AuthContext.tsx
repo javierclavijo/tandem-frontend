@@ -20,7 +20,7 @@ export type LogInRequestData = {
 
 export const AuthContext = React.createContext<AuthContextType>({} as AuthContextType);
 
-export const axiosApi = axios.create({baseURL: process.env.REACT_APP_API_URL || "http://localhost:8000"});
+export const axiosApi = axios.create({baseURL: process.env.REACT_APP_API_URL ?? "http://localhost:8000/api"});
 
 export function AuthProvider({children}: { children: React.ReactNode }) {
 
@@ -58,8 +58,7 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
     }, []);
 
     const loginRequest = async (data: LogInRequestData) => {
-        const url = `${process.env.REACT_APP_API_URL as string}/api-token-auth/`;
-        return await axiosApi.post(url, data);
+        return await axiosApi.post("api-token-auth", data);
     };
 
     const loginMutation = useMutation(loginRequest, {

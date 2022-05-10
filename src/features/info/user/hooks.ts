@@ -8,7 +8,7 @@ import React from "react";
  */
 export function useUser(id: string | undefined) {
     return useQuery<User>(["users", id], async () => {
-        const response = await axiosApi.get(`/users/${id}`);
+        const response = await axiosApi.get(`users/${id}`);
         return response.data;
     }, {
         staleTime: 15000,
@@ -45,7 +45,7 @@ export function useCreateChatWithUser(otherUser: User | undefined) {
      */
     const createChatRequest = React.useCallback(async () => {
         if (otherUser) {
-            return await axiosApi.post("/friend_chats/", {users: [otherUser.id]});
+            return await axiosApi.post("friend_chats/", {users: [otherUser.id]});
         }
     }, [otherUser]);
 

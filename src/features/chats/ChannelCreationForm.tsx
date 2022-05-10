@@ -32,7 +32,7 @@ function ChannelCreationForm({closeModal}: { closeModal: () => void }) {
     const navigate = useNavigate();
     const {register, handleSubmit, control, formState: {errors}, setError} = useForm();
 
-    const request = async (data: ChannelCreationRequestData) => await axiosApi.post("/channels/", data);
+    const request = async (data: ChannelCreationRequestData) => await axiosApi.post("channels/", data);
 
     const mutation = useMutation(request, {
         onSuccess: () => queryClient.invalidateQueries(["chats", "list"])

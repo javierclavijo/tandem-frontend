@@ -30,7 +30,7 @@ export const getFriendFromFriendChat = (user: User, chat: FriendChat) => chat.us
 
 const fetchChatList = async (user: User | undefined) => {
     if (user) {
-        const friendChatsResponse = await axiosApi.get(`/friend_chats/?users=${user.id}&size=9999`);
+        const friendChatsResponse = await axiosApi.get(`friend_chats/?users=${user.id}&size=9999`);
         // Add additional info to each chat (type, the other user's name, info URL and image)
         const friendChats: Chat[] = [...friendChatsResponse.data.results].map(chat => {
             const other_user = getFriendFromFriendChat(user, chat);
@@ -42,7 +42,7 @@ const fetchChatList = async (user: User | undefined) => {
                 image: other_user?.image
             };
         });
-        const channelChatsResponse = await axiosApi.get(`/channels/?memberships__user=${user.id}&size=9999`);
+        const channelChatsResponse = await axiosApi.get(`channels/?memberships__user=${user.id}&size=9999`);
         // Add additional info to each chat (type, the channel's URL as the info URL)
         const channelChats: Chat[] = [...channelChatsResponse.data.results].map(chat => {
             return {
