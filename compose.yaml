@@ -4,8 +4,8 @@ services:
   frontend:
     build: .
     command: serve -s /app/build
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
 networks:
   default:
     external:
