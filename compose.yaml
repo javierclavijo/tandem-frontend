@@ -6,7 +6,8 @@ services:
     command: serve -s /app/build
     expose:
       - "3000"
+
 networks:
   default:
-    external:
-      name: tandem-network
+    name: tandem-network
+    external: true
