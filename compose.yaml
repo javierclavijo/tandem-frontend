@@ -3,9 +3,15 @@ version: "3.9"
 services:
   frontend:
     build: .
-    command: serve -s /app/build
+    command: npm start
     expose:
       - "3000"
+    volumes:
+      - ./public:/app/public
+      - ./src:/app/src
+    environment:
+      - FAST_REFRESH=false
+      - CHOKIDAR_USEPOLLING=true
 
 networks:
   default:
