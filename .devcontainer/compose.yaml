@@ -9,3 +9,8 @@ services:
     environment:
       - FAST_REFRESH=false
       - CHOKIDAR_USEPOLLING=true
+
+networks:
+  default:
+    name: tandem-network
+    external: true
