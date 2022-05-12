@@ -3,7 +3,7 @@ version: "3.9"
 services:
   frontend:
     build: .
-    command: sh -c "npm run build && serve -s /app/build"
+    command: serve -s /app/build
     expose:
       - "3000"
 
