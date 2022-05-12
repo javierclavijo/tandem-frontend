@@ -9,5 +9,6 @@ RUN npm clean-install
 RUN npm install -g serve
 
 COPY . /app/
+RUN npm run build
 
 # Source: https://mherman.org/blog/dockerizing-a-react-app/
