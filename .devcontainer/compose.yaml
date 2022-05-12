@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  frontend:
+    build: .
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    expose:
+      - "3000"
+    environment:
+      - FAST_REFRESH=false
+      - CHOKIDAR_USEPOLLING=true
+
+networks:
+  default:
+    name: tandem-network
+    external: true
