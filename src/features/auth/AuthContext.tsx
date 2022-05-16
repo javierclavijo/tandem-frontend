@@ -2,9 +2,11 @@ import React, {useContext, useMemo, useState} from "react";
 import axios, {AxiosRequestConfig} from "axios";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {User} from "../../entities/User";
+import Cookies from "js-cookie";
+
 
 interface AuthContextType {
-    token: string;
+    csrfToken: string;
     user: User | undefined;
     error: string;
     loading: boolean;
@@ -18,15 +20,19 @@ export type LogInRequestData = {
     password: string
 }
 
+
 export const AuthContext = React.createContext<AuthContextType>({} as AuthContextType);
 
 export const axiosApi = axios.create({baseURL: process.env.REACT_APP_API_URL ?? "http://localhost:8000/api"});
 
 export function AuthProvider({children}: { children: React.ReactNode }) {
+    /**
+     * Authentication context for the app. Fetches and provides information about authentication and the user, and provides functions to log in and log out.
+     */
 
     const queryClient = useQueryClient();
 
-    const [token, setToken] = useState<string>("");
+    const [csrfToken, setCsrfToken] = useState<string>("");
     const [id, setId] = useState<string>("");
     const [url, setUrl] = useState<string>("");
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -50,49 +56,65 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
         const id = localStorage.getItem("user_id");
         const url = localStorage.getItem("user_url");
         if (token && id && url) {
-            setToken(token);
+            setCsrfToken(token);
             setId(id);
             setUrl(url);
             setIsLoggedIn(true);
         }
     }, []);
 
+    /**
+     * Fetches the current session's info from the server (user ID and URL, plus CSRF token from the csrftoken cookie) and sets it in the contexts state. Runs on init.
+     */
+    const fetchSessionInfo = React.useCallback(async () => {
+        const response = await axiosApi.get('session_info/')
+        debugger
+        if (response.data.id && response.data.url) {
+            setId(response.data.id)
+            setUrl(response.data.url)
+        }
+        const cookie = Cookies.get('csrftoken')
+
+        if (cookie) {
+            setCsrfToken(cookie)
+        }
+    }, [])
+
+    /**
+     * On init, fetch session info and get the CSRF cookie.
+     */
+    React.useEffect(()=> {fetchSessionInfo()}, [fetchSessionInfo])
+
     const loginRequest = async (data: LogInRequestData) => {
-        return await axiosApi.post("api-token-auth/", data);
+        return await axiosApi.post("login/", data);
     };
 
-    const loginMutation = useMutation(loginRequest, {
-        onSuccess: async (response) => {
-            const data = response.data;
-            setToken(data.token);
-            setId(data.id);
-            setUrl(data.url);
-            localStorage.setItem("auth_token", data.token);
-            localStorage.setItem("user_id", data.id);
-            localStorage.setItem("user_url", data.url);
-            setIsLoggedIn(true);
-        }
-    });
+    const loginMutation = useMutation(loginRequest);
 
     const login = React.useCallback(async (data: LogInRequestData) => {
         let response;
+        debugger
         setLoading(true);
         try {
-            response = await loginMutation.mutateAsync(data);
+            response = await loginMutation.mutateAsync(data);    
+            await fetchSessionInfo()
+            setIsLoggedIn(true);
         } catch (e) {
-            setError("Incorrect username or password.");
+            if (axios.isAxiosError(e) && e.response) {
+                setError(e.response.data);
+            }
         } finally {
             setLoading(false);
         }
         return response;
-    }, [loginMutation]);
+    }, [loginMutation, fetchSessionInfo]);
 
 
     const logout = React.useCallback(() => {
         localStorage.removeItem("auth_token");
         localStorage.removeItem("user_id");
         localStorage.removeItem("user_url");
-        setToken("");
+        setCsrfToken("");
         setIsLoggedIn(false);
 
         // On logout, remove the logged-in user query to avoid keeping the user's data in cache
@@ -106,12 +128,14 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
     }, [id, queryClient]);
 
     React.useEffect(() => {
-        // Add auth header to requests when token is updated
-        if (token) {
-            // Add authorization token to each request, save the interceptor in a ref to be able to eject it on logout
+        // Add CSRF header to requests when CSRF token is updated
+        if (csrfToken) {
+            // Add CSRF token to each request, save the interceptor in a ref to be able to eject it on logout
             authHeaderInterceptorRef.current = axiosApi.interceptors.request.use(
                 (config: AxiosRequestConfig): AxiosRequestConfig => {
-                    config.headers!.authorization = `Token ${token}`;
+                    if (config.headers) {
+                        config.headers['X-CSRFToken'] = csrfToken;
+                    }
                     return config;
                 }
             );
@@ -124,10 +148,10 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
             );
         }
 
-    }, [token]);
+    }, [csrfToken]);
 
     const memoedValue = useMemo(() => ({
-            token,
+            csrfToken,
             user,
             error,
             loading,
@@ -135,7 +159,7 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
             login,
             logout
         }),
-        [token, user, error, loading, isLoggedIn, login, logout]);
+        [csrfToken, user, error, loading, isLoggedIn, login, logout]);
 
     return (
         <AuthContext.Provider value={memoedValue}>{children}</AuthContext.Provider>

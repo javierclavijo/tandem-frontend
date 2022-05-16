@@ -10,7 +10,7 @@ import {ArrowRightCircled} from "iconoir-react";
 
 function ChatInputForm({chat}: { chat: Chat }) {
     const [inputValue, setInputValue] = useState<string>("");
-    const {token} = useAuth();
+    const {csrfToken: token} = useAuth();
 
     const {
         sendJsonMessage,

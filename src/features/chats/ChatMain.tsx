@@ -18,7 +18,7 @@ import ChatList from "./ChatList";
 
 function ChatMain() {
 
-    const {token} = useAuth();
+    const {csrfToken: token} = useAuth();
     const queryClient = useQueryClient();
     const params = useParams();
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});

@@ -137,7 +137,7 @@ export function useJoinWSChat() {
     /**
      * Sends a message through the WS connection
      */
-    const {token} = useAuth();
+    const {csrfToken: token} = useAuth();
 
     const {
         sendJsonMessage,
