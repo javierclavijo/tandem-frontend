@@ -1,24 +1,22 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import {Outlet, useParams} from "react-router-dom";
+import { InfiniteData, useQueryClient } from "react-query";
+import { useMediaQuery } from "react-responsive";
+import { Outlet, useParams } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
-import useAuth from "../auth/AuthContext";
-import {InfiniteData, useQueryClient} from "react-query";
-import {Chat} from "../../entities/Chat";
-import {chatMain, chatMainMobile} from "./styles";
-import {useMediaQuery} from "react-responsive";
+import ChatHeader, { ChatHeaderProps } from "../../components/ChatHeader";
 import Nav from "../../components/Nav";
-import {baseAppContainerWithoutTabsCss, baseAppContainerWithTabsCss} from "../../styles/layout";
 import Tabs from "../../components/Tabs";
-import {ChatMessageResponse} from "../../entities/ChatMessage";
-import ChatHeader, {ChatHeaderProps} from "../../components/ChatHeader";
-import {chatRoomCss, chatRoomCssMobile} from "./room/styles";
+import { Chat } from "../../entities/Chat";
+import { ChatMessageResponse } from "../../entities/ChatMessage";
+import { baseAppContainerWithoutTabsCss, baseAppContainerWithTabsCss } from "../../styles/layout";
 import ChatList from "./ChatList";
+import { chatRoomCss, chatRoomCssMobile } from "./room/styles";
+import { chatMain, chatMainMobile } from "./styles";
 
 function ChatMain() {
 
-    const {csrfToken: token} = useAuth();
     const queryClient = useQueryClient();
     const params = useParams();
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
@@ -34,7 +32,7 @@ function ChatMain() {
      */
     const {
         lastJsonMessage
-    } = useWebSocket(`${process.env.REACT_APP_WS_URL}/ws/chats/?${token}`, {
+    } = useWebSocket(`${process.env.REACT_APP_WS_URL}/ws/chats/`, {
         onClose: () => console.error("Chat socket closed unexpectedly"),
         shouldReconnect: () => true,
         share: true
