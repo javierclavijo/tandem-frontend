@@ -1,20 +1,18 @@
 /** @jsxImportSource @emotion/react */
 
-import React, {useCallback, useState} from "react";
-import {Chat} from "../../../entities/Chat";
+import { css } from "@emotion/react";
+import { ArrowRightCircled } from "iconoir-react";
+import React, { useCallback, useState } from "react";
 import useWebSocket from "react-use-websocket";
-import useAuth from "../../auth/AuthContext";
-import {css} from "@emotion/react";
-import {colors, textSizes} from "../../../styles/variables";
-import {ArrowRightCircled} from "iconoir-react";
+import { Chat } from "../../../entities/Chat";
+import { colors, textSizes } from "../../../styles/variables";
 
 function ChatInputForm({chat}: { chat: Chat }) {
     const [inputValue, setInputValue] = useState<string>("");
-    const {csrfToken: token} = useAuth();
 
     const {
         sendJsonMessage,
-    } = useWebSocket(`${process.env.REACT_APP_WS_URL}/ws/chats/?${token}`, {
+    } = useWebSocket(`${process.env.REACT_APP_WS_URL}/ws/chats/`, {
         onClose: () => console.error("Chat socket closed unexpectedly"),
         shouldReconnect: () => true,
         share: true
