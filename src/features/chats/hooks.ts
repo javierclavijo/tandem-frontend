@@ -137,11 +137,10 @@ export function useJoinWSChat() {
     /**
      * Sends a message through the WS connection
      */
-    const {token} = useAuth();
 
     const {
         sendJsonMessage,
-    } = useWebSocket(`${process.env.REACT_APP_WS_URL}/ws/chats/?${token}`, {
+    } = useWebSocket(`${process.env.REACT_APP_WS_URL}/ws/chats/`, {
         onClose: () => console.error("Chat socket closed unexpectedly"),
         shouldReconnect: () => true,
         share: true

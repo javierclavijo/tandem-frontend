@@ -4,7 +4,6 @@ import React from "react";
 import {Route, Routes} from "react-router-dom";
 import LogIn from "./features/auth/LogIn";
 import ChatMain from "./features/chats/ChatMain";
-import LogOut from "./features/auth/LogOut";
 import Home from "./features/home/Home";
 import ChatRoom from "./features/chats/room/ChatRoom";
 import {Global} from "@emotion/react";
@@ -40,7 +39,6 @@ export default function App() {
                 <Route path="/search" element={<Search/>}/>
                 <Route path="/login" element={<LogIn/>}/>
                 <Route path="/register" element={<Register/>}/>
-                <Route path="/logout" element={<LogOut/>}/>
                 <Route path="/" element={<Home/>}/>
             </Routes>
         </React.Fragment>
