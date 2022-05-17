@@ -1,158 +1,156 @@
-import {useInfiniteQuery, UseInfiniteQueryOptions, useQuery} from "react-query";
-import {Chat, FriendChat} from "../../entities/Chat";
-import useAuth, {axiosApi} from "../auth/AuthContext";
-import {ChatMessage, ChatMessageResponse} from "../../entities/ChatMessage";
-import {DateTime} from "luxon";
-import React, {useCallback, useState} from "react";
-import {User} from "../../entities/User";
-import {useOutletContext} from "react-router-dom";
-import {ChatHeaderProps} from "../../components/ChatHeader";
-import useWebSocket from "react-use-websocket";
+import { useInfiniteQuery, UseInfiniteQueryOptions, useQuery } from 'react-query';
+import { DateTime } from 'luxon';
+import React, { useCallback, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
+import useWebSocket from 'react-use-websocket';
+import { Chat, FriendChat } from '../../entities/Chat';
+import useAuth, { axiosApi } from '../auth/AuthContext';
+import { ChatMessage, ChatMessageResponse } from '../../entities/ChatMessage';
+import { User } from '../../entities/User';
+import { ChatHeaderProps } from '../../components/ChatHeader';
 
 export const messageSortFn = (a: ChatMessage | undefined, b: ChatMessage | undefined) => {
-    /**
+  /**
      * Sorts messages or chats according to sent datetime. If the message is undefined (usually due to a chat having
      * no messages, which shouldn't happen in practice), the current datetime is used.
      */
-    const aDateTime = a?.timestamp ? DateTime.fromISO(a.timestamp) : DateTime.now();
-    const bDateTime = b?.timestamp ? DateTime.fromISO(b.timestamp) : DateTime.now();
+  const aDateTime = a?.timestamp ? DateTime.fromISO(a.timestamp) : DateTime.now();
+  const bDateTime = b?.timestamp ? DateTime.fromISO(b.timestamp) : DateTime.now();
 
-    if (aDateTime > bDateTime) {
-        return -1;
-    } else if (bDateTime > aDateTime) {
-        return 1;
-    } else {
-        return 0;
-    }
+  if (aDateTime > bDateTime) {
+    return -1;
+  } if (bDateTime > aDateTime) {
+    return 1;
+  }
+  return 0;
 };
 
 export const getFriendFromFriendChat = (user: User, chat: FriendChat) => chat.users.find((u: User) => u.id !== user.id);
 
 const fetchChatList = async (user: User | undefined) => {
-    if (user) {
-        const friendChatsResponse = await axiosApi.get(`friend_chats/?users=${user.id}&size=9999`);
-        // Add additional info to each chat (type, the other user's name, info URL and image)
-        const friendChats: Chat[] = [...friendChatsResponse.data.results].map(chat => {
-            const other_user = getFriendFromFriendChat(user, chat);
-            return {
-                ...chat,
-                type: "users",
-                name: other_user?.username,
-                infoUrl: other_user?.url,
-                image: other_user?.image
-            };
-        });
-        const channelChatsResponse = await axiosApi.get(`channels/?memberships__user=${user.id}&size=9999`);
-        // Add additional info to each chat (type, the channel's URL as the info URL)
-        const channelChats: Chat[] = [...channelChatsResponse.data.results].map(chat => {
-            return {
-                ...chat,
-                type: "channels",
-                infoUrl: chat.url
-            };
-        });
-        return [...friendChats, ...channelChats];
-    }
-    return [];
+  if (user) {
+    const friendChatsResponse = await axiosApi.get(`friend_chats/?users=${user.id}&size=9999`);
+    // Add additional info to each chat (type, the other user's name, info URL and image)
+    const friendChats: Chat[] = [...friendChatsResponse.data.results].map((chat) => {
+      const other_user = getFriendFromFriendChat(user, chat);
+      return {
+        ...chat,
+        type: 'users',
+        name: other_user?.username,
+        infoUrl: other_user?.url,
+        image: other_user?.image,
+      };
+    });
+    const channelChatsResponse = await axiosApi.get(`channels/?memberships__user=${user.id}&size=9999`);
+    // Add additional info to each chat (type, the channel's URL as the info URL)
+    const channelChats: Chat[] = [...channelChatsResponse.data.results].map((chat) => ({
+      ...chat,
+      type: 'channels',
+      infoUrl: chat.url,
+    }));
+    return [...friendChats, ...channelChats];
+  }
+  return [];
 };
 
 export const useChatList = () => {
-    /**
+  /**
      * Holds the information about the user's chat list.
      */
-    const {user} = useAuth();
-    return useQuery<Chat[]>(["chats", "list"], () => fetchChatList(user), {
-        // Whenever data is either fetched or updated with setQueryData(), sort chats according to their latest messages
-        onSuccess: (data) => data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
-        staleTime: 5000,
-        enabled: !!user
-    });
+  const { user } = useAuth();
+  return useQuery<Chat[]>(['chats', 'list'], () => fetchChatList(user), {
+    // Whenever data is either fetched or updated with setQueryData(), sort chats according to their latest messages
+    onSuccess: (data) => data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
+    staleTime: 5000,
+    enabled: !!user,
+  });
 };
 
-export const useChat = (id: string,
-                        queryOptions: Omit<UseInfiniteQueryOptions, any> | undefined) => {
-    /**
+export const useChat = (
+  id: string,
+  queryOptions: Omit<UseInfiniteQueryOptions, any> | undefined,
+) => {
+  /**
      * Holds the information about a chat and its messages.
      */
 
-    const {data: chatList} = useChatList();
-    const [chat, setChat] = useState<Chat | undefined>();
+  const { data: chatList } = useChatList();
+  const [chat, setChat] = useState<Chat | undefined>();
 
-    React.useLayoutEffect(() => {
-        // Fetch the resource's URL and ID from the chat list
-        const chatResult = chatList?.find(c => c.id === id);
-        if (chatResult) {
-            setChat(chatResult);
-        }
-    }, [chatList, id]);
+  React.useLayoutEffect(() => {
+    // Fetch the resource's URL and ID from the chat list
+    const chatResult = chatList?.find((c) => c.id === id);
+    if (chatResult) {
+      setChat(chatResult);
+    }
+  }, [chatList, id]);
 
-    const query = useInfiniteQuery<ChatMessageResponse>(["chats", "messages", chat?.id], async ({pageParam = 1}) => {
-            if (chat) {
-                const response = await axiosApi.get(chat?.messageUrl + `&page=${pageParam}`);
-                return response.data;
-            }
-            return undefined;
-        }, {
-            ...queryOptions,
-            enabled: !!chat?.id,
-            getPreviousPageParam: firstPage => firstPage.previousPageNumber ?? undefined,
-            getNextPageParam: lastPage => lastPage.nextPageNumber ?? undefined
-        }
-    );
+  const query = useInfiniteQuery<ChatMessageResponse>(['chats', 'messages', chat?.id], async ({ pageParam = 1 }) => {
+    if (chat) {
+      const response = await axiosApi.get(`${chat?.messageUrl}&page=${pageParam}`);
+      return response.data;
+    }
+    return undefined;
+  }, {
+    ...queryOptions,
+    enabled: !!chat?.id,
+    getPreviousPageParam: (firstPage) => firstPage.previousPageNumber ?? undefined,
+    getNextPageParam: (lastPage) => lastPage.nextPageNumber ?? undefined,
+  });
 
-    return {...query, chat};
+  return { ...query, chat };
 };
 
 export const useSetChatRoomHeader = (chat: Chat | undefined | null) => {
-    /**
+  /**
      * Sets the chat header according to the current view's resource's data. Used in ChatRoom component.
      */
 
-    const {user} = useAuth();
-    const [, setHeader] = useOutletContext<[ChatHeaderProps | null, React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>]>();
+  const { user } = useAuth();
+  const [, setHeader] = useOutletContext<[ChatHeaderProps | null, React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>]>();
 
-    return React.useEffect(() => {
-        if (chat) {
-            let headerProps;
-            if (chat.type === "users") {
-                const friend = getFriendFromFriendChat(user!, chat as FriendChat);
-                headerProps = {
-                    link: `/chats/users/${friend?.id}`,
-                    title: friend?.username,
-                    image: friend?.image
-                };
-            } else {
-                headerProps = {
-                    link: `/chats/channels/${(chat.id)}`,
-                    title: chat.name,
-                    image: chat.image
-                };
-            }
-            setHeader(headerProps);
-        }
-    }, [chat, setHeader, user]);
+  return React.useEffect(() => {
+    if (chat) {
+      let headerProps;
+      if (chat.type === 'users') {
+        const friend = getFriendFromFriendChat(user!, chat as FriendChat);
+        headerProps = {
+          link: `/chats/users/${friend?.id}`,
+          title: friend?.username,
+          image: friend?.image,
+        };
+      } else {
+        headerProps = {
+          link: `/chats/channels/${(chat.id)}`,
+          title: chat.name,
+          image: chat.image,
+        };
+      }
+      setHeader(headerProps);
+    }
+  }, [chat, setHeader, user]);
 };
 
 export function useJoinWSChat() {
-    /**
+  /**
      * Sends a message through the WS connection when a chat is created to join the chat group. The connection is closed if the user logs out.
      */
 
-    const {isLoggedIn} = useAuth();
+  const { isLoggedIn } = useAuth();
 
-    const {
-        sendJsonMessage,
-    } = useWebSocket(`${process.env.REACT_APP_WS_URL}/ws/chats/`, {
-        onClose: () => console.error("Chat socket closed unexpectedly"),
-        shouldReconnect: () => true,
-        share: true
-    }, isLoggedIn);
+  const {
+    sendJsonMessage,
+  } = useWebSocket(`${process.env.REACT_APP_WS_URL}/ws/chats/`, {
+    onClose: () => console.error('Chat socket closed unexpectedly'),
+    shouldReconnect: () => true,
+    share: true,
+  }, isLoggedIn);
 
-    return useCallback((id: string) => {
-        const message = {
-            chat_id: id,
-            type: "join_chat"
-        };
-        sendJsonMessage(message);
-    }, [sendJsonMessage]);
+  return useCallback((id: string) => {
+    const message = {
+      chat_id: id,
+      type: 'join_chat',
+    };
+    sendJsonMessage(message);
+  }, [sendJsonMessage]);
 }

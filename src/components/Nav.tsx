@@ -1,73 +1,79 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
-import {NavLink, useNavigate} from "react-router-dom";
-import useAuth from "../features/auth/AuthContext";
-import {css} from "@emotion/react";
-import {colors, textSizes} from "../styles/variables";
-import {useMediaQuery} from "react-responsive";
-import { buttonWithoutBackgroundAndBorder } from "./Button";
+import React from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { css } from '@emotion/react';
+import { useMediaQuery } from 'react-responsive';
+import useAuth from '../features/auth/AuthContext';
+import { colors, textSizes } from '../styles/variables';
+import { buttonWithoutBackgroundAndBorder } from './Button';
 
-const defaultImg = require("../static/images/user_placeholder.png");
+const defaultImg = require('../static/images/user_placeholder.png');
 
 function Nav() {
+  const { user, isLoggedIn, logout } = useAuth();
+  const isDesktop = useMediaQuery({ query: '(min-width: 1024px)' });
+  const navigate = useNavigate();
 
-    const {user, isLoggedIn, logout} = useAuth();
-    const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
-    const navigate = useNavigate()
+  const handleLogout = React.useCallback(async () => {
+    await logout();
+    navigate('/login');
+  }, [logout, navigate]);
 
-    const handleLogout = React.useCallback(async () => {
-      await logout();
-      navigate('/login');
-    }, [logout, navigate])
-
-    return (
-        <header css={header}>
-            <nav css={nav}>
-                <h1 css={title}>ChatApp</h1>
-                <ul css={navList}>
-                    {isLoggedIn && isDesktop ?
-                        <React.Fragment>
-                            <li><NavLink to={"/chats"} css={linkCss}>Chats</NavLink></li>
-                            <li><NavLink to={`/chats/users/${user?.id}`} css={linkCss}>{user?.username}</NavLink></li>
-                            <li><NavLink to={"/search"} css={linkCss}>Search</NavLink></li>
-                            <li>
-                              <button type="button" onClick={handleLogout} 
-                                css={css`${buttonWithoutBackgroundAndBorder};
+  return (
+    <header css={header}>
+      <nav css={nav}>
+        <h1 css={title}>ChatApp</h1>
+        <ul css={navList}>
+          {isLoggedIn && isDesktop
+            ? (
+              <>
+                <li><NavLink to="/chats" css={linkCss}>Chats</NavLink></li>
+                <li><NavLink to={`/chats/users/${user?.id}`} css={linkCss}>{user?.username}</NavLink></li>
+                <li><NavLink to="/search" css={linkCss}>Search</NavLink></li>
+                <li>
+                  <button
+                      type="button" onClick={handleLogout}
+                      css={css`${buttonWithoutBackgroundAndBorder};
                                           color: ${colors.WHITE};
                                           font-size: ${textSizes.M};
-                                `}>
+                                `}
+                    >
                                 Log out
-                              </button>
-                              </li>
-                            <li>
-                                <div css={imageContainer}>
-                                    <img src={user?.image ?? defaultImg} alt={user?.username}
-                                         css={userImage}
-                                    />
-                                </div>
-                            </li>
-                        </React.Fragment> :
-                        <React.Fragment>
-                            <li><NavLink to={"/login"} css={linkCss}>Log in</NavLink></li>
-                            <li><NavLink to={"/register"} css={linkCss}>Sign in</NavLink></li>
-                            <li>
-                            <button type="button" onClick={handleLogout} 
-                                css={css`${buttonWithoutBackgroundAndBorder};
+                    </button>
+                </li>
+                <li>
+                  <div css={imageContainer}>
+                      <img
+                          src={user?.image ?? defaultImg} alt={user?.username}
+                          css={userImage}
+                        />
+                    </div>
+                </li>
+              </>
+            )
+            : (
+              <>
+                <li><NavLink to="/login" css={linkCss}>Log in</NavLink></li>
+                <li><NavLink to="/register" css={linkCss}>Sign in</NavLink></li>
+                <li>
+                  <button
+                      type="button" onClick={handleLogout}
+                      css={css`${buttonWithoutBackgroundAndBorder};
                                           color: ${colors.WHITE};
                                           font-size: ${textSizes.M};
-                                `}>
+                                `}
+                    >
                                 Log out
-                              </button>
-                            </li>
-                        </React.Fragment>
-                    }
-                </ul>
-            </nav>
-        </header>
-    );
+                    </button>
+                </li>
+              </>
+            )}
+        </ul>
+      </nav>
+    </header>
+  );
 }
-
 
 const header = css`
   grid-area: header;
@@ -122,6 +128,5 @@ const imageContainer = css`
   justify-content: center;
   flex: 1 0 auto;
 `;
-
 
 export default Nav;

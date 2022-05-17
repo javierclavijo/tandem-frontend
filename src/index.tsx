@@ -1,31 +1,31 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import {BrowserRouter} from "react-router-dom";
-import App from "./App";
-import "./styles/index.css";
-import "@csstools/normalize.css";
-import {QueryClient, QueryClientProvider} from "react-query";
-import {AuthProvider} from "./features/auth/AuthContext";
-import {ReactQueryDevtools} from "react-query/devtools";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { ReactQueryDevtools } from 'react-query/devtools';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import App from './App';
+import './styles/index.css';
+import '@csstools/normalize.css';
+import { AuthProvider } from './features/auth/AuthContext';
 
 const queryClient = new QueryClient();
 
 const browserRouter = (
-    <React.StrictMode>
-        <BrowserRouter>
-            <QueryClientProvider client={queryClient}>
-                <AuthProvider>
-                    <App/>
-                </AuthProvider>
-                <ReactQueryDevtools initialIsOpen={false}/>
-            </QueryClientProvider>
-        </BrowserRouter>
-    </React.StrictMode>
+  <React.StrictMode>
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </BrowserRouter>
+  </React.StrictMode>
 );
 
 ReactDOM.render(
-    browserRouter,
-    document.getElementById("root"),
+  browserRouter,
+  document.getElementById('root'),
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,73 +1,76 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
-import {css} from "@emotion/react";
-import {FetchNextPageOptions, InfiniteData, InfiniteQueryObserverResult} from "react-query";
-import {ChannelSearchResponse, UserSearchResponse} from "./Search";
-import SearchResultElement from "./SearchResultElement";
-
+import { css } from '@emotion/react';
+import React from 'react';
+import { InfiniteData } from 'react-query';
+import { ChannelSearchResponse, UserSearchResponse } from './Search';
+import SearchResultElement from './SearchResultElement';
 
 interface UserSearchResultsProps {
-    data: InfiniteData<UserSearchResponse> | undefined;
-    fetchNextPage: (options?: (FetchNextPageOptions | undefined)) => Promise<InfiniteQueryObserverResult<UserSearchResponse, unknown>>;
-    hasNextPage: boolean | undefined;
+  data: InfiniteData<UserSearchResponse> | undefined;
 }
 
 interface ChannelSearchResultsProps {
-    data: InfiniteData<ChannelSearchResponse> | undefined;
-    fetchNextPage: (options?: (FetchNextPageOptions | undefined)) => Promise<InfiniteQueryObserverResult<ChannelSearchResponse, unknown>>;
-    hasNextPage: boolean | undefined;
+  data: InfiniteData<ChannelSearchResponse> | undefined;
 }
 
 function NotFound() {
-    return (
-        <p css={css`
+  return (
+    <p css={css`
           padding: 1rem;
-        `}>
-            No results.
-        </p>
-    );
+        `}
+    >
+      No results.
+    </p>
+  );
 }
 
-export function UserSearchResults(props: UserSearchResultsProps) {
-    return props.data ?
-        <React.Fragment>
-            {[...props.data?.pages].map((page, pageIndex) =>
-                <React.Fragment key={`page-${pageIndex}`}>
-                    {[...page.results].map((element) => (
-                        <SearchResultElement id={`${element.id}`}
-                                             name={element.username}
-                                             languages={element.languages.map(l => l.language)}
-                                             description={element.description}
-                                             image={element.image}
-                                             key={`${element.id}`}
-                                             link={`/chats/users/${element.id}`}/>
-                    ))}
-                </React.Fragment>
-            )}
-            {props.data?.pages.length === 0 || props.data?.pages[0].results.length === 0 ?
-                <NotFound/> : null}
-        </React.Fragment> : null;
+export function UserSearchResults({ data }: UserSearchResultsProps) {
+  return data
+    ? (
+      <>
+        {[...data.pages].map((page, pageIndex) => (
+          <React.Fragment key={`page-${pageIndex}`}>
+            {[...page.results].map((element) => (
+              <SearchResultElement
+                id={`${element.id}`}
+                name={element.username}
+                languages={element.languages.map((l) => l.language)}
+                description={element.description}
+                image={element.image}
+                key={`${element.id}`}
+                link={`/chats/users/${element.id}`}
+              />
+            ))}
+          </React.Fragment>
+        ))}
+        {data?.pages.length === 0 || data?.pages[0].results.length === 0
+          ? <NotFound /> : null}
+      </>
+    ) : null;
 }
 
-
-export function ChannelSearchResults(props: ChannelSearchResultsProps) {
-    return props.data ?
-        <React.Fragment>
-            {[...props.data?.pages].map((page, pageIndex) =>
-                <React.Fragment key={`page-${pageIndex}`}>
-                    {[...page.results].map((element) => (
-                        <SearchResultElement id={`${element.id}`}
-                                             name={element.name}
-                                             languages={[element.language]}
-                                             description={element.description}
-                                             image={element.image}
-                                             key={`${element.id}`}
-                                             link={`/chats/channels/${element.id}`}/>
-                    ))}
-                </React.Fragment>
-            )}
-            {props.data?.pages.length === 0 || props.data?.pages[0].results.length === 0 ?
-                <NotFound/> : null}
-        </React.Fragment> : null;
+export function ChannelSearchResults({data}: ChannelSearchResultsProps) {
+  return data
+    ? (
+      <>
+        {[...data.pages].map((page, pageIndex) => (
+          <React.Fragment key={`page-${pageIndex}`}>
+            {[...page.results].map((element) => (
+              <SearchResultElement
+                id={`${element.id}`}
+                name={element.name}
+                languages={[element.language]}
+                description={element.description}
+                image={element.image}
+                key={`${element.id}`}
+                link={`/chats/channels/${element.id}`}
+              />
+            ))}
+          </React.Fragment>
+        ))}
+        {data?.pages.length === 0 || data?.pages[0].results.length === 0
+          ? <NotFound /> : null}
+      </>
+    ) : null;
 }

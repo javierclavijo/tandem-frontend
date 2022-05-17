@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
-import {css} from "@emotion/react";
-import {ChatLines, Home, Search} from "iconoir-react";
-import {colors} from "../styles/variables";
+import React from 'react';
+import { css } from '@emotion/react';
+import { ChatLines, Home, Search } from 'iconoir-react';
+import { colors } from '../styles/variables';
 
 function Tabs() {
-    return (
-        <nav css={css`
+  return (
+    <nav css={css`
           grid-area: tabs;
           display: flex;
           width: 100%;
@@ -19,34 +19,36 @@ function Tabs() {
             display: none;
           }
         `}
-        >
-            <div css={css`
+    >
+      <div css={css`
               width: 100%;
               display: flex;
               align-items: center;
               justify-content: center;
             `}
-            >
-                <ChatLines color={colors.WHITE} width="1.5rem" height="1.5rem"/>
-            </div>
-            <div css={css`
+      >
+        <ChatLines color={colors.WHITE} width="1.5rem" height="1.5rem" />
+      </div>
+      <div css={css`
               width: 100%;
               display: flex;
               align-items: center;
               justify-content: center;
-            `}>
-                <Home color={colors.WHITE} width="1.5rem" height="1.5rem"/>
-            </div>
-            <div css={css`
+            `}
+      >
+        <Home color={colors.WHITE} width="1.5rem" height="1.5rem" />
+      </div>
+      <div css={css`
               width: 100%;
               display: flex;
               align-items: center;
               justify-content: center;
-            `}>
-                <Search color={colors.WHITE} width="1.5rem" height="1.5rem"/>
-            </div>
-        </nav>
-    );
+            `}
+      >
+        <Search color={colors.WHITE} width="1.5rem" height="1.5rem" />
+      </div>
+    </nav>
+  );
 }
 
 export default Tabs;

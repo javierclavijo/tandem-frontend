@@ -1,4 +1,4 @@
-import {css} from "@emotion/react";
+import { css } from '@emotion/react';
 
 export const baseAppContainerCss = css`
   // Main page layout

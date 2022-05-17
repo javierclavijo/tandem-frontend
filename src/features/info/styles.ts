@@ -1,5 +1,5 @@
-import {css} from "@emotion/react";
-import {colors, textSizes} from "../../styles/variables";
+import { css } from '@emotion/react';
+import { colors, textSizes } from '../../styles/variables';
 
 export const infoSection = css`
   background-color: ${colors.PRIMARY};
