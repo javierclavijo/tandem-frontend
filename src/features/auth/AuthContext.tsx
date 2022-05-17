@@ -21,29 +21,54 @@ export type LogInRequestData = {
 
 export const AuthContext = React.createContext<AuthContextType>({} as AuthContextType);
 
+/**
+ * Main axios instance used throughout the app.
+ */
 export const axiosApi = axios.create({
     baseURL: process.env.REACT_APP_API_URL ?? "http://localhost:8000/api",
     withCredentials: true,
-    xsrfCookieName: 'csrftoken', // default
-    xsrfHeaderName: 'X-CSRFToken', // default
+    
+    // Names of the CSRF token cookie and header used by Django.
+    xsrfCookieName: 'csrftoken',
+    xsrfHeaderName: 'X-CSRFToken',
 });
 
 export function AuthProvider({children}: { children: React.ReactNode }) {
     /**
-     * Authentication context for the app. Fetches and provides information about authentication and the user, and provides functions to log in and log out.
+     * Authentication context provider for the app. Fetches and provides information about authentication and the user,
+     * and provides functions to log in and log out.
      */
 
     const queryClient = useQueryClient();
 
+    /**
+     * ID of the session's user. Used in the user's query key to identify the query.
+     */
     const [id, setId] = useState<string>("");
+
+    /**
+     * URL of the detail endpoint for the session's user. Used to fetch the user's data.
+     */
     const [url, setUrl] = useState<string>("");
+
+    /**
+     * Holds whether the user is logged in or not.
+     */
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+    /**
+     * Holds errors sent by the server, if any.
+     */
     const [error, setError] = useState<string>("");
+
+    /**
+     * Holds whether the login request is being executed or not.
+     */
     const [loading, setLoading] = useState<boolean>(false);
 
-    const authHeaderInterceptorRef = React.useRef<number | null>(null);
-
-
+    /**
+     * Session's user query. Is disabled unless the user is logged in.
+     */
     const {data: user} = useQuery<User>(["users", id], async () => {
         const response = await axiosApi.get(url);
         return response.data;
@@ -53,14 +78,15 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
     });
 
     /**
-     * Fetches the current session's info from the server (user ID and URL, plus CSRF token from the csrftoken cookie) and sets it in the context's state. Runs on init.
+     * Fetches the current session's info from the server (user ID and URL, plus CSRF token from the csrftoken cookie) 
+     * and sets it in the context's state. Runs on init.
      */
     const fetchSessionInfo = React.useCallback(async () => {
-        const response = await axiosApi.get('session_info/')
+        const response = await axiosApi.get('session_info/');
         if (response.data.id && response.data.url) {
-            setId(response.data.id)
-            setUrl(response.data.url)
-            setIsLoggedIn(true)
+            setId(response.data.id);
+            setUrl(response.data.url);
+            setIsLoggedIn(true);
         }
     }, [])
 
@@ -69,15 +95,18 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
      */
     React.useEffect(()=> {fetchSessionInfo()}, [fetchSessionInfo])
 
-    const loginRequest = async (data: LogInRequestData) => {
-        return await axiosApi.post("login/", data);
-    };
+    /**
+     * Sends a login request.
+     */
+    const loginMutation = useMutation((async (data: LogInRequestData) => await axiosApi.post("login/", data)));
 
-    const loginMutation = useMutation(loginRequest);
-
+    /**
+     * Handles user login, setting the auth context's state (error, loading, isLoggedIn) accordingly.
+     */
     const login = React.useCallback(async (data: LogInRequestData) => {
         let response;
         setLoading(true);
+        setError("");
         try {
             response = await loginMutation.mutateAsync(data);    
             await fetchSessionInfo()
@@ -92,21 +121,20 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
         return response;
     }, [loginMutation, fetchSessionInfo]);
 
-    const logoutMutation = useMutation(async ()=> await axiosApi.post('logout/'))
+    /**
+     * Sends a logout request.
+     */
+    const logoutMutation = useMutation(async () => await axiosApi.post('logout/'))
 
+    /**
+     * Handles user logout, setting the auth context's state accordingly and removing the session user's query. 
+     */
     const logout = React.useCallback(async () => {
-        await logoutMutation.mutateAsync()
-        
+        await logoutMutation.mutateAsync();
         setIsLoggedIn(false);
 
         // On logout, remove the logged-in user query to avoid keeping the user's data in cache
         queryClient.removeQueries(["users", id], {exact: true});
-
-        // Also, eject the Axios interceptor which appends the Authorization header
-        const interceptor = authHeaderInterceptorRef.current;
-        if (interceptor !== null) {
-            axiosApi.interceptors.request.eject(interceptor);
-        }
     }, [id, queryClient, logoutMutation]);
 
     const memoedValue = useMemo(() => ({
