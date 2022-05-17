@@ -14,12 +14,14 @@ import { baseAppContainerWithoutTabsCss, baseAppContainerWithTabsCss } from "../
 import ChatList from "./ChatList";
 import { chatRoomCss, chatRoomCssMobile } from "./room/styles";
 import { chatMain, chatMainMobile } from "./styles";
+import useAuth from "../auth/AuthContext";
 
 function ChatMain() {
 
     const queryClient = useQueryClient();
     const params = useParams();
     const isDesktop = useMediaQuery({query: "(min-width: 1024px)"});
+    const {isLoggedIn} = useAuth();
 
     /**
      * State used by the router outlet context which controls the header's state. This way, the header's data can be
@@ -28,7 +30,7 @@ function ChatMain() {
     const [header, setHeader] = React.useState<ChatHeaderProps | null>(null);
 
     /**
-     * Holds the WebSocket connection to the server.
+     * Holds the WebSocket connection to the server. Closes the connection if the user logs out.
      */
     const {
         lastJsonMessage
@@ -36,7 +38,7 @@ function ChatMain() {
         onClose: () => console.error("Chat socket closed unexpectedly"),
         shouldReconnect: () => true,
         share: true
-    });
+    }, isLoggedIn);
 
     /**
      * Updates the chat list and the corresponding chat messages query whenever a message is received or sent.

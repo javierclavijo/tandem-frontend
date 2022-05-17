@@ -135,8 +135,10 @@ export const useSetChatRoomHeader = (chat: Chat | undefined | null) => {
 
 export function useJoinWSChat() {
     /**
-     * Sends a message through the WS connection
+     * Sends a message through the WS connection when a chat is created to join the chat group. The connection is closed if the user logs out.
      */
+
+    const {isLoggedIn} = useAuth();
 
     const {
         sendJsonMessage,
@@ -144,7 +146,7 @@ export function useJoinWSChat() {
         onClose: () => console.error("Chat socket closed unexpectedly"),
         shouldReconnect: () => true,
         share: true
-    });
+    }, isLoggedIn);
 
     return useCallback((id: string) => {
         const message = {

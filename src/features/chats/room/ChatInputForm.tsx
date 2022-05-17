@@ -6,9 +6,12 @@ import React, { useCallback, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import { Chat } from "../../../entities/Chat";
 import { colors, textSizes } from "../../../styles/variables";
+import useAuth from "../../auth/AuthContext";
 
 function ChatInputForm({chat}: { chat: Chat }) {
+
     const [inputValue, setInputValue] = useState<string>("");
+    const {isLoggedIn} = useAuth();
 
     const {
         sendJsonMessage,
@@ -16,7 +19,7 @@ function ChatInputForm({chat}: { chat: Chat }) {
         onClose: () => console.error("Chat socket closed unexpectedly"),
         shouldReconnect: () => true,
         share: true
-    });
+    }, isLoggedIn);
 
     const handleSend = useCallback((event) => {
         event.preventDefault();
