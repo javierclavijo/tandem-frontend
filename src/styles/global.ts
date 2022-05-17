@@ -1,9 +1,9 @@
-import {css} from "@emotion/react";
-import {colors} from "./variables";
+import { css } from "@emotion/react";
+import { colors } from "./variables";
 
 export const globalStyles = css`
   * {
-    font-family: 'Rubik', 'sans-serif';
+    font-family: "Rubik", "sans-serif";
     margin: 0;
   }
 

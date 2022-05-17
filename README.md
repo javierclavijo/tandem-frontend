@@ -5,8 +5,8 @@ Training in Web Applications Development (_Grado Superior en Desarrollo de Aplic
 
 Backend repo: https://github.com/javierclavijo/tandem-backend
 
-
 ## Deployment
+
 ### Development
 
 It's recommended to use VS Code with its Dev Containers feature, as additional work might be required to make the project work in other environments. The project includes a ready-made configuration to work with this feature out of the box.
@@ -17,9 +17,8 @@ It's recommended to use VS Code with its Dev Containers feature, as additional w
 4. Run `npm install`.
 5. Run `npm start`.
 
-
 ### Production
 
 1. If a Docker network for the project hasn't been created yet, run `docker network create tandem-network`.
-3. Create the project's `.env` file from `.env.example`.
-4. On the project's root, `run docker-compose -f compose.prod.yaml up`
+2. Create the project's `.env` file from `.env.example`.
+3. On the project's root, `run docker-compose -f compose.prod.yaml up`

@@ -1,63 +1,70 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import {chatRoomHeaderCss} from "../features/chats/room/styles";
+import { chatRoomHeaderCss } from "../features/chats/room/styles";
 import BackButton from "./BackButton";
-import {Link, To} from "react-router-dom";
-import {css} from "@emotion/react";
+import { Link, To } from "react-router-dom";
+import { css } from "@emotion/react";
 
 const defaultImg = require("../static/images/user_placeholder.png");
 
-
 export interface ChatHeaderProps {
-    title?: string;
-    link?: To;
-    image?: string | null;
-    actions?: JSX.Element;
+  title?: string;
+  link?: To;
+  image?: string | null;
+  actions?: JSX.Element;
 }
 
 function ChatHeader(props: ChatHeaderProps) {
-
-    return (
-        <header css={chatRoomHeaderCss}>
-            <div css={css`
+  return (
+    <header css={chatRoomHeaderCss}>
+      <div
+        css={css`
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        `}
+      >
+        <BackButton />
+        <div
+          css={css`
+            display: grid;
+            grid-template-rows: 1fr;
+            grid-template-columns: 1fr;
+            grid-template-areas: "element";
+          `}
+        >
+          <div
+            css={css`
+              grid-area: element;
               display: flex;
               align-items: center;
-              gap: 0.5rem;
-            `}>
-                <BackButton/>
-                <div css={css`
-                  display: grid;
-                  grid-template-rows: 1fr;
-                  grid-template-columns: 1fr;
-                  grid-template-areas: "element";
-                `}>
-                    <div css={css`
-                      grid-area: element;
-                      display: flex;
-                      align-items: center;
-                      gap: 1rem;
-                    `}>
-                        {props.image || props.image === null ?
-                            <div css={imageContainer}>
-                                <img src={props.image ?? defaultImg} alt=""
-                                     css={userImage}
-                                />
-                            </div> : null}
-                        <h2>{props.title}</h2>
-                    </div>
-                    {props.link ?
-                        <Link to={props.link} css={css`
-                          grid-area: element;
-                          z-index: 10;
-                          width: auto;
-                          height: auto;
-                        `}/> : null}
-                </div>
-            </div>
-            {props.actions}
-        </header>
-    );
+              gap: 1rem;
+            `}
+          >
+            {props.image || props.image === null ? (
+              <div css={imageContainer}>
+                <img src={props.image ?? defaultImg} alt="" css={userImage} />
+              </div>
+            ) : null}
+            <h2>{props.title}</h2>
+          </div>
+          {props.link ? (
+            <Link
+              to={props.link}
+              css={css`
+                grid-area: element;
+                z-index: 10;
+                width: auto;
+                height: auto;
+              `}
+            />
+          ) : null}
+        </div>
+      </div>
+      {props.actions}
+    </header>
+  );
 }
 
 const userImage = css`
@@ -76,6 +83,5 @@ const imageContainer = css`
   justify-content: center;
   flex: 0 0 auto;
 `;
-
 
 export default ChatHeader;

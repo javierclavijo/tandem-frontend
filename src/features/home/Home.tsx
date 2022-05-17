@@ -1,22 +1,20 @@
-import React, {useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useAuth from "../auth/AuthContext";
 
 function Home() {
-    const {isLoggedIn} = useAuth();
-    const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        if (isLoggedIn) {
-            navigate("/chats");
-        } else {
-            navigate("/login");
-        }
-    }, [isLoggedIn, navigate]);
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/chats");
+    } else {
+      navigate("/login");
+    }
+  }, [isLoggedIn, navigate]);
 
-    return (
-        <React.Fragment/>
-    );
+  return <React.Fragment />;
 }
 
 export default Home;

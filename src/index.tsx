@@ -1,32 +1,29 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {BrowserRouter} from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./styles/index.css";
 import "@csstools/normalize.css";
-import {QueryClient, QueryClientProvider} from "react-query";
-import {AuthProvider} from "./features/auth/AuthContext";
-import {ReactQueryDevtools} from "react-query/devtools";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { AuthProvider } from "./features/auth/AuthContext";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const queryClient = new QueryClient();
 
 const browserRouter = (
-    <React.StrictMode>
-        <BrowserRouter>
-            <QueryClientProvider client={queryClient}>
-                <AuthProvider>
-                    <App/>
-                </AuthProvider>
-                <ReactQueryDevtools initialIsOpen={false}/>
-            </QueryClientProvider>
-        </BrowserRouter>
-    </React.StrictMode>
+  <React.StrictMode>
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </BrowserRouter>
+  </React.StrictMode>
 );
 
-ReactDOM.render(
-    browserRouter,
-    document.getElementById("root"),
-);
+ReactDOM.render(browserRouter, document.getElementById("root"));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
