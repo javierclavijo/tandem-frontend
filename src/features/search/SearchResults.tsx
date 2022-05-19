@@ -26,12 +26,14 @@ interface ChannelSearchResultsProps {
   hasNextPage: boolean | undefined;
 }
 
+const notFoundText = css`
+  padding: 1rem;
+`;
+
 function NotFound() {
   return (
     <p
-      css={css`
-        padding: 1rem;
-      `}
+      css={notFoundText}
     >
       No results.
     </p>

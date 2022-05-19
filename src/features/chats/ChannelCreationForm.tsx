@@ -81,47 +81,20 @@ function ChannelCreationForm({ closeModal }: { closeModal: () => void }) {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      css={css`
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-      `}
-    >
+    <form onSubmit={handleSubmit(onSubmit)} css={form}>
       <input
         {...register("name", { required: "Name is required", maxLength: 64 })}
         required={true}
         placeholder="Channel name"
-        css={css`
-          font-size: ${textSizes.M};
-          border-radius: 3px;
-          border: 1px solid ${colors.DARK}50;
-          padding: 0.5rem;
-          outline: none;
-          color: ${colors.DARK};
-        `}
+        css={nameInput}
       />
       <ErrorMessage
         errors={errors}
         name="name"
         render={({ message }) => <p css={errorCss}>{message}</p>}
       />
-      <fieldset
-        css={css`
-          border: none;
-          padding: 0;
-          display: flex;
-          gap: 1rem;
-        `}
-      >
-        <div
-          css={css`
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-          `}
-        >
+      <fieldset css={fieldset}>
+        <div css={selectContainer}>
           <Controller
             control={control}
             name="language"
@@ -142,13 +115,7 @@ function ChannelCreationForm({ closeModal }: { closeModal: () => void }) {
             render={({ message }) => <p css={errorCss}>{message}</p>}
           />
         </div>
-        <div
-          css={css`
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-          `}
-        >
+        <div css={selectContainer}>
           <Controller
             control={control}
             name="level"
@@ -170,29 +137,55 @@ function ChannelCreationForm({ closeModal }: { closeModal: () => void }) {
           />
         </div>
       </fieldset>
-      <div
-        css={css`
-          display: flex;
-          gap: 1rem;
-          justify-content: space-between;
-        `}
-      >
+      <div css={buttonsContainer}>
         <button type="submit" css={modalButton}>
           Create channel
         </button>
-        <button
-          type="button"
-          onClick={closeModal}
-          css={css`
-            ${modalButton};
-            background-color: ${colors.DARK}60;
-          `}
-        >
+        <button type="button" onClick={closeModal} css={cancelButton}>
           Cancel
         </button>
       </div>
     </form>
   );
 }
+
+const form = css`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const nameInput = css`
+  font-size: ${textSizes.M};
+  border-radius: 3px;
+  border: 1px solid ${colors.DARK}50;
+  padding: 0.5rem;
+  outline: none;
+  color: ${colors.DARK};
+`;
+
+const fieldset = css`
+  border: none;
+  padding: 0;
+  display: flex;
+  gap: 1rem;
+`;
+
+const selectContainer = css`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const buttonsContainer = css`
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+`;
+
+const cancelButton = css`
+  ${modalButton};
+  background-color: ${colors.DARK}60;
+`;
 
 export default ChannelCreationForm;

@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { colors, textSizes } from "../../styles/variables";
 
-export const mainCss = css`
+export const main = css`
   grid-area: main;
   display: flex;
   flex-direction: column;
@@ -10,7 +10,7 @@ export const mainCss = css`
   padding-top: 3.125rem;
 `;
 
-export const sectionCss = css`
+export const section = css`
   background-color: ${colors.WHITE};
   color: ${colors.PRIMARY};
   border-radius: 3px;
@@ -20,28 +20,28 @@ export const sectionCss = css`
   min-width: 20rem;
 `;
 
-export const h2Css = css`
+export const header = css`
   font-weight: 400;
   font-size: ${textSizes.L};
   margin: 0 0 1rem 0;
   text-align: center;
 `;
 
-export const formCss = css`
+export const form = css`
   display: flex;
   flex-direction: column;
   gap: 1rem;
   align-items: center;
 `;
 
-export const labelCss = css`
+export const label = css`
   width: 100%;
   display: flex;
   flex-direction: column;
   font-size: ${textSizes.M};
 `;
 
-export const inputCss = css`
+export const input = css`
   color: ${colors.DARK};
   width: 100%;
   border: none;
@@ -70,4 +70,12 @@ export const errorCss = css`
   margin: 0;
   width: 100%;
   text-align: start;
+`;
+
+export const link = css`
+  color: ${colors.PRIMARY};
+
+  &:visited {
+    color: ${colors.PRIMARY};
+  }
 `;

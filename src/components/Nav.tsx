@@ -6,7 +6,11 @@ import useAuth from "../features/auth/AuthContext";
 import { css } from "@emotion/react";
 import { colors, textSizes } from "../styles/variables";
 import { useMediaQuery } from "react-responsive";
-import { buttonWithoutBackgroundAndBorder } from "./Button";
+import {
+  buttonWithoutBackgroundAndBorder,
+  thumbnailContainer,
+  thumbnailImg,
+} from "../styles/components";
 
 const defaultImg = require("../static/images/user_placeholder.png");
 
@@ -28,17 +32,17 @@ function Nav() {
           {isLoggedIn && isDesktop ? (
             <React.Fragment>
               <li>
-                <NavLink to={"/chats"} css={linkCss}>
+                <NavLink to={"/chats"} css={link}>
                   Chats
                 </NavLink>
               </li>
               <li>
-                <NavLink to={`/chats/users/${user?.id}`} css={linkCss}>
+                <NavLink to={`/chats/users/${user?.id}`} css={link}>
                   {user?.username}
                 </NavLink>
               </li>
               <li>
-                <NavLink to={"/search"} css={linkCss}>
+                <NavLink to={"/search"} css={link}>
                   Search
                 </NavLink>
               </li>
@@ -60,7 +64,7 @@ function Nav() {
                   <img
                     src={user?.image ?? defaultImg}
                     alt={user?.username}
-                    css={userImage}
+                    css={pictureImg}
                   />
                 </div>
               </li>
@@ -68,12 +72,12 @@ function Nav() {
           ) : (
             <React.Fragment>
               <li>
-                <NavLink to={"/login"} css={linkCss}>
+                <NavLink to={"/login"} css={link}>
                   Log in
                 </NavLink>
               </li>
               <li>
-                <NavLink to={"/register"} css={linkCss}>
+                <NavLink to={"/register"} css={link}>
                   Sign in
                 </NavLink>
               </li>
@@ -128,27 +132,19 @@ const navList = css`
   gap: 20px;
 `;
 
-const linkCss = css`
+const link = css`
   text-decoration: none;
   color: ${colors.WHITE};
   font-size: ${textSizes.M};
 `;
 
-const userImage = css`
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
+const pictureImg = css`
+  ${thumbnailImg};
   flex: 1 0 auto;
 `;
 
 const imageContainer = css`
-  height: 3rem;
-  width: 3rem;
-  overflow: hidden;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  ${thumbnailContainer};
   flex: 1 0 auto;
 `;
 

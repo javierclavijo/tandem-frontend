@@ -40,47 +40,17 @@ function ChatInputForm({ chat }: { chat: Chat }) {
   );
 
   return (
-    <div
-      css={css`
-        padding: 1rem;
-        box-sizing: border-box;
-      `}
-    >
-      <form
-        css={css`
-          width: 100%;
-          background-color: ${colors.LIGHT};
-          border-radius: 3px;
-          display: flex;
-        `}
-        onSubmit={handleSend}
-      >
+    <div css={container}>
+      <form css={form} onSubmit={handleSend}>
         <input
           type="text"
           id="chat-text-input"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           placeholder="Write a message"
-          css={css`
-            width: 100%;
-            border: none;
-            background: none;
-            outline: none;
-            padding: 0.5rem;
-            font-size: ${textSizes.M};
-          `}
+          css={input}
         />
-        <button
-          type="submit"
-          id="chat-send"
-          css={css`
-            background: none;
-            border: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          `}
-        >
+        <button type="submit" id="chat-send" css={button}>
           <ArrowRightCircled
             color={colors.PRIMARY}
             width="1.5rem"
@@ -91,5 +61,33 @@ function ChatInputForm({ chat }: { chat: Chat }) {
     </div>
   );
 }
+const container = css`
+  padding: 1rem;
+  box-sizing: border-box;
+`;
+
+const form = css`
+  width: 100%;
+  background-color: ${colors.LIGHT};
+  border-radius: 3px;
+  display: flex;
+`;
+
+const input = css`
+  width: 100%;
+  border: none;
+  background: none;
+  outline: none;
+  padding: 0.5rem;
+  font-size: ${textSizes.M};
+`;
+
+const button = css`
+  background: none;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 export default ChatInputForm;

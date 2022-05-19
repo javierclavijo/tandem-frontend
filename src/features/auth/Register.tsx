@@ -4,22 +4,21 @@ import React from "react";
 import useAuth, { axiosApi, LogInRequestData } from "./AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
-import { baseAppContainerWithoutTabsCss } from "../../styles/layout";
+import { baseAppContainerWithoutTabs } from "../../styles/layout";
 import Nav from "../../components/Nav";
 import {
   buttonCss,
   errorCss,
-  formCss,
-  h2Css,
-  inputCss,
-  labelCss,
-  mainCss,
-  sectionCss,
+  form,
+  header,
+  input,
+  label,
+  link,
+  main,
+  section,
 } from "./styles";
 import { ErrorMessage } from "@hookform/error-message";
 import { useMutation } from "react-query";
-import { css } from "@emotion/react";
-import { colors } from "../../styles/variables";
 import Select from "react-select";
 import { languageOptions, Option } from "../../resources/languages";
 import { select } from "../../styles/components";
@@ -101,18 +100,18 @@ function Register() {
   }, [isLoggedIn, navigate]);
 
   return (
-    <div css={baseAppContainerWithoutTabsCss}>
+    <div css={baseAppContainerWithoutTabs}>
       <Nav />
-      <main css={mainCss}>
-        <section css={sectionCss}>
-          <h2 css={h2Css}>Sign In</h2>
-          <form css={formCss} onSubmit={handleSubmit(onSubmit)}>
-            <label css={labelCss} htmlFor="username">
+      <main css={main}>
+        <section css={section}>
+          <h2 css={header}>Sign In</h2>
+          <form css={form} onSubmit={handleSubmit(onSubmit)}>
+            <label css={label} htmlFor="username">
               Username
               <input
                 type="text"
                 id="username"
-                css={inputCss}
+                css={input}
                 {...register("username", { required: "Username is required." })}
               />
             </label>
@@ -122,12 +121,12 @@ function Register() {
               render={({ message }) => <p css={errorCss}>{message}</p>}
             />
 
-            <label css={labelCss} htmlFor="email">
+            <label css={label} htmlFor="email">
               Email
               <input
                 type="email"
                 id="email"
-                css={inputCss}
+                css={input}
                 {...register("email", { required: "Email is required." })}
               />
             </label>
@@ -137,12 +136,12 @@ function Register() {
               render={({ message }) => <p css={errorCss}>{message}</p>}
             />
 
-            <label css={labelCss} htmlFor="password">
+            <label css={label} htmlFor="password">
               Password
               <input
                 type="password"
                 id="password"
-                css={inputCss}
+                css={input}
                 {...register("password", { required: "Password is required" })}
               />
             </label>
@@ -152,12 +151,12 @@ function Register() {
               render={({ message }) => <p css={errorCss}>{message}</p>}
             />
 
-            <label css={labelCss} htmlFor="confirm-password">
+            <label css={label} htmlFor="confirm-password">
               Confirm password
               <input
                 type="password"
                 id="confirm-password"
-                css={inputCss}
+                css={input}
                 {...register("confirmPassword", {
                   required: "Password confirmation is required",
                   // Validate that both password fields match.
@@ -176,7 +175,7 @@ function Register() {
               render={({ message }) => <p css={errorCss}>{message}</p>}
             />
 
-            <label css={labelCss} htmlFor="native-languages">
+            <label css={label} htmlFor="native-languages">
               Native languages
               <Controller
                 control={control}
@@ -206,16 +205,7 @@ function Register() {
             <button type="submit" css={buttonCss}>
               Sign in
             </button>
-            <Link
-              to={"/login"}
-              css={css`
-                color: ${colors.PRIMARY};
-
-                &:visited {
-                  color: ${colors.PRIMARY};
-                }
-              `}
-            >
+            <Link to={"/login"} css={link}>
               Log in
             </Link>
           </form>

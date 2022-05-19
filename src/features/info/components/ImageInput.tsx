@@ -14,6 +14,23 @@ interface ImageInputProps {
   invalidateQueryKey: string | unknown[];
 }
 
+const container = css`
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: "input";
+  width: 12rem;
+  height: 12rem;
+`;
+
+const input = css`
+  grid-area: input;
+  opacity: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+`;
+
 function ImageInput({
   image,
   defaultImage,
@@ -52,18 +69,29 @@ function ImageInput({
     }
   };
 
+  const label = css`
+    grid-area: input;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 5;
+    height: 100%;
+    width: 100%;
+    background-color: ${colors.LIGHT}80;
+    border-radius: 50%;
+    -webkit-text-stroke: 1px black;
+    font-size: ${textSizes.L};
+    backdrop-filter: blur(2px);
+    // Set the opacity of the element
+    opacity: ${isLabelDisplayed ? 1 : 0};
+  `;
+
   return (
     <div
       onMouseEnter={() => setIsLabelDisplayed(true)}
       onMouseLeave={() => setIsLabelDisplayed(false)}
-      css={css`
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr;
-        grid-template-areas: "input";
-        width: 12rem;
-        height: 12rem;
-      `}
+      css={container}
     >
       <input
         type="file"
@@ -71,35 +99,10 @@ function ImageInput({
         id="image"
         accept="image/jpeg,image/png,image/webp"
         onChange={handleChange}
-        css={css`
-          grid-area: input;
-          opacity: 0;
-          z-index: 10;
-          width: 100%;
-          height: 100%;
-        `}
+        css={input}
         ref={inputRef}
       />
-      <label
-        htmlFor={"image"}
-        css={css`
-          grid-area: input;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          text-align: center;
-          z-index: 5;
-          height: 100%;
-          width: 100%;
-          background-color: ${colors.LIGHT}80;
-          border-radius: 50%;
-          -webkit-text-stroke: 1px black;
-          font-size: ${textSizes.L};
-          backdrop-filter: blur(2px);
-          // Set the opacity of the element
-          opacity: ${isLabelDisplayed ? 1 : 0};
-        `}
-      >
+      <label htmlFor={"image"} css={label}>
         Click or drop a picture here...
       </label>
       <img

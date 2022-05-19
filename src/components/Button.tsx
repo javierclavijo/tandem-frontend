@@ -2,7 +2,7 @@
 
 import React from "react";
 import { css, SerializedStyles } from "@emotion/react";
-import { textSizes } from "../styles/variables";
+import { buttonWithoutBackgroundAndBorder } from "../styles/components";
 
 interface EditButtonProps {
   visible: boolean;
@@ -32,17 +32,5 @@ const Button = React.forwardRef<HTMLButtonElement, EditButtonProps>(
     );
   }
 );
-
-export const buttonWithoutBackgroundAndBorder = css`
-  border: none;
-  background: none;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  gap: 0.5rem;
-  font-size: ${textSizes.S};
-`;
 
 export default Button;

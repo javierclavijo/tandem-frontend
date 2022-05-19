@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { colors } from "../../../styles/variables";
 
-export const chatRoomCss = css`
+export const chatRoom = css`
   grid-area: room;
   background-color: ${colors.WHITE};
   border-radius: 3px;
@@ -11,7 +11,7 @@ export const chatRoomCss = css`
   height: 100%;
 `;
 
-export const chatRoomCssMobile = css`
+export const chatRoomMobile = css`
   background-color: ${colors.WHITE};
   overflow: hidden;
   display: flex;
@@ -21,7 +21,7 @@ export const chatRoomCssMobile = css`
   height: 100%;
 `;
 
-export const chatRoomHeaderCss = css`
+export const chatHeader = css`
   min-height: 4.15rem;
   max-height: 100%;
   background-color: ${colors.PRIMARY};

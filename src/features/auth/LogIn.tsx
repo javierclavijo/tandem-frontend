@@ -1,24 +1,13 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import { useForm } from "react-hook-form";
-import useAuth, { LogInRequestData } from "./AuthContext";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  buttonCss,
-  errorCss,
-  formCss,
-  h2Css,
-  inputCss,
-  labelCss,
-  mainCss,
-  sectionCss,
-} from "./styles";
+import {useForm} from "react-hook-form";
+import useAuth, {LogInRequestData} from "./AuthContext";
+import {Link, useNavigate} from "react-router-dom";
+import {buttonCss, errorCss, form, header, input, label, link, main, section,} from "./styles";
 import Nav from "../../components/Nav";
-import { baseAppContainerWithoutTabsCss } from "../../styles/layout";
-import { ErrorMessage } from "@hookform/error-message";
-import { css } from "@emotion/react";
-import { colors } from "../../styles/variables";
+import {baseAppContainerWithoutTabs} from "../../styles/layout";
+import {ErrorMessage} from "@hookform/error-message";
 
 function LogIn() {
   const { isLoggedIn, login, error } = useAuth();
@@ -55,18 +44,18 @@ function LogIn() {
   }, [isLoggedIn, navigate]);
 
   return (
-    <div css={baseAppContainerWithoutTabsCss}>
+    <div css={baseAppContainerWithoutTabs}>
       <Nav />
-      <main css={mainCss}>
-        <section css={sectionCss}>
-          <h2 css={h2Css}>Log in</h2>
-          <form css={formCss} onSubmit={handleSubmit(onSubmit)}>
-            <label css={labelCss} htmlFor="username">
+      <main css={main}>
+        <section css={section}>
+          <h2 css={header}>Log in</h2>
+          <form css={form} onSubmit={handleSubmit(onSubmit)}>
+            <label css={label} htmlFor="username">
               Username
               <input
                 type="text"
                 id="username"
-                css={inputCss}
+                css={input}
                 {...register("username", { required: "Username is required." })}
               />
             </label>
@@ -76,12 +65,12 @@ function LogIn() {
               render={({ message }) => <p css={errorCss}>{message}</p>}
             />
 
-            <label css={labelCss} htmlFor="password">
+            <label css={label} htmlFor="password">
               Password
               <input
                 type="password"
                 id="password"
-                css={inputCss}
+                css={input}
                 {...register("password", { required: "Password is required" })}
               />
             </label>
@@ -94,16 +83,7 @@ function LogIn() {
             <button type="submit" css={buttonCss}>
               Log in
             </button>
-            <Link
-              to={"/register"}
-              css={css`
-                color: ${colors.PRIMARY};
-
-                &:visited {
-                  color: ${colors.PRIMARY};
-                }
-              `}
-            >
+            <Link to={"/register"} css={link}>
               Sign in
             </Link>
           </form>

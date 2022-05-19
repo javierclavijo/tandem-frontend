@@ -7,6 +7,11 @@ import { FlagIcon } from "react-flag-kit";
 import { flagCodes } from "../../resources/languages";
 import { NavArrowRight } from "iconoir-react";
 import { Link } from "react-router-dom";
+import {
+  containerWithLink,
+  thumbnailContainer,
+  thumbnailImg,
+} from "../../styles/components";
 
 const defaultImg = require("../../static/images/user_placeholder.png");
 
@@ -19,67 +24,23 @@ interface SearchElementProps {
   link: string;
 }
 
+
 function SearchResultElement(props: SearchElementProps) {
   return (
     <article
-      css={css`
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr;
-        grid-template-areas: "element";
-        width: 100%;
-
-        &:hover {
-          background-color: ${colors.LIGHT};
-        }
-      `}
+      css={outerContainer}
     >
       <div
-        css={css`
-          grid-area: element;
-          display: flex;
-          flex-direction: row;
-          gap: 1rem;
-          padding: 1.5rem;
-          box-sizing: border-box;
-        `}
+        css={innerContainer}
       >
-        <div
-          css={css`
-            height: 4.5rem;
-            width: 4.5rem;
-            overflow: hidden;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex: 0 0 auto;
-          `}
-        >
-          <img
-            src={props.image ?? defaultImg}
-            alt=""
-            css={css`
-              height: 100%;
-              width: 100%;
-              object-fit: cover;
-            `}
-          />
+        <div css={imgContainer}>
+          <img src={props.image ?? defaultImg} alt="" css={thumbnailImg} />
         </div>
         <div
-          css={css`
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 100%;
-          `}
+          css={contentContainer}
         >
           <div
-            css={css`
-              display: flex;
-              flex-direction: row;
-              justify-content: space-between;
-            `}
+            css={upperInnerContainer}
           >
             <h4>{props.name}</h4>
             <NavArrowRight
@@ -89,10 +50,7 @@ function SearchResultElement(props: SearchElementProps) {
             />
           </div>
           <div
-            css={css`
-              display: flex;
-              gap: 0.5rem;
-            `}
+            css={flagsContainer}
           >
             {props.languages.map((language) => (
               <FlagIcon
@@ -103,12 +61,7 @@ function SearchResultElement(props: SearchElementProps) {
             ))}
           </div>
           <p
-            css={css`
-              text-overflow: ellipsis;
-              overflow: hidden;
-              white-space: nowrap;
-              max-width: 14rem;
-            `}
+            css={description}
           >
             {props.description}
           </p>
@@ -116,12 +69,65 @@ function SearchResultElement(props: SearchElementProps) {
       </div>
       <Link
         to={props.link}
-        css={css`
-          grid-area: element;
-        `}
+        css={link}
       />
     </article>
   );
 }
+
+
+const imgContainer = css`
+  ${thumbnailContainer};
+  height: 4.5rem;
+  width: 4.5rem;
+  flex: 0 0 auto;
+`;
+
+const outerContainer = css`
+  ${containerWithLink};
+  width: 100%;
+
+  &:hover {
+    background-color: ${colors.LIGHT};
+  }
+`;
+
+const innerContainer = css`
+  grid-area: element;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  padding: 1.5rem;
+  box-sizing: border-box;
+`;
+
+const contentContainer = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const upperInnerContainer = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const flagsContainer = css`
+  display: flex;
+  gap: 0.5rem;
+`;
+
+const description = css`
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 14rem;
+`;
+
+const link = css`
+  grid-area: element;
+`;
 
 export default SearchResultElement;
