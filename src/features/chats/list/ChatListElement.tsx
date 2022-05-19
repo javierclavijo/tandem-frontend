@@ -45,11 +45,7 @@ function ChatListElement({
         <div css={innerContainer}>
           <span css={title}>
             <span>{chat.name}</span>
-            <span
-              css={css`
-                font-size: ${textSizes.S};
-              `}
-            >
+            <span css={latestMessageDatetime}>
               {/* If the chat has messages, show the date when the latest message was sent. */}
               {chat.messages.length
                 ? DateTime.fromISO(chat.messages[0].timestamp).toLocaleString(
@@ -95,6 +91,10 @@ const description = css`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+`;
+
+const latestMessageDatetime = css`
+  font-size: ${textSizes.S};
 `;
 
 export default ChatListElement;

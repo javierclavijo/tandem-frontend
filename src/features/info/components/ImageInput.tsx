@@ -31,6 +31,11 @@ const input = css`
   height: 100%;
 `;
 
+const imageElement = css`
+  ${profileImg};
+  grid-area: input;
+`;
+
 function ImageInput({
   image,
   defaultImage,
@@ -105,14 +110,7 @@ function ImageInput({
       <label htmlFor={"image"} css={label}>
         Click or drop a picture here...
       </label>
-      <img
-        src={image ?? defaultImage}
-        alt=""
-        css={css`
-          ${profileImg};
-          grid-area: input;
-        `}
-      />
+      <img src={image ?? defaultImage} alt="" css={imageElement} />
     </div>
   );
 }

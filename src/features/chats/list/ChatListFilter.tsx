@@ -11,12 +11,8 @@ function ChatListFilter({
   setFilter: React.Dispatch<React.SetStateAction<string>>;
 }) {
   return (
-    <div
-      css={css`
-        padding: 1rem;
-      `}
-    >
-      <div css={container}>
+    <div css={outerContainer}>
+      <div css={innerContainer}>
         <form css={form}>
           <input
             type="text"
@@ -33,7 +29,7 @@ function ChatListFilter({
   );
 }
 
-const container = css`
+const innerContainer = css`
   padding-bottom: 1rem;
   border-bottom: 1px solid ${colors.LIGHT};
 `;
@@ -67,6 +63,10 @@ const searchButton = css`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const outerContainer = css`
+  padding: 1rem;
 `;
 
 export default ChatListFilter;

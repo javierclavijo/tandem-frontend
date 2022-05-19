@@ -26,13 +26,7 @@ function ChatRoomMessage(
         {!isOwnMessage && type === "channels" ? (
           <span css={username}>{message.author.username}</span>
         ) : null}
-        <span
-          css={css`
-            font-size: ${textSizes.M};
-          `}
-        >
-          {message.content}
-        </span>
+        <span css={content}>{message.content}</span>
         <span css={datetime}>
           {DateTime.fromISO(message.timestamp).toLocaleString(
             DateTime.DATETIME_SHORT
@@ -101,6 +95,10 @@ const username = css`
 const datetime = css`
   font-size: ${textSizes.S};
   align-self: flex-end;
+`;
+
+const content = css`
+  font-size: ${textSizes.M};
 `;
 
 export default React.forwardRef(ChatRoomMessage);

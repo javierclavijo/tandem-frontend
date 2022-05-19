@@ -46,11 +46,7 @@ function InfoListElement(props: InfoListElementProps) {
       css={outerContainer}
     >
       <div css={infoListElementInnerContainer}>
-        <div
-          css={css`
-            ${thumbnailContainer};
-          `}
-        >
+        <div css={pictureContainer}>
           <img src={props.image ?? defaultImg} alt="" css={thumbnailImg} />
         </div>
         <div css={contentContainer}>
@@ -58,13 +54,7 @@ function InfoListElement(props: InfoListElementProps) {
             <span css={title}>
               <h4>{props.name}</h4>
               {props.additionalInfo ? (
-                <p
-                  css={css`
-                    color: ${colors.PRIMARY};
-                  `}
-                >
-                  {props.additionalInfo}
-                </p>
+                <p css={additionalInfoText}>{props.additionalInfo}</p>
               ) : null}
             </span>
             <div css={upperOuterContentContainer}>
@@ -140,6 +130,15 @@ const upperInnerContentContainer = css`
   justify-content: space-between;
   align-items: center;
   height: 100%;
+`;
+
+const pictureContainer = css`
+  ${thumbnailContainer};
+  flex: 0 0 auto;
+`;
+
+const additionalInfoText = css`
+  color: ${colors.PRIMARY};
 `;
 
 export default InfoListElement;

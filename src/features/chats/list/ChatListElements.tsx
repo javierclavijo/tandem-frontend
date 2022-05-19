@@ -55,11 +55,7 @@ function ChatListElements({
       {/* Empty list. Has different strings for cases where the user has chats and is filtering, and where the
             user doesn't have any chats. */}
       {!filteredElements.length ? (
-        <article
-          css={css`
-            padding: 0 1rem 1rem 1rem;
-          `}
-        >
+        <article css={emptyList}>
           <p>
             {data.length
               ? "No chats match your query."
@@ -70,5 +66,9 @@ function ChatListElements({
     </div>
   );
 }
+
+const emptyList = css`
+  padding: 0 1rem 1rem 1rem;
+`;
 
 export default ChatListElements;

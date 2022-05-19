@@ -47,15 +47,7 @@ function Nav() {
                 </NavLink>
               </li>
               <li>
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  css={css`
-                    ${buttonWithoutBackgroundAndBorder};
-                    color: ${colors.WHITE};
-                    font-size: ${textSizes.M};
-                  `}
-                >
+                <button type="button" onClick={handleLogout} css={logoutButton}>
                   Log out
                 </button>
               </li>
@@ -82,15 +74,7 @@ function Nav() {
                 </NavLink>
               </li>
               <li>
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  css={css`
-                    ${buttonWithoutBackgroundAndBorder};
-                    color: ${colors.WHITE};
-                    font-size: ${textSizes.M};
-                  `}
-                >
+                <button type="button" onClick={handleLogout} css={logoutButton}>
                   Log out
                 </button>
               </li>
@@ -146,6 +130,12 @@ const pictureImg = css`
 const imageContainer = css`
   ${thumbnailContainer};
   flex: 1 0 auto;
+`;
+
+const logoutButton = css`
+  ${buttonWithoutBackgroundAndBorder};
+  color: ${colors.WHITE};
+  font-size: ${textSizes.M};
 `;
 
 export default Nav;
