@@ -6,7 +6,7 @@ import ChatListFilter from "./list/ChatListFilter";
 import ChatListElements from "./list/ChatListElements";
 import { useParams } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
-import { useChatList } from "./hooks";
+import { useAllChatList } from "./hooks";
 import useAuth from "../auth/AuthContext";
 import Button from "../../components/Button";
 import { Plus } from "iconoir-react";
@@ -38,7 +38,7 @@ function ChatList() {
 
   const [filter, setFilter] = React.useState<string>("");
 
-  const { data } = useChatList();
+  const { data } = useAllChatList();
   const { user } = useAuth();
 
   const [isChannelCreationModalOpen, setIsChannelCreationModalOpen] =
