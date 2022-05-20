@@ -30,3 +30,27 @@ export const baseAppContainerWithTabs = css`
     grid-template-rows: 5rem 1fr 0;
   }
 `;
+
+export const homeSearchMain = css`
+  grid-area: main;
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 3.125rem;
+  box-sizing: border-box;
+  gap: 1rem;
+  overflow: auto;
+`;
+
+export const homeSearchMainMobile = css`
+  grid-area: main;
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: auto;
+`;
