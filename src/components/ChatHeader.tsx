@@ -1,10 +1,15 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import { chatRoomHeaderCss } from "../features/chats/room/styles";
+import { chatHeader } from "../features/chats/room/styles";
 import BackButton from "./BackButton";
 import { Link, To } from "react-router-dom";
 import { css } from "@emotion/react";
+import {
+  containerWithLink,
+  thumbnailContainer,
+  thumbnailImg,
+} from "../styles/components";
 
 const defaultImg = require("../static/images/user_placeholder.png");
 
@@ -17,49 +22,23 @@ export interface ChatHeaderProps {
 
 function ChatHeader(props: ChatHeaderProps) {
   return (
-    <header css={chatRoomHeaderCss}>
-      <div
-        css={css`
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-        `}
-      >
+    <header css={chatHeader}>
+      <div css={backButtonContainer}>
         <BackButton />
-        <div
-          css={css`
-            display: grid;
-            grid-template-rows: 1fr;
-            grid-template-columns: 1fr;
-            grid-template-areas: "element";
-          `}
-        >
-          <div
-            css={css`
-              grid-area: element;
-              display: flex;
-              align-items: center;
-              gap: 1rem;
-            `}
-          >
+        <div css={containerWithLink}>
+          <div css={innerContainer}>
             {props.image || props.image === null ? (
               <div css={imageContainer}>
-                <img src={props.image ?? defaultImg} alt="" css={userImage} />
+                <img
+                  src={props.image ?? defaultImg}
+                  alt=""
+                  css={thumbnailImg}
+                />
               </div>
             ) : null}
             <h2>{props.title}</h2>
           </div>
-          {props.link ? (
-            <Link
-              to={props.link}
-              css={css`
-                grid-area: element;
-                z-index: 10;
-                width: auto;
-                height: auto;
-              `}
-            />
-          ) : null}
+          {props.link ? <Link to={props.link} css={link} /> : null}
         </div>
       </div>
       {props.actions}
@@ -67,21 +46,29 @@ function ChatHeader(props: ChatHeaderProps) {
   );
 }
 
-const userImage = css`
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
+const imageContainer = css`
+  ${thumbnailContainer};
+  flex: 0 0 auto;
 `;
 
-const imageContainer = css`
-  height: 3rem;
-  width: 3rem;
-  overflow: hidden;
-  border-radius: 50%;
+const backButtonContainer = css`
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
+  gap: 0.5rem;
+`;
+
+const innerContainer = css`
+  grid-area: element;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const link = css`
+  grid-area: element;
+  z-index: 10;
+  width: auto;
+  height: auto;
 `;
 
 export default ChatHeader;

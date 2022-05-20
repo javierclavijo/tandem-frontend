@@ -2,8 +2,8 @@
 
 import React from "react";
 import {
-  baseAppContainerWithoutTabsCss,
-  baseAppContainerWithTabsCss,
+  baseAppContainerWithoutTabs,
+  baseAppContainerWithTabs,
 } from "../../styles/layout";
 import Nav from "../../components/Nav";
 import { useMediaQuery } from "react-responsive";
@@ -163,22 +163,22 @@ function Search() {
     refetchUsers,
   ]);
 
-  return (
-    <div
-      css={
-        isDesktop ? baseAppContainerWithoutTabsCss : baseAppContainerWithTabsCss
-      }
-    >
-      <Nav />
-      <main
-        id="search-main"
-        css={css`
+  const main = css`
           ${isDesktop ? searchMain : searchMainMobile};
           overflow: auto;
           height: 100%;
           display: flex;
           flex-direction: column;
-        `}
+        `
+
+  return (
+    <div
+      css={isDesktop ? baseAppContainerWithoutTabs : baseAppContainerWithTabs}
+    >
+      <Nav />
+      <main
+        id="search-main"
+        css={main}
       >
         {/* Infinite scroll component. Includes the search panel and results. Its properties are assigned
                 conditionally based on the selected search type. */}
@@ -204,14 +204,7 @@ function Search() {
         >
           {/* Heading and search panel. */}
           <header
-            css={css`
-              padding: 1rem;
-              background-color: ${colors.WHITE};
-              color: ${colors.DARK};
-              display: flex;
-              flex-direction: column;
-              gap: 1rem;
-            `}
+            css={header}
           >
             <h2>Find Users & Channels</h2>
             <SearchPanel
@@ -224,28 +217,15 @@ function Search() {
 
           {/* Search results. */}
           <section
-            css={css`
-              height: 100%;
-              background-color: ${colors.WHITE};
-              display: flex;
-              flex-direction: column;
-              gap: 1rem;
-            `}
+            css={resultsOuterContainer}
           >
             <h3
-              css={css`
-                padding: 1rem 1rem 0 1rem;
-              `}
+              css={resultsHeader}
             >
               {searchType === searchTypeOptions.USERS ? "Users" : "Channels"}
             </h3>
             <div
-              css={css`
-                display: grid;
-                @media (min-width: 1024px) {
-                  grid-template-columns: repeat(3, 1fr);
-                }
-              `}
+              css={resultsInnerContainer}
             >
               {searchType === searchTypeOptions.USERS ? (
                 <React.Fragment>
@@ -272,5 +252,33 @@ function Search() {
     </div>
   );
 }
+
+const header = css`
+  padding: 1rem;
+  background-color: ${colors.WHITE};
+  color: ${colors.DARK};
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const resultsOuterContainer = css`
+  height: 100%;
+  background-color: ${colors.WHITE};
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const resultsHeader = css`
+  padding: 1rem 1rem 0 1rem;
+`;
+
+const resultsInnerContainer = css`
+  display: grid;
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`;
 
 export default Search;

@@ -21,13 +21,7 @@ function EditButtons({
   color,
 }: EditButtonsProps) {
   return (
-    <div
-      css={css`
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      `}
-    >
+    <div css={container}>
       <Button
         visible={editEnabled}
         onClick={handleSubmit}
@@ -41,5 +35,11 @@ function EditButtons({
     </div>
   );
 }
+
+const container = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 export default EditButtons;

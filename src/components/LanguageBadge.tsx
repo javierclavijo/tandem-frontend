@@ -15,13 +15,13 @@ interface LanguageBadgeProps {
 }
 
 function LanguageBadge({ language, level, bg }: LanguageBadgeProps) {
+  const container = css`
+    ${badge};
+    background-color: ${bg};
+  `;
+
   return (
-    <div
-      css={css`
-        ${badge};
-        background-color: ${bg};
-      `}
-    >
+    <div css={container}>
       <FlagIcon
         code={flagCodes.find((x) => x.key === language)?.value || "AD"}
         size={24}

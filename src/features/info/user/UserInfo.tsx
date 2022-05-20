@@ -19,16 +19,17 @@ import ReactModal from "react-modal";
 import UserInfoNewLanguageSelect from "./UserInfoNewLanguageSelect";
 import { colors, textSizes } from "../../../styles/variables";
 import { Plus } from "iconoir-react";
-import Button, {
-  buttonWithoutBackgroundAndBorder,
-} from "../../../components/Button";
+import Button from "../../../components/Button";
 import LanguageBadge from "../../../components/LanguageBadge";
 import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
 import { languages } from "../../../resources/languages";
 import ImageInput from "../components/ImageInput";
 import { getFriendFromFriendChat, useJoinWSChat } from "../../chats/hooks";
 import { ChatHeaderProps } from "../../../components/ChatHeader";
-import { modal } from "../../../styles/components";
+import {
+  buttonWithoutBackgroundAndBorder,
+  modal,
+} from "../../../styles/components";
 import { useCreateChatWithUser, useDeleteUserLanguage, useUser } from "./hooks";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
@@ -141,11 +142,7 @@ export function UserInfo() {
             <button
               type="button"
               onClick={onClickChatCreate}
-              css={css`
-                ${buttonWithoutBackgroundAndBorder};
-                font-size: ${textSizes.S};
-                color: white;
-              `}
+              css={headerButton}
             >
               Chat with user
             </button>
@@ -157,11 +154,7 @@ export function UserInfo() {
 
   return data ? (
     <React.Fragment>
-      <div
-        css={css`
-          overflow-y: scroll;
-        `}
-      >
+      <div css={container}>
         {/* Main user information
             Contains the user's picture, username, languages and description.
             */}
@@ -178,14 +171,7 @@ export function UserInfo() {
             </React.Fragment>
           ) : (
             <React.Fragment>
-              <img
-                src={data.image ?? defaultImg}
-                alt=""
-                css={css`
-                  ${profileImg};
-                  grid-area: input;
-                `}
-              />
+              <img src={data.image ?? defaultImg} alt="" css={picture} />
               <p>{data?.username}</p>
             </React.Fragment>
           )}
@@ -193,23 +179,9 @@ export function UserInfo() {
           {/* Languages
                 If the view is editable, contains controls for creating, editing and removing the user's languages.
                 Else, it only displays the languages */}
-          <section
-            css={css`
-              width: 100%;
-              display: flex;
-              flex-direction: column;
-              align-items: flex-start;
-              gap: 0.5rem;
-            `}
-          >
+          <section css={languagesOuterContainer}>
             <h3>Languages</h3>
-            <div
-              css={css`
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-              `}
-            >
+            <div css={languagesInnerContainer}>
               {isEditable ? (
                 <React.Fragment>
                   {/* Render selects for the user's non-native languages, as native languages can't be edited
@@ -223,14 +195,7 @@ export function UserInfo() {
                         key={language.id}
                       />
                     ) : (
-                      <div
-                        css={css`
-                          display: flex;
-                          align-items: center;
-                          gap: 1rem;
-                        `}
-                        key={language.id}
-                      >
+                      <div css={editableLanguage} key={language.id}>
                         <UserInfoEditLanguageBadge
                           data={language}
                           bg={colors.DARK}
@@ -242,10 +207,7 @@ export function UserInfo() {
                   <button
                     type="button"
                     onClick={() => setNewLanguageModalIsOpen(true)}
-                    css={css`
-                      ${buttonWithoutBackgroundAndBorder};
-                      color: ${colors.WHITE};
-                    `}
+                    css={addLanguageButton}
                   >
                     Add
                     <Plus />
@@ -296,11 +258,7 @@ export function UserInfo() {
           })}
           {/* Empty list */}
           {!data?.friend_chats.length ? (
-            <article
-              css={css`
-                padding: 0.5rem 1rem;
-              `}
-            >
+            <article css={emptyListContainer}>
               <p>
                 {isEditable
                   ? "You have not added any friends yet."
@@ -311,12 +269,7 @@ export function UserInfo() {
         </section>
 
         {/* Channels*/}
-        <section
-          css={css`
-            ${listSection};
-            padding-top: 0;
-          `}
-        >
+        <section css={channelListContainer}>
           <h3 css={listSectionHeader}>Channels</h3>
           {data?.memberships.map((membership) => (
             <InfoListElement
@@ -330,11 +283,7 @@ export function UserInfo() {
           ))}
           {/* Empty list */}
           {!data?.memberships.length ? (
-            <article
-              css={css`
-                padding: 0.5rem 1rem;
-              `}
-            >
+            <article css={emptyListContainer}>
               <p>
                 {isEditable
                   ? "You have not joined any channels yet."
@@ -354,14 +303,7 @@ export function UserInfo() {
           contentLabel="Add a new language"
           style={modal}
         >
-          <p
-            css={css`
-              margin-bottom: 1rem;
-              color: ${colors.DARK};
-            `}
-          >
-            Add a new language
-          </p>
+          <p css={modalTitle}>Add a new language</p>
           <UserInfoNewLanguageSelect
             onClose={() => setNewLanguageModalIsOpen(false)}
           />
@@ -378,12 +320,7 @@ export function UserInfo() {
           contentLabel="Delete language"
           style={modal}
         >
-          <p
-            css={css`
-              margin-bottom: 1rem;
-              color: ${colors.DARK};
-            `}
-          >
+          <p css={modalTitle}>
             Delete{" "}
             {
               languages.find((l) => l.key === selectedDeleteLanguage.language)
@@ -391,12 +328,7 @@ export function UserInfo() {
             }{" "}
             from your languages?
           </p>
-          <div
-            css={css`
-              display: flex;
-              gap: 1rem;
-            `}
-          >
+          <div css={modalButtonsContainer}>
             <Button visible={true} onClick={handleDeleteLanguage}>
               Delete
             </Button>
@@ -412,3 +344,62 @@ export function UserInfo() {
     </React.Fragment>
   ) : null;
 }
+
+const headerButton = css`
+  ${buttonWithoutBackgroundAndBorder};
+  font-size: ${textSizes.S};
+  color: white;
+`;
+
+const container = css`
+  overflow-y: scroll;
+`;
+
+const picture = css`
+  ${profileImg};
+  grid-area: input;
+`;
+
+const languagesOuterContainer = css`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+`;
+
+const languagesInnerContainer = css`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+`;
+
+const editableLanguage = css`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const emptyListContainer = css`
+  padding: 0.5rem 1rem;
+`;
+
+const channelListContainer = css`
+  ${listSection};
+  padding-top: 0;
+`;
+
+const modalTitle = css`
+  margin-bottom: 1rem;
+  color: ${colors.DARK};
+`;
+
+const modalButtonsContainer = css`
+  display: flex;
+  gap: 1rem;
+`;
+
+const addLanguageButton = css`
+  ${buttonWithoutBackgroundAndBorder};
+  color: ${colors.WHITE};
+`;

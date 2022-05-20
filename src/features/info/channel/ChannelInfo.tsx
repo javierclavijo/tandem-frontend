@@ -24,12 +24,14 @@ import {
   useParams,
 } from "react-router-dom";
 import { ChatHeaderProps } from "../../../components/ChatHeader";
-import Button, {
-  buttonWithoutBackgroundAndBorder,
-} from "../../../components/Button";
+import Button from "../../../components/Button";
 import { FastArrowDownBox, FastArrowUpBox } from "iconoir-react";
 import ShareLink from "../../../components/ShareLink";
-import { modal, modalButton } from "../../../styles/components";
+import {
+  buttonWithoutBackgroundAndBorder,
+  modal,
+  modalButton,
+} from "../../../styles/components";
 import ReactModal from "react-modal";
 import {
   useChangeUserRole,
@@ -151,21 +153,12 @@ function ChannelInfo() {
     setHeader({
       title: "Channel info",
       actions: (
-        <div
-          css={css`
-            display: flex;
-            gap: 1rem;
-          `}
-        >
+        <div css={header}>
           {!userRole ? (
             <button
               type="button"
               onClick={handleJoinChannel}
-              css={css`
-                ${buttonWithoutBackgroundAndBorder};
-                font-size: ${textSizes.S};
-                color: white;
-              `}
+              css={headerButton}
             >
               Join channel
             </button>
@@ -173,11 +166,7 @@ function ChannelInfo() {
             <button
               type="button"
               onClick={() => setLeaveChannelModalIsOpen(true)}
-              css={css`
-                ${buttonWithoutBackgroundAndBorder};
-                font-size: ${textSizes.S};
-                color: white;
-              `}
+              css={headerButton}
             >
               Leave channel
             </button>
@@ -185,11 +174,7 @@ function ChannelInfo() {
           {userIsAdmin() ? (
             <button
               onClick={() => setDeletionModalIsOpen(true)}
-              css={css`
-                ${buttonWithoutBackgroundAndBorder};
-                font-size: ${textSizes.S};
-                color: white;
-              `}
+              css={headerButton}
             >
               Delete
             </button>
@@ -201,11 +186,7 @@ function ChannelInfo() {
   }, [location.pathname, userRole, setHeader, userIsAdmin, handleJoinChannel]);
 
   return data ? (
-    <div
-      css={css`
-        overflow-y: scroll;
-      `}
-    >
+    <div css={container}>
       <section css={infoSection}>
         {userIsStaff() && data ? (
           <React.Fragment>
@@ -306,11 +287,7 @@ function ChannelInfo() {
         )}
         {/* Empty list */}
         {!data?.memberships.length ? (
-          <article
-            css={css`
-              padding: 0.5rem 1rem;
-            `}
-          >
+          <article css={emptyContainer}>
             <p>This channel doesn't have any members yet.</p>
           </article>
         ) : null}
@@ -323,28 +300,14 @@ function ChannelInfo() {
         contentLabel="Delete channel"
         style={modal}
       >
-        <p
-          css={css`
-            margin-bottom: 1rem;
-          `}
-        >
-          Delete channel?
-        </p>
-        <div
-          css={css`
-            display: flex;
-            gap: 1rem;
-          `}
-        >
+        <p css={modalTitle}>Delete channel?</p>
+        <div css={header}>
           <button onClick={handleDelete} css={modalButton}>
             Delete
           </button>
           <button
             onClick={() => setDeletionModalIsOpen(false)}
-            css={css`
-              ${modalButton};
-              background-color: ${colors.DARK}60;
-            `}
+            css={cancelButton}
           >
             Cancel
           </button>
@@ -358,28 +321,14 @@ function ChannelInfo() {
         contentLabel="Leave channel"
         style={modal}
       >
-        <p
-          css={css`
-            margin-bottom: 1rem;
-          `}
-        >
-          Leave channel?
-        </p>
-        <div
-          css={css`
-            display: flex;
-            gap: 1rem;
-          `}
-        >
+        <p css={modalTitle}>Leave channel?</p>
+        <div css={header}>
           <button onClick={handleLeaveChannel} css={modalButton}>
             Leave
           </button>
           <button
             onClick={() => setLeaveChannelModalIsOpen(false)}
-            css={css`
-              ${modalButton};
-              background-color: ${colors.DARK}60;
-            `}
+            css={cancelButton}
           >
             Cancel
           </button>
@@ -388,5 +337,33 @@ function ChannelInfo() {
     </div>
   ) : null;
 }
+
+const header = css`
+  display: flex;
+  gap: 1rem;
+`;
+
+const cancelButton = css`
+  ${modalButton};
+  background-color: ${colors.DARK}60;
+`;
+
+const headerButton = css`
+  ${buttonWithoutBackgroundAndBorder};
+  font-size: ${textSizes.S};
+  color: white;
+`;
+
+const container = css`
+  overflow-y: scroll;
+`;
+
+const emptyContainer = css`
+  padding: 0.5rem 1rem;
+`;
+
+const modalTitle = css`
+  margin-bottom: 1rem;
+`;
 
 export default ChannelInfo;

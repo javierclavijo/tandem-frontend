@@ -8,7 +8,7 @@ import { css } from "@emotion/react";
 import ChatRoomMessage from "./ChatRoomMessage";
 import ChatInputForm from "./ChatInputForm";
 import { useMediaQuery } from "react-responsive";
-import { chatRoomCss, chatRoomCssMobile } from "./styles";
+import { chatRoom, chatRoomMobile } from "./styles";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 function ChatRoom() {
@@ -41,16 +41,11 @@ function ChatRoom() {
   useSetChatRoomHeader(chat);
 
   return chat && data ? (
-    <div css={isDesktop ? chatRoomCss : chatRoomCssMobile}>
+    <div css={isDesktop ? chatRoom : chatRoomMobile}>
       <div
         id="chat-messages-container"
         ref={messageContainerRef}
-        css={css`
-          overflow: auto;
-          height: 100%;
-          display: flex;
-          flex-direction: column-reverse;
-        `}
+        css={container}
       >
         <InfiniteScroll
           next={fetchNextPage}
@@ -79,5 +74,12 @@ function ChatRoom() {
     </div>
   ) : null;
 }
+
+const container = css`
+  overflow: auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+`;
 
 export default ChatRoom;

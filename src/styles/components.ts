@@ -102,3 +102,38 @@ export const modalButton = css`
   font-size: ${textSizes.M};
   cursor: pointer;
 `;
+
+export const buttonWithoutBackgroundAndBorder = css`
+  border: none;
+  background: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  gap: 0.5rem;
+  font-size: ${textSizes.S};
+`;
+
+export const thumbnailImg = css`
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+`;
+
+export const thumbnailContainer = css`
+  height: 3rem;
+  width: 3rem;
+  overflow: hidden;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const containerWithLink = css`
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas: "element";
+`;

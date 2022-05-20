@@ -3,7 +3,7 @@
 import React from "react";
 import { css } from "@emotion/react";
 import { colors } from "../../../styles/variables";
-import { chatRoomCss, chatRoomHeaderCss } from "./styles";
+import { chatRoom, chatHeader } from "./styles";
 import { useOutletContext } from "react-router-dom";
 import { ChatHeaderProps } from "../../../components/ChatHeader";
 
@@ -19,31 +19,29 @@ function EmptyChatRoom() {
   React.useEffect(() => setHeader(null), [setHeader]);
 
   return (
-    <div css={chatRoomCss}>
-      <header css={chatRoomHeaderCss}>
+    <div css={chatRoom}>
+      <header css={chatHeader}>
         <h2>Chats</h2>
       </header>
-      <div
-        css={css`
-          padding: 1rem;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          height: 100%;
-        `}
-      >
-        <p
-          css={css`
-            margin: 0;
-            color: ${colors.DARK};
-          `}
-        >
-          Select a chat...
-        </p>
+      <div css={container}>
+        <p css={text}>Select a chat...</p>
       </div>
     </div>
   );
 }
+
+const container = css`
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+`;
+
+const text = css`
+  margin: 0;
+  color: ${colors.DARK};
+`;
 
 export default EmptyChatRoom;

@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 
-export const baseAppContainerCss = css`
+export const baseAppContainer = css`
   // Main page layout
   width: 100vw;
   height: 100vh;
@@ -8,16 +8,16 @@ export const baseAppContainerCss = css`
   grid-template-columns: 1fr;
 `;
 
-export const baseAppContainerWithoutTabsCss = css`
-  ${baseAppContainerCss};
+export const baseAppContainerWithoutTabs = css`
+  ${baseAppContainer};
   grid-template-rows: 5rem 1fr;
   grid-template-areas:
     "header"
     "main";
 `;
 
-export const baseAppContainerWithTabsCss = css`
-  ${baseAppContainerCss};
+export const baseAppContainerWithTabs = css`
+  ${baseAppContainer};
   // Main page layout with tabs
   grid-template-rows: 5rem 1fr 3rem;
   grid-template-areas:
