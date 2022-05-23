@@ -6,6 +6,7 @@ export const baseAppContainer = css`
   height: 100vh;
   display: grid;
   grid-template-columns: 1fr;
+  max-width: 100%;
 `;
 
 export const baseAppContainerWithoutTabs = css`

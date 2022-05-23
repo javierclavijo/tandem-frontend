@@ -12,7 +12,7 @@ import { globalStyles } from "./styles/global";
 import { UserInfo } from "./features/info/user/UserInfo";
 import ChannelInfo from "./features/info/channel/ChannelInfo";
 import { useMediaQuery } from "react-responsive";
-import ChatList from "./features/chats/ChatList";
+import ChatList from "./features/chats/list/ChatList";
 import Search from "./features/search/Search";
 import Register from "./features/auth/Register";
 

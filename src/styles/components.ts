@@ -129,6 +129,7 @@ export const thumbnailContainer = css`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
 `;
 
 export const containerWithLink = css`
@@ -156,13 +157,16 @@ export const homeSearchStyles = {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    padding: 1rem;
+    box-sizing: border-box;
   `,
   sectionHeading: css`
-    padding: 1rem 1rem 0 1rem;
     color: ${colors.PRIMARY};
   `,
   sectionItemsContainer: css`
     display: grid;
+    gap: 1rem;
+
     @media (min-width: 1024px) {
       grid-template-columns: repeat(3, 1fr);
     }
