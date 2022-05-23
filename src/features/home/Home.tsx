@@ -66,6 +66,7 @@ function Home() {
                 }: ${chat.messages[0].content}`}
                 link={`/chats/${chat.id}`}
                 image={chat.image}
+                key={chat.id}
               />
             ))}
           </div>
@@ -93,6 +94,7 @@ function Home() {
                 }: ${chat.messages[0].content}`}
                 link={`/chats/${chat.id}`}
                 image={chat.image}
+                key={chat.id}
               />
             ))}
           </div>
@@ -117,6 +119,7 @@ function Home() {
                 description={user.description}
                 link={`/chats/users/${user.id}`}
                 image={user.image}
+                key={user.id}
               />
             ))}
           </div>
