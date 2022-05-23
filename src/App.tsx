@@ -15,6 +15,7 @@ import { useMediaQuery } from "react-responsive";
 import ChatList from "./features/chats/list/ChatList";
 import Search from "./features/search/Search";
 import Register from "./features/auth/Register";
+import NotFound from "./components/NotFound";
 
 export default function App() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
@@ -38,6 +39,7 @@ export default function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/404" element={<NotFound />} />
         <Route path="/" element={<Home />} />
       </Routes>
     </React.Fragment>
