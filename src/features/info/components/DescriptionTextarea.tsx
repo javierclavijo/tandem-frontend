@@ -107,15 +107,7 @@ function DescriptionTextarea({ data, queryKey }: DescriptionTextareaProps) {
 
   return (
     <React.Fragment>
-      <div
-        css={css`
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          width: 100%;
-          height: 1.5rem;
-        `}
-      >
+      <div css={titleContainer}>
         <h3>Description</h3>
         <EditButtons
           editEnabled={editEnabled}
@@ -139,17 +131,21 @@ function DescriptionTextarea({ data, queryKey }: DescriptionTextareaProps) {
         css={editElement}
         placeholder="Add a description..."
       />
-      {error ? (
-        <p
-          css={css`
-            color: ${colors.CONTRAST};
-          `}
-        >
-          {error}
-        </p>
-      ) : null}
+      {error ? <p css={errorText}>{error}</p> : null}
     </React.Fragment>
   );
 }
+
+const titleContainer = css`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  height: 1.5rem;
+`;
+
+const errorText = css`
+  color: ${colors.CONTRAST};
+`;
 
 export default DescriptionTextarea;

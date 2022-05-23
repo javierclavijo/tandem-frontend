@@ -11,11 +11,11 @@ import Tabs from "../../components/Tabs";
 import { Chat } from "../../entities/Chat";
 import { ChatMessageResponse } from "../../entities/ChatMessage";
 import {
-  baseAppContainerWithoutTabsCss,
-  baseAppContainerWithTabsCss,
+  baseAppContainerWithoutTabs,
+  baseAppContainerWithTabs,
 } from "../../styles/layout";
-import ChatList from "./ChatList";
-import { chatRoomCss, chatRoomCssMobile } from "./room/styles";
+import ChatList from "./list/ChatList";
+import { chatRoom, chatRoomMobile } from "./room/styles";
 import { chatMain, chatMainMobile } from "./styles";
 import useAuth from "../auth/AuthContext";
 
@@ -86,11 +86,11 @@ function ChatMain() {
     /**
      * Desktop layout. Displays the chat list to the left of the router's outlet.
      */
-    <div css={baseAppContainerWithoutTabsCss}>
+    <div css={baseAppContainerWithoutTabs}>
       <Nav />
       <main css={chatMain}>
         <ChatList />
-        <section css={isDesktop ? chatRoomCss : chatRoomCssMobile}>
+        <section css={isDesktop ? chatRoom : chatRoomMobile}>
           {header ? <ChatHeader {...header} /> : null}
           <Outlet context={[header, setHeader]} />
         </section>
@@ -102,9 +102,7 @@ function ChatMain() {
      * current route.
      */
     <div
-      css={
-        params.id ? baseAppContainerWithoutTabsCss : baseAppContainerWithTabsCss
-      }
+      css={params.id ? baseAppContainerWithoutTabs : baseAppContainerWithTabs}
     >
       {params.id && header ? <ChatHeader {...header} /> : <Nav />}
       <main css={chatMainMobile}>

@@ -21,6 +21,7 @@ interface UserInfoNewLanguageSelectRequestData {
   user: string;
 }
 
+
 function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
@@ -66,19 +67,10 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
 
   return (
     <div
-      css={css`
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-      `}
+      css={outerContainer}
     >
       <div
-        css={css`
-          display: flex;
-          gap: 1rem;
-        `}
+        css={innerContainer}
       >
         <Select
           id={`language-new`}
@@ -113,9 +105,7 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
       </div>
       {error ? (
         <p
-          css={css`
-            color: ${colors.CONTRAST};
-          `}
+          css={errorText}
         >
           {error}
         </p>
@@ -123,5 +113,22 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
     </div>
   );
 }
+
+const outerContainer = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+`;
+
+const innerContainer = css`
+  display: flex;
+  gap: 1rem;
+`;
+
+const errorText = css`
+  color: ${colors.CONTRAST};
+`;
 
 export default UserInfoNewLanguageSelect;

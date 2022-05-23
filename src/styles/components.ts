@@ -102,3 +102,73 @@ export const modalButton = css`
   font-size: ${textSizes.M};
   cursor: pointer;
 `;
+
+export const buttonWithoutBackgroundAndBorder = css`
+  border: none;
+  background: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  gap: 0.5rem;
+  font-size: ${textSizes.S};
+`;
+
+export const thumbnailImg = css`
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+`;
+
+export const thumbnailContainer = css`
+  height: 3rem;
+  width: 3rem;
+  overflow: hidden;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+`;
+
+export const containerWithLink = css`
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas: "element";
+`;
+
+export const homeSearchStyles = {
+  header: css`
+    padding: 1rem;
+    background-color: ${colors.WHITE};
+    color: ${colors.DARK};
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  `,
+  h2: css`
+    color: ${colors.PRIMARY};
+  `,
+  section: css`
+    height: 100%;
+    background-color: ${colors.WHITE};
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    box-sizing: border-box;
+  `,
+  sectionHeading: css`
+    color: ${colors.PRIMARY};
+  `,
+  sectionItemsContainer: css`
+    display: grid;
+    gap: 1rem;
+
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  `,
+};

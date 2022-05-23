@@ -84,14 +84,7 @@ function NameInput<T>({ data, dataKey, mutation }: NameInputProps<T>) {
 
   return (
     <React.Fragment>
-      <div
-        css={css`
-          width: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        `}
-      >
+      <div css={container}>
         <input
           type="text"
           id="name"
@@ -103,12 +96,7 @@ function NameInput<T>({ data, dataKey, mutation }: NameInputProps<T>) {
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
           size={value.length}
-          css={css`
-            ${editElement};
-            text-align: center;
-            width: auto;
-            max-width: 100%;
-          `}
+          css={input}
         />
         <EditButtons
           editEnabled={editEnabled}
@@ -119,15 +107,7 @@ function NameInput<T>({ data, dataKey, mutation }: NameInputProps<T>) {
         />
       </div>
 
-      {error ? (
-        <p
-          css={css`
-            color: ${colors.CONTRAST};
-          `}
-        >
-          {error}
-        </p>
-      ) : null}
+      {error ? <p css={errorText}>{error}</p> : null}
     </React.Fragment>
   );
 }
@@ -201,3 +181,21 @@ export function UserNameInput({ data }: { data: User }) {
     <NameInput<User> data={data} dataKey="username" mutation={updateMutation} />
   );
 }
+
+const container = css`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const input = css`
+  ${editElement};
+  text-align: center;
+  width: auto;
+  max-width: 100%;
+`;
+
+const errorText = css`
+  color: ${colors.CONTRAST};
+`;

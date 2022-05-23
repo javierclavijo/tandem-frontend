@@ -1,20 +1,20 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import { listContainerCss, listContainerCssMobile } from "./styles";
-import ChatListFilter from "./list/ChatListFilter";
-import ChatListElements from "./list/ChatListElements";
+import { listContainer, listContainerMobile } from "../styles";
+import ChatListFilter from "./ChatListFilter";
+import ChatListElements from "./ChatListElements";
 import { useParams } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
-import { useChatList } from "./hooks";
-import useAuth from "../auth/AuthContext";
-import Button from "../../components/Button";
+import { useAllChatList } from "../hooks";
+import useAuth from "../../auth/AuthContext";
+import Button from "../../../components/Button";
 import { Plus } from "iconoir-react";
 import { css } from "@emotion/react";
-import { colors } from "../../styles/variables";
+import { colors } from "../../../styles/variables";
 import ReactModal from "react-modal";
-import { modal } from "../../styles/components";
-import ChannelCreationForm from "./ChannelCreationForm";
+import { modal } from "../../../styles/components";
+import ChannelCreationForm from "../ChannelCreationForm";
 
 function ChatList() {
   const params = useParams();
@@ -22,7 +22,7 @@ function ChatList() {
 
   const [filter, setFilter] = React.useState<string>("");
 
-  const { data } = useChatList();
+  const { data } = useAllChatList();
   const { user } = useAuth();
 
   const [isChannelCreationModalOpen, setIsChannelCreationModalOpen] =
@@ -30,7 +30,7 @@ function ChatList() {
 
   return (
     <React.Fragment>
-      <section css={isDesktop ? listContainerCss : listContainerCssMobile}>
+      <section css={isDesktop ? listContainer : listContainerMobile}>
         <ChatListFilter setFilter={setFilter} />
         {data && user ? (
           <ChatListElements
@@ -40,18 +40,7 @@ function ChatList() {
             userId={user?.id}
           />
         ) : null}
-        <div
-          css={css`
-            position: absolute;
-            background-color: ${colors.PRIMARY};
-            border-radius: 50%;
-            padding: 0.25rem;
-            bottom: 0;
-            right: 0;
-            margin: 1rem;
-            z-index: 10;
-          `}
-        >
+        <div css={newChatButtonContainer}>
           <Button
             visible={true}
             onClick={() => setIsChannelCreationModalOpen(true)}
@@ -66,14 +55,7 @@ function ChatList() {
         contentLabel="Add a new language"
         style={modal}
       >
-        <h3
-          css={css`
-            margin-bottom: 1rem;
-            color: ${colors.DARK};
-          `}
-        >
-          Create a new channel
-        </h3>
+        <h3 css={modalTitle}>Create a new channel</h3>
         <ChannelCreationForm
           closeModal={() => setIsChannelCreationModalOpen(false)}
         />
@@ -81,5 +63,21 @@ function ChatList() {
     </React.Fragment>
   );
 }
+
+const newChatButtonContainer = css`
+  position: absolute;
+  background-color: ${colors.PRIMARY};
+  border-radius: 50%;
+  padding: 0.25rem;
+  bottom: 0;
+  right: 0;
+  margin: 1rem;
+  z-index: 10;
+`;
+
+const modalTitle = css`
+  margin-bottom: 1rem;
+  color: ${colors.DARK};
+`;
 
 export default ChatList;

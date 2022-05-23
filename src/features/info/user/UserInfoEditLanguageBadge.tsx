@@ -63,12 +63,14 @@ function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
     }
   }, [data.level]);
 
+  const container = css`
+    ${badge};
+    background-color: ${bg};
+  `;
+
   return (
     <div
-      css={css`
-        ${badge};
-        background-color: ${bg};
-      `}
+      css={container}
     >
       <FlagIcon
         code={flagCodes.find((x) => x.key === data.language)?.value || "AD"}
