@@ -64,7 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   /**
    * Holds whether the login request is being executed or not.
    */
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   /**
    * Session's user query. Is disabled unless the user is logged in.

@@ -8,6 +8,7 @@ import { DateTime } from "luxon";
 import { colors, textSizes } from "../../../styles/variables";
 import { elementContentContainer, link } from "../styles";
 import { thumbnailContainer, thumbnailImg } from "../../../styles/components";
+import ResponsiveEllipsis from "../../../utils/ResponsiveEllipsis";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
@@ -54,15 +55,21 @@ function ChatListElement({
                 : null}
             </span>
           </span>
-          <span css={description}>
-            {/* If there's messages in the chat, show the first message and its author's username, or 'You'
-                        if the current user is the author. */}
-            {chat.messages.length
-              ? latestMessageIsOwn
-                ? `You: ${chat.messages[0].content}`
-                : `${chat.messages[0].author.username}: ${chat.messages[0].content}`
-              : null}
-          </span>
+          {/* If there's messages in the chat, show the first message and its author's username, or 'You'
+              if the current user is the author. */}
+          <ResponsiveEllipsis
+            text={
+              chat.messages.length
+                ? latestMessageIsOwn
+                  ? `You: ${chat.messages[0].content}`
+                  : `${chat.messages[0].author.username}: ${chat.messages[0].content}`
+                : ""
+            }
+            maxLine="1"
+            ellipsis="…"
+            trimRight
+            basedOn="letters"
+          />
         </div>
       </div>
       <Link to={`/chats/${chat.id}`} css={link} />
