@@ -64,7 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   /**
    * Holds whether the login request is being executed or not.
    */
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   /**
    * Session's user query. Is disabled unless the user is logged in.
@@ -122,7 +122,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setIsLoggedIn(true);
       } catch (e) {
         if (axios.isAxiosError(e) && e.response) {
-          setError(e.response.data);
+          if (e.response.status === 401) {
+            setError("Unable to log in with provided credentials.");
+          } else {
+            setError("Unable to log in.")
+          }
         }
       } finally {
         setLoading(false);
