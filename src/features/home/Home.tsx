@@ -58,8 +58,13 @@ function Home() {
                 id={chat.id}
                 name={chat.name}
                 languages={[]}
-                description={""}
-                link={""}
+                description={`${
+                  chat.messages[0].author.id === user.id
+                    ? "You"
+                    : chat.messages[0].author.username
+                }: ${chat.messages[0].content}`}
+                link={`/chats/${chat.id}`}
+                image={chat.image}
               />
             ))}
           </div>
@@ -76,8 +81,13 @@ function Home() {
                 id={chat.id}
                 name={chat.name}
                 languages={[]}
-                description={""}
-                link={""}
+                description={`${
+                  chat.messages[0].author.id === user.id
+                    ? "You"
+                    : chat.messages[0].author.username
+                }: ${chat.messages[0].content}`}
+                link={`/chats/${chat.id}`}
+                image={chat.image}
               />
             ))}
           </div>
@@ -93,9 +103,10 @@ function Home() {
               <SearchResultElement
                 id={user.id}
                 name={user.username}
-                languages={[]}
-                description={""}
-                link={""}
+                languages={user.languages.map((language) => language.language)}
+                description={user.description}
+                link={`/chats/users/${user.id}`}
+                image={user.image}
               />
             ))}
           </div>
