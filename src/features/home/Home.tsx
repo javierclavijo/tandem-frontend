@@ -15,6 +15,7 @@ import {
 import useAuth from "../auth/AuthContext";
 import { useChannelChatList, useFriendChatList } from "../chats/hooks";
 import SearchResultElement from "../search/SearchResultElement";
+import { useDiscoverUsersList } from "./hooks";
 
 function Home() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
@@ -30,6 +31,7 @@ function Home() {
 
   const { data: friendChats } = useFriendChatList();
   const { data: channelChats } = useChannelChatList();
+  const { data: discoverUsers } = useDiscoverUsersList();
 
   const container = css`
     ${isDesktop ? baseAppContainerWithoutTabs : baseAppContainerWithTabs};
@@ -44,6 +46,8 @@ function Home() {
           <h2 css={homeSearchStyles.h2}>Home</h2>
           <p>Welcome back, {user.username}</p>
         </header>
+
+        {/* 'Recent chats' section. Contains a list of the latest friend chats. */}
         <section css={homeSearchStyles.section}>
           <header>
             <h3 css={homeSearchStyles.sectionHeading}>Recent chats</h3>
@@ -60,6 +64,8 @@ function Home() {
             ))}
           </div>
         </section>
+
+        {/* 'Your channels' section. Contains a list of the latest channel chats. */}
         <section css={homeSearchStyles.section}>
           <header>
             <h3 css={homeSearchStyles.sectionHeading}>Your channels</h3>
@@ -76,10 +82,23 @@ function Home() {
             ))}
           </div>
         </section>
+
+        {/* 'Discover' section. Contains a list of randomized users, excluding friends of the user. */}
         <section css={homeSearchStyles.section}>
           <header>
             <h3 css={homeSearchStyles.sectionHeading}>Discover</h3>
           </header>
+          <div css={homeSearchStyles.sectionItemsContainer}>
+            {discoverUsers?.slice(0, 9).map((user) => (
+              <SearchResultElement
+                id={user.id}
+                name={user.username}
+                languages={[]}
+                description={""}
+                link={""}
+              />
+            ))}
+          </div>
         </section>
       </main>
     </div>
