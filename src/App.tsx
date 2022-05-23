@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, To } from "react-router-dom";
 import LogIn from "./features/auth/LogIn";
 import ChatMain from "./features/chats/ChatMain";
 import Home from "./features/home/Home";
@@ -39,8 +39,8 @@ export default function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/404" element={<NotFound />} />
         <Route path="/" element={<Home />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </React.Fragment>
   );

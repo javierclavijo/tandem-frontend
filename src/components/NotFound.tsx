@@ -27,8 +27,8 @@ function NotFound() {
       <main css={main}>
         <h2>Not found</h2>
         <p>We couldn't find what you're looking for.</p>
-        <Link to={-1 as To} css={link}>
-          Go back?
+        <Link to="/" css={link}>
+          Back to Home
         </Link>
       </main>
     </div>

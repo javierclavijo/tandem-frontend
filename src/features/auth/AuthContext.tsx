@@ -2,6 +2,7 @@ import React, { useContext, useMemo, useState } from "react";
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { User } from "../../entities/User";
+import { useNavigate } from "react-router-dom";
 
 interface AuthContextType {
   user: User | undefined;
@@ -40,6 +41,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
    */
 
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   /**
    * ID of the session's user. Used in the user's query key to identify the query.
@@ -66,6 +68,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
    */
   const [loading, setLoading] = useState<boolean>(true);
 
+  const axiosInterceptorRef = React.useRef<number | null>(null);
+
   /**
    * Session's user query. Is disabled unless the user is logged in.
    */
@@ -87,7 +91,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
    */
   const fetchSessionInfo = React.useCallback(async () => {
     const response = await axiosApi.get("session_info/");
-    if (response.data.id && response.data.url) {
+    if (!!response.data.id && !!response.data.url) {
       setId(response.data.id);
       setUrl(response.data.url);
       setIsLoggedIn(true);
@@ -100,6 +104,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   React.useEffect(() => {
     fetchSessionInfo();
   }, [fetchSessionInfo]);
+
+  React.useEffect(() => {
+    if (!axiosInterceptorRef.current) {
+      axiosInterceptorRef.current = axiosApi.interceptors.response.use(
+        (response) => response,
+        (error) => {
+          if (error.response.status === 404) {
+            navigate("/404");
+          }
+          return Promise.reject(error);
+        }
+      );
+    }
+  }, [axiosInterceptorRef.current]);
 
   /**
    * Sends a login request.
@@ -125,7 +143,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           if (e.response.status === 401) {
             setError("Unable to log in with provided credentials.");
           } else {
-            setError("Unable to log in.")
+            setError("Unable to log in.");
           }
         }
       } finally {

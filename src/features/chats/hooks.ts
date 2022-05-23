@@ -9,7 +9,7 @@ import { ChatMessage, ChatMessageResponse } from "../../entities/ChatMessage";
 import { DateTime } from "luxon";
 import React, { useCallback, useState } from "react";
 import { User } from "../../entities/User";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { ChatHeaderProps } from "../../components/ChatHeader";
 import useWebSocket from "react-use-websocket";
 
@@ -149,6 +149,7 @@ export const useChat = (
    * Holds the information about a chat and its messages.
    */
 
+  const navigate = useNavigate();
   const { data: chatList } = useAllChatList();
   const [chat, setChat] = useState<Chat | undefined>();
 
@@ -157,8 +158,10 @@ export const useChat = (
     const chatResult = chatList?.find((c) => c.id === id);
     if (chatResult) {
       setChat(chatResult);
+    } else {
+      navigate("/404");
     }
-  }, [chatList, id]);
+  }, [chatList, id, navigate]);
 
   const query = useInfiniteQuery<ChatMessageResponse>(
     ["chats", "messages", chat?.id],
