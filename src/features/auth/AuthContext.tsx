@@ -117,7 +117,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       );
     }
-  }, [axiosInterceptorRef.current]);
+  }, [navigate]);
 
   /**
    * Sends a login request.

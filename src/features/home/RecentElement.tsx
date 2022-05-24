@@ -22,7 +22,7 @@ interface SearchElementProps {
   link: string;
 }
 
-function SearchResultElement(props: SearchElementProps) {
+function RecentElement(props: SearchElementProps) {
   return (
     <article css={outerContainer}>
       <div css={innerContainer}>
@@ -89,21 +89,8 @@ const upperInnerContainer = css`
   justify-content: space-between;
 `;
 
-const flagsContainer = css`
-  display: flex;
-  gap: 0.5rem;
-`;
-
-const description = css`
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  max-width: 14rem;
-  height: auto;
-`;
-
 const link = css`
   grid-area: element;
 `;
 
-export default SearchResultElement;
+export default RecentElement;

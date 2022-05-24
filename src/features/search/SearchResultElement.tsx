@@ -9,7 +9,7 @@ import { flagCodes } from "../../resources/languages";
 import {
   containerWithLink,
   thumbnailContainer,
-  thumbnailImg
+  thumbnailImg,
 } from "../../styles/components";
 import { colors } from "../../styles/variables";
 import ResponsiveEllipsis from "../../utils/ResponsiveEllipsis";
@@ -105,13 +105,6 @@ const upperInnerContainer = css`
 const flagsContainer = css`
   display: flex;
   gap: 0.5rem;
-`;
-
-const description = css`
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  max-width: 14rem;
 `;
 
 const link = css`

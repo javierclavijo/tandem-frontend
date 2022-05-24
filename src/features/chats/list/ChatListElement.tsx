@@ -92,14 +92,6 @@ const title = css`
   align-items: center;
 `;
 
-const description = css`
-  font-size: ${textSizes.S};
-  max-width: 13rem;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-`;
-
 const latestMessageDatetime = css`
   font-size: ${textSizes.S};
 `;

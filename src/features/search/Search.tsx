@@ -18,13 +18,9 @@ import {
   homeSearchMainMobile
 } from "../../styles/layout";
 import { axiosApi } from "../auth/AuthContext";
+import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 import SearchPanel from "./SearchPanel";
 import { ChannelSearchResults, UserSearchResults } from "./SearchResults";
-import qs from "qs";
-import { Option } from "../../resources/languages";
-import { Channel } from "../../entities/Channel";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 
 /**
  * Options for the search type select. Includes a search panel and the search results list.

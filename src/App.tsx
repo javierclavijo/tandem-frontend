@@ -1,21 +1,21 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
-import { Route, Routes, To } from "react-router-dom";
-import LogIn from "./features/auth/LogIn";
-import ChatMain from "./features/chats/ChatMain";
-import Home from "./features/home/Home";
-import ChatRoom from "./features/chats/room/ChatRoom";
 import { Global } from "@emotion/react";
-import EmptyChatRoom from "./features/chats/room/EmptyChatRoom";
-import { globalStyles } from "./styles/global";
-import { UserInfo } from "./features/info/user/UserInfo";
-import ChannelInfo from "./features/info/channel/ChannelInfo";
+import React from "react";
 import { useMediaQuery } from "react-responsive";
-import ChatList from "./features/chats/list/ChatList";
-import Search from "./features/search/Search";
-import Register from "./features/auth/Register";
+import { Route, Routes } from "react-router-dom";
 import NotFound from "./components/NotFound";
+import LogIn from "./features/auth/LogIn";
+import Register from "./features/auth/Register";
+import ChatMain from "./features/chats/ChatMain";
+import ChatList from "./features/chats/list/ChatList";
+import ChatRoom from "./features/chats/room/ChatRoom";
+import EmptyChatRoom from "./features/chats/room/EmptyChatRoom";
+import Home from "./features/home/Home";
+import ChannelInfo from "./features/info/channel/ChannelInfo";
+import { UserInfo } from "./features/info/user/UserInfo";
+import Search from "./features/search/Search";
+import { globalStyles } from "./styles/global";
 
 export default function App() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
