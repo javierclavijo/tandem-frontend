@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+
 import React from "react";
 import ReactModal from "react-modal";
 import { modal } from "../../../styles/components";

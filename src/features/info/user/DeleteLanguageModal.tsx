@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+
 import React from "react";
 import ReactModal from "react-modal";
 import Button from "../../../components/Button";
@@ -36,12 +38,15 @@ function DeleteLanguageModal({
         } from your languages?`}
       </p>
       <div css={modal.buttonsContainer}>
-        <Button visible={true} onClick={handleDeleteLanguage}>
+        <button onClick={handleDeleteLanguage} css={modal.button}>
           Delete
-        </Button>
-        <Button visible={true} onClick={() => setSelectedDeleteLanguage(null)}>
+        </button>
+        <button
+          onClick={() => setSelectedDeleteLanguage(null)}
+          css={modal.cancelButton}
+        >
           Cancel
-        </Button>
+        </button>
       </div>
     </ReactModal>
   );
