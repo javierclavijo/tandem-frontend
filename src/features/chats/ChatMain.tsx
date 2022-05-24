@@ -18,12 +18,14 @@ import ChatList from "./ChatList";
 import { chatRoom, chatRoomMobile } from "./room/styles";
 import { chatMain, chatMainMobile } from "./styles";
 import useAuth from "../auth/AuthContext";
+import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 
 function ChatMain() {
   const queryClient = useQueryClient();
   const params = useParams();
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
   const { isLoggedIn } = useAuth();
+  useRedirectIfNotLoggedIn();
 
   /**
    * State used by the router outlet context which controls the header's state. This way, the header's data can be
