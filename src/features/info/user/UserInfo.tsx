@@ -20,11 +20,12 @@ import {
   infoSection,
   listSection,
   listSectionHeader,
-  profileImg
+  profileImg,
 } from "../styles";
 import DeleteLanguageModal from "./DeleteLanguageModal";
 import { useCreateChatWithUser, useDeleteUserLanguage, useUser } from "./hooks";
 import NewLanguageModal from "./NewLanguageModal";
+import SetPasswordModal from "./SetPasswordModal";
 import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
@@ -61,6 +62,12 @@ export function UserInfo() {
    * Set to true by default to avoid rendering the button on the first render.
    */
   const [isFriend, setIsFriend] = React.useState<boolean>(true);
+
+  /**
+   * Controls the language creation modal's rendering
+   */
+  const [passwordChangeModalIsOpen, setPasswordChangeModalIsOpen] =
+    React.useState(false);
 
   /**
    * Controls the language creation modal's rendering
@@ -138,10 +145,25 @@ export function UserInfo() {
               Chat with user
             </button>
           ) : null}
+          {isEditable ? (
+            <button
+              type="button"
+              onClick={() => setPasswordChangeModalIsOpen(true)}
+              css={headerButton}
+            >
+              Change password
+            </button>
+          ) : null}
         </React.Fragment>
       ),
     });
-  }, [isFriend, setHeader, onClickChatCreate]);
+  }, [
+    isFriend,
+    setHeader,
+    onClickChatCreate,
+    isEditable,
+    setPasswordChangeModalIsOpen,
+  ]);
 
   return data ? (
     <React.Fragment>
@@ -286,7 +308,7 @@ export function UserInfo() {
       </div>
 
       {/* Language creation modal
-        Only rendered if the profile is the session user's. Opens when the 'add a language' button is pressed. */}
+          Only rendered if the profile is the session user's. Opens when the 'add a language' button is pressed. */}
       {isEditable ? (
         <NewLanguageModal
           isOpen={newLanguageModalIsOpen}
@@ -295,13 +317,22 @@ export function UserInfo() {
       ) : null}
 
       {/* Language deletion modal
-        Only rendered if the profile is the session user's and a language has been selected for deletion (i.e. when a
-        language's delete button has been pressed.) */}
+          Only rendered if the profile is the session user's and a language has been selected for deletion (i.e. when a
+          language's delete button has been pressed.) */}
       {isEditable && selectedDeleteLanguage ? (
         <DeleteLanguageModal
           selectedDeleteLanguage={selectedDeleteLanguage}
           setSelectedDeleteLanguage={setSelectedDeleteLanguage}
           handleDeleteLanguage={handleDeleteLanguage}
+        />
+      ) : null}
+
+      {/* Set password modal.
+          Only rendered if the profile is the session user's. Opens when the 'change password' button is pressed. */}
+      {isEditable ? (
+        <SetPasswordModal
+          isOpen={passwordChangeModalIsOpen}
+          setIsOpen={setPasswordChangeModalIsOpen}
         />
       ) : null}
     </React.Fragment>
