@@ -14,7 +14,7 @@ import {
   baseAppContainerWithoutTabs,
   baseAppContainerWithTabs,
 } from "../../styles/layout";
-import ChatList from "./ChatList";
+import ChatList from "./list/ChatList";
 import { chatRoom, chatRoomMobile } from "./room/styles";
 import { chatMain, chatMainMobile } from "./styles";
 import useAuth from "../auth/AuthContext";

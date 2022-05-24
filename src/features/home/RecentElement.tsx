@@ -3,13 +3,11 @@
 import { css } from "@emotion/react";
 import { NavArrowRight } from "iconoir-react";
 import React from "react";
-import { FlagIcon } from "react-flag-kit";
 import { Link } from "react-router-dom";
-import { flagCodes } from "../../resources/languages";
 import {
   containerWithLink,
   thumbnailContainer,
-  thumbnailImg
+  thumbnailImg,
 } from "../../styles/components";
 import { colors } from "../../styles/variables";
 import ResponsiveEllipsis from "../../utils/ResponsiveEllipsis";
@@ -19,8 +17,7 @@ const defaultImg = require("../../static/images/user_placeholder.png");
 interface SearchElementProps {
   id: string;
   name: string;
-  languages: string[];
-  description: string;
+  latestMessage: string;
   image?: string | null;
   link: string;
 }
@@ -41,18 +38,9 @@ function SearchResultElement(props: SearchElementProps) {
               height={"1.5rem"}
             />
           </div>
-          <div css={flagsContainer}>
-            {props.languages.map((language) => (
-              <FlagIcon
-                code={flagCodes.find((x) => x.key === language)?.value || "AD"}
-                size={24}
-                key={`${props.id}-${language}`}
-              />
-            ))}
-          </div>
           <ResponsiveEllipsis
-            text={props.description}
-            maxLine="1"
+            text={props.latestMessage}
+            maxLine="2"
             ellipsis="…"
             trimRight
             basedOn="letters"
@@ -92,7 +80,6 @@ const innerContainer = css`
 const contentContainer = css`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   width: 100%;
 `;
 
@@ -112,6 +99,7 @@ const description = css`
   overflow: hidden;
   white-space: nowrap;
   max-width: 14rem;
+  height: auto;
 `;
 
 const link = css`

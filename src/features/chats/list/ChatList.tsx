@@ -1,36 +1,20 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import { listContainer, listContainerMobile } from "./styles";
-import ChatListFilter from "./list/ChatListFilter";
-import ChatListElements from "./list/ChatListElements";
+import { listContainer, listContainerMobile } from "../styles";
+import ChatListFilter from "./ChatListFilter";
+import ChatListElements from "./ChatListElements";
 import { useParams } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
-import { useChatList } from "./hooks";
-import useAuth from "../auth/AuthContext";
-import Button from "../../components/Button";
+import { useAllChatList } from "../hooks";
+import useAuth from "../../auth/AuthContext";
+import Button from "../../../components/Button";
 import { Plus } from "iconoir-react";
 import { css } from "@emotion/react";
-import { colors } from "../../styles/variables";
+import { colors } from "../../../styles/variables";
 import ReactModal from "react-modal";
-import { modal } from "../../styles/components";
-import ChannelCreationForm from "./ChannelCreationForm";
-
-const newChatButtonContainer = css`
-  position: absolute;
-  background-color: ${colors.PRIMARY};
-  border-radius: 50%;
-  padding: 0.25rem;
-  bottom: 0;
-  right: 0;
-  margin: 1rem;
-  z-index: 10;
-`;
-
-const modalTitle = css`
-  margin-bottom: 1rem;
-  color: ${colors.DARK};
-`;
+import { modal } from "../../../styles/components";
+import ChannelCreationForm from "../ChannelCreationForm";
 
 function ChatList() {
   const params = useParams();
@@ -38,7 +22,7 @@ function ChatList() {
 
   const [filter, setFilter] = React.useState<string>("");
 
-  const { data } = useChatList();
+  const { data } = useAllChatList();
   const { user } = useAuth();
 
   const [isChannelCreationModalOpen, setIsChannelCreationModalOpen] =
@@ -79,5 +63,21 @@ function ChatList() {
     </React.Fragment>
   );
 }
+
+const newChatButtonContainer = css`
+  position: absolute;
+  background-color: ${colors.PRIMARY};
+  border-radius: 50%;
+  padding: 0.25rem;
+  bottom: 0;
+  right: 0;
+  margin: 1rem;
+  z-index: 10;
+`;
+
+const modalTitle = css`
+  margin-bottom: 1rem;
+  color: ${colors.DARK};
+`;
 
 export default ChatList;

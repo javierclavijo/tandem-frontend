@@ -9,7 +9,7 @@ import { ChatMessage, ChatMessageResponse } from "../../entities/ChatMessage";
 import { DateTime } from "luxon";
 import React, { useCallback, useState } from "react";
 import { User } from "../../entities/User";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { ChatHeaderProps } from "../../components/ChatHeader";
 import useWebSocket from "react-use-websocket";
 
@@ -40,54 +40,105 @@ export const messageSortFn = (
 export const getFriendFromFriendChat = (user: User, chat: FriendChat) =>
   chat.users.find((u: User) => u.id !== user.id);
 
-const fetchChatList = async (user: User | undefined) => {
+const fetchFriendChatList = async (user: User | undefined) => {
   if (user) {
-    const friendChatsResponse = await axiosApi.get(
-      `friend_chats/?users=${user.id}&size=9999`
-    );
+    const friendChatsResponse = await axiosApi.get(`friend_chats/`, {
+      params: {
+        users: user.id,
+        size: 9999,
+      },
+    });
     // Add additional info to each chat (type, the other user's name, info URL and image)
-    const friendChats: Chat[] = [...friendChatsResponse.data.results].map(
-      (chat) => {
-        const other_user = getFriendFromFriendChat(user, chat);
-        return {
-          ...chat,
-          type: "users",
-          name: other_user?.username,
-          infoUrl: other_user?.url,
-          image: other_user?.image,
-        };
-      }
-    );
-    const channelChatsResponse = await axiosApi.get(
-      `channels/?memberships__user=${user.id}&size=9999`
-    );
-    // Add additional info to each chat (type, the channel's URL as the info URL)
-    const channelChats: Chat[] = [...channelChatsResponse.data.results].map(
-      (chat) => {
-        return {
-          ...chat,
-          type: "channels",
-          infoUrl: chat.url,
-        };
-      }
-    );
-    return [...friendChats, ...channelChats];
+    return [...friendChatsResponse.data.results].map((chat) => {
+      const other_user = getFriendFromFriendChat(user, chat);
+      return {
+        ...chat,
+        type: "users",
+        name: other_user?.username,
+        infoUrl: other_user?.url,
+        image: other_user?.image,
+      };
+    });
   }
   return [];
 };
 
-export const useChatList = () => {
+const fetchChannelChatList = async (user: User | undefined) => {
+  if (user) {
+    const channelChatsResponse = await axiosApi.get(`channels/`, {
+      params: {
+        memberships__user: user.id,
+        size: 9999,
+      },
+    });
+    // Add additional info to each chat (type, the channel's URL as the info URL)
+    return [...channelChatsResponse.data.results].map((chat) => ({
+      ...chat,
+      type: "channels",
+      infoUrl: chat.url,
+    }));
+  }
+  return [];
+};
+
+const fetchAllChatList = async (user: User | undefined) => {
+  const friendChats = await fetchFriendChatList(user);
+  const channelChats = await fetchChannelChatList(user);
+  return [...friendChats, ...channelChats];
+};
+
+export const useAllChatList = () => {
   /**
-   * Holds the information about the user's chat list.
+   * Holds the information about the user's chat list (both channel and friend chats).
    */
   const { user } = useAuth();
-  return useQuery<Chat[]>(["chats", "list"], () => fetchChatList(user), {
-    // Whenever data is either fetched or updated with setQueryData(), sort chats according to their latest messages
-    onSuccess: (data) =>
-      data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
-    staleTime: 5000,
-    enabled: !!user,
-  });
+  return useQuery<Chat[]>(
+    ["chats", "list", "all"],
+    () => fetchAllChatList(user),
+    {
+      // Whenever data is either fetched or updated with setQueryData(), sort chats according to their latest messages
+      onSuccess: (data) =>
+        data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
+      staleTime: 5000,
+      enabled: !!user,
+    }
+  );
+};
+
+export const useFriendChatList = () => {
+  /**
+   * Holds the information about the user's friend chat list.
+   */
+  const { user } = useAuth();
+  return useQuery<Chat[]>(
+    ["chats", "list", "users"],
+    () => fetchFriendChatList(user),
+    {
+      // Whenever data is either fetched or updated with setQueryData(), sort chats according to their latest messages
+      onSuccess: (data) =>
+        data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
+      staleTime: 5000,
+      enabled: !!user,
+    }
+  );
+};
+
+export const useChannelChatList = () => {
+  /**
+   * Holds the information about the user's channel chat list.
+   */
+  const { user } = useAuth();
+  return useQuery<Chat[]>(
+    ["chats", "list", "channels"],
+    () => fetchChannelChatList(user),
+    {
+      // Whenever data is either fetched or updated with setQueryData(), sort chats according to their latest messages
+      onSuccess: (data) =>
+        data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
+      staleTime: 5000,
+      enabled: !!user,
+    }
+  );
 };
 
 export const useChat = (
@@ -98,7 +149,8 @@ export const useChat = (
    * Holds the information about a chat and its messages.
    */
 
-  const { data: chatList } = useChatList();
+  const navigate = useNavigate();
+  const { data: chatList } = useAllChatList();
   const [chat, setChat] = useState<Chat | undefined>();
 
   React.useLayoutEffect(() => {
@@ -106,8 +158,10 @@ export const useChat = (
     const chatResult = chatList?.find((c) => c.id === id);
     if (chatResult) {
       setChat(chatResult);
+    } else {
+      navigate("/404");
     }
-  }, [chatList, id]);
+  }, [chatList, id, navigate]);
 
   const query = useInfiniteQuery<ChatMessageResponse>(
     ["chats", "messages", chat?.id],

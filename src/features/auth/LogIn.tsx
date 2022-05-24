@@ -39,7 +39,7 @@ function LogIn() {
 
   React.useEffect(() => {
     if (isLoggedIn) {
-      navigate("/chats");
+      navigate("/");
     }
   }, [isLoggedIn, navigate]);
 

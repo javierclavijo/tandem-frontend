@@ -1,20 +1,24 @@
 /** @jsxImportSource @emotion/react */
 
+import qs from "qs";
 import React from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useInfiniteQuery } from "react-query";
+import { useMediaQuery } from "react-responsive";
+import Nav from "../../components/Nav";
+import Tabs from "../../components/Tabs";
+import { Channel } from "../../entities/Channel";
+import { User } from "../../entities/User";
+import { Option } from "../../resources/languages";
+import { homeSearchStyles } from "../../styles/components";
 import {
   baseAppContainerWithoutTabs,
   baseAppContainerWithTabs,
+  homeSearchMain,
+  homeSearchMainMobile
 } from "../../styles/layout";
-import Nav from "../../components/Nav";
-import { useMediaQuery } from "react-responsive";
-import Tabs from "../../components/Tabs";
-import SearchPanel from "./SearchPanel";
-import { searchMain, searchMainMobile } from "./styles";
-import { css } from "@emotion/react";
-import { colors } from "../../styles/variables";
-import { useInfiniteQuery } from "react-query";
-import { User } from "../../entities/User";
 import { axiosApi } from "../auth/AuthContext";
+import SearchPanel from "./SearchPanel";
 import { ChannelSearchResults, UserSearchResults } from "./SearchResults";
 import qs from "qs";
 import { Option } from "../../resources/languages";
@@ -165,14 +169,6 @@ function Search() {
     refetchUsers,
   ]);
 
-  const main = css`
-          ${isDesktop ? searchMain : searchMainMobile};
-          overflow: auto;
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-        `
-
   return (
     <div
       css={isDesktop ? baseAppContainerWithoutTabs : baseAppContainerWithTabs}
@@ -180,7 +176,7 @@ function Search() {
       <Nav />
       <main
         id="search-main"
-        css={main}
+        css={isDesktop ? homeSearchMain : homeSearchMainMobile}
       >
         {/* Infinite scroll component. Includes the search panel and results. Its properties are assigned
                 conditionally based on the selected search type. */}
@@ -205,10 +201,8 @@ function Search() {
           style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
         >
           {/* Heading and search panel. */}
-          <header
-            css={header}
-          >
-            <h2>Find Users & Channels</h2>
+          <header css={homeSearchStyles.header}>
+            <h2 css={homeSearchStyles.h2}>Find Users & Channels</h2>
             <SearchPanel
               setUserSearchParams={setUserSearchParams}
               setChannelSearchParams={setChannelSearchParams}
@@ -218,17 +212,13 @@ function Search() {
           </header>
 
           {/* Search results. */}
-          <section
-            css={resultsOuterContainer}
-          >
-            <h3
-              css={resultsHeader}
-            >
-              {searchType === searchTypeOptions.USERS ? "Users" : "Channels"}
-            </h3>
-            <div
-              css={resultsInnerContainer}
-            >
+          <section css={homeSearchStyles.section}>
+            <header>
+              <h3 css={homeSearchStyles.sectionHeading}>
+                {searchType === searchTypeOptions.USERS ? "Users" : "Channels"}
+              </h3>
+            </header>
+            <div css={homeSearchStyles.sectionItemsContainer}>
               {searchType === searchTypeOptions.USERS ? (
                 <React.Fragment>
                   <UserSearchResults
@@ -254,33 +244,5 @@ function Search() {
     </div>
   );
 }
-
-const header = css`
-  padding: 1rem;
-  background-color: ${colors.WHITE};
-  color: ${colors.DARK};
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
-const resultsOuterContainer = css`
-  height: 100%;
-  background-color: ${colors.WHITE};
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
-const resultsHeader = css`
-  padding: 1rem 1rem 0 1rem;
-`;
-
-const resultsInnerContainer = css`
-  display: grid;
-  @media (min-width: 1024px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-`;
 
 export default Search;

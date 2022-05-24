@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../features/auth/AuthContext";
 import { css } from "@emotion/react";
 import { colors, textSizes } from "../styles/variables";
@@ -27,7 +27,9 @@ function Nav() {
   return (
     <header css={header}>
       <nav css={nav}>
-        <h1 css={title}>ChatApp</h1>
+        <Link to="/" css={link}>
+          <h1 css={title}>ChatApp</h1>
+        </Link>
         <ul css={navList}>
           {isLoggedIn && isDesktop ? (
             <React.Fragment>

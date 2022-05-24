@@ -129,6 +129,7 @@ export const thumbnailContainer = css`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
 `;
 
 export const containerWithLink = css`
@@ -137,3 +138,37 @@ export const containerWithLink = css`
   grid-template-columns: 1fr;
   grid-template-areas: "element";
 `;
+
+export const homeSearchStyles = {
+  header: css`
+    padding: 1rem;
+    background-color: ${colors.WHITE};
+    color: ${colors.DARK};
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  `,
+  h2: css`
+    color: ${colors.PRIMARY};
+  `,
+  section: css`
+    height: 100%;
+    background-color: ${colors.WHITE};
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    box-sizing: border-box;
+  `,
+  sectionHeading: css`
+    color: ${colors.PRIMARY};
+  `,
+  sectionItemsContainer: css`
+    display: grid;
+    gap: 1rem;
+
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  `,
+};

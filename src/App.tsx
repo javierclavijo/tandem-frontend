@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, To } from "react-router-dom";
 import LogIn from "./features/auth/LogIn";
 import ChatMain from "./features/chats/ChatMain";
 import Home from "./features/home/Home";
@@ -12,9 +12,10 @@ import { globalStyles } from "./styles/global";
 import { UserInfo } from "./features/info/user/UserInfo";
 import ChannelInfo from "./features/info/channel/ChannelInfo";
 import { useMediaQuery } from "react-responsive";
-import ChatList from "./features/chats/ChatList";
+import ChatList from "./features/chats/list/ChatList";
 import Search from "./features/search/Search";
 import Register from "./features/auth/Register";
+import NotFound from "./components/NotFound";
 
 export default function App() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
@@ -39,6 +40,7 @@ export default function App() {
         <Route path="/login" element={<LogIn />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Home />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </React.Fragment>
   );
