@@ -80,28 +80,52 @@ export const noBorderAndBgSelectDark: StylesConfig = {
 };
 
 export const modal = {
-  content: {
-    margin: "auto",
-    width: "fit-content",
-    height: "fit-content",
-    overflow: "visible",
-    padding: "1.25rem",
+  container: {
+    content: {
+      margin: "auto",
+      width: "fit-content",
+      height: "fit-content",
+      overflow: "visible",
+      padding: "1.25rem",
+    },
+    overlay: {
+      zIndex: 100,
+    },
   },
-  overlay: {
-    zIndex: 100,
-  },
-};
 
-export const modalButton = css`
-  width: fit-content;
-  padding: 0.5rem;
-  border-radius: 3px;
-  border: none;
-  background-color: ${colors.PRIMARY};
-  color: ${colors.WHITE};
-  font-size: ${textSizes.M};
-  cursor: pointer;
-`;
+  title: css`
+    margin-bottom: 1rem;
+    color: ${colors.DARK};
+  `,
+
+  buttonsContainer: css`
+    display: flex;
+    gap: 1rem;
+  `,
+
+  button: css`
+    width: fit-content;
+    padding: 0.5rem;
+    border-radius: 3px;
+    border: none;
+    background-color: ${colors.PRIMARY};
+    color: ${colors.WHITE};
+    font-size: ${textSizes.M};
+    cursor: pointer;
+  `,
+
+  cancelButton: css`
+    width: fit-content;
+    padding: 0.5rem;
+    border-radius: 3px;
+    border: none;
+    background-color: ${colors.PRIMARY};
+    color: ${colors.WHITE};
+    font-size: ${textSizes.M};
+    cursor: pointer;
+    background-color: ${colors.DARK}60;
+  `,
+};
 
 export const buttonWithoutBackgroundAndBorder = css`
   border: none;
@@ -148,9 +172,11 @@ export const homeSearchStyles = {
     flex-direction: column;
     gap: 1rem;
   `,
+
   h2: css`
     color: ${colors.PRIMARY};
   `,
+
   section: css`
     height: 100%;
     background-color: ${colors.WHITE};
@@ -160,9 +186,11 @@ export const homeSearchStyles = {
     padding: 1rem;
     box-sizing: border-box;
   `,
+
   sectionHeading: css`
     color: ${colors.PRIMARY};
   `,
+
   sectionItemsContainer: css`
     display: grid;
     gap: 1rem;

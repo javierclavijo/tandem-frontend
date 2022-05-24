@@ -1,20 +1,18 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
-import { listContainer, listContainerMobile } from "../styles";
-import ChatListFilter from "./ChatListFilter";
-import ChatListElements from "./ChatListElements";
-import { useParams } from "react-router-dom";
-import { useMediaQuery } from "react-responsive";
-import { useAllChatList } from "../hooks";
-import useAuth from "../../auth/AuthContext";
-import Button from "../../../components/Button";
-import { Plus } from "iconoir-react";
 import { css } from "@emotion/react";
+import { Plus } from "iconoir-react";
+import React from "react";
+import { useMediaQuery } from "react-responsive";
+import { useParams } from "react-router-dom";
+import Button from "../../../components/Button";
 import { colors } from "../../../styles/variables";
-import ReactModal from "react-modal";
-import { modal } from "../../../styles/components";
-import ChannelCreationForm from "../ChannelCreationForm";
+import useAuth from "../../auth/AuthContext";
+import { useAllChatList } from "../hooks";
+import { listContainer, listContainerMobile } from "../styles";
+import ChatListElements from "./ChatListElements";
+import ChatListFilter from "./ChatListFilter";
+import NewChannelModal from "./NewChannelModal";
 
 function ChatList() {
   const params = useParams();
@@ -49,17 +47,10 @@ function ChatList() {
           </Button>
         </div>
       </section>
-      <ReactModal
+      <NewChannelModal
         isOpen={isChannelCreationModalOpen}
-        onRequestClose={() => setIsChannelCreationModalOpen(false)}
-        contentLabel="Add a new language"
-        style={modal}
-      >
-        <h3 css={modalTitle}>Create a new channel</h3>
-        <ChannelCreationForm
-          closeModal={() => setIsChannelCreationModalOpen(false)}
-        />
-      </ReactModal>
+        setIsOpen={setIsChannelCreationModalOpen}
+      />
     </React.Fragment>
   );
 }
@@ -73,11 +64,6 @@ const newChatButtonContainer = css`
   right: 0;
   margin: 1rem;
   z-index: 10;
-`;
-
-const modalTitle = css`
-  margin-bottom: 1rem;
-  color: ${colors.DARK};
 `;
 
 export default ChatList;

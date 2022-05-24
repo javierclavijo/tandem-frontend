@@ -1,42 +1,33 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
-import useAuth from "../../auth/AuthContext";
-import { UserLanguage } from "../../../entities/User";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { css } from "@emotion/react";
+import { Plus } from "iconoir-react";
+import React from "react";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { ChatHeaderProps } from "../../../components/ChatHeader";
+import LanguageBadge from "../../../components/LanguageBadge";
+import { UserLanguage } from "../../../entities/User";
+import { buttonWithoutBackgroundAndBorder } from "../../../styles/components";
+import { colors, textSizes } from "../../../styles/variables";
+import useAuth from "../../auth/AuthContext";
+import { getFriendFromFriendChat, useJoinWSChat } from "../../chats/hooks";
+import DescriptionTextarea from "../components/DescriptionTextarea";
+import ImageInput from "../components/ImageInput";
+import InfoListElement from "../components/InfoListElement";
+import { UserNameInput } from "../components/NameInput";
 import {
   descriptionSection,
   infoSection,
   listSection,
   listSectionHeader,
-  profileImg,
+  profileImg
 } from "../styles";
-import { UserNameInput } from "../components/NameInput";
-import DescriptionTextarea from "../components/DescriptionTextarea";
-import InfoListElement from "../components/InfoListElement";
-import ReactModal from "react-modal";
-import UserInfoNewLanguageSelect from "./UserInfoNewLanguageSelect";
-import { colors, textSizes } from "../../../styles/variables";
-import { Plus } from "iconoir-react";
-import Button from "../../../components/Button";
-import LanguageBadge from "../../../components/LanguageBadge";
-import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
-import { languages } from "../../../resources/languages";
-import ImageInput from "../components/ImageInput";
-import { getFriendFromFriendChat, useJoinWSChat } from "../../chats/hooks";
-import { ChatHeaderProps } from "../../../components/ChatHeader";
-import {
-  buttonWithoutBackgroundAndBorder,
-  modal,
-} from "../../../styles/components";
+import DeleteLanguageModal from "./DeleteLanguageModal";
 import { useCreateChatWithUser, useDeleteUserLanguage, useUser } from "./hooks";
+import NewLanguageModal from "./NewLanguageModal";
+import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
-
-// Set the modal's app element to "hide the application from assistive screenreaders and other assistive technologies
-// while the modal is open" (see react-modal docs: https://reactcommunity.org/react-modal/examples/set_app_element/).
-ReactModal.setAppElement("#root");
 
 export function UserInfo() {
   /**
@@ -295,51 +286,23 @@ export function UserInfo() {
       </div>
 
       {/* Language creation modal
-        Only rendered if the profile is the current user's. Opens when the 'add a language' button is pressed. */}
+        Only rendered if the profile is the session user's. Opens when the 'add a language' button is pressed. */}
       {isEditable ? (
-        <ReactModal
+        <NewLanguageModal
           isOpen={newLanguageModalIsOpen}
-          onRequestClose={() => setNewLanguageModalIsOpen(false)}
-          contentLabel="Add a new language"
-          style={modal}
-        >
-          <p css={modalTitle}>Add a new language</p>
-          <UserInfoNewLanguageSelect
-            onClose={() => setNewLanguageModalIsOpen(false)}
-          />
-        </ReactModal>
+          setIsOpen={setNewLanguageModalIsOpen}
+        />
       ) : null}
 
       {/* Language deletion modal
-        Only rendered if the profile is the current user's and a language has been selected for deletion (i.e. when a
+        Only rendered if the profile is the session user's and a language has been selected for deletion (i.e. when a
         language's delete button has been pressed.) */}
       {isEditable && selectedDeleteLanguage ? (
-        <ReactModal
-          isOpen={!!selectedDeleteLanguage}
-          onRequestClose={() => setSelectedDeleteLanguage(null)}
-          contentLabel="Delete language"
-          style={modal}
-        >
-          <p css={modalTitle}>
-            Delete{" "}
-            {
-              languages.find((l) => l.key === selectedDeleteLanguage.language)
-                ?.value
-            }{" "}
-            from your languages?
-          </p>
-          <div css={modalButtonsContainer}>
-            <Button visible={true} onClick={handleDeleteLanguage}>
-              Delete
-            </Button>
-            <Button
-              visible={true}
-              onClick={() => setSelectedDeleteLanguage(null)}
-            >
-              Cancel
-            </Button>
-          </div>
-        </ReactModal>
+        <DeleteLanguageModal
+          selectedDeleteLanguage={selectedDeleteLanguage}
+          setSelectedDeleteLanguage={setSelectedDeleteLanguage}
+          handleDeleteLanguage={handleDeleteLanguage}
+        />
       ) : null}
     </React.Fragment>
   ) : null;
@@ -387,16 +350,6 @@ const emptyListContainer = css`
 const channelListContainer = css`
   ${listSection};
   padding-top: 0;
-`;
-
-const modalTitle = css`
-  margin-bottom: 1rem;
-  color: ${colors.DARK};
-`;
-
-const modalButtonsContainer = css`
-  display: flex;
-  gap: 1rem;
 `;
 
 const addLanguageButton = css`

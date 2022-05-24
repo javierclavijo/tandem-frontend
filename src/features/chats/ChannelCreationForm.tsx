@@ -1,18 +1,18 @@
 /** @jsxImportSource @emotion/react */
 
+import { css } from "@emotion/react";
+import { ErrorMessage } from "@hookform/error-message";
+import axios from "axios";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { ErrorMessage } from "@hookform/error-message";
+import { useMutation, useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { languageOptions, levelOptions } from "../../resources/languages";
-import { modalButton, select } from "../../styles/components";
-import { css } from "@emotion/react";
+import { modal, select } from "../../styles/components";
 import { colors, textSizes } from "../../styles/variables";
 import { axiosApi } from "../auth/AuthContext";
-import { useMutation, useQueryClient } from "react-query";
 import { errorCss } from "../auth/styles";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 interface ChannelCreationRequestData {
   name: string;
@@ -138,7 +138,7 @@ function ChannelCreationForm({ closeModal }: { closeModal: () => void }) {
         </div>
       </fieldset>
       <div css={buttonsContainer}>
-        <button type="submit" css={modalButton}>
+        <button type="submit" css={modal.button}>
           Create channel
         </button>
         <button type="button" onClick={closeModal} css={cancelButton}>
@@ -184,7 +184,7 @@ const buttonsContainer = css`
 `;
 
 const cancelButton = css`
-  ${modalButton};
+  ${modal.button};
   background-color: ${colors.DARK}60;
 `;
 

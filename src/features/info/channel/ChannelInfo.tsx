@@ -1,9 +1,26 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
-import useAuth from "../../auth/AuthContext";
 import { css } from "@emotion/react";
+import { FastArrowDownBox, FastArrowUpBox } from "iconoir-react";
+import React from "react";
+import {
+  useLocation,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from "react-router-dom";
+import Button from "../../../components/Button";
+import { ChatHeaderProps } from "../../../components/ChatHeader";
+import LanguageBadge from "../../../components/LanguageBadge";
+import ShareLink from "../../../components/ShareLink";
+import { buttonWithoutBackgroundAndBorder } from "../../../styles/components";
+import { colors, textSizes } from "../../../styles/variables";
+import useAuth from "../../auth/AuthContext";
+import { useJoinWSChat } from "../../chats/hooks";
 import DescriptionTextarea from "../components/DescriptionTextarea";
+import ImageInput from "../components/ImageInput";
+import InfoListElement from "../components/InfoListElement";
+import { ChannelNameInput } from "../components/NameInput";
 import {
   descriptionSection,
   infoSection,
@@ -11,28 +28,8 @@ import {
   listSectionHeader,
   profileImg,
 } from "../styles";
-import InfoListElement from "../components/InfoListElement";
-import { ChannelNameInput } from "../components/NameInput";
-import LanguageBadge from "../../../components/LanguageBadge";
-import { colors, textSizes } from "../../../styles/variables";
 import ChannelEditLanguageBadge from "./ChannelEditLanguageBadge";
-import ImageInput from "../components/ImageInput";
-import {
-  useLocation,
-  useNavigate,
-  useOutletContext,
-  useParams,
-} from "react-router-dom";
-import { ChatHeaderProps } from "../../../components/ChatHeader";
-import Button from "../../../components/Button";
-import { FastArrowDownBox, FastArrowUpBox } from "iconoir-react";
-import ShareLink from "../../../components/ShareLink";
-import {
-  buttonWithoutBackgroundAndBorder,
-  modal,
-  modalButton,
-} from "../../../styles/components";
-import ReactModal from "react-modal";
+import DeleteChannelModal from "./DeleteChannelModal";
 import {
   useChangeUserRole,
   useChannel,
@@ -40,13 +37,9 @@ import {
   useJoinChannel,
   useLeaveChannel,
 } from "./hooks";
-import { useJoinWSChat } from "../../chats/hooks";
+import LeaveChannelModal from "./LeaveChannelModal";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
-
-// Set the modal's app element to "hide the application from assistive screenreaders and other assistive technologies
-// while the modal is open" (see react-modal docs: https://reactcommunity.org/react-modal/examples/set_app_element/).
-ReactModal.setAppElement("#root");
 
 function ChannelInfo() {
   /**
@@ -294,46 +287,18 @@ function ChannelInfo() {
       </section>
 
       {/* Channel deletion confirmation modal */}
-      <ReactModal
+      <DeleteChannelModal
         isOpen={deletionModalIsOpen}
-        onRequestClose={() => setDeletionModalIsOpen(false)}
-        contentLabel="Delete channel"
-        style={modal}
-      >
-        <p css={modalTitle}>Delete channel?</p>
-        <div css={header}>
-          <button onClick={handleDelete} css={modalButton}>
-            Delete
-          </button>
-          <button
-            onClick={() => setDeletionModalIsOpen(false)}
-            css={cancelButton}
-          >
-            Cancel
-          </button>
-        </div>
-      </ReactModal>
+        setIsOpen={setDeletionModalIsOpen}
+        handleDelete={handleDelete}
+      />
 
       {/* Channel leave confirmation modal */}
-      <ReactModal
+      <LeaveChannelModal
         isOpen={leaveChannelModalIsOpen}
-        onRequestClose={() => setLeaveChannelModalIsOpen(false)}
-        contentLabel="Leave channel"
-        style={modal}
-      >
-        <p css={modalTitle}>Leave channel?</p>
-        <div css={header}>
-          <button onClick={handleLeaveChannel} css={modalButton}>
-            Leave
-          </button>
-          <button
-            onClick={() => setLeaveChannelModalIsOpen(false)}
-            css={cancelButton}
-          >
-            Cancel
-          </button>
-        </div>
-      </ReactModal>
+        setIsOpen={setLeaveChannelModalIsOpen}
+        handleLeave={handleLeaveChannel}
+      />
     </div>
   ) : null;
 }
@@ -341,11 +306,6 @@ function ChannelInfo() {
 const header = css`
   display: flex;
   gap: 1rem;
-`;
-
-const cancelButton = css`
-  ${modalButton};
-  background-color: ${colors.DARK}60;
 `;
 
 const headerButton = css`
@@ -360,10 +320,6 @@ const container = css`
 
 const emptyContainer = css`
   padding: 0.5rem 1rem;
-`;
-
-const modalTitle = css`
-  margin-bottom: 1rem;
 `;
 
 export default ChannelInfo;
