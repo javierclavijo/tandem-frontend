@@ -20,6 +20,11 @@ import {
 import { axiosApi } from "../auth/AuthContext";
 import SearchPanel from "./SearchPanel";
 import { ChannelSearchResults, UserSearchResults } from "./SearchResults";
+import qs from "qs";
+import { Option } from "../../resources/languages";
+import { Channel } from "../../entities/Channel";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 
 /**
  * Options for the search type select. Includes a search panel and the search results list.
@@ -65,6 +70,7 @@ export interface ChannelSearchParams {
  */
 function Search() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+  useRedirectIfNotLoggedIn();
 
   /**
    * Search params state.

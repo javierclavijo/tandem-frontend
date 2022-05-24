@@ -14,16 +14,19 @@ import {
 } from "../../styles/layout";
 import { colors } from "../../styles/variables";
 import useAuth from "../auth/AuthContext";
+
 import { useChannelChatList, useFriendChatList } from "../chats/hooks";
 import SearchResultElement from "../search/SearchResultElement";
 import { useDiscoverUsersList } from "./hooks";
 import RecentElement from "./RecentElement";
+import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 
 function Home() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
 
   const { isLoggedIn, loading, user } = useAuth();
   const navigate = useNavigate();
+  useRedirectIfNotLoggedIn();
 
   useEffect(() => {
     if (!loading && !isLoggedIn) {
