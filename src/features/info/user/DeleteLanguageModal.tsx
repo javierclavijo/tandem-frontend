@@ -2,7 +2,6 @@
 
 import React from "react";
 import ReactModal from "react-modal";
-import Button from "../../../components/Button";
 import { UserLanguage } from "../../../entities/User";
 import { languages } from "../../../resources/languages";
 import { modal } from "../../../styles/components";

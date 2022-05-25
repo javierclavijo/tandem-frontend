@@ -6,9 +6,7 @@ import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
-import { useNavigate } from "react-router-dom";
 import { modal } from "../../../styles/components";
-import { colors, textSizes } from "../../../styles/variables";
 import useAuth, { axiosApi } from "../../auth/AuthContext";
 import { errorCss as error, input, label } from "../../auth/styles";
 
@@ -135,15 +133,6 @@ const form = css`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-`;
-
-const nameInput = css`
-  font-size: ${textSizes.M};
-  border-radius: 3px;
-  border: 1px solid ${colors.DARK}50;
-  padding: 0.5rem;
-  outline: none;
-  color: ${colors.DARK};
 `;
 
 export default SetPasswordForm;

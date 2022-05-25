@@ -1,38 +1,31 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from "@emotion/react";
-import React, { useEffect } from "react";
+import React from "react";
 import { useMediaQuery } from "react-responsive";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Nav from "../../components/Nav";
 import { homeSearchStyles } from "../../styles/components";
 import {
   baseAppContainerWithoutTabs,
   baseAppContainerWithTabs,
   homeSearchMain,
-  homeSearchMainMobile,
+  homeSearchMainMobile
 } from "../../styles/layout";
 import { colors } from "../../styles/variables";
 import useAuth from "../auth/AuthContext";
-
+import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 import { useChannelChatList, useFriendChatList } from "../chats/hooks";
 import SearchResultElement from "../search/SearchResultElement";
 import { useDiscoverUsersList } from "./hooks";
 import RecentElement from "./RecentElement";
-import { useRedirectIfNotLoggedIn } from "../auth/hooks";
+
 
 function Home() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
 
-  const { isLoggedIn, loading, user } = useAuth();
-  const navigate = useNavigate();
+  const { isLoggedIn, user } = useAuth();
   useRedirectIfNotLoggedIn();
-
-  useEffect(() => {
-    if (!loading && !isLoggedIn) {
-      navigate("/login");
-    }
-  }, [loading, isLoggedIn, navigate]);
 
   const { data: friendChats } = useFriendChatList();
   const { data: channelChats } = useChannelChatList();
