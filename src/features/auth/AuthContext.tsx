@@ -90,12 +90,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
    * and sets it in the context's state. Runs on init.
    */
   const fetchSessionInfo = React.useCallback(async () => {
+    setLoading(true);
     const response = await axiosApi.get("session_info/");
     if (!!response.data.id && !!response.data.url) {
       setId(response.data.id);
       setUrl(response.data.url);
       setIsLoggedIn(true);
     }
+    setLoading(false);
   }, []);
 
   /**
