@@ -12,7 +12,7 @@ import { languageOptions, levelOptions } from "../../resources/languages";
 import { modal, select } from "../../styles/components";
 import { colors, textSizes } from "../../styles/variables";
 import { axiosApi } from "../auth/AuthContext";
-import { errorCss } from "../auth/styles";
+import { errorStyle } from "../auth/styles";
 
 interface ChannelCreationRequestData {
   name: string;
@@ -91,7 +91,7 @@ function ChannelCreationForm({ closeModal }: { closeModal: () => void }) {
       <ErrorMessage
         errors={errors}
         name="name"
-        render={({ message }) => <p css={errorCss}>{message}</p>}
+        render={({ message }) => <p css={errorStyle}>{message}</p>}
       />
       <fieldset css={fieldset}>
         <div css={selectContainer}>
@@ -112,7 +112,7 @@ function ChannelCreationForm({ closeModal }: { closeModal: () => void }) {
           <ErrorMessage
             errors={errors}
             name="language"
-            render={({ message }) => <p css={errorCss}>{message}</p>}
+            render={({ message }) => <p css={errorStyle}>{message}</p>}
           />
         </div>
         <div css={selectContainer}>
@@ -133,7 +133,7 @@ function ChannelCreationForm({ closeModal }: { closeModal: () => void }) {
           <ErrorMessage
             errors={errors}
             name="level"
-            render={({ message }) => <p css={errorCss}>{message}</p>}
+            render={({ message }) => <p css={errorStyle}>{message}</p>}
           />
         </div>
       </fieldset>

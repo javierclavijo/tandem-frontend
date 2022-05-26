@@ -19,12 +19,15 @@ import { chatRoom, chatRoomMobile } from "./room/styles";
 import { chatMain, chatMainMobile } from "./styles";
 import useAuth from "../auth/AuthContext";
 import { useRedirectIfNotLoggedIn } from "../auth/hooks";
+import { useFadeIn } from "../../utils/transitions";
+import { animated } from "react-spring";
 
 function ChatMain() {
   const queryClient = useQueryClient();
   const params = useParams();
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
   const { isLoggedIn } = useAuth();
+  const transitionProps = useFadeIn();
   useRedirectIfNotLoggedIn();
 
   /**
@@ -92,10 +95,10 @@ function ChatMain() {
       <Nav />
       <main css={chatMain}>
         <ChatList />
-        <section css={isDesktop ? chatRoom : chatRoomMobile}>
+        <animated.section css={isDesktop ? chatRoom : chatRoomMobile} style={transitionProps}>
           {header ? <ChatHeader {...header} /> : null}
           <Outlet context={[header, setHeader]} />
-        </section>
+        </animated.section>
       </main>
     </div>
   ) : (
