@@ -112,6 +112,11 @@ export const modal = {
     color: ${colors.WHITE};
     font-size: ${textSizes.M};
     cursor: pointer;
+
+    transition: background-color 0.1s;
+    &:active {
+      background-color: ${colors.DARK};
+    }
   `,
 
   cancelButton: css`
@@ -124,6 +129,11 @@ export const modal = {
     font-size: ${textSizes.M};
     cursor: pointer;
     background-color: ${colors.DARK}60;
+
+    transition: background-color 0.1s;
+    &:active {
+      background-color: ${colors.DARK};
+    }
   `,
 };
 

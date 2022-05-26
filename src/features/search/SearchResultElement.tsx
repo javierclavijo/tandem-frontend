@@ -75,6 +75,7 @@ const outerContainer = css`
   ${containerWithLink};
   width: 100%;
 
+  transition: background-color 0.1s;
   &:hover {
     background-color: ${colors.LIGHT};
   }

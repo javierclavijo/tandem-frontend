@@ -31,6 +31,7 @@ function ChatListElement({
     background-color: ${selected ? colors.PRIMARY : colors.WHITE};
     padding: 0 1rem;
     box-sizing: border-box;
+    transition: background-color 0.1s;
 
     &:hover {
       ${!selected ? `background-color: ${colors.LIGHT};` : ""}

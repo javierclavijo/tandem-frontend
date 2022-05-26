@@ -64,7 +64,6 @@ export const button = css`
   color: ${colors.WHITE};
 
   transition: background-color 0.1s;
-
   &:active {
     background-color: ${colors.DARK};
   }
