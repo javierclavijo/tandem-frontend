@@ -13,7 +13,7 @@ function ChatListFilter({
   return (
     <div css={outerContainer}>
       <div css={innerContainer}>
-        <form css={form}>
+        <form css={searchInput}>
           <input
             type="text"
             css={searchInput}
@@ -21,7 +21,11 @@ function ChatListFilter({
             placeholder="Search..."
           />
           <button type="button" css={searchButton}>
-            <Search color={colors.PRIMARY} width="1.5rem" height="1.5rem" />
+            <Search
+              color={colors.DARK_PRIMARY}
+              width="1.5rem"
+              height="1.5rem"
+            />
           </button>
         </form>
       </div>
@@ -34,21 +38,13 @@ const innerContainer = css`
   border-bottom: 1px solid ${colors.LIGHT};
 `;
 
-const form = css`
-  background-color: ${colors.LIGHT};
-  display: flex;
-  border-radius: 3px;
-`;
-
 const searchInput = css`
   width: 100%;
   font-size: ${textSizes.M};
   padding: 0.5rem;
   box-sizing: border-box;
-
   color: ${colors.DARK};
   background: none;
-
   border-radius: 3px;
   border: none;
 

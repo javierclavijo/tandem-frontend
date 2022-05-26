@@ -188,7 +188,7 @@ export const homeSearchStyles = {
   `,
 
   section: css`
-    height: 100%;
+    height: auto;
     background-color: ${colors.WHITE};
     display: flex;
     flex-direction: column;
@@ -210,3 +210,14 @@ export const homeSearchStyles = {
     }
   `,
 };
+
+export const searchInput = css`
+  background-color: ${colors.LIGHT};
+  display: flex;
+  border-radius: 3px;
+  transition: background-color 0.1s;
+
+  &:hover {
+    background-color: ${colors.SECONDARY}40;
+  }
+`;

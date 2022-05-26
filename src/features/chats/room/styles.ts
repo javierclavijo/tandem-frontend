@@ -24,7 +24,7 @@ export const chatRoomMobile = css`
 export const chatHeader = css`
   min-height: 4.15rem;
   max-height: 100%;
-  background-color: ${colors.PRIMARY};
+  background-color: ${colors.DARK_PRIMARY};
   display: flex;
   align-items: center;
   justify-content: space-between;

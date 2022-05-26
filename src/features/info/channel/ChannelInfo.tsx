@@ -25,6 +25,7 @@ import InfoListElement from "../components/InfoListElement";
 import { ChannelNameInput } from "../components/NameInput";
 import {
   descriptionSection,
+  infoButton,
   infoSection,
   listSection,
   listSectionHeader,
@@ -154,7 +155,7 @@ function ChannelInfo() {
             <button
               type="button"
               onClick={handleJoinChannel}
-              css={headerButton}
+              css={infoButton}
             >
               Join channel
             </button>
@@ -162,7 +163,7 @@ function ChannelInfo() {
             <button
               type="button"
               onClick={() => setLeaveChannelModalIsOpen(true)}
-              css={headerButton}
+              css={infoButton}
             >
               Leave channel
             </button>
@@ -170,7 +171,7 @@ function ChannelInfo() {
           {userIsAdmin() ? (
             <button
               onClick={() => setDeletionModalIsOpen(true)}
-              css={headerButton}
+              css={infoButton}
             >
               Delete
             </button>
@@ -309,12 +310,6 @@ function ChannelInfo() {
 const header = css`
   display: flex;
   gap: 1rem;
-`;
-
-const headerButton = css`
-  ${buttonWithoutBackgroundAndBorder};
-  font-size: ${textSizes.S};
-  color: white;
 `;
 
 const container = css`

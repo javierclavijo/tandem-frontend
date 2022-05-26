@@ -18,7 +18,9 @@ import ImageInput from "../components/ImageInput";
 import InfoListElement from "../components/InfoListElement";
 import { UserNameInput } from "../components/NameInput";
 import {
+  buttonHover,
   descriptionSection,
+  infoButton,
   infoSection,
   listSection,
   listSectionHeader,
@@ -142,7 +144,7 @@ export function UserInfo() {
             <button
               type="button"
               onClick={onClickChatCreate}
-              css={headerButton}
+              css={infoButton}
             >
               Chat with user
             </button>
@@ -151,7 +153,7 @@ export function UserInfo() {
             <button
               type="button"
               onClick={() => setPasswordChangeModalIsOpen(true)}
-              css={headerButton}
+              css={infoButton}
             >
               Change password
             </button>
@@ -222,7 +224,7 @@ export function UserInfo() {
                   <button
                     type="button"
                     onClick={() => setNewLanguageModalIsOpen(true)}
-                    css={addLanguageButton}
+                    css={infoButton}
                   >
                     Add
                     <Plus />
@@ -341,12 +343,6 @@ export function UserInfo() {
   ) : null;
 }
 
-const headerButton = css`
-  ${buttonWithoutBackgroundAndBorder};
-  font-size: ${textSizes.S};
-  color: white;
-`;
-
 const container = css`
   overflow-y: scroll;
 `;
@@ -368,6 +364,7 @@ const languagesInnerContainer = css`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  align-items: center;
 `;
 
 const editableLanguage = css`
@@ -383,9 +380,4 @@ const emptyListContainer = css`
 const channelListContainer = css`
   ${listSection};
   padding-top: 0;
-`;
-
-const addLanguageButton = css`
-  ${buttonWithoutBackgroundAndBorder};
-  color: ${colors.WHITE};
 `;

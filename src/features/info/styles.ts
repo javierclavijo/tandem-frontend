@@ -1,8 +1,9 @@
 import { css } from "@emotion/react";
+import { buttonWithoutBackgroundAndBorder } from "../../styles/components";
 import { colors, textSizes } from "../../styles/variables";
 
 export const infoSection = css`
-  background-color: ${colors.PRIMARY};
+  background-color: ${colors.DARK_PRIMARY};
   color: ${colors.WHITE};
   padding: 1rem;
   box-sizing: border-box;
@@ -70,19 +71,38 @@ export const editElement = css`
   background: none;
   color: ${colors.WHITE};
   border: none;
+  border-radius: 5px;
 
-  transition: background-color 0.1s, border-bottom 0.1s;
+  transition: background-color 0.1s;
 
   // Add bottom border with 0 opacity to avoid resizing on focus
   border-bottom: 1px solid ${colors.PRIMARY}00;
 
   &:hover:not(:focus) {
-    background: ${colors.WHITE}20;
-    border-radius: 3px;
+    background: ${colors.SECONDARY}30;
   }
 
   &:focus {
     outline: none;
     border-bottom: 1px solid ${colors.LIGHT};
+    border-radius: 0;
   }
+`;
+
+export const buttonHover = css`
+  color: ${colors.WHITE};
+  border-radius: 5px;
+
+  transition: background-color 0.1s;
+  &:hover {
+    background-color: ${colors.SECONDARY}30;
+  }
+`;
+
+export const infoButton = css`
+  ${buttonWithoutBackgroundAndBorder};
+  ${buttonHover};
+  font-size: ${textSizes.S};
+  height: fit-content;
+  padding: 0.25rem;
 `;

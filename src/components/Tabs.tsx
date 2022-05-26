@@ -59,7 +59,7 @@ const tab = css`
   transition: background-color 0.1s;
 
   &:hover {
-    background-color: ${colors.DARK}30;
+    background-color: ${colors.DARK_PRIMARY}60;
   }
 `;
 
@@ -73,7 +73,7 @@ const link = {
 
 const activeLink = {
   ...link,
-  backgroundColor: colors.DARK,
+  backgroundColor: colors.DARK_PRIMARY,
 };
 
 export default Tabs;

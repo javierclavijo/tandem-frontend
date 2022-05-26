@@ -5,6 +5,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { css } from "@emotion/react";
 import { colors } from "../styles/variables";
 import { buttonWithoutBackgroundAndBorder } from "../styles/components";
+import { infoButton } from "../features/info/styles";
 
 interface ShareLinkProps {
   link: string;
@@ -43,8 +44,7 @@ function ShareLink(props: ShareLinkProps) {
 }
 
 const button = css`
-  ${buttonWithoutBackgroundAndBorder};
-  color: ${colors.WHITE};
+  ${infoButton};
 `;
 
 export default ShareLink;

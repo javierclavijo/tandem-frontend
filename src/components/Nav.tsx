@@ -95,7 +95,7 @@ const header = css`
 
 const nav = css`
   height: 100%;
-  background: ${colors.PRIMARY};
+  background: ${colors.DARK_PRIMARY};
   display: flex;
   justify-content: space-between;
   align-items: center;
