@@ -10,7 +10,7 @@ import {
   baseAppContainerWithTabs,
 } from "../styles/layout";
 import { colors } from "../styles/variables";
-import Nav from "./Nav";
+import Nav from "./Header/Nav";
 import { useFadeIn } from "../utils/transitions";
 
 function NotFound() {

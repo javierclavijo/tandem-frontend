@@ -91,11 +91,11 @@ export const editElement = css`
 
 export const buttonHover = css`
   color: ${colors.WHITE};
-  border-radius: 5px;
+  border-bottom: 2px solid ${colors.SECONDARY}00;
 
-  transition: background-color 0.1s;
+  transition: border-bottom 0.1s;
   &:hover {
-    background-color: ${colors.SECONDARY}30;
+    border-bottom: 2px solid ${colors.SECONDARY}90;
   }
 `;
 

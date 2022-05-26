@@ -5,7 +5,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { animated } from "react-spring";
-import Nav from "../../components/Nav";
+import Nav from "../../components/Header/Nav";
 import { baseAppContainerWithoutTabs } from "../../styles/layout";
 import { useFadeIn } from "../../utils/transitions";
 import useAuth, { LogInRequestData } from "./AuthContext";

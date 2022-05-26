@@ -5,7 +5,7 @@ import React from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
-import Nav from "../../components/Nav";
+import Nav from "../../components/Header/Nav";
 import Tabs from "../../components/Tabs";
 import { homeSearchStyles } from "../../styles/components";
 import {

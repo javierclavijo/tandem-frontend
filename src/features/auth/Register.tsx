@@ -5,7 +5,7 @@ import useAuth, { axiosApi, LogInRequestData } from "./AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { baseAppContainerWithoutTabs } from "../../styles/layout";
-import Nav from "../../components/Nav";
+import Nav from "../../components/Header/Nav";
 import {
   button,
   errorStyle,

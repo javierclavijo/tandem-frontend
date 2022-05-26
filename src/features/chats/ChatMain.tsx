@@ -6,7 +6,7 @@ import { useMediaQuery } from "react-responsive";
 import { Outlet, useParams } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import ChatHeader, { ChatHeaderProps } from "../../components/ChatHeader";
-import Nav from "../../components/Nav";
+import Nav from "../../components/Header/Nav";
 import Tabs from "../../components/Tabs";
 import { Chat } from "../../entities/Chat";
 import { ChatMessageResponse } from "../../entities/ChatMessage";

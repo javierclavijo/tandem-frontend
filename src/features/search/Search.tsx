@@ -6,7 +6,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useInfiniteQuery } from "react-query";
 import { useMediaQuery } from "react-responsive";
 import { animated } from "react-spring";
-import Nav from "../../components/Nav";
+import Nav from "../../components/Header/Nav";
 import Tabs from "../../components/Tabs";
 import { Channel } from "../../entities/Channel";
 import { User } from "../../entities/User";
