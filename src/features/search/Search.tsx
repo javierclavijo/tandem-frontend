@@ -5,6 +5,7 @@ import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useInfiniteQuery } from "react-query";
 import { useMediaQuery } from "react-responsive";
+import { animated } from "react-spring";
 import Nav from "../../components/Nav";
 import Tabs from "../../components/Tabs";
 import { Channel } from "../../entities/Channel";
@@ -17,6 +18,7 @@ import {
   homeSearchMain,
   homeSearchMainMobile
 } from "../../styles/layout";
+import { useFadeIn } from "../../utils/transitions";
 import { axiosApi } from "../auth/AuthContext";
 import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 import SearchPanel from "./SearchPanel";
@@ -67,6 +69,7 @@ export interface ChannelSearchParams {
 function Search() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
   useRedirectIfNotLoggedIn();
+  const transitionProps = useFadeIn();
 
   /**
    * Search params state.
@@ -176,6 +179,7 @@ function Search() {
       >
         {/* Infinite scroll component. Includes the search panel and results. Its properties are assigned
                 conditionally based on the selected search type. */}
+        <animated.div style={transitionProps}>
         <InfiniteScroll
           next={
             searchType === searchTypeOptions.USERS
@@ -235,6 +239,7 @@ function Search() {
             </div>
           </section>
         </InfiniteScroll>
+        </animated.div>
       </main>
       {!isDesktop ? <Tabs /> : null}
     </div>

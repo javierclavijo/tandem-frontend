@@ -4,15 +4,18 @@ import { css } from "@emotion/react";
 import React from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
+import { animated } from "react-spring";
 import {
   baseAppContainerWithoutTabs,
   baseAppContainerWithTabs,
 } from "../styles/layout";
 import { colors } from "../styles/variables";
 import Nav from "./Nav";
+import { useFadeIn } from "../utils/transitions";
 
 function NotFound() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+  const transitionProps = useFadeIn();
 
   const container = css`
     ${isDesktop ? baseAppContainerWithoutTabs : baseAppContainerWithTabs};
@@ -20,7 +23,7 @@ function NotFound() {
   `;
 
   return (
-    <div css={container}>
+    <animated.div css={container} style={transitionProps}>
       <Nav />
       <main css={main}>
         <h2>Not found</h2>
@@ -29,7 +32,7 @@ function NotFound() {
           Back to Home
         </Link>
       </main>
-    </div>
+    </animated.div>
   );
 }
 

@@ -24,6 +24,8 @@ import { languageOptions, Option } from "../../resources/languages";
 import { select } from "../../styles/components";
 import { ServerErrorResponse } from "../chats/ChannelCreationForm";
 import axios from "axios";
+import { useFadeIn } from "../../utils/transitions";
+import { animated } from "react-spring";
 
 interface RegisterRequestData extends LogInRequestData {
   email: string;
@@ -39,6 +41,7 @@ interface RegisterFormData extends LogInRequestData {
 function Register() {
   const { isLoggedIn, login } = useAuth();
   const navigate = useNavigate();
+  const transitionProps = useFadeIn();
 
   // React Hook Form
   const {
@@ -100,7 +103,7 @@ function Register() {
   }, [isLoggedIn, navigate]);
 
   return (
-    <div css={baseAppContainerWithoutTabs}>
+    <animated.div css={baseAppContainerWithoutTabs} style={transitionProps}>
       <Nav />
       <main css={main}>
         <section css={section}>
@@ -211,7 +214,7 @@ function Register() {
           </form>
         </section>
       </main>
-    </div>
+    </animated.div>
   );
 }
 

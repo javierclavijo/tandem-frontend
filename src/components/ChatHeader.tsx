@@ -10,6 +10,8 @@ import {
   thumbnailContainer,
   thumbnailImg,
 } from "../styles/components";
+import { useFadeIn } from "../utils/transitions";
+import { animated } from "react-spring";
 
 const defaultImg = require("../static/images/user_placeholder.png");
 
@@ -21,8 +23,11 @@ export interface ChatHeaderProps {
 }
 
 function ChatHeader(props: ChatHeaderProps) {
+  
+  const transitionProps = useFadeIn();
+  
   return (
-    <header css={chatHeader}>
+    <animated.header css={chatHeader} style={transitionProps}>
       <div css={backButtonContainer}>
         <BackButton />
         <div css={containerWithLink}>
@@ -42,7 +47,7 @@ function ChatHeader(props: ChatHeaderProps) {
         </div>
       </div>
       {props.actions}
-    </header>
+    </animated.header>
   );
 }
 
