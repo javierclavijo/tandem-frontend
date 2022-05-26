@@ -1,21 +1,37 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
 import { css } from "@emotion/react";
 import { ChatLines, Home, Search } from "iconoir-react";
+import React from "react";
+import { NavLink } from "react-router-dom";
 import { colors } from "../styles/variables";
 
 function Tabs() {
   return (
     <nav css={nav}>
       <div css={tab}>
-        <ChatLines color={colors.WHITE} width="1.5rem" height="1.5rem" />
+        <NavLink
+          to="/chats"
+          style={({ isActive }) => (isActive ? activeLink : link)}
+        >
+          <ChatLines color={colors.WHITE} width="1.5rem" height="1.5rem" />
+        </NavLink>
       </div>
       <div css={tab}>
-        <Home color={colors.WHITE} width="1.5rem" height="1.5rem" />
+        <NavLink
+          to="/"
+          style={({ isActive }) => (isActive ? activeLink : link)}
+        >
+          <Home color={colors.WHITE} width="1.5rem" height="1.5rem" />
+        </NavLink>
       </div>
       <div css={tab}>
-        <Search color={colors.WHITE} width="1.5rem" height="1.5rem" />
+        <NavLink
+          to="/search"
+          style={({ isActive }) => (isActive ? activeLink : link)}
+        >
+          <Search color={colors.WHITE} width="1.5rem" height="1.5rem" />
+        </NavLink>
       </div>
     </nav>
   );
@@ -36,9 +52,28 @@ const nav = css`
 
 const tab = css`
   width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.1s;
+
+  &:hover {
+    background-color: ${colors.DARK}30;
+  }
 `;
+
+const link = {
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+const activeLink = {
+  ...link,
+  backgroundColor: colors.DARK,
+};
 
 export default Tabs;

@@ -6,21 +6,22 @@ import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
 import Nav from "../../components/Nav";
+import Tabs from "../../components/Tabs";
 import { homeSearchStyles } from "../../styles/components";
 import {
   baseAppContainerWithoutTabs,
   baseAppContainerWithTabs,
   homeSearchMain,
-  homeSearchMainMobile,
+  homeSearchMainMobile
 } from "../../styles/layout";
 import { colors } from "../../styles/variables";
+import { useFadeIn } from "../../utils/transitions";
 import useAuth from "../auth/AuthContext";
 import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 import { useChannelChatList, useFriendChatList } from "../chats/hooks";
 import SearchResultElement from "../search/SearchResultElement";
 import { useDiscoverUsersList } from "./hooks";
 import RecentElement from "./RecentElement";
-import { useFadeIn } from "../../utils/transitions";
 
 function Home() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
@@ -35,7 +36,7 @@ function Home() {
 
   const container = css`
     ${isDesktop ? baseAppContainerWithoutTabs : baseAppContainerWithTabs};
-    height: auto;
+    height: ${isDesktop ? "auto" : "100vh"};
   `;
 
   return isLoggedIn && user ? (
@@ -137,6 +138,7 @@ function Home() {
           </footer>
         </animated.section>
       </main>
+      {!isDesktop ? <Tabs /> : null}
     </div>
   ) : null;
 }
