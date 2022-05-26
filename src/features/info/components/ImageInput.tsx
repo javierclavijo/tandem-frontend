@@ -90,6 +90,7 @@ function ImageInput({
     backdrop-filter: blur(2px);
     // Set the opacity of the element
     opacity: ${isLabelDisplayed ? 1 : 0};
+    transition: opacity 0.2s;
   `;
 
   return (

@@ -6,6 +6,8 @@ import { colors } from "../../../styles/variables";
 import { chatRoom, chatHeader } from "./styles";
 import { useOutletContext } from "react-router-dom";
 import { ChatHeaderProps } from "../../../components/ChatHeader";
+import { useFadeIn } from "../../../utils/transitions";
+import { animated } from "react-spring";
 
 function EmptyChatRoom() {
   const [, setHeader] =
@@ -17,16 +19,17 @@ function EmptyChatRoom() {
     >();
 
   React.useEffect(() => setHeader(null), [setHeader]);
+  const transitionProps = useFadeIn();
 
   return (
-    <div css={chatRoom}>
+    <animated.div css={chatRoom} style={transitionProps}>
       <header css={chatHeader}>
         <h2>Chats</h2>
       </header>
       <div css={container}>
         <p css={text}>Select a chat...</p>
       </div>
-    </div>
+    </animated.div>
   );
 }
 

@@ -54,7 +54,7 @@ export const input = css`
   }
 `;
 
-export const buttonCss = css`
+export const button = css`
   font-size: ${textSizes.M};
   padding: 0.5rem 1rem;
   box-sizing: border-box;
@@ -62,9 +62,14 @@ export const buttonCss = css`
   border: none;
   border-radius: 3px;
   color: ${colors.WHITE};
+
+  transition: background-color 0.1s;
+  &:active {
+    background-color: ${colors.DARK};
+  }
 `;
 
-export const errorCss = css`
+export const errorStyle = css`
   color: ${colors.CONTRAST};
   font-size: ${textSizes.S};
   margin: 0;

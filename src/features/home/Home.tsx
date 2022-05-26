@@ -4,13 +4,14 @@ import { css } from "@emotion/react";
 import React from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
+import { animated } from "react-spring";
 import Nav from "../../components/Nav";
 import { homeSearchStyles } from "../../styles/components";
 import {
   baseAppContainerWithoutTabs,
   baseAppContainerWithTabs,
   homeSearchMain,
-  homeSearchMainMobile
+  homeSearchMainMobile,
 } from "../../styles/layout";
 import { colors } from "../../styles/variables";
 import useAuth from "../auth/AuthContext";
@@ -19,10 +20,11 @@ import { useChannelChatList, useFriendChatList } from "../chats/hooks";
 import SearchResultElement from "../search/SearchResultElement";
 import { useDiscoverUsersList } from "./hooks";
 import RecentElement from "./RecentElement";
-
+import { useFadeIn } from "../../utils/transitions";
 
 function Home() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+  const transitionProps = useFadeIn();
 
   const { isLoggedIn, user } = useAuth();
   useRedirectIfNotLoggedIn();
@@ -40,13 +42,16 @@ function Home() {
     <div css={container}>
       <Nav />
       <main css={isDesktop ? homeSearchMain : homeSearchMainMobile}>
-        <header css={homeSearchStyles.header}>
+        <animated.header css={homeSearchStyles.header} style={transitionProps}>
           <h2 css={homeSearchStyles.h2}>Home</h2>
           <p>Welcome back, {user.username}</p>
-        </header>
+        </animated.header>
 
         {/* 'Recent chats' section. Contains a list of the latest friend chats. */}
-        <section css={homeSearchStyles.section}>
+        <animated.section
+          css={homeSearchStyles.section}
+          style={transitionProps}
+        >
           <header>
             <h3 css={homeSearchStyles.sectionHeading}>Recent chats</h3>
           </header>
@@ -71,10 +76,13 @@ function Home() {
               See all
             </Link>
           </footer>
-        </section>
+        </animated.section>
 
         {/* 'Your channels' section. Contains a list of the latest channel chats. */}
-        <section css={homeSearchStyles.section}>
+        <animated.section
+          css={homeSearchStyles.section}
+          style={transitionProps}
+        >
           <header>
             <h3 css={homeSearchStyles.sectionHeading}>Your channels</h3>
           </header>
@@ -99,10 +107,13 @@ function Home() {
               See all
             </Link>
           </footer>
-        </section>
+        </animated.section>
 
         {/* 'Discover' section. Contains a list of randomized users, excluding friends of the user. */}
-        <section css={homeSearchStyles.section}>
+        <animated.section
+          css={homeSearchStyles.section}
+          style={transitionProps}
+        >
           <header>
             <h3 css={homeSearchStyles.sectionHeading}>Discover</h3>
           </header>
@@ -124,7 +135,7 @@ function Home() {
               See more
             </Link>
           </footer>
-        </section>
+        </animated.section>
       </main>
     </div>
   ) : null;

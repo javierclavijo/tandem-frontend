@@ -4,11 +4,13 @@ import { css } from "@emotion/react";
 import { Plus } from "iconoir-react";
 import React from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { animated } from "react-spring";
 import { ChatHeaderProps } from "../../../components/ChatHeader";
 import LanguageBadge from "../../../components/LanguageBadge";
 import { UserLanguage } from "../../../entities/User";
 import { buttonWithoutBackgroundAndBorder } from "../../../styles/components";
 import { colors, textSizes } from "../../../styles/variables";
+import { useFadeIn } from "../../../utils/transitions";
 import useAuth from "../../auth/AuthContext";
 import { getFriendFromFriendChat, useJoinWSChat } from "../../chats/hooks";
 import DescriptionTextarea from "../components/DescriptionTextarea";
@@ -32,8 +34,7 @@ const defaultImg = require("../../../static/images/user_placeholder.png");
 
 export function UserInfo() {
   /**
-   * Generic user info component. Is used by the OwnUserInfo and OtherUserInfo components, from which it receives the
-   * user's data and whether the information is editable by the user.
+   * User detail component.
    */
 
   const params = useParams();
@@ -46,6 +47,7 @@ export function UserInfo() {
         React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>
       ]
     >();
+  const transitionProps = useFadeIn();
 
   /**
    * Holds the user's data
@@ -167,7 +169,7 @@ export function UserInfo() {
 
   return data ? (
     <React.Fragment>
-      <div css={container}>
+      <animated.div css={container} style={transitionProps}>
         {/* Main user information
             Contains the user's picture, username, languages and description.
             */}
@@ -305,7 +307,7 @@ export function UserInfo() {
             </article>
           ) : null}
         </section>
-      </div>
+      </animated.div>
 
       {/* Language creation modal
           Only rendered if the profile is the session user's. Opens when the 'add a language' button is pressed. */}

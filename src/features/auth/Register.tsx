@@ -7,8 +7,8 @@ import { Controller, useForm } from "react-hook-form";
 import { baseAppContainerWithoutTabs } from "../../styles/layout";
 import Nav from "../../components/Nav";
 import {
-  buttonCss,
-  errorCss,
+  button,
+  errorStyle,
   form,
   header,
   input,
@@ -24,6 +24,8 @@ import { languageOptions, Option } from "../../resources/languages";
 import { select } from "../../styles/components";
 import { ServerErrorResponse } from "../chats/ChannelCreationForm";
 import axios from "axios";
+import { useFadeIn } from "../../utils/transitions";
+import { animated } from "react-spring";
 
 interface RegisterRequestData extends LogInRequestData {
   email: string;
@@ -39,6 +41,7 @@ interface RegisterFormData extends LogInRequestData {
 function Register() {
   const { isLoggedIn, login } = useAuth();
   const navigate = useNavigate();
+  const transitionProps = useFadeIn();
 
   // React Hook Form
   const {
@@ -100,7 +103,7 @@ function Register() {
   }, [isLoggedIn, navigate]);
 
   return (
-    <div css={baseAppContainerWithoutTabs}>
+    <animated.div css={baseAppContainerWithoutTabs} style={transitionProps}>
       <Nav />
       <main css={main}>
         <section css={section}>
@@ -118,7 +121,7 @@ function Register() {
             <ErrorMessage
               errors={errors}
               name="username"
-              render={({ message }) => <p css={errorCss}>{message}</p>}
+              render={({ message }) => <p css={errorStyle}>{message}</p>}
             />
 
             <label css={label} htmlFor="email">
@@ -133,7 +136,7 @@ function Register() {
             <ErrorMessage
               errors={errors}
               name="email"
-              render={({ message }) => <p css={errorCss}>{message}</p>}
+              render={({ message }) => <p css={errorStyle}>{message}</p>}
             />
 
             <label css={label} htmlFor="password">
@@ -148,7 +151,7 @@ function Register() {
             <ErrorMessage
               errors={errors}
               name="password"
-              render={({ message }) => <p css={errorCss}>{message}</p>}
+              render={({ message }) => <p css={errorStyle}>{message}</p>}
             />
 
             <label css={label} htmlFor="confirm-password">
@@ -172,7 +175,7 @@ function Register() {
             <ErrorMessage
               errors={errors}
               name="confirmPassword"
-              render={({ message }) => <p css={errorCss}>{message}</p>}
+              render={({ message }) => <p css={errorStyle}>{message}</p>}
             />
 
             <label css={label} htmlFor="native-languages">
@@ -199,10 +202,10 @@ function Register() {
             <ErrorMessage
               errors={errors}
               name="nativeLanguages"
-              render={({ message }) => <p css={errorCss}>{message}</p>}
+              render={({ message }) => <p css={errorStyle}>{message}</p>}
             />
 
-            <button type="submit" css={buttonCss}>
+            <button type="submit" css={button}>
               Sign in
             </button>
             <Link to={"/login"} css={link}>
@@ -211,7 +214,7 @@ function Register() {
           </form>
         </section>
       </main>
-    </div>
+    </animated.div>
   );
 }
 

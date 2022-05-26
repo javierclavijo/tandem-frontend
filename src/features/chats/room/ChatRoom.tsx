@@ -10,6 +10,8 @@ import ChatInputForm from "./ChatInputForm";
 import { useMediaQuery } from "react-responsive";
 import { chatRoom, chatRoomMobile } from "./styles";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { animated } from "react-spring";
+import { useFadeIn } from "../../../utils/transitions";
 
 function ChatRoom() {
   /**
@@ -19,6 +21,7 @@ function ChatRoom() {
   const params = useParams();
   const { user } = useAuth();
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+  const transitionProps = useFadeIn();
 
   /**
    * Ref for the message container div. Used to scroll to the bottom of the page when necessary.
@@ -41,7 +44,7 @@ function ChatRoom() {
   useSetChatRoomHeader(chat);
 
   return chat && data ? (
-    <div css={isDesktop ? chatRoom : chatRoomMobile}>
+    <animated.div css={isDesktop ? chatRoom : chatRoomMobile} style={transitionProps}>
       <div
         id="chat-messages-container"
         ref={messageContainerRef}
@@ -71,7 +74,7 @@ function ChatRoom() {
         </InfiniteScroll>
       </div>
       <ChatInputForm chat={chat} />
-    </div>
+    </animated.div>
   ) : null;
 }
 

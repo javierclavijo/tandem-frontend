@@ -71,6 +71,8 @@ export const editElement = css`
   color: ${colors.WHITE};
   border: none;
 
+  transition: background-color 0.1s, border-bottom 0.1s;
+
   // Add bottom border with 0 opacity to avoid resizing on focus
   border-bottom: 1px solid ${colors.PRIMARY}00;
 

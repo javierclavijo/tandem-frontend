@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { modal } from "../../../styles/components";
 import useAuth, { axiosApi } from "../../auth/AuthContext";
-import { errorCss as error, input, label } from "../../auth/styles";
+import { errorStyle, input, label } from "../../auth/styles";
 
 interface SetPasswordRequestData {
   newPassword: string;
@@ -79,7 +79,7 @@ function SetPasswordForm({ closeModal }: { closeModal: () => void }) {
       <ErrorMessage
         errors={errors}
         name="oldPassword"
-        render={({ message }) => <p css={error}>{message}</p>}
+        render={({ message }) => <p css={errorStyle}>{message}</p>}
       />
 
       <label css={label} htmlFor="new-password">
@@ -96,7 +96,7 @@ function SetPasswordForm({ closeModal }: { closeModal: () => void }) {
       <ErrorMessage
         errors={errors}
         name="newPassword"
-        render={({ message }) => <p css={error}>{message}</p>}
+        render={({ message }) => <p css={errorStyle}>{message}</p>}
       />
 
       <label css={label} htmlFor="confirm-new-password">

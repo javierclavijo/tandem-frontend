@@ -1,17 +1,20 @@
 /** @jsxImportSource @emotion/react */
 
+import { ErrorMessage } from "@hookform/error-message";
 import React from "react";
-import {useForm} from "react-hook-form";
-import useAuth, {LogInRequestData} from "./AuthContext";
-import {Link, useNavigate} from "react-router-dom";
-import {buttonCss, errorCss, form, header, input, label, link, main, section,} from "./styles";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { animated } from "react-spring";
 import Nav from "../../components/Nav";
-import {baseAppContainerWithoutTabs} from "../../styles/layout";
-import {ErrorMessage} from "@hookform/error-message";
+import { baseAppContainerWithoutTabs } from "../../styles/layout";
+import { useFadeIn } from "../../utils/transitions";
+import useAuth, { LogInRequestData } from "./AuthContext";
+import { button, errorStyle, form, header, input, label, link, main, section } from "./styles";
 
 function LogIn() {
   const { isLoggedIn, login, error } = useAuth();
   const navigate = useNavigate();
+  const transitionProps = useFadeIn();
 
   // React Hook Form
   const {
@@ -46,7 +49,7 @@ function LogIn() {
   return (
     <div css={baseAppContainerWithoutTabs}>
       <Nav />
-      <main css={main}>
+      <animated.main css={main} style={transitionProps}>
         <section css={section}>
           <h2 css={header}>Log in</h2>
           <form css={form} onSubmit={handleSubmit(onSubmit)}>
@@ -62,7 +65,7 @@ function LogIn() {
             <ErrorMessage
               errors={errors}
               name="username"
-              render={({ message }) => <p css={errorCss}>{message}</p>}
+              render={({ message }) => <p css={errorStyle}>{message}</p>}
             />
 
             <label css={label} htmlFor="password">
@@ -77,10 +80,10 @@ function LogIn() {
             <ErrorMessage
               errors={errors}
               name="password"
-              render={({ message }) => <p css={errorCss}>{message}</p>}
+              render={({ message }) => <p css={errorStyle}>{message}</p>}
             />
 
-            <button type="submit" css={buttonCss}>
+            <button type="submit" css={button}>
               Log in
             </button>
             <Link to={"/register"} css={link}>
@@ -88,7 +91,7 @@ function LogIn() {
             </Link>
           </form>
         </section>
-      </main>
+      </animated.main>
     </div>
   );
 }

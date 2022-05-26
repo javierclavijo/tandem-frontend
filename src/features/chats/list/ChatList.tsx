@@ -13,6 +13,8 @@ import { listContainer, listContainerMobile } from "../styles";
 import ChatListElements from "./ChatListElements";
 import ChatListFilter from "./ChatListFilter";
 import NewChannelModal from "./NewChannelModal";
+import { animated } from "react-spring";
+import { useFadeIn } from "../../../utils/transitions";
 
 function ChatList() {
   const params = useParams();
@@ -22,13 +24,14 @@ function ChatList() {
 
   const { data } = useAllChatList();
   const { user } = useAuth();
+  const transitionProps = useFadeIn();
 
   const [isChannelCreationModalOpen, setIsChannelCreationModalOpen] =
     React.useState<boolean>(false);
 
   return (
     <React.Fragment>
-      <section css={isDesktop ? listContainer : listContainerMobile}>
+      <animated.section css={isDesktop ? listContainer : listContainerMobile} style={transitionProps}>
         <ChatListFilter setFilter={setFilter} />
         {data && user ? (
           <ChatListElements
@@ -46,7 +49,7 @@ function ChatList() {
             <Plus height={"2rem"} width={"2rem"} color={colors.WHITE} />
           </Button>
         </div>
-      </section>
+      </animated.section>
       <NewChannelModal
         isOpen={isChannelCreationModalOpen}
         setIsOpen={setIsChannelCreationModalOpen}

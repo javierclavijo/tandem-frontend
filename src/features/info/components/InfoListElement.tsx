@@ -80,6 +80,7 @@ const outerContainer = css`
   ${containerWithLink};
   padding: 0.5rem 1rem;
 
+  transition: background-color 0.1s;
   &:hover {
     background-color: ${colors.LIGHT};
   }

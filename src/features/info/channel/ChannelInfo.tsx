@@ -9,12 +9,14 @@ import {
   useOutletContext,
   useParams,
 } from "react-router-dom";
+import { animated } from "react-spring";
 import Button from "../../../components/Button";
 import { ChatHeaderProps } from "../../../components/ChatHeader";
 import LanguageBadge from "../../../components/LanguageBadge";
 import ShareLink from "../../../components/ShareLink";
 import { buttonWithoutBackgroundAndBorder } from "../../../styles/components";
 import { colors, textSizes } from "../../../styles/variables";
+import { useFadeIn } from "../../../utils/transitions";
 import useAuth from "../../auth/AuthContext";
 import { useJoinWSChat } from "../../chats/hooks";
 import DescriptionTextarea from "../components/DescriptionTextarea";
@@ -57,6 +59,7 @@ function ChannelInfo() {
       ]
     >();
   const navigate = useNavigate();
+  const transitionProps = useFadeIn();
 
   /**
    * Controls whether the user is a member of the channel, and their role in case they are.
@@ -179,7 +182,7 @@ function ChannelInfo() {
   }, [location.pathname, userRole, setHeader, userIsAdmin, handleJoinChannel]);
 
   return data ? (
-    <div css={container}>
+    <animated.div css={container} style={transitionProps}>
       <section css={infoSection}>
         {userIsStaff() && data ? (
           <React.Fragment>
@@ -299,7 +302,7 @@ function ChannelInfo() {
         setIsOpen={setLeaveChannelModalIsOpen}
         handleLeave={handleLeaveChannel}
       />
-    </div>
+    </animated.div>
   ) : null;
 }
 
