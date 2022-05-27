@@ -44,7 +44,10 @@ function ChatRoom() {
   useSetChatRoomHeader(chat);
 
   return chat && data ? (
-    <animated.div css={isDesktop ? chatRoom : chatRoomMobile} style={transitionProps}>
+    <animated.div
+      css={isDesktop ? chatRoom : chatRoomMobile}
+      style={transitionProps}
+    >
       <div
         id="chat-messages-container"
         ref={messageContainerRef}
@@ -53,15 +56,15 @@ function ChatRoom() {
         <InfiniteScroll
           next={fetchNextPage}
           hasMore={!!hasNextPage}
-          loader={<p>Loading...</p>}
+          loader={<div />}
           dataLength={data.pages.length}
           scrollableTarget="chat-messages-container"
-          style={{ display: "flex", flexDirection: "column" }}
+          style={{ display: "flex", flexDirection: "column-reverse" }}
           inverse={true}
         >
-          {[...data?.pages].reverse().map((page, pageIndex) => (
+          {data?.pages.reverse().map((page, pageIndex) => (
             <React.Fragment key={`page-${pageIndex}`}>
-              {[...page.results].reverse().map((message) => (
+              {[...page.results].map((message) => (
                 <ChatRoomMessage
                   message={message}
                   isOwnMessage={user?.id === message.author.id}
