@@ -2,7 +2,7 @@
 
 import { css } from "@emotion/react";
 import { ArrowRightCircled } from "iconoir-react";
-import React, { useCallback, useState } from "react";
+import React, { ChangeEvent, useCallback, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import { Chat } from "../../../entities/Chat";
 import { colors, textSizes } from "../../../styles/variables";
@@ -11,6 +11,7 @@ import useAuth from "../../auth/AuthContext";
 function ChatInputForm({ chat }: { chat: Chat }) {
   const [inputValue, setInputValue] = useState<string>("");
   const { isLoggedIn } = useAuth();
+  const [image, setImage] = React.useState<File | null>(null);
 
   const { sendJsonMessage } = useWebSocket(
     `${process.env.REACT_APP_WS_URL}/ws/chats/`,
@@ -39,6 +40,18 @@ function ChatInputForm({ chat }: { chat: Chat }) {
     [chat, inputValue, sendJsonMessage]
   );
 
+  const handleImageChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (file) {
+        setImage(file);
+      } else {
+        setImage(null);
+      }
+    },
+    []
+  );
+
   return (
     <div css={container}>
       <form css={form} onSubmit={handleSend}>
@@ -48,6 +61,14 @@ function ChatInputForm({ chat }: { chat: Chat }) {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           placeholder="Write a message"
+          css={input}
+        />
+        <input
+          type="file"
+          name="image"
+          id="image"
+          accept="image/jpeg,image/png,image/webp"
+          onChange={handleImageChange}
           css={input}
         />
         <button type="submit" id="chat-send" css={button}>
