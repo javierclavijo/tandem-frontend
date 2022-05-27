@@ -14,8 +14,7 @@ import Button from "../../../components/Button";
 import { ChatHeaderProps } from "../../../components/ChatHeader";
 import LanguageBadge from "../../../components/LanguageBadge";
 import ShareLink from "../../../components/ShareLink";
-import { buttonWithoutBackgroundAndBorder } from "../../../styles/components";
-import { colors, textSizes } from "../../../styles/variables";
+import { colors } from "../../../styles/variables";
 import { useFadeIn } from "../../../utils/transitions";
 import useAuth from "../../auth/AuthContext";
 import { useJoinWSChat } from "../../chats/hooks";
@@ -152,11 +151,7 @@ function ChannelInfo() {
       actions: (
         <div css={header}>
           {!userRole ? (
-            <button
-              type="button"
-              onClick={handleJoinChannel}
-              css={infoButton}
-            >
+            <button type="button" onClick={handleJoinChannel} css={infoButton}>
               Join channel
             </button>
           ) : !userIsAdmin() ? (

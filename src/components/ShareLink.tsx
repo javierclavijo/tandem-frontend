@@ -1,10 +1,8 @@
 /** @jsxImportSource @emotion/react */
 
+import { css } from "@emotion/react";
 import React from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { css } from "@emotion/react";
-import { colors } from "../styles/variables";
-import { buttonWithoutBackgroundAndBorder } from "../styles/components";
 import { infoButton } from "../features/info/styles";
 
 interface ShareLinkProps {

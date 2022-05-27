@@ -8,8 +8,7 @@ import { animated } from "react-spring";
 import { ChatHeaderProps } from "../../../components/ChatHeader";
 import LanguageBadge from "../../../components/LanguageBadge";
 import { UserLanguage } from "../../../entities/User";
-import { buttonWithoutBackgroundAndBorder } from "../../../styles/components";
-import { colors, textSizes } from "../../../styles/variables";
+import { colors } from "../../../styles/variables";
 import { useFadeIn } from "../../../utils/transitions";
 import useAuth from "../../auth/AuthContext";
 import { getFriendFromFriendChat, useJoinWSChat } from "../../chats/hooks";
@@ -18,7 +17,6 @@ import ImageInput from "../components/ImageInput";
 import InfoListElement from "../components/InfoListElement";
 import { UserNameInput } from "../components/NameInput";
 import {
-  buttonHover,
   descriptionSection,
   infoButton,
   infoSection,
@@ -141,11 +139,7 @@ export function UserInfo() {
       actions: (
         <React.Fragment>
           {!isFriend ? (
-            <button
-              type="button"
-              onClick={onClickChatCreate}
-              css={infoButton}
-            >
+            <button type="button" onClick={onClickChatCreate} css={infoButton}>
               Chat with user
             </button>
           ) : null}

@@ -4,7 +4,6 @@ import { css } from "@emotion/react";
 import { LogOut } from "iconoir-react";
 import React from "react";
 import { infoButton } from "../../features/info/styles";
-import { buttonWithoutBackgroundAndBorder } from "../../styles/components";
 import { colors, textSizes } from "../../styles/variables";
 
 interface LogoutButtonProps {
