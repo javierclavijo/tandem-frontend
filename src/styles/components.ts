@@ -221,3 +221,12 @@ export const searchInput = css`
     background-color: ${colors.SECONDARY}40;
   }
 `;
+
+export const searchInputElement = css`
+  background: none;
+  outline: none;
+  border: none;
+  flex: 1 1 auto;
+  min-width: 4rem;
+  font-size: ${textSizes.M};
+`;

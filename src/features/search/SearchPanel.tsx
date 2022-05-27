@@ -11,6 +11,7 @@ import {
   buttonWithoutBackgroundAndBorder,
   noBorderAndBgSelectDark,
   searchInput,
+  searchInputElement,
   searchSelect,
 } from "../../styles/components";
 import { css } from "@emotion/react";
@@ -335,15 +336,6 @@ const searchContainer = css`
   width: 100%;
   padding: 0.25rem 0.5rem;
   box-sizing: border-box;
-`;
-
-const searchInputElement = css`
-  background: none;
-  outline: none;
-  border: none;
-  flex: 1 1 auto;
-  min-width: 4rem;
-  font-size: ${textSizes.M};
 `;
 
 const searchTypeSelectContainer = css`

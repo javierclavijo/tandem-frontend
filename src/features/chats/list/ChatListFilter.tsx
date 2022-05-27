@@ -4,6 +4,7 @@ import React from "react";
 import { css } from "@emotion/react";
 import { Search } from "iconoir-react";
 import { colors, textSizes } from "../../../styles/variables";
+import { searchInput, searchInputElement } from "../../../styles/components";
 
 function ChatListFilter({
   setFilter,
@@ -13,12 +14,12 @@ function ChatListFilter({
   return (
     <div css={outerContainer}>
       <div css={innerContainer}>
-        <form css={searchInput}>
+        <form css={searchInputForm}>
           <input
             type="text"
-            css={searchInput}
             onChange={(e) => setFilter(e.target.value)}
             placeholder="Search..."
+            css={searchInputElement}
           />
           <button type="button" css={searchButton}>
             <Search
@@ -38,7 +39,7 @@ const innerContainer = css`
   border-bottom: 1px solid ${colors.LIGHT};
 `;
 
-const searchInput = css`
+const searchInputForm = css`
   width: 100%;
   font-size: ${textSizes.M};
   padding: 0.5rem;
@@ -51,6 +52,7 @@ const searchInput = css`
   &:focus {
     outline: none;
   }
+  ${searchInput}
 `;
 
 const searchButton = css`
