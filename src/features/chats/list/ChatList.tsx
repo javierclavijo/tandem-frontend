@@ -31,7 +31,10 @@ function ChatList() {
 
   return (
     <React.Fragment>
-      <animated.section css={isDesktop ? listContainer : listContainerMobile} style={transitionProps}>
+      <animated.section
+        css={isDesktop ? listContainer : listContainerMobile}
+        style={transitionProps}
+      >
         <ChatListFilter setFilter={setFilter} />
         {data && user ? (
           <ChatListElements
@@ -41,14 +44,12 @@ function ChatList() {
             userId={user?.id}
           />
         ) : null}
-        <div css={newChatButtonContainer}>
-          <Button
-            visible={true}
-            onClick={() => setIsChannelCreationModalOpen(true)}
-          >
-            <Plus height={"2rem"} width={"2rem"} color={colors.WHITE} />
-          </Button>
-        </div>
+        <button
+          css={newChatButtonContainer}
+          onClick={() => setIsChannelCreationModalOpen(true)}
+        >
+          <Plus height={"2rem"} width={"2rem"} color={colors.WHITE} />
+        </button>
       </animated.section>
       <NewChannelModal
         isOpen={isChannelCreationModalOpen}
@@ -67,6 +68,18 @@ const newChatButtonContainer = css`
   right: 0;
   margin: 1rem;
   z-index: 10;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.1s;
+
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: ${colors.DARK_PRIMARY};
+    outline: none;
+  }
 `;
 
 export default ChatList;
