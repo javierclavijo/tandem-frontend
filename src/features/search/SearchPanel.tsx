@@ -1,6 +1,11 @@
 /** @jsxImportSource @emotion/react */
 
+import { css } from "@emotion/react";
+import { Search } from "iconoir-react";
+import qs from "qs";
 import React, { FormEvent } from "react";
+import { DebounceInput } from "react-debounce-input";
+import { useSearchParams } from "react-router-dom";
 import Select from "react-select";
 import {
   languageOptions,
@@ -14,17 +19,12 @@ import {
   searchInputElement,
   searchSelect,
 } from "../../styles/components";
-import { css } from "@emotion/react";
-import { Search } from "iconoir-react";
-import { colors, textSizes } from "../../styles/variables";
+import { colors } from "../../styles/variables";
 import {
   ChannelSearchParams,
   searchTypeOptions,
   UserSearchParams,
 } from "./Search";
-import { useSearchParams } from "react-router-dom";
-import qs from "qs";
-import { DebounceInput } from "react-debounce-input";
 
 interface SearchPanelProps {
   setUserSearchParams: React.Dispatch<React.SetStateAction<UserSearchParams>>;

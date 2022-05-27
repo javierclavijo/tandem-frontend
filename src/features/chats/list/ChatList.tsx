@@ -5,16 +5,15 @@ import { Plus } from "iconoir-react";
 import React from "react";
 import { useMediaQuery } from "react-responsive";
 import { useParams } from "react-router-dom";
-import Button from "../../../components/Button";
+import { animated } from "react-spring";
 import { colors } from "../../../styles/variables";
+import { useFadeIn } from "../../../utils/transitions";
 import useAuth from "../../auth/AuthContext";
 import { useAllChatList } from "../hooks";
 import { listContainer, listContainerMobile } from "../styles";
 import ChatListElements from "./ChatListElements";
 import ChatListFilter from "./ChatListFilter";
 import NewChannelModal from "./NewChannelModal";
-import { animated } from "react-spring";
-import { useFadeIn } from "../../../utils/transitions";
 
 function ChatList() {
   const params = useParams();
