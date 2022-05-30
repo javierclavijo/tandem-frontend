@@ -16,7 +16,7 @@ import {
   baseAppContainerWithoutTabs,
   baseAppContainerWithTabs,
   homeSearchMain,
-  homeSearchMainMobile
+  homeSearchMainMobile,
 } from "../../styles/layout";
 import { useFadeIn } from "../../utils/transitions";
 import { axiosApi } from "../auth/AuthContext";
@@ -68,7 +68,7 @@ export interface ChannelSearchParams {
  */
 function Search() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
-  useRedirectIfNotLoggedIn();
+  useRedirectIfNotLoggedIn("/login");
   const transitionProps = useFadeIn();
 
   /**
@@ -104,6 +104,7 @@ function Search() {
           native_language: userSearchParams.nativeLanguages,
           learning_language: userSearchParams.learningLanguages,
           level: userSearchParams.learningLanguagesLevels,
+          size: 18,
         },
         paramsSerializer: (params) =>
           qs.stringify(params, { arrayFormat: "repeat" }),
@@ -136,6 +137,7 @@ function Search() {
           search: channelSearchParams?.search ?? null,
           language: channelSearchParams?.languages,
           level: channelSearchParams?.levels,
+          size: 18,
         },
         paramsSerializer: (params) =>
           qs.stringify(params, { arrayFormat: "repeat" }),
@@ -180,65 +182,67 @@ function Search() {
         {/* Infinite scroll component. Includes the search panel and results. Its properties are assigned
                 conditionally based on the selected search type. */}
         <animated.div style={transitionProps}>
-        <InfiniteScroll
-          next={
-            searchType === searchTypeOptions.USERS
-              ? fetchNextUsersPage
-              : fetchNextChannelsPage
-          }
-          hasMore={
-            searchType === searchTypeOptions.USERS
-              ? hasNextUsersPage ?? false
-              : hasNextChannelsPage ?? false
-          }
-          loader={<p>Loading...</p>}
-          dataLength={
-            searchType === searchTypeOptions.USERS
-              ? usersData?.pages.length ?? 0
-              : channelsData?.pages.length ?? 0
-          }
-          scrollableTarget="search-main"
-          style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-        >
-          {/* Heading and search panel. */}
-          <header css={homeSearchStyles.header}>
-            <h2 css={homeSearchStyles.h2}>Find Users & Channels</h2>
-            <SearchPanel
-              setUserSearchParams={setUserSearchParams}
-              setChannelSearchParams={setChannelSearchParams}
-              searchType={searchType}
-              setSearchType={setSearchType}
-            />
-          </header>
-
-          {/* Search results. */}
-          <section css={homeSearchStyles.section}>
-            <header>
-              <h3 css={homeSearchStyles.sectionHeading}>
-                {searchType === searchTypeOptions.USERS ? "Users" : "Channels"}
-              </h3>
+          <InfiniteScroll
+            next={
+              searchType === searchTypeOptions.USERS
+                ? fetchNextUsersPage
+                : fetchNextChannelsPage
+            }
+            hasMore={
+              searchType === searchTypeOptions.USERS
+                ? hasNextUsersPage ?? false
+                : hasNextChannelsPage ?? false
+            }
+            loader={<p>Loading...</p>}
+            dataLength={
+              searchType === searchTypeOptions.USERS
+                ? usersData?.pages.length ?? 0
+                : channelsData?.pages.length ?? 0
+            }
+            scrollableTarget="search-main"
+            style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+          >
+            {/* Heading and search panel. */}
+            <header css={homeSearchStyles.header}>
+              <h2 css={homeSearchStyles.h2}>Find Users & Channels</h2>
+              <SearchPanel
+                setUserSearchParams={setUserSearchParams}
+                setChannelSearchParams={setChannelSearchParams}
+                searchType={searchType}
+                setSearchType={setSearchType}
+              />
             </header>
-            <div css={homeSearchStyles.sectionItemsContainer}>
-              {searchType === searchTypeOptions.USERS ? (
-                <React.Fragment>
-                  <UserSearchResults
-                    data={usersData}
-                    fetchNextPage={fetchNextUsersPage}
-                    hasNextPage={hasNextUsersPage}
-                  />
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  <ChannelSearchResults
-                    data={channelsData}
-                    fetchNextPage={fetchNextChannelsPage}
-                    hasNextPage={hasNextChannelsPage}
-                  />
-                </React.Fragment>
-              )}
-            </div>
-          </section>
-        </InfiniteScroll>
+
+            {/* Search results. */}
+            <section css={homeSearchStyles.section}>
+              <header>
+                <h3 css={homeSearchStyles.sectionHeading}>
+                  {searchType === searchTypeOptions.USERS
+                    ? "Users"
+                    : "Channels"}
+                </h3>
+              </header>
+              <div css={homeSearchStyles.sectionItemsContainer}>
+                {searchType === searchTypeOptions.USERS ? (
+                  <React.Fragment>
+                    <UserSearchResults
+                      data={usersData}
+                      fetchNextPage={fetchNextUsersPage}
+                      hasNextPage={hasNextUsersPage}
+                    />
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    <ChannelSearchResults
+                      data={channelsData}
+                      fetchNextPage={fetchNextChannelsPage}
+                      hasNextPage={hasNextChannelsPage}
+                    />
+                  </React.Fragment>
+                )}
+              </div>
+            </section>
+          </InfiniteScroll>
         </animated.div>
       </main>
       {!isDesktop ? <Tabs /> : null}
