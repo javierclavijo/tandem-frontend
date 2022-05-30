@@ -29,7 +29,6 @@ function PreLogin() {
           <Link to="/register" css={joinButton}>
             Join Now
           </Link>
-          <p css={disclaimer}>Users of this app might not always be real.</p>
         </div>
         <div css={imageContainer}>
           <img
@@ -37,6 +36,7 @@ function PreLogin() {
             alt="A team of rafters rowing in a body of water."
             css={image}
           />
+          <div css={imageGradient} />
           <div css={imageQuoteContainer}>
             <p css={imageQuote}>
               Running water never grows stale. So you just have to 'keep on
@@ -49,6 +49,7 @@ function PreLogin() {
             Search for native speakers of your target language(s) who share your
             interests, and chat with them.
           </p>
+          <p css={disclaimer}>Users of this app might not always be real.</p>
         </div>
         <div css={textContainer}>
           <p css={bottomText}>Create channels to chat with other learners.</p>
@@ -64,7 +65,7 @@ const textContainer = css`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
+  gap: 1rem;
   background-color: ${colors.PRIMARY};
   color: ${colors.WHITE};
 
@@ -104,18 +105,26 @@ const joinButton = css`
 const imageContainer = css`
   width: 100%;
   position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: "image";
 `;
 
 const image = css`
   width: 100%;
   min-height: 20rem;
+  max-height: 60vh;
   object-fit: cover;
   display: block;
   user-select: none;
   user-drag: none;
-  @media (min-width: 1024px) {
-    object-fit: contain;
-  }
+  grid-area: image;
+`;
+
+const imageGradient = css`
+  grid-area: image;
+  background: linear-gradient(180deg, ${colors.PRIMARY}00 0%, ${colors.PRIMARY} 100%);
 `;
 
 const imageQuoteContainer = css`
