@@ -68,7 +68,7 @@ export interface ChannelSearchParams {
  */
 function Search() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
-  useRedirectIfNotLoggedIn();
+  useRedirectIfNotLoggedIn('/login');
   const transitionProps = useFadeIn();
 
   /**

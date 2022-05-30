@@ -28,7 +28,7 @@ function Home() {
   const transitionProps = useFadeIn();
 
   const { isLoggedIn, user } = useAuth();
-  useRedirectIfNotLoggedIn();
+  useRedirectIfNotLoggedIn('/login');
 
   const { data: friendChats } = useFriendChatList();
   const { data: channelChats } = useChannelChatList();

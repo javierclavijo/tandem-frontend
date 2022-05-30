@@ -12,6 +12,7 @@ import ChatList from "./features/chats/list/ChatList";
 import ChatRoom from "./features/chats/room/ChatRoom";
 import EmptyChatRoom from "./features/chats/room/EmptyChatRoom";
 import Home from "./features/home/Home";
+import PreLogin from "./features/home/PreLogin";
 import ChannelInfo from "./features/info/channel/ChannelInfo";
 import { UserInfo } from "./features/info/user/UserInfo";
 import Search from "./features/search/Search";
@@ -39,7 +40,8 @@ export default function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<PreLogin />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </React.Fragment>

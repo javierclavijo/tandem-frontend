@@ -9,7 +9,18 @@ import Nav from "../../components/Header/Nav";
 import { baseAppContainerWithoutTabs } from "../../styles/layout";
 import { useFadeIn } from "../../utils/transitions";
 import useAuth, { LogInRequestData } from "./AuthContext";
-import { button, errorStyle, form, header, input, label, link, main, section } from "./styles";
+import { useRedirectIfLoggedIn } from "./hooks";
+import {
+  button,
+  errorStyle,
+  form,
+  header,
+  input,
+  label,
+  link,
+  main,
+  section,
+} from "./styles";
 
 function LogIn() {
   const { isLoggedIn, login, error } = useAuth();
@@ -40,11 +51,7 @@ function LogIn() {
     }
   }, [error, setError, clearErrors]);
 
-  React.useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/");
-    }
-  }, [isLoggedIn, navigate]);
+  useRedirectIfLoggedIn("/home");
 
   return (
     <div css={baseAppContainerWithoutTabs}>

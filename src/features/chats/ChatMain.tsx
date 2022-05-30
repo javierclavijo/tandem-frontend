@@ -28,7 +28,7 @@ function ChatMain() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
   const { isLoggedIn } = useAuth();
   const transitionProps = useFadeIn();
-  useRedirectIfNotLoggedIn();
+  useRedirectIfNotLoggedIn('/login');
 
   /**
    * State used by the router outlet context which controls the header's state. This way, the header's data can be

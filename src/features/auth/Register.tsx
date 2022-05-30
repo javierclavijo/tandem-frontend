@@ -26,6 +26,7 @@ import { ServerErrorResponse } from "../chats/ChannelCreationForm";
 import axios from "axios";
 import { useFadeIn } from "../../utils/transitions";
 import { animated } from "react-spring";
+import { useRedirectIfLoggedIn } from "./hooks";
 
 interface RegisterRequestData extends LogInRequestData {
   email: string;
@@ -96,11 +97,7 @@ function Register() {
     }
   };
 
-  React.useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/chats");
-    }
-  }, [isLoggedIn, navigate]);
+  useRedirectIfLoggedIn("/home");
 
   return (
     <animated.div css={baseAppContainerWithoutTabs} style={transitionProps}>
