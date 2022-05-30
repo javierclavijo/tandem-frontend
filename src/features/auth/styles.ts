@@ -39,6 +39,7 @@ export const label = css`
   display: flex;
   flex-direction: column;
   font-size: ${textSizes.M};
+  gap: 0.5rem;
 `;
 
 export const input = css`
@@ -47,7 +48,7 @@ export const input = css`
   border: none;
   border-bottom: 1px solid ${colors.PRIMARY};
   font-size: ${textSizes.M};
-  padding: 0.5rem 0;
+  padding-bottom: 0.5rem;
 
   &:focus {
     outline: none;
