@@ -10,7 +10,7 @@ export const useRedirectIfNotLoggedIn = (url: string) => {
     if (!loading && !isLoggedIn) {
       navigate(url);
     }
-  }, [navigate, loading, isLoggedIn]);
+  }, [navigate, loading, isLoggedIn, url]);
 };
 
 export const useRedirectIfLoggedIn = (url: string) => {
@@ -21,5 +21,5 @@ export const useRedirectIfLoggedIn = (url: string) => {
     if (!loading && isLoggedIn) {
       navigate(url);
     }
-  }, [navigate, loading, isLoggedIn]);
+  }, [navigate, loading, isLoggedIn, url]);
 };

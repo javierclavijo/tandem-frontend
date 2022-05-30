@@ -1,11 +1,21 @@
 /** @jsxImportSource @emotion/react */
 
+import { ErrorMessage } from "@hookform/error-message";
+import axios from "axios";
 import React from "react";
-import useAuth, { axiosApi, LogInRequestData } from "./AuthContext";
-import { Link, useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
-import { baseAppContainerWithoutTabs } from "../../styles/layout";
+import { useMutation } from "react-query";
+import { Link } from "react-router-dom";
+import Select from "react-select";
+import { animated } from "react-spring";
 import Nav from "../../components/Header/Nav";
+import { languageOptions, Option } from "../../resources/languages";
+import { select } from "../../styles/components";
+import { baseAppContainerWithoutTabs } from "../../styles/layout";
+import { useFadeIn } from "../../utils/transitions";
+import { ServerErrorResponse } from "../chats/ChannelCreationForm";
+import useAuth, { axiosApi, LogInRequestData } from "./AuthContext";
+import { useRedirectIfLoggedIn } from "./hooks";
 import {
   button,
   errorStyle,
@@ -17,16 +27,6 @@ import {
   main,
   section,
 } from "./styles";
-import { ErrorMessage } from "@hookform/error-message";
-import { useMutation } from "react-query";
-import Select from "react-select";
-import { languageOptions, Option } from "../../resources/languages";
-import { select } from "../../styles/components";
-import { ServerErrorResponse } from "../chats/ChannelCreationForm";
-import axios from "axios";
-import { useFadeIn } from "../../utils/transitions";
-import { animated } from "react-spring";
-import { useRedirectIfLoggedIn } from "./hooks";
 
 interface RegisterRequestData extends LogInRequestData {
   email: string;
@@ -40,8 +40,7 @@ interface RegisterFormData extends LogInRequestData {
 }
 
 function Register() {
-  const { isLoggedIn, login } = useAuth();
-  const navigate = useNavigate();
+  const { login } = useAuth();
   const transitionProps = useFadeIn();
 
   // React Hook Form

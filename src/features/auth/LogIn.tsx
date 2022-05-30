@@ -3,7 +3,7 @@
 import { ErrorMessage } from "@hookform/error-message";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { animated } from "react-spring";
 import Nav from "../../components/Header/Nav";
 import { baseAppContainerWithoutTabs } from "../../styles/layout";
@@ -23,8 +23,7 @@ import {
 } from "./styles";
 
 function LogIn() {
-  const { isLoggedIn, login, error } = useAuth();
-  const navigate = useNavigate();
+  const { login, error } = useAuth();
   const transitionProps = useFadeIn();
 
   // React Hook Form
