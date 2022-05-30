@@ -114,8 +114,10 @@ export const modal = {
     cursor: pointer;
 
     transition: background-color 0.1s;
-    &:active {
-      background-color: ${colors.DARK};
+    &:active,
+    &:hover,
+    &:focus {
+      background-color: ${colors.DARK_PRIMARY};
     }
   `,
 
@@ -128,10 +130,12 @@ export const modal = {
     color: ${colors.WHITE};
     font-size: ${textSizes.M};
     cursor: pointer;
-    background-color: ${colors.DARK}60;
+    background-color: ${colors.DARK}80;
 
     transition: background-color 0.1s;
-    &:active {
+    &:active,
+    &:hover,
+    &:focus {
       background-color: ${colors.DARK};
     }
   `,

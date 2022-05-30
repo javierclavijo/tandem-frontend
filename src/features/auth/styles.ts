@@ -62,10 +62,13 @@ export const button = css`
   border: none;
   border-radius: 3px;
   color: ${colors.WHITE};
+  cursor: pointer;
 
   transition: background-color 0.1s;
-  &:active {
-    background-color: ${colors.DARK};
+  &:active,
+  &:hover,
+  &:focus {
+    background-color: ${colors.DARK_PRIMARY};
   }
 `;
 

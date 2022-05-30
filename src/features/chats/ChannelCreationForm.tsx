@@ -141,7 +141,7 @@ function ChannelCreationForm({ closeModal }: { closeModal: () => void }) {
         <button type="submit" css={modal.button}>
           Create channel
         </button>
-        <button type="button" onClick={closeModal} css={cancelButton}>
+        <button type="button" onClick={closeModal} css={modal.cancelButton}>
           Cancel
         </button>
       </div>
@@ -181,11 +181,6 @@ const buttonsContainer = css`
   display: flex;
   gap: 1rem;
   justify-content: space-between;
-`;
-
-const cancelButton = css`
-  ${modal.button};
-  background-color: ${colors.DARK}60;
 `;
 
 export default ChannelCreationForm;

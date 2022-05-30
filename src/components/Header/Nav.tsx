@@ -24,8 +24,8 @@ function Nav() {
   return (
     <header css={header}>
       <nav css={nav}>
-        <Link to="/" css={link}>
-          <h1 css={title}>ChatApp</h1>
+        <Link to="/" css={titleLink}>
+          <h1 css={title}>LangFlow</h1>
         </Link>
         <ul css={navList}>
           {isLoggedIn ? (
@@ -153,6 +153,10 @@ export const link = css`
   text-decoration: none;
   color: ${colors.WHITE};
   font-size: ${textSizes.M};
+`;
+
+export const titleLink = css`
+  text-decoration: none;
 `;
 
 export const activeNavLink = {

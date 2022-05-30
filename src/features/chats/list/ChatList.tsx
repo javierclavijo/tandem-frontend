@@ -72,6 +72,7 @@ const newChatButtonContainer = css`
   align-items: center;
   justify-content: center;
   transition: background-color 0.1s;
+  cursor: pointer;
 
   &:hover,
   &:active,
