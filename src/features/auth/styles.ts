@@ -14,7 +14,7 @@ export const section = css`
   background-color: ${colors.WHITE};
   color: ${colors.PRIMARY};
   border-radius: 3px;
-  padding: 1em;
+  padding: 1.25rem;
   box-sizing: border-box;
   width: calc(100% / 4);
   min-width: 20rem;
