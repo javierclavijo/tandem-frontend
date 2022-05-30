@@ -22,8 +22,8 @@ function PreLogin() {
     <div css={baseAppContainerWithoutTabs}>
       <Nav />
       <main>
-        <div css={upperContainer}>
-          <p css={welcome}>
+        <div css={textContainer}>
+          <p css={topText}>
             Welcome to the coolest language learning community ever!
           </p>
           <Link to="/register" css={joinButton}>
@@ -44,24 +44,36 @@ function PreLogin() {
             </p>
           </div>
         </div>
+        <div css={textContainer}>
+          <p css={bottomText}>
+            Search for native speakers of your target language(s) who share your
+            interests, and chat with them.
+          </p>
+        </div>
+        <div css={textContainer}>
+          <p css={bottomText}>Create channels to chat with other learners.</p>
+        </div>
       </main>
     </div>
   );
 }
 
-const upperContainer = css`
-  min-height: 12rem;
-  padding: 0 1rem;
+const textContainer = css`
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 2rem;
-  background-color: ${colors.DARK_PRIMARY};
+  background-color: ${colors.PRIMARY};
   color: ${colors.WHITE};
+
+  @media (min-width: 1024px) {
+    padding: 2rem 3.125rem;
+  }
 `;
 
-const welcome = css`
+const topText = css`
   text-align: center;
   @media (min-width: 1024px) {
     font-size: ${textSizes.L};
@@ -80,6 +92,7 @@ const disclaimer = css`
 const joinButton = css`
   ${button};
   text-decoration: none;
+  background-color: ${colors.DARK_PRIMARY};
 
   &:active,
   &:hover,
@@ -97,6 +110,9 @@ const image = css`
   width: 100%;
   min-height: 20rem;
   object-fit: cover;
+  display: block;
+  user-select: none;
+  user-drag: none;
   @media (min-width: 1024px) {
     object-fit: contain;
   }
@@ -126,6 +142,13 @@ const imageQuoteAuthor = css`
   font-style: normal;
   &:before {
     content: "―";
+  }
+`;
+
+const bottomText = css`
+  ${topText};
+  @media (min-width: 1024px) {
+    font-size: ${textSizes.M};
   }
 `;
 
