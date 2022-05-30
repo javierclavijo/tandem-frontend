@@ -45,7 +45,7 @@ const nav = css`
   justify-content: space-evenly;
   background-color: ${colors.PRIMARY};
 
-  @media (min-width: 1025px) {
+  @media (min-width: 1024px) {
     display: none;
   }
 `;
