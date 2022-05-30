@@ -10,6 +10,8 @@ import { Link } from "react-router-dom";
 import { button } from "../../styles/components";
 
 const topImage = require("../../static/images/loren-dosti-M8cpBt6RSns-unsplash.webp");
+const middleImage = require("../../static/images/toa-heftiba-ANNsvl-6AG0-unsplash.webp");
+const bottomImage = require("../../static/images/zachary-nelson-98Elr-LIvD8-unsplash.webp");
 
 function PreLogin() {
   /**
@@ -21,7 +23,7 @@ function PreLogin() {
   return (
     <div css={baseAppContainerWithoutTabs}>
       <Nav />
-      <main>
+      <main css={main}>
         <div css={textContainer}>
           <p css={topText}>
             Welcome to the coolest language learning community ever!
@@ -44,20 +46,41 @@ function PreLogin() {
             </p>
           </div>
         </div>
-        <div css={textContainer}>
-          <p css={bottomText}>
-            Search for native speakers of your target language(s) who share your
-            interests, and chat with them.
-          </p>
-          <p css={disclaimer}>Users of this app might not always be real.</p>
+        <div css={splitContainer}>
+          <div css={splitTextContainer}>
+            <p css={splitText}>
+              Chat with native speakers of your target language who share your
+              interests
+            </p>
+            <p css={disclaimer}>Users of this app might not always be real.</p>
+          </div>
+          <img
+            src={middleImage}
+            alt="Young people jumping and overall looking excited."
+            css={splitImage}
+          />
         </div>
-        <div css={textContainer}>
-          <p css={bottomText}>Create channels to chat with other learners.</p>
+        <div css={splitContainer}>
+          <img
+            src={bottomImage}
+            alt="Young people jumping and overall looking excited."
+            css={splitImage}
+          />
+          <div css={splitTextContainer}>
+            <p css={splitText}>Create channels and chat with other learners</p>
+          </div>
         </div>
       </main>
     </div>
   );
 }
+
+const main = css`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: ${colors.PRIMARY};
+`;
 
 const textContainer = css`
   padding: 1rem;
@@ -124,13 +147,17 @@ const image = css`
 
 const imageGradient = css`
   grid-area: image;
-  background: linear-gradient(180deg, ${colors.PRIMARY}00 0%, ${colors.PRIMARY} 100%);
+  background: linear-gradient(
+    180deg,
+    ${colors.PRIMARY}00 0%,
+    ${colors.PRIMARY} 100%
+  );
 `;
 
 const imageQuoteContainer = css`
   position: absolute;
   width: 100%;
-  bottom: 10%;
+  bottom: 0;
   background-color: ${colors.WHITE};
   color: ${colors.DARK_PRIMARY};
   padding: 1rem;
@@ -154,11 +181,37 @@ const imageQuoteAuthor = css`
   }
 `;
 
-const bottomText = css`
-  ${topText};
+const splitContainer = css`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   @media (min-width: 1024px) {
-    font-size: ${textSizes.M};
+    flex-direction: row-reverse;
   }
+`;
+
+const splitImage = css`
+  ${image}
+
+  @media (min-width: 1024px) {
+    width: calc(100% / 1.618);
+  }
+`;
+
+const splitTextContainer = css`
+  ${textContainer};
+  width: 100%;
+  background-color: ${colors.DARK_PRIMARY};
+`;
+
+const splitText = css`
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: ${colors.WHITE};
 `;
 
 export default PreLogin;
