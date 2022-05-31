@@ -26,7 +26,7 @@ export const baseAppContainerWithTabs = css`
     "main"
     "tabs";
 
-  @media (min-width: 1025px) {
+  @media (min-width: 1024px) {
     // Set "tabs" area height to zero in desktop layout
     grid-template-rows: 5rem 1fr 0;
   }

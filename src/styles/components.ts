@@ -79,6 +79,24 @@ export const noBorderAndBgSelectDark: StylesConfig = {
   }),
 };
 
+export const button = css`
+  width: fit-content;
+  padding: 0.5rem;
+  border-radius: 3px;
+  border: none;
+  background-color: ${colors.PRIMARY};
+  color: ${colors.WHITE};
+  font-size: ${textSizes.M};
+  cursor: pointer;
+
+  transition: background-color 0.1s;
+  &:active,
+  &:hover,
+  &:focus {
+    background-color: ${colors.DARK_PRIMARY};
+  }
+`;
+
 export const modal = {
   container: {
     content: {
@@ -103,23 +121,7 @@ export const modal = {
     gap: 1rem;
   `,
 
-  button: css`
-    width: fit-content;
-    padding: 0.5rem;
-    border-radius: 3px;
-    border: none;
-    background-color: ${colors.PRIMARY};
-    color: ${colors.WHITE};
-    font-size: ${textSizes.M};
-    cursor: pointer;
-
-    transition: background-color 0.1s;
-    &:active,
-    &:hover,
-    &:focus {
-      background-color: ${colors.DARK_PRIMARY};
-    }
-  `,
+  button: button,
 
   cancelButton: css`
     width: fit-content;

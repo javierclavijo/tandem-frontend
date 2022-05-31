@@ -18,7 +18,7 @@ function Nav() {
 
   const handleLogout = React.useCallback(async () => {
     await logout();
-    navigate("/login");
+    navigate("/");
   }, [logout, navigate]);
 
   return (
@@ -129,8 +129,12 @@ const nav = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 3.125rem;
+  padding: 0 1rem;
   box-sizing: border-box;
+
+  @media (min-width: 1024px) {
+    padding: 0 3.125rem;
+  }
 `;
 
 const title = css`
