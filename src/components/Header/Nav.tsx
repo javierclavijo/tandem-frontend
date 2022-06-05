@@ -7,6 +7,7 @@ import { useMediaQuery } from "react-responsive";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../features/auth/AuthContext";
 import { infoButton } from "../../features/info/styles";
+import langflowLogo from "../../static/svg/langflow_logo.svg";
 import { colors, textSizes } from "../../styles/variables";
 import LogoutButton from "./LogoutButton";
 import NavProfilePicture from "./NavProfilePicture";
@@ -25,6 +26,7 @@ function Nav() {
     <header css={header}>
       <nav css={nav}>
         <Link to="/" css={titleLink}>
+          <img src={langflowLogo} alt="LangFlow logo" css={logo} />
           <h1 css={title}>LangFlow</h1>
         </Link>
         <ul css={navList}>
@@ -137,10 +139,18 @@ const nav = css`
   }
 `;
 
+const logo = css`
+  max-height: 3rem;
+`;
+
 const title = css`
   color: ${colors.WHITE};
   margin: 0;
-  font-size: ${textSizes.XL};
+  font-size: ${textSizes.L};
+
+  @media (min-width: 576px) {
+    font-size: ${textSizes.XL};
+  }
 `;
 
 const navList = css`
@@ -149,7 +159,11 @@ const navList = css`
   margin: 0;
   padding: 0;
   list-style-type: none;
-  gap: 20px;
+  gap: 0.25rem;
+
+  @media (min-width: 576px) {
+    gap: 2rem;
+  }
 `;
 
 export const link = css`
@@ -157,10 +171,14 @@ export const link = css`
   text-decoration: none;
   color: ${colors.WHITE};
   font-size: ${textSizes.M};
+  text-align: center;
 `;
 
 export const titleLink = css`
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 `;
 
 export const activeNavLink = {
