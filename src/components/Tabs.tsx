@@ -19,7 +19,7 @@ function Tabs() {
       </div>
       <div css={tab}>
         <NavLink
-          to="/"
+          to="/home"
           style={({ isActive }) => (isActive ? activeLink : link)}
         >
           <Home color={colors.WHITE} width="1.5rem" height="1.5rem" />
