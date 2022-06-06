@@ -27,7 +27,7 @@ export const globalStyles = css`
   }
 
   ::-webkit-scrollbar-thumb {
-    background: ${colors.SECONDARY};
+    background: ${colors.PRIMARY};
     border-radius: 100vw;
   }
 
@@ -35,7 +35,7 @@ export const globalStyles = css`
   @supports (scrollbar-width: thin) {
     * {
       scrollbar-width: thin;
-      scrollbar-color: ${colors.SECONDARY} ${colors.WHITE};
+      scrollbar-color: ${colors.PRIMARY} ${colors.WHITE};
     }
   }
 `;
