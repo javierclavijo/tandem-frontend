@@ -133,7 +133,7 @@ export function ChannelNameInput({ data }: { data: Channel }) {
           return old;
         }
       );
-      queryClient.setQueryData<Chat[] | undefined>(["chats", "list"], (old) => {
+      queryClient.setQueryData<Chat[] | undefined>(["chats", "list", "all"], (old) => {
         const oldChat = old?.find((chat) => chat.id === requestData.id);
         if (oldChat) {
           oldChat.name = requestData.name;

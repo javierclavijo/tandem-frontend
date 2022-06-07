@@ -59,7 +59,7 @@ function ChatMain() {
 
     const message = lastJsonMessage.message;
     if (message) {
-      queryClient.setQueryData<Chat[] | undefined>(["chats", "list"], (old) => {
+      queryClient.setQueryData<Chat[] | undefined>(["chats", "list", "all"], (old) => {
         if (old !== undefined) {
           const oldChat = old.find((c) => c.id === message.chat_id);
           if (oldChat) {

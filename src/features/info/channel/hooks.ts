@@ -38,7 +38,7 @@ export function useDeleteChannel(data: Channel | undefined) {
    * Sends the request to delete the channel.
    */
   const deleteChannelMutation = useMutation(deleteChannelRequest, {
-    onSuccess: () => queryClient.invalidateQueries(["chats", "list"]),
+    onSuccess: () => queryClient.invalidateQueries(["chats", "list", "all"]),
   });
 
   return useCallback(async () => {
@@ -121,7 +121,7 @@ export function useJoinChannel(channel: Channel | undefined) {
   return useMutation(joinChannelRequest, {
     onSuccess: async () => {
       await queryClient.invalidateQueries(["channels", channel?.id]);
-      await queryClient.invalidateQueries(["chats", "list"]);
+      await queryClient.invalidateQueries(["chats", "list", "all"]);
     },
   });
 }
@@ -148,7 +148,7 @@ export function useLeaveChannel(channel: Channel | undefined) {
   return useMutation(leaveChannelRequest, {
     onSuccess: async () => {
       await queryClient.invalidateQueries(["channels", channel?.id]);
-      await queryClient.invalidateQueries(["chats", "list"]);
+      await queryClient.invalidateQueries(["chats", "list", "all"]);
     },
   });
 }

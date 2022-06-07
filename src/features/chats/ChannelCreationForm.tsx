@@ -39,7 +39,7 @@ function ChannelCreationForm({ closeModal }: { closeModal: () => void }) {
     await axiosApi.post("channels/", data);
 
   const mutation = useMutation(request, {
-    onSuccess: () => queryClient.invalidateQueries(["chats", "list"]),
+    onSuccess: () => queryClient.invalidateQueries(["chats", "list", "all"]),
   });
 
   const onSubmit = async (data: any) => {

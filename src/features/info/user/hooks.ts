@@ -60,7 +60,7 @@ export function useCreateChatWithUser(otherUser: User | undefined) {
   return useMutation(createChatRequest, {
     onSuccess: async () => {
       await queryClient.invalidateQueries(["users", otherUser?.id]);
-      await queryClient.invalidateQueries(["chats", "list"]);
+      await queryClient.invalidateQueries(["chats", "list", "all"]);
     },
   });
 }

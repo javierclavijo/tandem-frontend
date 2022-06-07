@@ -17,7 +17,7 @@ const browserRouter = (
         <AuthProvider>
           <App />
         </AuthProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </BrowserRouter>
   </React.StrictMode>
