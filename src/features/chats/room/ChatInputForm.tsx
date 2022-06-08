@@ -8,11 +8,29 @@ import { Chat } from "../../../entities/Chat";
 import { colors, textSizes } from "../../../styles/variables";
 import useAuth from "../../auth/AuthContext";
 import Picker from "emoji-picker-react";
+import useEventListener from "@use-it/event-listener";
 
 function ChatInputForm({ chat }: { chat: Chat }) {
   const [inputValue, setInputValue] = useState<string>("");
   const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
   const { isLoggedIn } = useAuth();
+
+  useEventListener("keydown", (event: KeyboardEvent) => {
+    if (event.code === "Escape" && showEmojiPicker) {
+      setShowEmojiPicker(false);
+    }
+  });
+
+  useEventListener("click", (event: MouseEvent) => {
+    const emojiPicker = document.querySelector(".emoji-picker-react");
+    if (
+      event.target instanceof Element &&
+      !emojiPicker?.contains(event.target) &&
+      showEmojiPicker
+    ) {
+      setShowEmojiPicker(false);
+    }
+  });
 
   const { sendJsonMessage } = useWebSocket(
     `${process.env.REACT_APP_WS_URL}/ws/chats/`,

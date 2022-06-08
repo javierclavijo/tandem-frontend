@@ -20,6 +20,7 @@
     "@types/react-modal": "^3.13.1",
     "@types/react-select": "^5.0.1",
     "@types/use-deep-compare-effect": "^1.5.1",
+    "@use-it/event-listener": "^0.1.7",
     "axios": "^0.26.1",
     "emoji-picker-react": "^3.5.1",
     "iconoir-react": "^4.8.1",
