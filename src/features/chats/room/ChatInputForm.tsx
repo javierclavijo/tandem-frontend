@@ -1,15 +1,17 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from "@emotion/react";
-import { ArrowRightCircled } from "iconoir-react";
+import { ArrowRightCircled, Emoji } from "iconoir-react";
 import React, { useCallback, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import { Chat } from "../../../entities/Chat";
 import { colors, textSizes } from "../../../styles/variables";
 import useAuth from "../../auth/AuthContext";
+import Picker from "emoji-picker-react";
 
 function ChatInputForm({ chat }: { chat: Chat }) {
   const [inputValue, setInputValue] = useState<string>("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
   const { isLoggedIn } = useAuth();
 
   const { sendJsonMessage } = useWebSocket(
@@ -39,9 +41,40 @@ function ChatInputForm({ chat }: { chat: Chat }) {
     [chat, inputValue, sendJsonMessage]
   );
 
+  const onEmojiClick = React.useCallback(
+    (event, emojiObject) => {
+      setInputValue(inputValue.concat(emojiObject.emoji));
+    },
+    [inputValue, setInputValue]
+  );
+
+  const toggleEmojiPicker = React.useCallback(() => {
+    setShowEmojiPicker(!showEmojiPicker);
+  }, [showEmojiPicker, setShowEmojiPicker]);
+
+  const emojiPickerStyle = {
+    position: "absolute",
+    bottom: "100%",
+    display: showEmojiPicker ? "flex" : "none",
+    marginBottom: "1rem",
+  };
+
   return (
     <div css={container}>
       <form css={form} onSubmit={handleSend}>
+        <Picker
+          onEmojiClick={onEmojiClick}
+          native={true}
+          pickerStyle={emojiPickerStyle}
+        />
+        <button
+          type="button"
+          onClick={toggleEmojiPicker}
+          id="chat-emoji"
+          css={button}
+        >
+          <Emoji color={`${colors.DARK}99`} width="1.5rem" height="1.5rem" />
+        </button>
         <input
           type="text"
           id="chat-text-input"
@@ -71,6 +104,9 @@ const form = css`
   background-color: ${colors.LIGHT};
   border-radius: 3px;
   display: flex;
+  position: relative;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
 `;
 
 const input = css`
@@ -79,6 +115,7 @@ const input = css`
   background: none;
   outline: none;
   padding: 0.5rem;
+  box-sizing: border-box;
   font-size: ${textSizes.M};
 `;
 
@@ -88,6 +125,7 @@ const button = css`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 
 export default ChatInputForm;
