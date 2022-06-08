@@ -11,26 +11,11 @@ import Picker from "emoji-picker-react";
 import useEventListener from "@use-it/event-listener";
 
 function ChatInputForm({ chat }: { chat: Chat }) {
-  const [inputValue, setInputValue] = useState<string>("");
-  const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
+  /**
+   * Input form for the chat room. Includes the chat message input, a send button and an emoji picker.
+   */
+
   const { isLoggedIn } = useAuth();
-
-  useEventListener("keydown", (event: KeyboardEvent) => {
-    if (event.code === "Escape" && showEmojiPicker) {
-      setShowEmojiPicker(false);
-    }
-  });
-
-  useEventListener("click", (event: MouseEvent) => {
-    const emojiPicker = document.querySelector(".emoji-picker-react");
-    if (
-      event.target instanceof Element &&
-      !emojiPicker?.contains(event.target) &&
-      showEmojiPicker
-    ) {
-      setShowEmojiPicker(false);
-    }
-  });
 
   const { sendJsonMessage } = useWebSocket(
     `${process.env.REACT_APP_WS_URL}/ws/chats/`,
@@ -42,6 +27,42 @@ function ChatInputForm({ chat }: { chat: Chat }) {
     isLoggedIn
   );
 
+  /**
+   * Controls the value of the input field.
+   */
+  const [inputValue, setInputValue] = useState<string>("");
+
+  /**
+   * Controls whether the emoji picker is rendered.
+   */
+  const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
+
+  /**
+   * Close the emoji picker when the 'Esc' key is pressed.
+   */
+  useEventListener("keydown", (event: KeyboardEvent) => {
+    if (event.code === "Escape" && showEmojiPicker) {
+      setShowEmojiPicker(false);
+    }
+  });
+
+  /**
+   * Close the emoji picker when the user clicks outside it.
+   */
+  useEventListener("click", (event: MouseEvent) => {
+    const emojiPicker = document.querySelector(".emoji-picker-react");
+    if (
+      event.target instanceof Element &&
+      !emojiPicker?.contains(event.target) &&
+      showEmojiPicker
+    ) {
+      setShowEmojiPicker(false);
+    }
+  });
+
+  /**
+   * Handles sending messages.
+   */
   const handleSend = useCallback(
     (event) => {
       event.preventDefault();
@@ -59,6 +80,9 @@ function ChatInputForm({ chat }: { chat: Chat }) {
     [chat, inputValue, sendJsonMessage]
   );
 
+  /**
+   * Handles the emoji click event. Appends the emoji to the input's value.
+   */
   const onEmojiClick = React.useCallback(
     (event, emojiObject) => {
       setInputValue(inputValue.concat(emojiObject.emoji));
@@ -66,10 +90,16 @@ function ChatInputForm({ chat }: { chat: Chat }) {
     [inputValue, setInputValue]
   );
 
+  /**
+   * Toggles the emoji picker's rendering.
+   */
   const toggleEmojiPicker = React.useCallback(() => {
     setShowEmojiPicker(!showEmojiPicker);
   }, [showEmojiPicker, setShowEmojiPicker]);
 
+  /**
+   * Styles for the emoji picker.
+   */
   const emojiPickerStyle = {
     position: "absolute",
     bottom: "100%",
