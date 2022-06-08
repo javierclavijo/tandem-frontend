@@ -9,6 +9,9 @@ import { ChatHeaderProps } from "../../../components/ChatHeader";
 import { useFadeIn } from "../../../utils/transitions";
 import { animated } from "react-spring";
 
+/**
+ * Empty chat room component. Only used in the desktop chat list.
+ */
 function EmptyChatRoom() {
   const [, setHeader] =
     useOutletContext<

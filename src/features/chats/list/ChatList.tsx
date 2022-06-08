@@ -15,16 +15,24 @@ import ChatListElements from "./ChatListElements";
 import ChatListFilter from "./ChatListFilter";
 import NewChannelModal from "./NewChannelModal";
 
+/**
+ * Chat list section component. Holds the chat list, the filtering input and the channel creation button.
+ */
 function ChatList() {
   const params = useParams();
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
-
-  const [filter, setFilter] = React.useState<string>("");
-
+  const transitionProps = useFadeIn();
   const { data } = useAllChatList();
   const { user } = useAuth();
-  const transitionProps = useFadeIn();
 
+  /**
+   * Controls the chat list filter state.
+   */
+  const [filter, setFilter] = React.useState<string>("");
+
+  /**
+   * Controls whether the channel creation modal is open.
+   */
   const [isChannelCreationModalOpen, setIsChannelCreationModalOpen] =
     React.useState<boolean>(false);
 
@@ -34,7 +42,10 @@ function ChatList() {
         css={isDesktop ? listContainer : listContainerMobile}
         style={transitionProps}
       >
+        {/* Chat list filter */}
         <ChatListFilter setFilter={setFilter} />
+
+        {/* Chat list elements */}
         {data && user ? (
           <ChatListElements
             data={data}
@@ -43,6 +54,8 @@ function ChatList() {
             userId={user?.id}
           />
         ) : null}
+
+        {/* Channel creation button */}
         <button
           css={newChatButtonContainer}
           onClick={() => setIsChannelCreationModalOpen(true)}
@@ -50,6 +63,8 @@ function ChatList() {
           <Plus height={"2rem"} width={"2rem"} color={colors.WHITE} />
         </button>
       </animated.section>
+
+      {/* Channel creation modal */}
       <NewChannelModal
         isOpen={isChannelCreationModalOpen}
         setIsOpen={setIsChannelCreationModalOpen}

@@ -21,7 +21,9 @@ interface UserInfoNewLanguageSelectRequestData {
   user: string;
 }
 
-
+/**
+ * Contains controls to allow the user to add a new language to their profile.
+ */
 function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
   const { user } = useAuth();
   const queryClient = useQueryClient();

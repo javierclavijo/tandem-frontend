@@ -21,6 +21,9 @@ interface DescriptionTextareaRequestData {
   description: string;
 }
 
+/**
+ * Text area component to edit a user or channel's description.
+ */
 function DescriptionTextarea({ data, queryKey }: DescriptionTextareaProps) {
   const queryClient = useQueryClient();
 

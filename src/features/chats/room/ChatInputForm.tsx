@@ -10,11 +10,10 @@ import useAuth from "../../auth/AuthContext";
 import Picker from "emoji-picker-react";
 import useEventListener from "@use-it/event-listener";
 
+/**
+ * Input form for the chat room. Includes the chat message input, a send button and an emoji picker.
+ */
 function ChatInputForm({ chat }: { chat: Chat }) {
-  /**
-   * Input form for the chat room. Includes the chat message input, a send button and an emoji picker.
-   */
-
   const { isLoggedIn } = useAuth();
 
   const { sendJsonMessage } = useWebSocket(

@@ -23,11 +23,11 @@ interface InfoListElementProps {
   buttons?: JSX.Element;
 }
 
+/**
+ * List element for lists in channel and user info components. Admits a 'buttons' JSX prop which is made visible on
+ * hover.
+ */
 function InfoListElement(props: InfoListElementProps) {
-  /**
-   * List element for lists in channel and user info components. Admits a 'buttons' JSX prop which is made visible on
-   * hover.
-   */
   const [displayButtons, setDisplayButtons] = React.useState<boolean>(false);
 
   const buttonsInnerContainer = css`

@@ -18,6 +18,10 @@ interface ChatListElementProps {
   latestMessageIsOwn: boolean;
 }
 
+/**
+ * Chat list element component. Renders with a different background color based on whether the
+ * element's chat is currently being displayed, or the user is hovering the mouse above the element.
+ */
 function ChatListElement({
   chat,
   selected,

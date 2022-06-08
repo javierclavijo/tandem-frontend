@@ -13,11 +13,10 @@ const topImage = require("../../static/images/loren-dosti-M8cpBt6RSns-unsplash.w
 const middleImage = require("../../static/images/toa-heftiba-ANNsvl-6AG0-unsplash.webp");
 const bottomImage = require("../../static/images/zachary-nelson-98Elr-LIvD8-unsplash.webp");
 
+/**
+ * Pre-login home/index page component.
+ */
 function PreLogin() {
-  /**
-   * Pre-login home/index page.
-   */
-
   useRedirectIfLoggedIn("/home");
 
   return (

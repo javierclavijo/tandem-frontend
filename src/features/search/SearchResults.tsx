@@ -31,15 +31,12 @@ const notFoundText = css`
 `;
 
 function NotFound() {
-  return (
-    <p
-      css={notFoundText}
-    >
-      No results.
-    </p>
-  );
+  return <p css={notFoundText}>No results.</p>;
 }
 
+/**
+ * Search result list for user search.
+ */
 export function UserSearchResults(props: UserSearchResultsProps) {
   return props.data ? (
     <React.Fragment>
@@ -66,6 +63,9 @@ export function UserSearchResults(props: UserSearchResultsProps) {
   ) : null;
 }
 
+/**
+ * Search result list for channel search.
+ */
 export function ChannelSearchResults(props: ChannelSearchResultsProps) {
   return props.data ? (
     <React.Fragment>

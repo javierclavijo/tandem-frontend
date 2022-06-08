@@ -36,6 +36,9 @@ const imageElement = css`
   grid-area: input;
 `;
 
+/**
+ * Displays the profile image for a user or channel and allows updating it.
+ */
 function ImageInput({
   image,
   defaultImage,

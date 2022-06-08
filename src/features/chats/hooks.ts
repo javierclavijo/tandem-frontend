@@ -13,14 +13,14 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import { ChatHeaderProps } from "../../components/ChatHeader";
 import useWebSocket from "react-use-websocket";
 
+/**
+ * Sorts messages or chats according to sent datetime. If the message is undefined (usually due to a chat having
+ * no messages, which shouldn't happen in practice), the current datetime is used.
+ */
 export const messageSortFn = (
   a: ChatMessage | undefined,
   b: ChatMessage | undefined
 ) => {
-  /**
-   * Sorts messages or chats according to sent datetime. If the message is undefined (usually due to a chat having
-   * no messages, which shouldn't happen in practice), the current datetime is used.
-   */
   const aDateTime = a?.timestamp
     ? DateTime.fromISO(a.timestamp)
     : DateTime.now();
@@ -87,10 +87,10 @@ const fetchAllChatList = async (user: User | undefined) => {
   return [...friendChats, ...channelChats];
 };
 
+/**
+ * Holds information about the user's chat list (both channel and friend chats).
+ */
 export const useAllChatList = () => {
-  /**
-   * Holds the information about the user's chat list (both channel and friend chats).
-   */
   const { user } = useAuth();
   return useQuery<Chat[]>(
     ["chats", "list", "all"],
@@ -105,10 +105,10 @@ export const useAllChatList = () => {
   );
 };
 
+/**
+ * Holds information about the user's friend chat list.
+ */
 export const useFriendChatList = () => {
-  /**
-   * Holds the information about the user's friend chat list.
-   */
   const { user } = useAuth();
   return useQuery<Chat[]>(
     ["chats", "list", "users"],
@@ -123,10 +123,10 @@ export const useFriendChatList = () => {
   );
 };
 
+/**
+ * Holds information about the user's channel chat list.
+ */
 export const useChannelChatList = () => {
-  /**
-   * Holds the information about the user's channel chat list.
-   */
   const { user } = useAuth();
   return useQuery<Chat[]>(
     ["chats", "list", "channels"],
@@ -141,14 +141,13 @@ export const useChannelChatList = () => {
   );
 };
 
+/**
+ * Holds information about a chat and its messages.
+ */
 export const useChat = (
   id: string,
   queryOptions: Omit<UseInfiniteQueryOptions, any> | undefined
 ) => {
-  /**
-   * Holds the information about a chat and its messages.
-   */
-
   const navigate = useNavigate();
   const { data: chatList } = useAllChatList();
   const [chat, setChat] = useState<Chat | undefined>();
@@ -186,11 +185,10 @@ export const useChat = (
   return { ...query, chat };
 };
 
+/**
+ * Sets the chat header according to the current view's resource's data. Used in ChatRoom component.
+ */
 export const useSetChatRoomHeader = (chat: Chat | undefined | null) => {
-  /**
-   * Sets the chat header according to the current view's resource's data. Used in ChatRoom component.
-   */
-
   const { user } = useAuth();
   const [, setHeader] =
     useOutletContext<
@@ -222,11 +220,11 @@ export const useSetChatRoomHeader = (chat: Chat | undefined | null) => {
   }, [chat, setHeader, user]);
 };
 
+/**
+ * Sends a message through the WS connection when a chat is created to join the chat group.
+ * The connection is closed if the user logs out.
+ */
 export function useJoinWSChat() {
-  /**
-   * Sends a message through the WS connection when a chat is created to join the chat group. The connection is closed if the user logs out.
-   */
-
   const { isLoggedIn } = useAuth();
 
   const { sendJsonMessage } = useWebSocket(

@@ -23,6 +23,10 @@ interface LanguageBadgeProps {
   bg: string;
 }
 
+/**
+ * Badge-like component for channel detail view. Displays the channel's language's name and icon and allows
+ * selecting the language and level.
+ */
 function UserInfoEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
   const queryClient = useQueryClient();
   const [languageValue, setLanguageValue] = React.useState<Option | null>(null);

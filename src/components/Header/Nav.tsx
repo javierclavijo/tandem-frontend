@@ -12,11 +12,17 @@ import { colors, textSizes } from "../../styles/variables";
 import LogoutButton from "./LogoutButton";
 import NavProfilePicture from "./NavProfilePicture";
 
+/**
+ * Main header component. Renders differently according to the viewport width and to whether the user is logged in.
+ */
 function Nav() {
   const { user, isLoggedIn, logout } = useAuth();
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
   const navigate = useNavigate();
 
+  /**
+   * Handler for logout action.
+   */
   const handleLogout = React.useCallback(async () => {
     await logout();
     navigate("/");

@@ -13,6 +13,9 @@ interface EditButtonsProps {
   color: string;
 }
 
+/**
+ * Renders a confirm (check) and a cancel (cross) button.
+ */
 function EditButtons({
   editEnabled,
   submitButtonRef,

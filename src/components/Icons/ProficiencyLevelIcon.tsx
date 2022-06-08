@@ -7,6 +7,9 @@ interface ProficiencyLevelIconProps extends React.SVGProps<SVGSVGElement> {
   level: string;
 }
 
+/**
+ * Renders the appropriate proficiency level icon for the level passed in the component's props.
+ */
 function ProficiencyLevelIcon(
   { level, ...props }: ProficiencyLevelIconProps,
   svgRef?: React.Ref<SVGSVGElement>

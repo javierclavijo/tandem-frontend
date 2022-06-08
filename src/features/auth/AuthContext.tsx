@@ -34,12 +34,11 @@ export const axiosApi = axios.create({
   xsrfHeaderName: "X-CSRFToken",
 });
 
+/**
+ * Authentication context provider for the app. Fetches and provides information about authentication and the user,
+ * and provides functions to log in and log out.
+ */
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  /**
-   * Authentication context provider for the app. Fetches and provides information about authentication and the user,
-   * and provides functions to log in and log out.
-   */
-
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 

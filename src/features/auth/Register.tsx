@@ -13,7 +13,7 @@ import { languageOptions, Option } from "../../resources/languages";
 import { select } from "../../styles/components";
 import { baseAppContainerWithoutTabs } from "../../styles/layout";
 import { useFadeIn } from "../../utils/transitions";
-import { ServerErrorResponse } from "../chats/ChannelCreationForm";
+import { ServerErrorResponse } from "../chats/list/ChannelCreationForm";
 import useAuth, { axiosApi, LogInRequestData } from "./AuthContext";
 import { useRedirectIfLoggedIn } from "./hooks";
 import {
@@ -39,11 +39,14 @@ interface RegisterFormData extends LogInRequestData {
   confirmPassword: string;
 }
 
+/**
+ * Register form component.
+ */
 function Register() {
   const { login } = useAuth();
   const transitionProps = useFadeIn();
+  useRedirectIfLoggedIn("/home");
 
-  // React Hook Form
   const {
     register,
     formState: { errors },
@@ -59,6 +62,10 @@ function Register() {
 
   const { mutateAsync: registerMutateAsync } = useMutation(registerRequest);
 
+  /**
+   * Form submit handler. Attempts user registration and sets any error messages sent by the server.
+   *  If successful, logs in the user.
+   */
   const onSubmit = async (data: RegisterFormData) => {
     try {
       const response = await registerMutateAsync({
@@ -95,8 +102,6 @@ function Register() {
       }
     }
   };
-
-  useRedirectIfLoggedIn("/home");
 
   return (
     <animated.div css={baseAppContainerWithoutTabs} style={transitionProps}>

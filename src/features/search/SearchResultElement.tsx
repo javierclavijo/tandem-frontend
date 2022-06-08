@@ -25,6 +25,9 @@ interface SearchElementProps {
   link: string;
 }
 
+/**
+ * Element component for search results.
+ */
 function SearchResultElement(props: SearchElementProps) {
   return (
     <article css={outerContainer}>

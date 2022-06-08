@@ -22,11 +22,14 @@ import {
   section,
 } from "./styles";
 
+/**
+ * Login form component.
+ */
 function LogIn() {
   const { login, error } = useAuth();
   const transitionProps = useFadeIn();
+  useRedirectIfLoggedIn("/home");
 
-  // React Hook Form
   const {
     register,
     formState: { errors },
@@ -39,6 +42,9 @@ function LogIn() {
     login(data);
   };
 
+  /**
+   * Set a message if the auth context's error state is set.
+   */
   React.useEffect(() => {
     if (error) {
       setError("password", {
@@ -49,8 +55,6 @@ function LogIn() {
       clearErrors();
     }
   }, [error, setError, clearErrors]);
-
-  useRedirectIfLoggedIn("/home");
 
   return (
     <div css={baseAppContainerWithoutTabs}>

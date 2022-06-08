@@ -14,6 +14,9 @@ interface LeaveChannelModalProps {
   handleLeave: () => Promise<void>;
 }
 
+/**
+ * Confirmation modal window for channel leave action.
+ */
 function LeaveChannelModal({
   isOpen,
   setIsOpen,

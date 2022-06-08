@@ -14,6 +14,9 @@ interface NewLanguageModalProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+/**
+ * Modal window which allows the user to add a new language to their profile.
+ */
 function NewLanguageModal({ isOpen, setIsOpen }: NewLanguageModalProps) {
   return (
     <ReactModal

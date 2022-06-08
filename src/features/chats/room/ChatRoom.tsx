@@ -13,11 +13,10 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { animated } from "react-spring";
 import { useFadeIn } from "../../../utils/transitions";
 
+/**
+ * Renders a chat's messages, plus the input form to send messages to the chat.
+ */
 function ChatRoom() {
-  /**
-   * Renders a chat's messages, plus the input form to send messages to the chat.
-   */
-
   const params = useParams();
   const { user } = useAuth();
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });

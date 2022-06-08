@@ -6,6 +6,9 @@ import { Search } from "iconoir-react";
 import { colors, textSizes } from "../../../styles/variables";
 import { searchInput, searchInputElement } from "../../../styles/components";
 
+/**
+ * Chat list filter form.
+ */
 function ChatListFilter({
   setFilter,
 }: {

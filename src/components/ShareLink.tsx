@@ -9,12 +9,11 @@ interface ShareLinkProps {
   link: string;
 }
 
+/**
+ * Component which allows the user to copy a link on click, displaying a 'copied to clipboard' message which
+ * clears itself after a short interval.
+ */
 function ShareLink(props: ShareLinkProps) {
-  /**
-   * Simple component which allows the user to copy a link on click, displaying a 'copied to clipboard' message which
-   * clears itself after a short interval.
-   */
-
   /**
    * Used to show a 'copied to clipboard' text whenever the user copies the link.
    */

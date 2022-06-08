@@ -14,19 +14,23 @@ interface ChatListElementsProps {
   selectedId?: string;
 }
 
+/*
+ * Chat list elements holder component.
+ */
 function ChatListElements({
   data,
   filter,
   userId,
   selectedId,
 }: ChatListElementsProps) {
-  /*
-   * Chat list component, used in ChatMain. Allows filtering chats by name.
+  /**
+   * Holds the filtered list elements.
    */
-
-  // Contains the filtered elements
   const [filteredElements, setFilteredElements] = React.useState<Chat[]>([]);
 
+  /**
+   * Filter the data received in props through the specified filter.
+   */
   React.useEffect(
     () =>
       setFilteredElements(
@@ -52,6 +56,7 @@ function ChatListElements({
             key={chat.id}
           />
         ))}
+
       {/* Empty list. Has different strings for cases where the user has chats and is filtering, and where the
             user doesn't have any chats. */}
       {!filteredElements.length ? (

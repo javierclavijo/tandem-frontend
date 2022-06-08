@@ -14,6 +14,9 @@ interface DeleteChannelModalProps {
   handleDelete: () => Promise<void>;
 }
 
+/**
+ * Channel deletion confirmation modal window.
+ */
 function DeleteChannelModal({
   isOpen,
   setIsOpen,

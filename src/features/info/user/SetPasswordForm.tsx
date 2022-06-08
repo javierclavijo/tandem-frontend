@@ -23,6 +23,9 @@ export interface ServerErrorResponse {
   [key: string]: string[];
 }
 
+/**
+ * Form which allows the user to change their password.
+ */
 function SetPasswordForm({ closeModal }: { closeModal: () => void }) {
   const { user, login } = useAuth();
   const {

@@ -18,6 +18,9 @@ interface NameInputProps<T> {
   mutation: UseMutationResult<any, unknown, any, unknown>;
 }
 
+/**
+ * Base name input component for detail views.
+ */
 function NameInput<T>({ data, dataKey, mutation }: NameInputProps<T>) {
   const {
     editEnabled,
@@ -112,6 +115,9 @@ function NameInput<T>({ data, dataKey, mutation }: NameInputProps<T>) {
   );
 }
 
+/**
+ * Name input component for channel detail.
+ */
 export function ChannelNameInput({ data }: { data: Channel }) {
   const queryClient = useQueryClient();
 
@@ -157,6 +163,10 @@ export function ChannelNameInput({ data }: { data: Channel }) {
   );
 }
 
+
+/**
+ * Name input component for user detail.
+ */
 export function UserNameInput({ data }: { data: User }) {
   const queryClient = useQueryClient();
 

@@ -8,11 +8,11 @@ import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
-import { languageOptions, levelOptions } from "../../resources/languages";
-import { modal, select } from "../../styles/components";
-import { colors, textSizes } from "../../styles/variables";
-import { axiosApi } from "../auth/AuthContext";
-import { errorStyle } from "../auth/styles";
+import { languageOptions, levelOptions } from "../../../resources/languages";
+import { modal, select } from "../../../styles/components";
+import { colors, textSizes } from "../../../styles/variables";
+import { axiosApi } from "../../auth/AuthContext";
+import { errorStyle } from "../../auth/styles";
 
 interface ChannelCreationRequestData {
   name: string;
@@ -24,6 +24,9 @@ export interface ServerErrorResponse {
   [key: string]: string[];
 }
 
+/**
+ * Form which allows the user to create a new channel, used in NewChannelModal.
+ */
 function ChannelCreationForm({ closeModal }: { closeModal: () => void }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();

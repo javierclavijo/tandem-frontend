@@ -12,7 +12,7 @@ import {
   baseAppContainerWithoutTabs,
   baseAppContainerWithTabs,
   homeSearchMain,
-  homeSearchMainMobile
+  homeSearchMainMobile,
 } from "../../styles/layout";
 import { colors } from "../../styles/variables";
 import { useFadeIn } from "../../utils/transitions";
@@ -23,12 +23,15 @@ import SearchResultElement from "../search/SearchResultElement";
 import { useDiscoverUsersList } from "./hooks";
 import RecentElement from "./RecentElement";
 
+/**
+ * Post-login home component.
+ */
 function Home() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
   const transitionProps = useFadeIn();
 
   const { isLoggedIn, user } = useAuth();
-  useRedirectIfNotLoggedIn('/login');
+  useRedirectIfNotLoggedIn("/login");
 
   const { data: friendChats } = useFriendChatList();
   const { data: channelChats } = useChannelChatList();

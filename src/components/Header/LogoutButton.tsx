@@ -10,6 +10,9 @@ interface LogoutButtonProps {
   handleLogout: () => Promise<void>;
 }
 
+/**
+ * Logout button used in the header navbar.
+ */
 function LogoutButton({ handleLogout }: LogoutButtonProps) {
   return (
     <button type="button" onClick={handleLogout} css={logoutButton}>

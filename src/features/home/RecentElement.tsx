@@ -22,6 +22,9 @@ interface SearchElementProps {
   link: string;
 }
 
+/**
+ * Element component for post-login home 'recent' sections.
+ */
 function RecentElement(props: SearchElementProps) {
   return (
     <article css={outerContainer}>

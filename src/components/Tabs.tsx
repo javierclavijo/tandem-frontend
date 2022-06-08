@@ -6,6 +6,9 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { colors } from "../styles/variables";
 
+/**
+ * Renders a nav element with tabs to the app's main sections. Only renders in the mobile layout.
+ */
 function Tabs() {
   return (
     <nav css={nav}>

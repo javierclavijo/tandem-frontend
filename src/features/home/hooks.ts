@@ -29,10 +29,10 @@ const fetchDiscoverUsersList = async (user: User | undefined) => {
   return [];
 };
 
+/**
+ * Holds information about the user's friend chat list.
+ */
 export const useDiscoverUsersList = () => {
-  /**
-   * Holds the information about the user's friend chat list.
-   */
   const { user } = useAuth();
   return useQuery<User[]>(
     ["home", "discover", "users"],

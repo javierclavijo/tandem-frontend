@@ -18,6 +18,9 @@ interface DeleteLanguageModalProps {
   handleDeleteLanguage: () => Promise<void>;
 }
 
+/**
+ * Modal window which handles deletion of one of the user's language objects.
+ */
 function DeleteLanguageModal({
   selectedDeleteLanguage,
   setSelectedDeleteLanguage,

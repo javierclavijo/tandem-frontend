@@ -15,6 +15,9 @@ interface NavProfilePictureProps {
   user: User | undefined;
 }
 
+/**
+ * User profile picture component, used in the app's header.
+ */
 function NavProfilePicture({ user }: NavProfilePictureProps) {
   return (
     <NavLink

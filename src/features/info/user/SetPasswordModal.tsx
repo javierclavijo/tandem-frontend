@@ -14,6 +14,9 @@ interface NewLanguageModalProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+/**
+ * Modal window component which contains the password update form.
+ */
 function SetPasswordModal({ isOpen, setIsOpen }: NewLanguageModalProps) {
   return (
     <ReactModal

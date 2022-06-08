@@ -22,10 +22,13 @@ export interface ChatHeaderProps {
   actions?: JSX.Element;
 }
 
+/**
+ * Chat header component. Can render a title, an image and action buttons.
+ * If the 'link' prop is passed, it renders the link above the component's area.
+ */
 function ChatHeader(props: ChatHeaderProps) {
-  
   const transitionProps = useFadeIn();
-  
+
   return (
     <animated.header css={chatHeader} style={transitionProps}>
       <div css={backButtonContainer}>

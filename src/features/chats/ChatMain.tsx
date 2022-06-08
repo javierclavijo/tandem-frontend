@@ -22,13 +22,16 @@ import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 import { useFadeIn } from "../../utils/transitions";
 import { animated } from "react-spring";
 
+/**
+ * Main chat component. Holds the chat list, chat room and user/channel detail components.
+ */
 function ChatMain() {
   const queryClient = useQueryClient();
   const params = useParams();
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
   const { isLoggedIn } = useAuth();
   const transitionProps = useFadeIn();
-  useRedirectIfNotLoggedIn('/login');
+  useRedirectIfNotLoggedIn("/login");
 
   /**
    * State used by the router outlet context which controls the header's state. This way, the header's data can be
@@ -59,15 +62,18 @@ function ChatMain() {
 
     const message = lastJsonMessage.message;
     if (message) {
-      queryClient.setQueryData<Chat[] | undefined>(["chats", "list", "all"], (old) => {
-        if (old !== undefined) {
-          const oldChat = old.find((c) => c.id === message.chat_id);
-          if (oldChat) {
-            oldChat.messages = [message];
+      queryClient.setQueryData<Chat[] | undefined>(
+        ["chats", "list", "all"],
+        (old) => {
+          if (old !== undefined) {
+            const oldChat = old.find((c) => c.id === message.chat_id);
+            if (oldChat) {
+              oldChat.messages = [message];
+            }
           }
+          return old;
         }
-        return old;
-      });
+      );
 
       queryClient.setQueryData<InfiniteData<ChatMessageResponse> | undefined>(
         ["chats", "messages", message.chat_id],
@@ -95,7 +101,10 @@ function ChatMain() {
       <Nav />
       <main css={chatMain}>
         <ChatList />
-        <animated.section css={isDesktop ? chatRoom : chatRoomMobile} style={transitionProps}>
+        <animated.section
+          css={isDesktop ? chatRoom : chatRoomMobile}
+          style={transitionProps}
+        >
           {header ? <ChatHeader {...header} /> : null}
           <Outlet context={[header, setHeader]} />
         </animated.section>

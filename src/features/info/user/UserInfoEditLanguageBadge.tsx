@@ -25,6 +25,10 @@ interface LanguageBadgeProps {
   onDelete: () => void;
 }
 
+/**
+ * Badge-like component for user info view. Displays a language's name and icon and allows
+ * selecting the language's level.
+ */
 function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
   const queryClient = useQueryClient();
   const [value, setValue] = React.useState<Option | null>(null);
@@ -69,9 +73,7 @@ function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
   `;
 
   return (
-    <div
-      css={container}
-    >
+    <div css={container}>
       <FlagIcon
         code={flagCodes.find((x) => x.key === data.language)?.value || "AD"}
         size={24}

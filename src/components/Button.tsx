@@ -11,12 +11,11 @@ interface EditButtonProps {
   children: JSX.Element | (JSX.Element | string)[] | string;
 }
 
+/*
+ * Edit button component which allows visibility toggling, click event handling and ref forwarding.
+ */
 const Button = React.forwardRef<HTMLButtonElement, EditButtonProps>(
   (props: EditButtonProps, ref?) => {
-    /*
-     * Edit button component which allows visibility toggling, click event handling and ref forwarding.
-     */
-
     const button = css`
       ${buttonWithoutBackgroundAndBorder};
       ${props.css};

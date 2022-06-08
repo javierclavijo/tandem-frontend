@@ -15,6 +15,9 @@ interface UseEditType<T> {
   handleCancel: () => void;
 }
 
+/**
+ * Holds state and functionality to update a user or channel's name or description.
+ */
 export function useEditField<
   T extends HTMLInputElement | HTMLTextAreaElement,
   S

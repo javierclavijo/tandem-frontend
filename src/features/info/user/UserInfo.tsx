@@ -32,11 +32,10 @@ import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
 
 const defaultImg = require("../../../static/images/user_placeholder.png");
 
+/**
+ * User detail component.
+ */
 export function UserInfo() {
-  /**
-   * User detail component.
-   */
-
   const params = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();

@@ -12,6 +12,11 @@ interface ChatRoomMessageProps {
   type: "users" | "channels";
 }
 
+/**
+ * Chat message component. Renders with different styles depending on whether the message was
+ * sent by the session's user or another user. If the chat is of channel type, renders the
+ * message's author's name above the message's contents.
+ */
 function ChatRoomMessage(
   { message, isOwnMessage, type }: ChatRoomMessageProps,
   ref: React.Ref<HTMLDivElement>

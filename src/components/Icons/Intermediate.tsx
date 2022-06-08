@@ -1,5 +1,8 @@
 import React from "react";
 
+/**
+ * 'Beginner' proficiency level icon.
+ */
 function Intermediate(
   props: React.SVGProps<SVGSVGElement>,
   svgRef?: React.Ref<SVGSVGElement>

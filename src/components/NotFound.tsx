@@ -13,6 +13,9 @@ import { colors } from "../styles/variables";
 import Nav from "./Header/Nav";
 import { useFadeIn } from "../utils/transitions";
 
+/**
+ * Component for the 404 error page.
+ */
 function NotFound() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
   const transitionProps = useFadeIn();
