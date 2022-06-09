@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from "@emotion/react";
-import { ChatLines, Home, Search } from "iconoir-react";
+import { ChatLines, Home, LogOut, Search } from "iconoir-react";
 import React from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link, NavLink, useNavigate } from "react-router-dom";
@@ -9,7 +9,6 @@ import useAuth from "../../features/auth/AuthContext";
 import { infoButton } from "../../features/info/styles";
 import langflowLogo from "../../static/svg/langflow_logo.svg";
 import { colors, textSizes } from "../../styles/variables";
-import LogoutButton from "./LogoutButton";
 import NavProfilePicture from "./NavProfilePicture";
 
 /**
@@ -30,9 +29,9 @@ function Nav() {
 
   return (
     <header css={header}>
-      <nav css={nav}>
+      <nav css={nav} role="navigation">
         <Link to="/" css={titleLink}>
-          <img src={langflowLogo} alt="LangFlow logo" css={logo} />
+          <img src={langflowLogo} alt="Logo" css={logo} />
           <h1 css={title}>LangFlow</h1>
         </Link>
         <ul css={navList}>
@@ -83,7 +82,18 @@ function Nav() {
                   <NavProfilePicture user={user} />
                 </li>
                 <li>
-                  <LogoutButton handleLogout={handleLogout} />
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    css={logoutButton}
+                  >
+                    <LogOut
+                      color={colors.WHITE}
+                      width="1.5rem"
+                      height="1.5rem"
+                    />
+                    Log out
+                  </button>
                 </li>
               </React.Fragment>
             ) : (
@@ -93,7 +103,18 @@ function Nav() {
                   <NavProfilePicture user={user} />
                 </li>
                 <li>
-                  <LogoutButton handleLogout={handleLogout} />
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    css={logoutButton}
+                  >
+                    <LogOut
+                      color={colors.WHITE}
+                      width="1.5rem"
+                      height="1.5rem"
+                    />
+                    Log out
+                  </button>
                 </li>
               </React.Fragment>
             )
@@ -190,5 +211,18 @@ export const titleLink = css`
 export const activeNavLink = {
   borderBottom: `2px solid ${colors.SECONDARY}`,
 };
+
+const logoutButton = css`
+  ${infoButton};
+  font-size: ${textSizes.S};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media (min-width: 576px) {
+    flex-direction: row;
+    font-size: ${textSizes.M};
+  }
+`;
 
 export default Nav;

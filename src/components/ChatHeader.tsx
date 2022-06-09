@@ -13,7 +13,7 @@ import {
 import { useFadeIn } from "../utils/transitions";
 import { animated } from "react-spring";
 
-const defaultImg = require("../static/images/user_placeholder.png");
+import defaultImg from "../static/images/user_placeholder.png";
 
 export interface ChatHeaderProps {
   title?: string;
@@ -46,7 +46,9 @@ function ChatHeader(props: ChatHeaderProps) {
             ) : null}
             <h2>{props.title}</h2>
           </div>
-          {props.link ? <Link to={props.link} css={link} /> : null}
+          {props.link ? (
+            <Link to={props.link} css={link} title={props.title} />
+          ) : null}
         </div>
       </div>
       {props.actions}

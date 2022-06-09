@@ -9,7 +9,7 @@ import { thumbnailContainer, thumbnailImg } from "../../styles/components";
 import { colors, textSizes } from "../../styles/variables";
 import { activeNavLink } from "./Nav";
 
-const defaultImg = require("../../static/images/user_placeholder.png");
+import defaultImg from "../../static/images/user_placeholder.png";
 
 interface NavProfilePictureProps {
   user: User | undefined;
@@ -24,13 +24,10 @@ function NavProfilePicture({ user }: NavProfilePictureProps) {
       to={`/chats/users/${user?.id}`}
       css={link}
       style={({ isActive }) => (isActive ? activeNavLink : {})}
+      title="Go to your profile"
     >
       <div css={imageContainer}>
-        <img
-          src={user?.image ?? defaultImg}
-          alt={user?.username}
-          css={pictureImg}
-        />
+        <img src={user?.image ?? defaultImg} alt="" css={pictureImg} />
       </div>
       <p>{user?.username}</p>
     </NavLink>
@@ -41,7 +38,13 @@ const link = css`
   ${infoButton};
   text-decoration: none;
   color: ${colors.WHITE};
-  font-size: ${textSizes.M};
+  font-size: ${textSizes.S};
+  flex-direction: column;
+
+  @media (min-width: 576px) {
+    flex-direction: row;
+    font-size: ${textSizes.M};
+  }
 `;
 
 const pictureImg = css`

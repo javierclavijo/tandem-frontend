@@ -59,6 +59,7 @@ function ChatList() {
         <button
           css={newChatButtonContainer}
           onClick={() => setIsChannelCreationModalOpen(true)}
+          aria-label="Create new channel"
         >
           <Plus height={"2rem"} width={"2rem"} color={colors.WHITE} />
         </button>

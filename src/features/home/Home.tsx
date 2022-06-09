@@ -76,7 +76,7 @@ function Home() {
             ))}
           </div>
           <footer css={sectionFooter}>
-            <Link to="/chats" css={sectionFooterLink}>
+            <Link to="/chats" css={sectionFooterLink} title="See all chats">
               See all
             </Link>
           </footer>
@@ -107,7 +107,7 @@ function Home() {
             ))}
           </div>
           <footer css={sectionFooter}>
-            <Link to="/chats" css={sectionFooterLink}>
+            <Link to="/chats" css={sectionFooterLink} title="See all chats">
               See all
             </Link>
           </footer>
@@ -135,7 +135,7 @@ function Home() {
             ))}
           </div>
           <footer css={sectionFooter}>
-            <Link to="/search" css={sectionFooterLink}>
+            <Link to="/search" css={sectionFooterLink} title="Go to search page">
               See more
             </Link>
           </footer>

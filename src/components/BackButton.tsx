@@ -9,7 +9,7 @@ import { colors } from "../styles/variables";
 function BackButton({ to }: { to?: To }) {
   return (
     // @ts-ignore
-    <Link to={to ? to : -1}>
+    <Link to={to ? to : -1} title="Go back">
       <ArrowLeft color={colors.WHITE} width="1.5rem" height="1.5rem" />
     </Link>
   );

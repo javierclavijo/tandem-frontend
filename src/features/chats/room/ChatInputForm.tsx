@@ -119,6 +119,7 @@ function ChatInputForm({ chat }: { chat: Chat }) {
           onClick={toggleEmojiPicker}
           id="chat-emoji"
           css={button}
+          aria-label="Open emoji picker"
         >
           <Emoji color={`${colors.DARK}99`} width="1.5rem" height="1.5rem" />
         </button>
@@ -129,10 +130,17 @@ function ChatInputForm({ chat }: { chat: Chat }) {
           onChange={(e) => setInputValue(e.target.value)}
           placeholder="Write a message"
           css={input}
+          aria-label="Chat message input"
         />
-        <button type="submit" id="chat-send" css={button}>
+        <button
+          type="submit"
+          id="chat-send"
+          css={button}
+          aria-label="Send message"
+          aria-disabled={!inputValue}
+        >
           <ArrowRightCircled
-            color={colors.PRIMARY}
+            color={!!inputValue ? colors.PRIMARY : `${colors.DARK}99`}
             width="1.5rem"
             height="1.5rem"
           />

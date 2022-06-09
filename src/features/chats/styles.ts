@@ -52,7 +52,8 @@ export const listElementContainerCss = css`
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
-  padding-bottom: 1rem;
+  padding: 0 0 1rem 0;
+  list-style-type: none;
 `;
 
 export const link = css`

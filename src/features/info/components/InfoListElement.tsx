@@ -12,7 +12,7 @@ import {
   thumbnailImg,
 } from "../../../styles/components";
 
-const defaultImg = require("../../../static/images/user_placeholder.png");
+import defaultImg from "../../../static/images/user_placeholder.png";
 
 interface InfoListElementProps {
   name: string;

@@ -5,6 +5,7 @@ import { css } from "@emotion/react";
 import { Search } from "iconoir-react";
 import { colors, textSizes } from "../../../styles/variables";
 import { searchInput, searchInputElement } from "../../../styles/components";
+import { visuallyHidden } from "../../../styles/layout";
 
 /**
  * Chat list filter form.
@@ -22,9 +23,11 @@ function ChatListFilter({
             type="text"
             onChange={(e) => setFilter(e.target.value)}
             placeholder="Search..."
+            id="chat-list-filter"
             css={searchInputElement}
           />
-          <button type="button" css={searchButton}>
+          <label htmlFor="chat-list-filter" css={visuallyHidden}>Chat list filter</label>
+          <button type="button" css={searchButton} aria-label="Filter chat list">
             <Search
               color={colors.DARK_PRIMARY}
               width="1.5rem"

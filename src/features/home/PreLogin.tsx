@@ -9,9 +9,9 @@ import { colors, textSizes } from "../../styles/variables";
 import { Link } from "react-router-dom";
 import { button } from "../../styles/components";
 
-const topImage = require("../../static/images/loren-dosti-M8cpBt6RSns-unsplash.webp");
-const middleImage = require("../../static/images/toa-heftiba-ANNsvl-6AG0-unsplash.webp");
-const bottomImage = require("../../static/images/zachary-nelson-98Elr-LIvD8-unsplash.webp");
+import topImage from "../../static/images/loren-dosti-M8cpBt6RSns-unsplash.webp";
+import middleImage from "../../static/images/toa-heftiba-ANNsvl-6AG0-unsplash.webp";
+import bottomImage from "../../static/images/zachary-nelson-98Elr-LIvD8-unsplash.webp";
 
 /**
  * Pre-login home/index page component.

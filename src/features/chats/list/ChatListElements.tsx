@@ -44,7 +44,7 @@ function ChatListElements({
   );
 
   return (
-    <div css={listElementContainerCss}>
+    <ul css={listElementContainerCss}>
       {/* Sort chats according to their latest messages' sent datetime. */}
       {filteredElements
         .sort((a, b) => messageSortFn(a.messages[0], b.messages[0]))
@@ -60,15 +60,15 @@ function ChatListElements({
       {/* Empty list. Has different strings for cases where the user has chats and is filtering, and where the
             user doesn't have any chats. */}
       {!filteredElements.length ? (
-        <article css={emptyList}>
+        <li css={emptyList}>
           <p>
             {data.length
               ? "No chats match your query."
               : "You don't have any chats yet."}
           </p>
-        </article>
+        </li>
       ) : null}
-    </div>
+    </ul>
   );
 }
 

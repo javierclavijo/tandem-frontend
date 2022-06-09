@@ -10,7 +10,7 @@ import { elementContentContainer, link } from "../styles";
 import { thumbnailContainer, thumbnailImg } from "../../../styles/components";
 import ResponsiveEllipsis from "../../../utils/ResponsiveEllipsis";
 
-const defaultImg = require("../../../static/images/user_placeholder.png");
+import defaultImg from "../../../static/images/user_placeholder.png";
 
 interface ChatListElementProps {
   chat: Chat;
@@ -43,7 +43,7 @@ function ChatListElement({
   `;
 
   return (
-    <article css={chatListElementContainer}>
+    <li css={chatListElementContainer}>
       <div css={elementContentContainer}>
         <div css={thumbnailContainer}>
           <img src={chat.image ?? defaultImg} alt="" css={thumbnailImg} />
@@ -77,8 +77,8 @@ function ChatListElement({
           />
         </div>
       </div>
-      <Link to={`/chats/${chat.id}`} css={link} />
-    </article>
+      <Link to={`/chats/${chat.id}`} css={link} title={chat.name} />
+    </li>
   );
 }
 

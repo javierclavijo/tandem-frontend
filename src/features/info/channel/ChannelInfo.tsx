@@ -41,7 +41,7 @@ import {
 } from "./hooks";
 import LeaveChannelModal from "./LeaveChannelModal";
 
-const defaultImg = require("../../../static/images/user_placeholder.png");
+import defaultImg from "../../../static/images/user_placeholder.png";
 
 /**
  * Displays a channel's details: image, name, language and level, description and members.

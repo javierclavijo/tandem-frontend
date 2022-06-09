@@ -12,7 +12,7 @@ import {
 import { colors } from "../../styles/variables";
 import ResponsiveEllipsis from "../../utils/ResponsiveEllipsis";
 
-const defaultImg = require("../../static/images/user_placeholder.png");
+import defaultImg from "../../static/images/user_placeholder.png";
 
 interface SearchElementProps {
   id: string;
@@ -50,7 +50,7 @@ function RecentElement(props: SearchElementProps) {
           />
         </div>
       </div>
-      <Link to={props.link} css={link} />
+      <Link to={props.link} css={link} title={props.name} />
     </article>
   );
 }

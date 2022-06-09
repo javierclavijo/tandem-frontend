@@ -55,3 +55,13 @@ export const homeSearchMainMobile = css`
   gap: 1rem;
   overflow: auto;
 `;
+
+export const visuallyHidden = css`
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  // Source: https://webaim.org/techniques/css/invisiblecontent/
+`;
