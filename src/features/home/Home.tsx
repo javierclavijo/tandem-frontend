@@ -74,6 +74,9 @@ function Home() {
                 key={chat.id}
               />
             ))}
+            {!friendChats?.length ? (
+              <p>You haven't chatted with anyone yet.</p>
+            ) : null}
           </div>
           <footer css={sectionFooter}>
             <Link to="/chats" css={sectionFooterLink} title="See all chats">
@@ -105,6 +108,9 @@ function Home() {
                 key={chat.id}
               />
             ))}
+            {!channelChats?.length ? (
+              <p>You haven't joined any chats yet.</p>
+            ) : null}
           </div>
           <footer css={sectionFooter}>
             <Link to="/chats" css={sectionFooterLink} title="See all chats">
@@ -135,7 +141,11 @@ function Home() {
             ))}
           </div>
           <footer css={sectionFooter}>
-            <Link to="/search" css={sectionFooterLink} title="Go to search page">
+            <Link
+              to="/search"
+              css={sectionFooterLink}
+              title="Go to search page"
+            >
               See more
             </Link>
           </footer>
