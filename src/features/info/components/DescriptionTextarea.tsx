@@ -132,7 +132,7 @@ function DescriptionTextarea({ data, queryKey }: DescriptionTextareaProps) {
         minRows={1}
         maxRows={8}
         css={editElement}
-        placeholder="Add a description..."
+        placeholder="Add a description…"
       />
       {error ? <p css={errorText}>{error}</p> : null}
     </React.Fragment>

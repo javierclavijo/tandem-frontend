@@ -8,6 +8,7 @@ import { Chat } from "../../../entities/Chat";
 import { colors, textSizes } from "../../../styles/variables";
 import useAuth from "../../auth/AuthContext";
 import Picker from "emoji-picker-react";
+import TextareaAutosize from "react-textarea-autosize";
 import useEventListener from "@use-it/event-listener";
 
 /**
@@ -25,6 +26,11 @@ function ChatInputForm({ chat }: { chat: Chat }) {
     },
     isLoggedIn
   );
+
+  /**
+   * Message input text area ref.
+   */
+  const elementRef = React.useRef<HTMLTextAreaElement | null>(null);
 
   /**
    * Controls the value of the input field.
@@ -90,6 +96,22 @@ function ChatInputForm({ chat }: { chat: Chat }) {
   );
 
   /**
+   * Handles key input, sending the message if the user presses the Enter key, but not the Ctrl or
+   * Meta key. This allows the user to insert new lines in their message.
+   */
+  const handleKeyDown = async (
+    event: React.KeyboardEvent<HTMLTextAreaElement>
+  ) => {
+    if (event.code === "Enter") {
+      if (event.metaKey || event.ctrlKey) {
+        setInputValue(inputValue.concat("\n"));
+      } else {
+        handleSend(event);
+      }
+    }
+  };
+
+  /**
    * Toggles the emoji picker's rendering.
    */
   const toggleEmojiPicker = React.useCallback(() => {
@@ -108,7 +130,7 @@ function ChatInputForm({ chat }: { chat: Chat }) {
 
   return (
     <div css={container}>
-      <form css={form} onSubmit={handleSend}>
+      <form css={form} onSubmit={(event) => handleSend(event)}>
         <Picker
           onEmojiClick={onEmojiClick}
           native={true}
@@ -123,14 +145,19 @@ function ChatInputForm({ chat }: { chat: Chat }) {
         >
           <Emoji color={`${colors.DARK}99`} width="1.5rem" height="1.5rem" />
         </button>
-        <input
-          type="text"
+
+        <TextareaAutosize
           id="chat-text-input"
+          name="chat-text-input"
+          ref={elementRef}
           value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          placeholder="Write a message"
+          onChange={(e: any) => setInputValue(e.target.value)}
+          onKeyDown={handleKeyDown}
+          minRows={1}
+          maxRows={12}
           css={input}
-          aria-label="Chat message input"
+          placeholder="Write a message (press Ctrl + Enter to insert a new line)"
+          aria-label="Chat message text area"
         />
         <button
           type="submit"
@@ -171,6 +198,7 @@ const input = css`
   outline: none;
   padding: 0.5rem;
   box-sizing: border-box;
+  resize: none;
   font-size: ${textSizes.M};
 `;
 

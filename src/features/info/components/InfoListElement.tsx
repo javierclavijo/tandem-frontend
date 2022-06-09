@@ -103,6 +103,7 @@ const descriptionText = css`
   overflow: hidden;
   white-space: nowrap;
   max-width: 14rem;
+  overflow-wrap: anywhere;
 `;
 
 const descriptionContainer = css`

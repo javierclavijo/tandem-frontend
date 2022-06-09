@@ -59,6 +59,7 @@ function SearchResultElement(props: SearchElementProps) {
             ellipsis="…"
             trimRight
             basedOn="letters"
+            css={description}
           />
         </div>
       </div>
@@ -113,6 +114,10 @@ const flagsContainer = css`
 
 const link = css`
   grid-area: element;
+`;
+
+const description = css`
+  overflow-wrap: anywhere;
 `;
 
 export default SearchResultElement;

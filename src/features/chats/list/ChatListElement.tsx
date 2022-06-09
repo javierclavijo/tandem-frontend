@@ -73,10 +73,13 @@ function ChatListElement({
             ellipsis="…"
             trimRight
             basedOn="letters"
+            css={content}
           />
         </div>
       </div>
-      <NavLink to={`/chats/${chat.id}`} css={link} title={chat.name}><></></NavLink>
+      <NavLink to={`/chats/${chat.id}`} css={link} title={chat.name}>
+        <></>
+      </NavLink>
     </li>
   );
 }
@@ -98,6 +101,10 @@ const title = css`
 
 const latestMessageDatetime = css`
   font-size: ${textSizes.S};
+`;
+
+const content = css`
+  overflow-wrap: anywhere;
 `;
 
 export default ChatListElement;

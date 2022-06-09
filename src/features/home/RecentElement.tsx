@@ -47,6 +47,7 @@ function RecentElement(props: SearchElementProps) {
             ellipsis="…"
             trimRight
             basedOn="letters"
+            css={content}
           />
         </div>
       </div>
@@ -85,6 +86,10 @@ const contentContainer = css`
   display: flex;
   flex-direction: column;
   width: 100%;
+`;
+
+const content = css`
+  overflow-wrap: anywhere;
 `;
 
 const upperInnerContainer = css`

@@ -104,6 +104,9 @@ const datetime = css`
 
 const content = css`
   font-size: ${textSizes.M};
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  flex: 0 1 auto;
 `;
 
 export default React.forwardRef(ChatRoomMessage);

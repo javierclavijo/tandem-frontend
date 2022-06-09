@@ -92,6 +92,7 @@ const link = {
   alignItems: "center",
   textDecoration: "none",
   fontSize: textSizes.S,
+  color: colors.WHITE,
 };
 
 const activeLink = {
