@@ -203,6 +203,7 @@ function SearchPanel({
           type="search"
           name="search-query"
           placeholder="Search..."
+          aria-label="Search users or channels by name or description"
           minLength={2}
           debounceTimeout={300}
           value={inputValue}
@@ -219,10 +220,11 @@ function SearchPanel({
             defaultValue={searchTypeOptions.USERS}
             placeholder="Type"
             styles={noBorderAndBgSelectDark}
+            aria-label="Search type"
           />
 
           {/* Submit button. */}
-          <button type="submit" css={submitButton}>
+          <button type="submit" aria-label="Submit search filters" css={submitButton}>
             <Search color={colors.PRIMARY} width={"1.5rem"} height={"1.5rem"} />
           </button>
         </div>
@@ -245,6 +247,7 @@ function SearchPanel({
                 !!learningLanguages?.includes(option as Option)
               }
               placeholder="Mother tongue(s)"
+              aria-label="Users' mother tongues"
               styles={searchSelect}
             />
 
@@ -264,6 +267,7 @@ function SearchPanel({
                 !!nativeLanguages?.includes(option as Option)
               }
               placeholder="Is learning..."
+              aria-label="Users' target languages"
               styles={searchSelect}
             />
 
@@ -278,6 +282,7 @@ function SearchPanel({
               }
               isDisabled={!learningLanguages || !learningLanguages.length}
               placeholder="Level(s)"
+              aria-label="Proficiency levels of users' target languages"
               styles={searchSelect}
             />
           </React.Fragment>
@@ -298,6 +303,7 @@ function SearchPanel({
                 setChannelLanguages(options.length ? options : null)
               }
               placeholder="Language(s)"
+              aria-label="Channel languages"
               styles={searchSelect}
             />
 
@@ -310,6 +316,7 @@ function SearchPanel({
               onChange={async (options: any) => setChannelLevels(options)}
               isDisabled={!channelLanguages || !channelLanguages.length}
               placeholder="Level(s)"
+              aria-label="Proficiency levels of channel languages"
               styles={searchSelect}
             />
           </React.Fragment>

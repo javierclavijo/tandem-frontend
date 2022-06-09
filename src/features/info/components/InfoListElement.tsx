@@ -40,7 +40,7 @@ function InfoListElement(props: InfoListElementProps) {
   `;
 
   return (
-    <article
+    <li
       onMouseEnter={() => setDisplayButtons(true)}
       onMouseLeave={() => setDisplayButtons(false)}
       css={outerContainer}
@@ -71,8 +71,8 @@ function InfoListElement(props: InfoListElementProps) {
           </div>
         </div>
       </div>
-      <Link to={props.link} css={link} />
-    </article>
+      <Link to={props.link} css={link} title={props.name} />
+    </li>
   );
 }
 

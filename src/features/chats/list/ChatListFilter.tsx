@@ -25,8 +25,8 @@ function ChatListFilter({
             placeholder="Search..."
             id="chat-list-filter"
             css={searchInputElement}
+            aria-label="Chat list filter"
           />
-          <label htmlFor="chat-list-filter" css={visuallyHidden}>Chat list filter</label>
           <button type="button" css={searchButton} aria-label="Filter chat list">
             <Search
               color={colors.DARK_PRIMARY}

@@ -44,7 +44,7 @@ function ChatListElements({
   );
 
   return (
-    <ul css={listElementContainerCss}>
+    <ul css={listElementContainerCss} role="navigation">
       {/* Sort chats according to their latest messages' sent datetime. */}
       {filteredElements
         .sort((a, b) => messageSortFn(a.messages[0], b.messages[0]))

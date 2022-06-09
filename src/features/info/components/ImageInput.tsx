@@ -110,6 +110,7 @@ function ImageInput({
         onChange={handleChange}
         css={input}
         ref={inputRef}
+        aria-label="Update profile image"
       />
       <label htmlFor={"image"} css={label}>
         Click or drop a picture here...

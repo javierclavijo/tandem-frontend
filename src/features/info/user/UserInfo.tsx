@@ -22,6 +22,7 @@ import {
   infoSection,
   listSection,
   listSectionHeader,
+  listSectionList,
   profileImg,
 } from "../styles";
 import DeleteLanguageModal from "./DeleteLanguageModal";
@@ -251,56 +252,60 @@ export function UserInfo() {
         {/* Friends */}
         <section css={listSection}>
           <h3 css={listSectionHeader}>Friends</h3>
-          {data?.friend_chats.map((chat) => {
-            const friend = getFriendFromFriendChat(data, chat);
-            if (friend) {
-              return (
-                <InfoListElement
-                  name={friend.username}
-                  description={friend.description}
-                  key={friend.id}
-                  image={friend.image}
-                  link={`/chats/users/${friend.id}`}
-                />
-              );
-            }
-            return null;
-          })}
-          {/* Empty list */}
-          {!data?.friend_chats.length ? (
-            <article css={emptyListContainer}>
-              <p>
-                {isEditable
-                  ? "You have not added any friends yet."
-                  : "This user has not added any friends yet."}
-              </p>
-            </article>
-          ) : null}
+          <ul css={listSectionList}>
+            {data?.friend_chats.map((chat) => {
+              const friend = getFriendFromFriendChat(data, chat);
+              if (friend) {
+                return (
+                  <InfoListElement
+                    name={friend.username}
+                    description={friend.description}
+                    key={friend.id}
+                    image={friend.image}
+                    link={`/chats/users/${friend.id}`}
+                  />
+                );
+              }
+              return null;
+            })}
+            {/* Empty list */}
+            {!data?.friend_chats.length ? (
+              <li css={emptyListContainer}>
+                <p>
+                  {isEditable
+                    ? "You have not added any friends yet."
+                    : "This user has not added any friends yet."}
+                </p>
+              </li>
+            ) : null}
+          </ul>
         </section>
 
         {/* Channels*/}
         <section css={channelListContainer}>
           <h3 css={listSectionHeader}>Channels</h3>
-          {data?.memberships.map((membership) => (
-            <InfoListElement
-              name={membership.channel.name}
-              description={membership.channel.description}
-              additionalInfo={membership.role === "A" ? "Admin" : undefined}
-              key={membership.id}
-              image={membership.channel.image}
-              link={`/chats/channels/${membership.channel.id}`}
-            />
-          ))}
-          {/* Empty list */}
-          {!data?.memberships.length ? (
-            <article css={emptyListContainer}>
-              <p>
-                {isEditable
-                  ? "You have not joined any channels yet."
-                  : "This user has not joined any channels yet."}
-              </p>
-            </article>
-          ) : null}
+          <ul css={listSectionList}>
+            {data?.memberships.map((membership) => (
+              <InfoListElement
+                name={membership.channel.name}
+                description={membership.channel.description}
+                additionalInfo={membership.role === "A" ? "Admin" : undefined}
+                key={membership.id}
+                image={membership.channel.image}
+                link={`/chats/channels/${membership.channel.id}`}
+              />
+            ))}
+            {/* Empty list */}
+            {!data?.memberships.length ? (
+              <li css={emptyListContainer}>
+                <p>
+                  {isEditable
+                    ? "You have not joined any channels yet."
+                    : "This user has not joined any channels yet."}
+                </p>
+              </li>
+            ) : null}
+          </ul>
         </section>
       </animated.div>
 

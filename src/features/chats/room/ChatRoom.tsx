@@ -60,6 +60,7 @@ function ChatRoom() {
           scrollableTarget="chat-messages-container"
           style={{ display: "flex", flexDirection: "column-reverse" }}
           inverse={true}
+          aria-live="polite"
         >
           {data?.pages.reverse().map((page, pageIndex) => (
             <React.Fragment key={`page-${pageIndex}`}>

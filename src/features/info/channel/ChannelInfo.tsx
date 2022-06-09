@@ -28,6 +28,7 @@ import {
   infoSection,
   listSection,
   listSectionHeader,
+  listSectionList,
   profileImg,
 } from "../styles";
 import ChannelEditLanguageBadge from "./ChannelEditLanguageBadge";
@@ -222,66 +223,68 @@ function ChannelInfo() {
       </section>
       <section css={listSection}>
         <h3 css={listSectionHeader}>Members</h3>
-        {data?.memberships.map((membership) =>
-          membership.user ? (
-            <InfoListElement
-              name={membership.user?.username}
-              additionalInfo={
-                membership.role === "A"
-                  ? "Admin"
-                  : membership.role === "M"
-                  ? "Moderator"
-                  : undefined
-              }
-              description={membership.user.description}
-              key={membership.url}
-              image={membership.user.image}
-              link={`/chats/users/${membership.user.id}`}
-              buttons={
-                <React.Fragment>
-                  {/* If the user is a regular user, show a button to promote them to
+        <ul css={listSectionList}>
+          {data?.memberships.map((membership) =>
+            membership.user ? (
+              <InfoListElement
+                name={membership.user?.username}
+                additionalInfo={
+                  membership.role === "A"
+                    ? "Admin"
+                    : membership.role === "M"
+                    ? "Moderator"
+                    : undefined
+                }
+                description={membership.user.description}
+                key={membership.url}
+                image={membership.user.image}
+                link={`/chats/users/${membership.user.id}`}
+                buttons={
+                  <React.Fragment>
+                    {/* If the user is a regular user, show a button to promote them to
                                                  moderator. If they are a moderator, show a button to demote them to
                                                  regular user. If they are admin, show nothing. */}
-                  {userIsAdmin() && membership.role === "U" ? (
-                    <Button
-                      visible={true}
-                      onClick={async () =>
-                        await handlePromoteUser(membership.url)
-                      }
-                    >
-                      Promote
-                      <FastArrowUpBox
-                        color={colors.PRIMARY}
-                        height={"1.5rem"}
-                        width={"1.5rem"}
-                      />
-                    </Button>
-                  ) : userIsAdmin() && membership.role === "M" ? (
-                    <Button
-                      visible={true}
-                      onClick={async () =>
-                        await handleDemoteUser(membership.url)
-                      }
-                    >
-                      Demote
-                      <FastArrowDownBox
-                        color={colors.PRIMARY}
-                        height={"1.5rem"}
-                        width={"1.5rem"}
-                      />
-                    </Button>
-                  ) : null}
-                </React.Fragment>
-              }
-            />
-          ) : null
-        )}
-        {/* Empty list */}
-        {!data?.memberships.length ? (
-          <article css={emptyContainer}>
-            <p>This channel doesn't have any members yet.</p>
-          </article>
-        ) : null}
+                    {userIsAdmin() && membership.role === "U" ? (
+                      <Button
+                        visible={true}
+                        onClick={async () =>
+                          await handlePromoteUser(membership.url)
+                        }
+                      >
+                        Promote
+                        <FastArrowUpBox
+                          color={colors.PRIMARY}
+                          height={"1.5rem"}
+                          width={"1.5rem"}
+                        />
+                      </Button>
+                    ) : userIsAdmin() && membership.role === "M" ? (
+                      <Button
+                        visible={true}
+                        onClick={async () =>
+                          await handleDemoteUser(membership.url)
+                        }
+                      >
+                        Demote
+                        <FastArrowDownBox
+                          color={colors.PRIMARY}
+                          height={"1.5rem"}
+                          width={"1.5rem"}
+                        />
+                      </Button>
+                    ) : null}
+                  </React.Fragment>
+                }
+              />
+            ) : null
+          )}
+          {/* Empty list */}
+          {!data?.memberships.length ? (
+            <li css={emptyContainer}>
+              <p>This channel doesn't have any members yet.</p>
+            </li>
+          ) : null}
+        </ul>
       </section>
 
       {/* Channel deletion confirmation modal */}

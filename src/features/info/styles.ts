@@ -50,6 +50,11 @@ export const listSectionHeader = css`
   padding-bottom: 1rem;
 `;
 
+export const listSectionList = css`
+  list-style-type: none;
+  padding:0;
+`;
+
 export const infoListElementInnerContainer = css`
   width: 100%;
   display: flex;

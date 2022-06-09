@@ -1,16 +1,15 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
-import { Chat } from "../../../entities/Chat";
-import { Link } from "react-router-dom";
 import { css } from "@emotion/react";
 import { DateTime } from "luxon";
-import { colors, textSizes } from "../../../styles/variables";
-import { elementContentContainer, link } from "../styles";
-import { thumbnailContainer, thumbnailImg } from "../../../styles/components";
-import ResponsiveEllipsis from "../../../utils/ResponsiveEllipsis";
-
+import React from "react";
+import { NavLink } from "react-router-dom";
+import { Chat } from "../../../entities/Chat";
 import defaultImg from "../../../static/images/user_placeholder.png";
+import { thumbnailContainer, thumbnailImg } from "../../../styles/components";
+import { colors, textSizes } from "../../../styles/variables";
+import ResponsiveEllipsis from "../../../utils/ResponsiveEllipsis";
+import { elementContentContainer, link } from "../styles";
 
 interface ChatListElementProps {
   chat: Chat;
@@ -77,7 +76,7 @@ function ChatListElement({
           />
         </div>
       </div>
-      <Link to={`/chats/${chat.id}`} css={link} title={chat.name} />
+      <NavLink to={`/chats/${chat.id}`} css={link} title={chat.name}><></></NavLink>
     </li>
   );
 }

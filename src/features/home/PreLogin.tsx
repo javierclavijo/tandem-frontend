@@ -55,7 +55,7 @@ function PreLogin() {
           </div>
           <img
             src={middleImage}
-            alt="Young people jumping and overall looking excited."
+            alt="A young person clad in urban attire smiling."
             css={splitImage}
           />
         </div>
