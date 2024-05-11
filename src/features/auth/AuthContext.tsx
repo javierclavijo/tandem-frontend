@@ -1,8 +1,8 @@
-import React, { useContext, useMemo, useState } from "react";
 import axios from "axios";
+import React, { useContext, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { User } from "../../entities/User";
 import { useNavigate } from "react-router-dom";
+import { User } from "../../entities/User";
 
 interface AuthContextType {
   user: User | undefined;
@@ -26,7 +26,7 @@ export const AuthContext = React.createContext<AuthContextType>(
  * Main axios instance used throughout the app.
  */
 export const axiosApi = axios.create({
-  baseURL: process.env.REACT_APP_API_URL ?? "http://localhost:8000/api",
+  baseURL: import.meta.env.VITE_API_URL ?? "http://localhost:8000/api",
   withCredentials: true,
 
   // Names of the CSRF token cookie and header used by Django.

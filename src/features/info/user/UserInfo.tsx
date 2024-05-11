@@ -26,12 +26,12 @@ import {
   profileImg,
 } from "../styles";
 import DeleteLanguageModal from "./DeleteLanguageModal";
-import { useCreateChatWithUser, useDeleteUserLanguage, useUser } from "./hooks";
 import NewLanguageModal from "./NewLanguageModal";
 import SetPasswordModal from "./SetPasswordModal";
 import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
+import { useCreateChatWithUser, useDeleteUserLanguage, useUser } from "./hooks";
 
-const defaultImg = require("../../../static/images/user_placeholder.png");
+import defaultImg from "../../../static/images/user_placeholder.png";
 
 /**
  * User detail component.

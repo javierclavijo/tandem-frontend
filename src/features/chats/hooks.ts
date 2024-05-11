@@ -1,17 +1,17 @@
-import {
-  useInfiniteQuery,
-  UseInfiniteQueryOptions,
-  useQuery,
-} from "react-query";
-import { Chat, FriendChat } from "../../entities/Chat";
-import useAuth, { axiosApi } from "../auth/AuthContext";
-import { ChatMessage, ChatMessageResponse } from "../../entities/ChatMessage";
 import { DateTime } from "luxon";
 import React, { useCallback, useState } from "react";
-import { User } from "../../entities/User";
+import {
+  UseInfiniteQueryOptions,
+  useInfiniteQuery,
+  useQuery,
+} from "react-query";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { ChatHeaderProps } from "../../components/ChatHeader";
 import useWebSocket from "react-use-websocket";
+import { ChatHeaderProps } from "../../components/ChatHeader";
+import { Chat, FriendChat } from "../../entities/Chat";
+import { ChatMessage, ChatMessageResponse } from "../../entities/ChatMessage";
+import { User } from "../../entities/User";
+import useAuth, { axiosApi } from "../auth/AuthContext";
 
 /**
  * Sorts messages or chats according to sent datetime. If the message is undefined (usually due to a chat having
@@ -228,7 +228,7 @@ export function useJoinWSChat() {
   const { isLoggedIn } = useAuth();
 
   const { sendJsonMessage } = useWebSocket(
-    `${process.env.REACT_APP_WS_URL}/ws/chats/`,
+    `${import.meta.env.VITE_WS_URL}/ws/chats/`,
     {
       onClose: () => console.error("Chat socket closed unexpectedly"),
       shouldReconnect: () => true,

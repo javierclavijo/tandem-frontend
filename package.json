@@ -1,9 +1,11 @@
 {
   "name": "tandem-frontend",
+  "type": "module",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@csstools/normalize.css": "^12.1.1",
+    "@emotion/babel-plugin": "^11.11.0",
     "@emotion/react": "^11.11.4",
     "@hookform/error-message": "^2.0.1",
     "@use-it/event-listener": "^0.1.7",
@@ -24,16 +26,15 @@
     "react-query": "^3.39.3",
     "react-responsive": "^10.0.0",
     "react-router-dom": "^6.23.1",
-    "react-scripts": "^5.0.1",
     "react-select": "^5.8.0",
     "react-spring": "^9.7.3",
     "react-textarea-autosize": "^8.5.3",
     "react-use-websocket": "^4.8.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "tsc --noEmit && react-scripts build",
-    "eject": "react-scripts eject"
+    "start": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview"
   },
   "eslintConfig": {
     "extends": [
@@ -64,8 +65,13 @@
     "@types/react-lines-ellipsis": "^0.15.6",
     "@types/react-modal": "^3.16.3",
     "@types/react-select": "^5.0.1",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "@vitejs/plugin-react": "^4.2.1",
     "prettier": "^3.2.5",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11",
+    "vite-tsconfig-paths": "^4.3.2"
   },
   "packageManager": "yarn@4.2.2"
 }

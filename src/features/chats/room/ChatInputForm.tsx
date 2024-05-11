@@ -19,7 +19,7 @@ function ChatInputForm({ chat }: { chat: Chat }) {
   const { isLoggedIn } = useAuth();
 
   const { sendJsonMessage } = useWebSocket(
-    `${process.env.REACT_APP_WS_URL}/ws/chats/`,
+    `${import.meta.env.VITE_WS_URL}/ws/chats/`,
     {
       onClose: () => console.error("Chat socket closed unexpectedly"),
       shouldReconnect: () => true,

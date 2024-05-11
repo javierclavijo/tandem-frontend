@@ -10,10 +10,10 @@ import ChatHeader, { ChatHeaderProps } from "../../components/ChatHeader";
 import Nav from "../../components/Header/Nav";
 import Tabs from "../../components/Tabs";
 import { Chat } from "../../entities/Chat";
-import { ChatMessage, ChatMessageResponse } from "../../entities/ChatMessage";
+import { ChatMessageResponse } from "../../entities/ChatMessage";
 import {
-  baseAppContainerWithoutTabs,
   baseAppContainerWithTabs,
+  baseAppContainerWithoutTabs,
 } from "../../styles/layout";
 import { useFadeIn } from "../../utils/transitions";
 import useAuth from "../auth/AuthContext";
@@ -21,6 +21,7 @@ import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 import ChatList from "./list/ChatList";
 import { chatRoom, chatRoomMobile } from "./room/styles";
 import { chatMain, chatMainMobile } from "./styles";
+import { WsChatMessage } from "./types";
 
 /**
  * Main chat component. Holds the chat list, chat room and user/channel detail components.
@@ -42,7 +43,7 @@ function ChatMain() {
   /**
    * Holds the WebSocket connection to the server. Closes the connection if the user logs out.
    */
-  const { lastJsonMessage } = useWebSocket<{ message: ChatMessage }>(
+  const { lastJsonMessage } = useWebSocket<WsChatMessage>(
     `${process.env.REACT_APP_WS_URL}/ws/chats/`,
     {
       onClose: () => console.error("Chat socket closed unexpectedly"),
