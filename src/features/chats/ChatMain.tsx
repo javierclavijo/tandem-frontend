@@ -4,23 +4,23 @@ import React from "react";
 import { InfiniteData, useQueryClient } from "react-query";
 import { useMediaQuery } from "react-responsive";
 import { Outlet, useParams } from "react-router-dom";
+import { animated } from "react-spring";
 import useWebSocket from "react-use-websocket";
 import ChatHeader, { ChatHeaderProps } from "../../components/ChatHeader";
 import Nav from "../../components/Header/Nav";
 import Tabs from "../../components/Tabs";
 import { Chat } from "../../entities/Chat";
-import { ChatMessageResponse } from "../../entities/ChatMessage";
+import { ChatMessage, ChatMessageResponse } from "../../entities/ChatMessage";
 import {
   baseAppContainerWithoutTabs,
   baseAppContainerWithTabs,
 } from "../../styles/layout";
+import { useFadeIn } from "../../utils/transitions";
+import useAuth from "../auth/AuthContext";
+import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 import ChatList from "./list/ChatList";
 import { chatRoom, chatRoomMobile } from "./room/styles";
 import { chatMain, chatMainMobile } from "./styles";
-import useAuth from "../auth/AuthContext";
-import { useRedirectIfNotLoggedIn } from "../auth/hooks";
-import { useFadeIn } from "../../utils/transitions";
-import { animated } from "react-spring";
 
 /**
  * Main chat component. Holds the chat list, chat room and user/channel detail components.
@@ -42,7 +42,7 @@ function ChatMain() {
   /**
    * Holds the WebSocket connection to the server. Closes the connection if the user logs out.
    */
-  const { lastJsonMessage } = useWebSocket(
+  const { lastJsonMessage } = useWebSocket<{ message: ChatMessage }>(
     `${process.env.REACT_APP_WS_URL}/ws/chats/`,
     {
       onClose: () => console.error("Chat socket closed unexpectedly"),

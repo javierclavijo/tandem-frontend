@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from "@emotion/react";
-import { FastArrowDownBox, FastArrowUpBox } from "iconoir-react";
+import { FastArrowDownSquare, FastArrowUpSquare } from "iconoir-react";
 import React from "react";
 import {
   useLocation,
@@ -252,7 +252,7 @@ function ChannelInfo() {
                         }
                       >
                         Promote
-                        <FastArrowUpBox
+                        <FastArrowUpSquare
                           color={colors.PRIMARY}
                           height={"1.5rem"}
                           width={"1.5rem"}
@@ -266,7 +266,7 @@ function ChannelInfo() {
                         }
                       >
                         Demote
-                        <FastArrowDownBox
+                        <FastArrowDownSquare
                           color={colors.PRIMARY}
                           height={"1.5rem"}
                           width={"1.5rem"}

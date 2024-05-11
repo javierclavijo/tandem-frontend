@@ -1,15 +1,16 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from "@emotion/react";
-import { ArrowRightCircled, Emoji } from "iconoir-react";
-import React, { useCallback, useState } from "react";
+import useEventListener from "@use-it/event-listener";
+import Picker, { EmojiStyle } from "emoji-picker-react";
+import { MouseDownEvent } from "emoji-picker-react/dist/config/config";
+import { ArrowRightCircle, Emoji } from "iconoir-react";
+import React, { CSSProperties, useCallback, useState } from "react";
+import TextareaAutosize from "react-textarea-autosize";
 import useWebSocket from "react-use-websocket";
 import { Chat } from "../../../entities/Chat";
 import { colors, textSizes } from "../../../styles/variables";
 import useAuth from "../../auth/AuthContext";
-import Picker from "emoji-picker-react";
-import TextareaAutosize from "react-textarea-autosize";
-import useEventListener from "@use-it/event-listener";
 
 /**
  * Input form for the chat room. Includes the chat message input, a send button and an emoji picker.
@@ -69,7 +70,11 @@ function ChatInputForm({ chat }: { chat: Chat }) {
    * Handles sending messages.
    */
   const handleSend = useCallback(
-    (event) => {
+    (
+      event:
+        | React.KeyboardEvent<HTMLTextAreaElement>
+        | React.FormEvent<HTMLFormElement>
+    ) => {
       event.preventDefault();
       if (inputValue) {
         const message = {
@@ -88,8 +93,9 @@ function ChatInputForm({ chat }: { chat: Chat }) {
   /**
    * Handles the emoji click event. Appends the emoji to the input's value.
    */
-  const onEmojiClick = React.useCallback(
+  const onEmojiClick: MouseDownEvent = React.useCallback(
     (event, emojiObject) => {
+      //@ts-ignore
       setInputValue(inputValue.concat(emojiObject.emoji));
     },
     [inputValue, setInputValue]
@@ -121,7 +127,7 @@ function ChatInputForm({ chat }: { chat: Chat }) {
   /**
    * Styles for the emoji picker.
    */
-  const emojiPickerStyle = {
+  const emojiPickerStyle: CSSProperties = {
     position: "absolute",
     bottom: "100%",
     display: showEmojiPicker ? "flex" : "none",
@@ -130,11 +136,11 @@ function ChatInputForm({ chat }: { chat: Chat }) {
 
   return (
     <div css={container}>
-      <form css={form} onSubmit={(event) => handleSend(event)}>
+      <form css={form} onSubmit={handleSend}>
         <Picker
           onEmojiClick={onEmojiClick}
-          native={true}
-          pickerStyle={emojiPickerStyle}
+          emojiStyle={EmojiStyle.NATIVE}
+          style={emojiPickerStyle}
         />
         <button
           type="button"
@@ -166,7 +172,7 @@ function ChatInputForm({ chat }: { chat: Chat }) {
           aria-label="Send message"
           aria-disabled={!inputValue}
         >
-          <ArrowRightCircled
+          <ArrowRightCircle
             color={!!inputValue ? colors.PRIMARY : `${colors.DARK}99`}
             width="1.5rem"
             height="1.5rem"
