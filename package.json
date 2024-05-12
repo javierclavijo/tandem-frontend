@@ -32,7 +32,7 @@
     "react-use-websocket": "^4.8.1"
   },
   "scripts": {
-    "start": "vite",
+    "start": "vite --host",
     "build": "tsc && vite build",
     "serve": "vite preview"
   },

@@ -1,6 +1,6 @@
 import "@csstools/normalize.css";
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { BrowserRouter } from "react-router-dom";
@@ -23,4 +23,6 @@ const browserRouter = (
   </React.StrictMode>
 );
 
-ReactDOM.render(browserRouter, document.getElementById("root"));
+const container = document.getElementById("root");
+const root = createRoot(container!);
+root.render(browserRouter);
