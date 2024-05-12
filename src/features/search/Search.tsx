@@ -83,7 +83,7 @@ function Search() {
    * Search type state.
    */
   const [searchType, setSearchType] = React.useState<Option>(
-    searchTypeOptions.USERS
+    searchTypeOptions.USERS,
   );
 
   /**
@@ -117,7 +117,7 @@ function Search() {
         firstPage.previousPageNumber ?? undefined,
       getNextPageParam: (lastPage) => lastPage.nextPageNumber ?? undefined,
       enabled: searchType === searchTypeOptions.USERS,
-    }
+    },
   );
 
   /**
@@ -150,7 +150,7 @@ function Search() {
         firstPage.previousPageNumber ?? undefined,
       getNextPageParam: (lastPage) => lastPage.nextPageNumber ?? undefined,
       enabled: searchType === searchTypeOptions.CHANNELS,
-    }
+    },
   );
 
   /**

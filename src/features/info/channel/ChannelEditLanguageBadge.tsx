@@ -39,7 +39,7 @@ function UserInfoEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
         return response.data;
       }
     },
-    [data]
+    [data],
   );
 
   const updateMutation = useMutation(updateRequest, {
@@ -61,7 +61,7 @@ function UserInfoEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
     // Get the options which correspond to the data values and set them as the selects' values
     const initialLevelOption = levelOptions.find((o) => o.value === data.level);
     const initialLanguageOption = languageOptions.find(
-      (o) => o.value === data.language
+      (o) => o.value === data.language,
     );
     if (initialLevelOption && initialLanguageOption) {
       setLevelValue(initialLevelOption);

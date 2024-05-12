@@ -26,7 +26,7 @@ const Button = React.forwardRef<HTMLButtonElement, EditButtonProps>(
         {props.children}
       </button>
     );
-  }
+  },
 );
 
 export default Button;

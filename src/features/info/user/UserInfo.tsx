@@ -44,7 +44,7 @@ export function UserInfo() {
     useOutletContext<
       [
         ChatHeaderProps | null,
-        React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>
+        React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>,
       ]
     >();
   const transitionProps = useFadeIn();
@@ -92,7 +92,7 @@ export function UserInfo() {
     setIsEditable(isCurrentUser);
     if (data && !isCurrentUser) {
       const isFriendOfCurrentUser = data?.friend_chats.some((chat) =>
-        chat.users.some((chatUser) => chatUser.id === user?.id)
+        chat.users.some((chatUser) => chatUser.id === user?.id),
       );
       setIsFriend(isFriendOfCurrentUser);
     }
@@ -213,7 +213,7 @@ export function UserInfo() {
                           onDelete={() => setSelectedDeleteLanguage(language)}
                         />
                       </div>
-                    )
+                    ),
                   )}
                   <button
                     type="button"

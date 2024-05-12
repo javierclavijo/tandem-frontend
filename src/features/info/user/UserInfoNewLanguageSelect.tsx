@@ -33,7 +33,7 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
   const [error, setError] = React.useState<string>("");
 
   const updateRequest = async (
-    requestData: UserInfoNewLanguageSelectRequestData
+    requestData: UserInfoNewLanguageSelectRequestData,
   ) => {
     const response = await axiosApi.post("user_languages/", requestData);
     return response.data;
@@ -68,12 +68,8 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
   }, [languageValue, levelValue, mutation, onClose, user]);
 
   return (
-    <div
-      css={outerContainer}
-    >
-      <div
-        css={innerContainer}
-      >
+    <div css={outerContainer}>
+      <div css={innerContainer}>
         <Select
           id={`language-new`}
           value={languageValue}
@@ -83,7 +79,7 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
           isOptionDisabled={(option: any) =>
             // Disable the options for languages the user already has
             !!user?.languages.find(
-              (language) => language.language === option.value
+              (language) => language.language === option.value,
             )
           }
           placeholder="Language"
@@ -105,13 +101,7 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
           color={colors.PRIMARY}
         />
       </div>
-      {error ? (
-        <p
-          css={errorText}
-        >
-          {error}
-        </p>
-      ) : null}
+      {error ? <p css={errorText}>{error}</p> : null}
     </div>
   );
 }

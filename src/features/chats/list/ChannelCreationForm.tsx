@@ -75,9 +75,9 @@ function ChannelCreationForm({ closeModal }: { closeModal: () => void }) {
                 },
                 {
                   shouldFocus: true,
-                }
-              )
-            )
+                },
+              ),
+            ),
         );
       }
     }

@@ -19,7 +19,7 @@ interface ChatRoomMessageProps {
  */
 function ChatRoomMessage(
   { message, isOwnMessage, type }: ChatRoomMessageProps,
-  ref: React.Ref<HTMLDivElement>
+  ref: React.Ref<HTMLDivElement>,
 ) {
   return (
     <div
@@ -34,7 +34,7 @@ function ChatRoomMessage(
         <span css={content}>{message.content}</span>
         <span css={datetime}>
           {DateTime.fromISO(message.timestamp).toLocaleString(
-            DateTime.DATETIME_SHORT
+            DateTime.DATETIME_SHORT,
           )}
         </span>
       </div>

@@ -24,7 +24,7 @@ function ShareLink(props: ShareLinkProps) {
    */
   React.useEffect(() => {
     if (copied) {
-      let timeout = setTimeout(() => setCopied(false), 2000);
+      const timeout = setTimeout(() => setCopied(false), 2000);
       return () => {
         clearTimeout(timeout);
       };

@@ -16,7 +16,7 @@ export function useUser(id: string | undefined) {
     {
       staleTime: 15000,
       enabled: !!id,
-    }
+    },
   );
 }
 

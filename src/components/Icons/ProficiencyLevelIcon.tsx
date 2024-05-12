@@ -12,7 +12,7 @@ interface ProficiencyLevelIconProps extends React.SVGProps<SVGSVGElement> {
  */
 function ProficiencyLevelIcon(
   { level, ...props }: ProficiencyLevelIconProps,
-  svgRef?: React.Ref<SVGSVGElement>
+  svgRef?: React.Ref<SVGSVGElement>,
 ) {
   return level === "BE" ? (
     <Beginner {...props} ref={svgRef} />

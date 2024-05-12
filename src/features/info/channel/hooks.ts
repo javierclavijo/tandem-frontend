@@ -17,7 +17,7 @@ export function useChannel(id: string | undefined) {
     {
       staleTime: 15000,
       enabled: !!id,
-    }
+    },
   );
 }
 
@@ -77,7 +77,7 @@ export function useChangeUserRole(channelId: string | undefined) {
   const handleDemoteUser = React.useCallback(
     async (url: string) =>
       await updateMembershipMutation.mutateAsync({ url, role: "U" }),
-    [updateMembershipMutation]
+    [updateMembershipMutation],
   );
 
   /**
@@ -87,7 +87,7 @@ export function useChangeUserRole(channelId: string | undefined) {
   const handlePromoteUser = React.useCallback(
     async (url: string) =>
       await updateMembershipMutation.mutateAsync({ url, role: "M" }),
-    [updateMembershipMutation]
+    [updateMembershipMutation],
   );
 
   return useMemo(
@@ -95,7 +95,7 @@ export function useChangeUserRole(channelId: string | undefined) {
       handlePromoteUser,
       handleDemoteUser,
     }),
-    [handleDemoteUser, handlePromoteUser]
+    [handleDemoteUser, handlePromoteUser],
   );
 }
 
@@ -135,7 +135,7 @@ export function useLeaveChannel(channel: Channel | undefined) {
    */
   const leaveChannelRequest = async () => {
     const userMembership = channel?.memberships.find(
-      (membership) => membership.user.id === user?.id
+      (membership) => membership.user.id === user?.id,
     );
     if (userMembership) {
       return await axiosApi.delete(userMembership.url);

@@ -19,7 +19,7 @@ import useAuth, { axiosApi } from "../auth/AuthContext";
  */
 export const messageSortFn = (
   a: ChatMessage | undefined,
-  b: ChatMessage | undefined
+  b: ChatMessage | undefined,
 ) => {
   const aDateTime = a?.timestamp
     ? DateTime.fromISO(a.timestamp)
@@ -101,7 +101,7 @@ export const useAllChatList = () => {
         data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
       staleTime: 5000,
       enabled: !!user,
-    }
+    },
   );
 };
 
@@ -119,7 +119,7 @@ export const useFriendChatList = () => {
         data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
       staleTime: 5000,
       enabled: !!user,
-    }
+    },
   );
 };
 
@@ -137,7 +137,7 @@ export const useChannelChatList = () => {
         data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
       staleTime: 5000,
       enabled: !!user,
-    }
+    },
   );
 };
 
@@ -146,7 +146,7 @@ export const useChannelChatList = () => {
  */
 export const useChat = (
   id: string,
-  queryOptions: Omit<UseInfiniteQueryOptions, any> | undefined
+  queryOptions: Omit<UseInfiniteQueryOptions, any> | undefined,
 ) => {
   const navigate = useNavigate();
   const { data: chatList } = useAllChatList();
@@ -167,7 +167,7 @@ export const useChat = (
     async ({ pageParam = 1 }) => {
       if (chat) {
         const response = await axiosApi.get(
-          chat?.messageUrl + `&page=${pageParam}`
+          chat?.messageUrl + `&page=${pageParam}`,
         );
         return response.data;
       }
@@ -179,7 +179,7 @@ export const useChat = (
       getPreviousPageParam: (firstPage) =>
         firstPage.previousPageNumber ?? undefined,
       getNextPageParam: (lastPage) => lastPage.nextPageNumber ?? undefined,
-    }
+    },
   );
 
   return { ...query, chat };
@@ -194,7 +194,7 @@ export const useSetChatRoomHeader = (chat: Chat | undefined | null) => {
     useOutletContext<
       [
         ChatHeaderProps | null,
-        React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>
+        React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>,
       ]
     >();
 
@@ -234,7 +234,7 @@ export function useJoinWSChat() {
       shouldReconnect: () => true,
       share: true,
     },
-    isLoggedIn
+    isLoggedIn,
   );
 
   return useCallback(
@@ -245,6 +245,6 @@ export function useJoinWSChat() {
       };
       sendJsonMessage(message);
     },
-    [sendJsonMessage]
+    [sendJsonMessage],
   );
 }

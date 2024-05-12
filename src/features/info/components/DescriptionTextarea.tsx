@@ -57,7 +57,7 @@ function DescriptionTextarea({ data, queryKey }: DescriptionTextareaProps) {
             old.description = requestData.description;
           }
           return old;
-        }
+        },
       );
     },
   });
@@ -90,7 +90,7 @@ function DescriptionTextarea({ data, queryKey }: DescriptionTextareaProps) {
   };
 
   const handleKeyDown = async (
-    event: React.KeyboardEvent<HTMLTextAreaElement>
+    event: React.KeyboardEvent<HTMLTextAreaElement>,
   ) => {
     // If the Meta or Control key is pressed at the same time as the Enter key, submit the form. If the pressed key
     // is the Escape key, cancel the editing and blur the text area.

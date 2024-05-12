@@ -55,7 +55,7 @@ function ChannelInfo() {
     useOutletContext<
       [
         ChatHeaderProps | null,
-        React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>
+        React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>,
       ]
     >();
   const navigate = useNavigate();
@@ -71,7 +71,7 @@ function ChannelInfo() {
    */
   const userIsStaff = React.useCallback(
     () => userRole === "A" || userRole === "M",
-    [userRole]
+    [userRole],
   );
 
   /**
@@ -122,7 +122,7 @@ function ChannelInfo() {
    */
   React.useEffect(() => {
     const userMembership = data?.memberships.find(
-      (membership) => membership.user.id === user?.id
+      (membership) => membership.user.id === user?.id,
     );
     if (userMembership) {
       setUserRole(userMembership.role);
@@ -232,8 +232,8 @@ function ChannelInfo() {
                   membership.role === "A"
                     ? "Admin"
                     : membership.role === "M"
-                    ? "Moderator"
-                    : undefined
+                      ? "Moderator"
+                      : undefined
                 }
                 description={membership.user.description}
                 key={membership.url}
@@ -276,7 +276,7 @@ function ChannelInfo() {
                   </React.Fragment>
                 }
               />
-            ) : null
+            ) : null,
           )}
           {/* Empty list */}
           {!data?.memberships.length ? (

@@ -20,7 +20,7 @@ interface UseEditType<T> {
  */
 export function useEditField<
   T extends HTMLInputElement | HTMLTextAreaElement,
-  S
+  S,
 >(data: S | undefined, dataKey: keyof S): UseEditType<T> {
   const [editEnabled, setEditEnabled] = React.useState<boolean>(false);
   const [value, setValue] = React.useState<string>("");
@@ -50,7 +50,7 @@ export function useEditField<
       clearError();
       setValue(e.target.value);
     },
-    [clearError]
+    [clearError],
   );
 
   const handleFocus = React.useCallback(() => {
@@ -91,6 +91,6 @@ export function useEditField<
       handleChange,
       handleFocus,
       handleCancel,
-    ]
+    ],
   );
 }

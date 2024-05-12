@@ -34,7 +34,7 @@ function ChatRoom() {
     params.id as string,
     {
       staleTime: 15000,
-    }
+    },
   );
 
   /**

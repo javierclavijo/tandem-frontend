@@ -13,7 +13,7 @@ import SearchResultElement from "./SearchResultElement";
 interface UserSearchResultsProps {
   data: InfiniteData<UserSearchResponse> | undefined;
   fetchNextPage: (
-    options?: FetchNextPageOptions | undefined
+    options?: FetchNextPageOptions | undefined,
   ) => Promise<InfiniteQueryObserverResult<UserSearchResponse, unknown>>;
   hasNextPage: boolean | undefined;
 }
@@ -21,7 +21,7 @@ interface UserSearchResultsProps {
 interface ChannelSearchResultsProps {
   data: InfiniteData<ChannelSearchResponse> | undefined;
   fetchNextPage: (
-    options?: FetchNextPageOptions | undefined
+    options?: FetchNextPageOptions | undefined,
   ) => Promise<InfiniteQueryObserverResult<ChannelSearchResponse, unknown>>;
   hasNextPage: boolean | undefined;
 }

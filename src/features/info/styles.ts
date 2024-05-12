@@ -52,7 +52,7 @@ export const listSectionHeader = css`
 
 export const listSectionList = css`
   list-style-type: none;
-  padding:0;
+  padding: 0;
 `;
 
 export const infoListElementInnerContainer = css`

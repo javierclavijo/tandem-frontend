@@ -41,7 +41,7 @@ function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
         return response.data;
       }
     },
-    [data]
+    [data],
   );
 
   const mutation = useMutation(updateRequest, {

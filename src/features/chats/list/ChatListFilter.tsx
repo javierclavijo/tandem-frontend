@@ -27,7 +27,11 @@ function ChatListFilter({
             css={searchInputElement}
             aria-label="Chat list filter"
           />
-          <button type="button" css={searchButton} aria-label="Filter chat list">
+          <button
+            type="button"
+            css={searchButton}
+            aria-label="Filter chat list"
+          >
             <Search
               color={colors.DARK_PRIMARY}
               width="1.5rem"

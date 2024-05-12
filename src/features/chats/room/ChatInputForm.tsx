@@ -25,7 +25,7 @@ function ChatInputForm({ chat }: { chat: Chat }) {
       shouldReconnect: () => true,
       share: true,
     },
-    isLoggedIn
+    isLoggedIn,
   );
 
   /**
@@ -73,7 +73,7 @@ function ChatInputForm({ chat }: { chat: Chat }) {
     (
       event:
         | React.KeyboardEvent<HTMLTextAreaElement>
-        | React.FormEvent<HTMLFormElement>
+        | React.FormEvent<HTMLFormElement>,
     ) => {
       event.preventDefault();
       if (inputValue) {
@@ -87,7 +87,7 @@ function ChatInputForm({ chat }: { chat: Chat }) {
         setInputValue("");
       }
     },
-    [chat, inputValue, sendJsonMessage]
+    [chat, inputValue, sendJsonMessage],
   );
 
   /**
@@ -98,7 +98,7 @@ function ChatInputForm({ chat }: { chat: Chat }) {
       //@ts-ignore
       setInputValue(inputValue.concat(emojiObject.emoji));
     },
-    [inputValue, setInputValue]
+    [inputValue, setInputValue],
   );
 
   /**
@@ -106,7 +106,7 @@ function ChatInputForm({ chat }: { chat: Chat }) {
    * Meta key. This allows the user to insert new lines in their message.
    */
   const handleKeyDown = async (
-    event: React.KeyboardEvent<HTMLTextAreaElement>
+    event: React.KeyboardEvent<HTMLTextAreaElement>,
   ) => {
     if (event.code === "Enter") {
       if (event.metaKey || event.ctrlKey) {
@@ -173,7 +173,7 @@ function ChatInputForm({ chat }: { chat: Chat }) {
           aria-disabled={!inputValue}
         >
           <ArrowRightCircle
-            color={!!inputValue ? colors.PRIMARY : `${colors.DARK}99`}
+            color={inputValue ? colors.PRIMARY : `${colors.DARK}99`}
             width="1.5rem"
             height="1.5rem"
           />

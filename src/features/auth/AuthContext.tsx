@@ -19,7 +19,7 @@ export type LogInRequestData = {
 };
 
 export const AuthContext = React.createContext<AuthContextType>(
-  {} as AuthContextType
+  {} as AuthContextType,
 );
 
 /**
@@ -81,7 +81,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     {
       enabled: isLoggedIn && !!url && !!id,
       staleTime: 15000,
-    }
+    },
   );
 
   /**
@@ -115,7 +115,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             navigate("/404");
           }
           return Promise.reject(error);
-        }
+        },
       );
     }
   }, [navigate]);
@@ -124,7 +124,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
    * Sends a login request.
    */
   const loginMutation = useMutation(
-    async (data: LogInRequestData) => await axiosApi.post("login/", data)
+    async (data: LogInRequestData) => await axiosApi.post("login/", data),
   );
 
   /**
@@ -152,14 +152,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       return response;
     },
-    [loginMutation, fetchSessionInfo]
+    [loginMutation, fetchSessionInfo],
   );
 
   /**
    * Sends a logout request.
    */
   const logoutMutation = useMutation(
-    async () => await axiosApi.post("logout/")
+    async () => await axiosApi.post("logout/"),
   );
 
   /**
@@ -182,7 +182,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       login,
       logout,
     }),
-    [user, error, loading, isLoggedIn, login, logout]
+    [user, error, loading, isLoggedIn, login, logout],
   );
 
   return (

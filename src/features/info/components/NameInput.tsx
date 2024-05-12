@@ -67,7 +67,7 @@ function NameInput<T>({ data, dataKey, mutation }: NameInputProps<T>) {
   };
 
   const handleKeyDown = async (
-    event: React.KeyboardEvent<HTMLInputElement>
+    event: React.KeyboardEvent<HTMLInputElement>,
   ) => {
     // If the Enter key is pressed, submit the form. If the pressed key is the Escape key, cancel the editing and
     // blur the text area.
@@ -137,15 +137,18 @@ export function ChannelNameInput({ data }: { data: Channel }) {
             old.name = requestData.name;
           }
           return old;
-        }
+        },
       );
-      queryClient.setQueryData<Chat[] | undefined>(["chats", "list", "all"], (old) => {
-        const oldChat = old?.find((chat) => chat.id === requestData.id);
-        if (oldChat) {
-          oldChat.name = requestData.name;
-        }
-        return old;
-      });
+      queryClient.setQueryData<Chat[] | undefined>(
+        ["chats", "list", "all"],
+        (old) => {
+          const oldChat = old?.find((chat) => chat.id === requestData.id);
+          if (oldChat) {
+            oldChat.name = requestData.name;
+          }
+          return old;
+        },
+      );
       queryClient.setQueryData<Chat | undefined>(
         ["chats", "messages", requestData.id],
         (old) => {
@@ -153,7 +156,7 @@ export function ChannelNameInput({ data }: { data: Channel }) {
             old.name = requestData.name;
           }
           return old;
-        }
+        },
       );
     },
   });
@@ -162,7 +165,6 @@ export function ChannelNameInput({ data }: { data: Channel }) {
     <NameInput<Channel> data={data} dataKey="name" mutation={updateMutation} />
   );
 }
-
 
 /**
  * Name input component for user detail.

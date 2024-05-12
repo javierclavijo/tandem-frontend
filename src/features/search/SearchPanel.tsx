@@ -57,7 +57,7 @@ function SearchPanel({
    * User search controls values.
    */
   const [nativeLanguages, setNativeLanguages] = React.useState<Option[] | null>(
-    null
+    null,
   );
   const [learningLanguages, setLearningLanguages] = React.useState<
     Option[] | null
@@ -73,7 +73,7 @@ function SearchPanel({
     Option[] | null
   >(null);
   const [channelLevels, setChannelLevels] = React.useState<Option[] | null>(
-    null
+    null,
   );
 
   /**
@@ -95,16 +95,16 @@ function SearchPanel({
         setSearchType(searchTypeOptions.USERS);
         setNativeLanguages(
           languageOptions.filter((option) =>
-            searchParams.getAll("nativeLanguages").includes(option.value)
-          )
+            searchParams.getAll("nativeLanguages").includes(option.value),
+          ),
         );
         setLearningLanguages(
           languageOptions.filter((option) =>
-            searchParams.getAll("learningLanguages").includes(option.value)
-          )
+            searchParams.getAll("learningLanguages").includes(option.value),
+          ),
         );
         const levels = levelOptions.filter((option) =>
-          searchParams.getAll("learningLanguagesLevels").includes(option.value)
+          searchParams.getAll("learningLanguagesLevels").includes(option.value),
         );
         if (levels) {
           setLearningLanguagesLevels(levels);
@@ -113,13 +113,13 @@ function SearchPanel({
         setSearchType(searchTypeOptions.CHANNELS);
         setChannelLanguages(
           languageOptions.filter((option) =>
-            searchParams.getAll("languages").includes(option.value)
-          )
+            searchParams.getAll("languages").includes(option.value),
+          ),
         );
         setChannelLevels(
           levelOptions.filter((option) =>
-            searchParams.getAll("levels").includes(option.value)
-          )
+            searchParams.getAll("levels").includes(option.value),
+          ),
         );
       }
       setAreInitialValuesSet(true);
@@ -139,13 +139,13 @@ function SearchPanel({
           search: inputValue,
           nativeLanguages: nativeLanguages?.map((language) => language.value),
           learningLanguages: learningLanguages?.map(
-            (language) => language.value
+            (language) => language.value,
           ),
         };
         // Check that at least a learning language is selected before adding the level param.
         if (learningLanguages?.length) {
           params.learningLanguagesLevels = learningLanguagesLevels?.map(
-            (level) => level.value
+            (level) => level.value,
           );
         }
         setSearchParams(qs.stringify(params, { arrayFormat: "repeat" }));
@@ -175,7 +175,7 @@ function SearchPanel({
       setUserSearchParams,
       setChannelSearchParams,
       setSearchParams,
-    ]
+    ],
   );
 
   /**
@@ -224,7 +224,11 @@ function SearchPanel({
           />
 
           {/* Submit button. */}
-          <button type="submit" aria-label="Submit search filters" css={submitButton}>
+          <button
+            type="submit"
+            aria-label="Submit search filters"
+            css={submitButton}
+          >
             <Search color={colors.PRIMARY} width={"1.5rem"} height={"1.5rem"} />
           </button>
         </div>
