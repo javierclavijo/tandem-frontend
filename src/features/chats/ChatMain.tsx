@@ -44,13 +44,13 @@ function ChatMain() {
    * Holds the WebSocket connection to the server. Closes the connection if the user logs out.
    */
   const { lastJsonMessage } = useWebSocket<WsChatMessage>(
-    `${process.env.REACT_APP_WS_URL}/ws/chats/`,
+    `${import.meta.env.VITE_WS_URL}/ws/chats/`,
     {
       onClose: () => console.error("Chat socket closed unexpectedly"),
       shouldReconnect: () => true,
       share: true,
     },
-    isLoggedIn
+    isLoggedIn,
   );
 
   /**
@@ -73,7 +73,7 @@ function ChatMain() {
             }
           }
           return old;
-        }
+        },
       );
 
       queryClient.setQueryData<InfiniteData<ChatMessageResponse> | undefined>(
@@ -89,7 +89,7 @@ function ChatMain() {
             };
           }
           return old;
-        }
+        },
       );
     }
   }, [lastJsonMessage, queryClient]);
