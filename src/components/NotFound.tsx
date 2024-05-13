@@ -5,12 +5,12 @@ import React from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
+import { useFadeIn } from "../features/common/transitions";
 import {
   baseAppContainerWithoutTabs,
   baseAppContainerWithTabs,
 } from "../styles/layout";
 import { colors } from "../styles/variables";
-import { useFadeIn } from "../utils/transitions";
 import Nav from "./Header/Nav";
 
 /**

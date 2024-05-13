@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { animated } from "react-spring";
 import Nav from "../../components/Header/Nav";
 import { baseAppContainerWithoutTabs } from "../../styles/layout";
-import { useFadeIn } from "../../utils/transitions";
+import { useFadeIn } from "../common/transitions";
 import useAuth, { LogInRequestData } from "./AuthContext";
 import { useRedirectIfLoggedIn } from "./hooks";
 import {

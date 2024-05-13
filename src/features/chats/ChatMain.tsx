@@ -13,9 +13,9 @@ import {
   baseAppContainerWithTabs,
   baseAppContainerWithoutTabs,
 } from "../../styles/layout";
-import { useFadeIn } from "../../utils/transitions";
 import useAuth from "../auth/AuthContext";
 import { useRedirectIfNotLoggedIn } from "../auth/hooks";
+import { useFadeIn } from "../common/transitions";
 import { Chat } from "../common/types";
 import ChatList from "./list/ChatList";
 import { chatRoom, chatRoomMobile } from "./room/styles";

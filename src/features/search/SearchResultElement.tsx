@@ -5,6 +5,7 @@ import { NavArrowRight } from "iconoir-react";
 import React from "react";
 import { FlagIcon } from "react-flag-kit";
 import { Link } from "react-router-dom";
+import ResponsiveEllipsis from "../../components/ResponsiveEllipsis";
 import { flagCodes } from "../../resources/languages";
 import {
   containerWithLink,
@@ -12,7 +13,6 @@ import {
   thumbnailImg,
 } from "../../styles/components";
 import { colors } from "../../styles/variables";
-import ResponsiveEllipsis from "../../utils/ResponsiveEllipsis";
 
 import defaultImg from "../../static/images/user_placeholder.png";
 

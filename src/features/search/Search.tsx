@@ -16,9 +16,9 @@ import {
   homeSearchMain,
   homeSearchMainMobile,
 } from "../../styles/layout";
-import { useFadeIn } from "../../utils/transitions";
 import { axiosApi } from "../auth/AuthContext";
 import { useRedirectIfNotLoggedIn } from "../auth/hooks";
+import { useFadeIn } from "../common/transitions";
 import { Channel, User } from "../common/types";
 import SearchPanel from "./SearchPanel";
 import { ChannelSearchResults, UserSearchResults } from "./SearchResults";

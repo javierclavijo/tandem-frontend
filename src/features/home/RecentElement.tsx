@@ -4,13 +4,13 @@ import { css } from "@emotion/react";
 import { NavArrowRight } from "iconoir-react";
 import React from "react";
 import { Link } from "react-router-dom";
+import ResponsiveEllipsis from "../../components/ResponsiveEllipsis";
 import {
   containerWithLink,
   thumbnailContainer,
   thumbnailImg,
 } from "../../styles/components";
 import { colors } from "../../styles/variables";
-import ResponsiveEllipsis from "../../utils/ResponsiveEllipsis";
 
 import defaultImg from "../../static/images/user_placeholder.png";
 

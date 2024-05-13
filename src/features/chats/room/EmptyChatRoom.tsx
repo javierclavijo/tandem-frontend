@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
 import { css } from "@emotion/react";
-import { colors } from "../../../styles/variables";
-import { chatRoom, chatHeader } from "./styles";
+import React from "react";
 import { useOutletContext } from "react-router-dom";
-import { ChatHeaderProps } from "../../../components/ChatHeader";
-import { useFadeIn } from "../../../utils/transitions";
 import { animated } from "react-spring";
+import { ChatHeaderProps } from "../../../components/ChatHeader";
+import { colors } from "../../../styles/variables";
+import { useFadeIn } from "../../common/transitions";
+import { chatHeader, chatRoom } from "./styles";
 
 /**
  * Empty chat room component. Only used in the desktop chat list.

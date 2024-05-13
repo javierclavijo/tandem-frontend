@@ -15,10 +15,10 @@ import {
   homeSearchMainMobile,
 } from "../../styles/layout";
 import { colors } from "../../styles/variables";
-import { useFadeIn } from "../../utils/transitions";
 import useAuth from "../auth/AuthContext";
 import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 import { useChannelChatList, useFriendChatList } from "../chats/hooks";
+import { useFadeIn } from "../common/transitions";
 import SearchResultElement from "../search/SearchResultElement";
 import { useDiscoverUsersList } from "./hooks";
 import RecentElement from "./RecentElement";

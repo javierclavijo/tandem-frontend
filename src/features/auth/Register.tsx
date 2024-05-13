@@ -9,12 +9,12 @@ import { Link } from "react-router-dom";
 import Select from "react-select";
 import { animated } from "react-spring";
 import Nav from "../../components/Header/Nav";
-import { languageOptions, Option } from "../../resources/languages";
+import { Option, languageOptions } from "../../resources/languages";
 import { select } from "../../styles/components";
 import { baseAppContainerWithoutTabs } from "../../styles/layout";
-import { useFadeIn } from "../../utils/transitions";
 import { ServerErrorResponse } from "../chats/list/ChannelCreationForm";
-import useAuth, { axiosApi, LogInRequestData } from "./AuthContext";
+import { useFadeIn } from "../common/transitions";
+import useAuth, { LogInRequestData, axiosApi } from "./AuthContext";
 import { useRedirectIfLoggedIn } from "./hooks";
 import {
   button,

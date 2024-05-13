@@ -1,17 +1,17 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
-import { chatHeader } from "../features/chats/room/styles";
-import BackButton from "./BackButton";
-import { Link, To } from "react-router-dom";
 import { css } from "@emotion/react";
+import React from "react";
+import { Link, To } from "react-router-dom";
+import { animated } from "react-spring";
+import { chatHeader } from "../features/chats/room/styles";
+import { useFadeIn } from "../features/common/transitions";
 import {
   containerWithLink,
   thumbnailContainer,
   thumbnailImg,
 } from "../styles/components";
-import { useFadeIn } from "../utils/transitions";
-import { animated } from "react-spring";
+import BackButton from "./BackButton";
 
 import defaultImg from "../static/images/user_placeholder.png";
 
