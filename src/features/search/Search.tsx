@@ -117,7 +117,6 @@ function Search() {
       return response.data;
     },
     {
-      staleTime: 30000,
       getPreviousPageParam: (firstPage) =>
         firstPage.previousPageNumber ?? undefined,
       getNextPageParam: (lastPage) => lastPage.nextPageNumber ?? undefined,
@@ -150,7 +149,6 @@ function Search() {
       return response.data;
     },
     {
-      staleTime: 30000,
       getPreviousPageParam: (firstPage) =>
         firstPage.previousPageNumber ?? undefined,
       getNextPageParam: (lastPage) => lastPage.nextPageNumber ?? undefined,

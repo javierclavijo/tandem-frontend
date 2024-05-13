@@ -1,8 +1,8 @@
+import React, { useCallback, useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { Channel } from "../../../entities/Channel";
 import useAuth, { axiosApi } from "../../auth/AuthContext";
-import { useNavigate } from "react-router-dom";
-import React, { useCallback, useMemo } from "react";
 
 /**
  * Query which fetches and holds a channel's data
@@ -15,7 +15,6 @@ export function useChannel(id: string | undefined) {
       return response.data;
     },
     {
-      staleTime: 15000,
       enabled: !!id,
     },
   );

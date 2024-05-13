@@ -19,4 +19,7 @@ export default defineConfig({
     open: true,
     port: 3000,
   },
+  define: {
+    global: "globalThis",
+  },
 });
