@@ -1,11 +1,11 @@
 import { DateTime } from "luxon";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import {
   UseInfiniteQueryOptions,
   useInfiniteQuery,
   useQuery,
 } from "react-query";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import { ChatHeaderProps } from "../../components/ChatHeader";
 import { Chat, FriendChat } from "../../entities/Chat";
@@ -149,27 +149,20 @@ export const useChat = (
   id: string,
   queryOptions: UseInfiniteQueryOptions<ChatMessageResponse> | undefined,
 ) => {
-  const navigate = useNavigate();
   const { data: chatList } = useAllChatList();
-  const [chat, setChat] = useState<Chat | undefined>();
 
-  React.useLayoutEffect(() => {
-    // Fetch the resource's URL and ID from the chat list
-    const chatResult = chatList?.find((c) => c.id === id);
-    if (chatResult) {
-      setChat(chatResult);
-    } else {
-      navigate("/404");
-    }
-  }, [chatList, id, navigate]);
+  const chat: Chat | undefined = useMemo(
+    () => chatList?.find((c) => c.id === id),
+    [chatList, id],
+  );
 
   const query = useInfiniteQuery<ChatMessageResponse>(
     ["chats", "messages", chat?.id],
     async ({ pageParam = 1 }) => {
       if (chat) {
-        const response = await axiosApi.get(
-          chat?.messageUrl + `&page=${pageParam}`,
-        );
+        const response = await axiosApi.get(chat?.messageUrl, {
+          params: { page: pageParam },
+        });
         return response.data;
       }
       return undefined;
