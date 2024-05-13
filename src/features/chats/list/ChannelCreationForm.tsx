@@ -7,20 +7,17 @@ import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import Select, { StylesConfig } from "react-select";
-import {
-  Option,
-  languageOptions,
-  levelOptions,
-} from "../../../resources/languages";
+import { languageOptions, levelOptions } from "../../../resources/languages";
 import { modal, select } from "../../../styles/components";
 import { colors, textSizes } from "../../../styles/variables";
 import { axiosApi } from "../../auth/AuthContext";
 import { errorStyle } from "../../auth/styles";
+import { Language, Option, ProficiencyLevel } from "../../common/types";
 
 interface ChannelCreationRequestData {
   name: string;
   language: string;
-  level: string;
+  level: ProficiencyLevel;
 }
 
 export interface ServerErrorResponse {
@@ -29,8 +26,8 @@ export interface ServerErrorResponse {
 
 interface ChannelCreationFormValues {
   name: string;
-  language: Option | null;
-  level: Option | null;
+  language: Option<Language> | null;
+  level: Option<ProficiencyLevel> | null;
 }
 
 /**

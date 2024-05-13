@@ -11,7 +11,7 @@ import {
   baseAppContainerWithTabs,
 } from "../styles/layout";
 import { colors } from "../styles/variables";
-import Nav from "./Header/Nav";
+import Nav from "./Nav/Nav";
 
 /**
  * Component for the 404 error page.

@@ -7,17 +7,12 @@ import { FlagIcon } from "react-flag-kit";
 import { useMutation, useQueryClient } from "react-query";
 import Select, { SingleValue, StylesConfig } from "react-select";
 import Button from "../../../components/Button";
-import ProficiencyLevelIcon from "../../../components/Icons/ProficiencyLevelIcon";
-import {
-  Option,
-  flagCodes,
-  languages,
-  levelOptions,
-} from "../../../resources/languages";
+import ProficiencyLevelIcon from "../../../components/icons/ProficiencyLevelIcon";
+import { LANGUAGE_INFO, levelOptions } from "../../../resources/languages";
 import { badge, noBorderAndBgSelectWhite } from "../../../styles/components";
 import { colors } from "../../../styles/variables";
 import useAuth, { axiosApi } from "../../auth/AuthContext";
-import { User } from "../../common/types";
+import { Option, ProficiencyLevel, User } from "../../common/types";
 import { UserLanguage } from "../types";
 
 interface LanguageBadgeProps {
@@ -27,16 +22,17 @@ interface LanguageBadgeProps {
 }
 
 /**
- * Badge-like component for user info view. Displays a language's name and icon and allows
- * selecting the language's level.
+ * Badge-like component for user info view. Displays a language's name and icon
+ * and allows selecting the language's level.
  */
 function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
   const queryClient = useQueryClient();
-  const [value, setValue] = React.useState<Option | null>(null);
+  const [levelValue, setLevelValue] =
+    React.useState<Option<ProficiencyLevel> | null>(null);
   const { user } = useAuth();
 
   const updateRequest = React.useCallback(
-    async (requestData: { level: string }) => {
+    async (requestData: { level: ProficiencyLevel }) => {
       if (data) {
         const response = await axiosApi.patch(data.url, requestData);
         return response.data;
@@ -54,34 +50,36 @@ function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
     },
   });
 
-  const onChange = async (option: SingleValue<Option>) => {
+  const onChange = async (option: SingleValue<Option<ProficiencyLevel>>) => {
     if (option != null) {
-      const requestData = { level: option.value as string };
+      const requestData = { level: option.value };
       await mutation.mutateAsync(requestData);
-      setValue(option);
+      setLevelValue(option);
     }
   };
 
   React.useEffect(() => {
-    // Get the option which corresponds to the initial value prop and set it as the select's value
+    // Get the option which corresponds to the initial value prop and set it as
+    // the select's value
     const initialOption = levelOptions.find((o) => o.value === data.level);
     if (initialOption) {
-      setValue(initialOption);
+      setLevelValue(initialOption);
     }
   }, [data.level]);
 
+  // TODO: refactor this. Look for similar occurrences. (Probably should use
+  // CSSProperties)
   const container = css`
     ${badge};
     background-color: ${bg};
   `;
 
+  const languageInfo = LANGUAGE_INFO[data.language];
+
   return (
     <div css={container}>
-      <FlagIcon
-        code={flagCodes.find((x) => x.key === data.language)?.value || "AD"}
-        size={24}
-      />
-      <span>{languages.find((l) => l.key === data.language)?.value}</span>
+      <FlagIcon code={languageInfo.flagIconCode} size={24} />
+      <span>{languageInfo.displayName}</span>
       <span>|</span>
       <ProficiencyLevelIcon
         level={data.level}
@@ -89,12 +87,14 @@ function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
         height={24}
         width={24}
       />
-      <Select<Option>
+      <Select<Option<ProficiencyLevel>>
         id={`level-${data.id}`}
-        value={value}
+        value={levelValue}
         onChange={onChange}
         options={levelOptions}
-        styles={noBorderAndBgSelectWhite as StylesConfig<Option>}
+        styles={
+          noBorderAndBgSelectWhite as StylesConfig<Option<ProficiencyLevel>>
+        }
       />
       <Button visible={true} onClick={onDelete}>
         <Xmark color={colors.WHITE} width={"1.5rem"} height={"1.5rem"} />

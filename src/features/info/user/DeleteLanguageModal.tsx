@@ -2,7 +2,7 @@
 
 import React from "react";
 import ReactModal from "react-modal";
-import { languages } from "../../../resources/languages";
+import { LANGUAGE_INFO } from "../../../resources/languages";
 import { modal } from "../../../styles/components";
 import { UserLanguage } from "../types";
 
@@ -12,6 +12,7 @@ ReactModal.setAppElement("#root");
 
 interface DeleteLanguageModalProps {
   selectedDeleteLanguage: UserLanguage | null;
+  // TODO: refactor this kind of prop dependencies (setState setters). Look in all files.
   setSelectedDeleteLanguage: React.Dispatch<
     React.SetStateAction<UserLanguage | null>
   >;
@@ -26,6 +27,11 @@ function DeleteLanguageModal({
   setSelectedDeleteLanguage,
   handleDeleteLanguage,
 }: DeleteLanguageModalProps) {
+  const languageName =
+    selectedDeleteLanguage != null
+      ? LANGUAGE_INFO[selectedDeleteLanguage?.language].displayName
+      : "";
+
   return (
     <ReactModal
       isOpen={!!selectedDeleteLanguage}
@@ -33,12 +39,7 @@ function DeleteLanguageModal({
       contentLabel="Delete language"
       style={modal.container}
     >
-      <p css={modal.title}>
-        {`Delete ${
-          languages.find((l) => l.key === selectedDeleteLanguage?.language)
-            ?.value
-        } from your languages?`}
-      </p>
+      <p css={modal.title}>{`Delete ${languageName} from your languages?`}</p>
       <div css={modal.buttonsContainer}>
         <button onClick={handleDeleteLanguage} css={modal.button}>
           Delete

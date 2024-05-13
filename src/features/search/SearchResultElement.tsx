@@ -2,11 +2,9 @@
 
 import { css } from "@emotion/react";
 import { NavArrowRight } from "iconoir-react";
-import React from "react";
 import { FlagIcon } from "react-flag-kit";
 import { Link } from "react-router-dom";
 import ResponsiveEllipsis from "../../components/ResponsiveEllipsis";
-import { flagCodes } from "../../resources/languages";
 import {
   containerWithLink,
   thumbnailContainer,
@@ -14,12 +12,14 @@ import {
 } from "../../styles/components";
 import { colors } from "../../styles/variables";
 
+import { LANGUAGE_INFO } from "../../resources/languages";
 import defaultImg from "../../static/images/user_placeholder.png";
+import { Language } from "../common/types";
 
 interface SearchElementProps {
   id: string;
   name: string;
-  languages: string[];
+  languages: Language[];
   description: string;
   image?: string | null;
   link: string;
@@ -28,16 +28,23 @@ interface SearchElementProps {
 /**
  * Element component for search results.
  */
-function SearchResultElement(props: SearchElementProps) {
+function SearchResultElement({
+  id,
+  name,
+  languages,
+  description,
+  image,
+  link,
+}: SearchElementProps) {
   return (
     <article css={outerContainer}>
       <div css={innerContainer}>
         <div css={imgContainer}>
-          <img src={props.image ?? defaultImg} alt="" css={thumbnailImg} />
+          <img src={image ?? defaultImg} alt="" css={thumbnailImg} />
         </div>
         <div css={contentContainer}>
           <div css={upperInnerContainer}>
-            <h4>{props.name}</h4>
+            <h4>{name}</h4>
             <NavArrowRight
               color={colors.PRIMARY}
               width={"1.5rem"}
@@ -45,25 +52,25 @@ function SearchResultElement(props: SearchElementProps) {
             />
           </div>
           <div css={flagsContainer}>
-            {props.languages.map((language) => (
+            {languages.map((language) => (
               <FlagIcon
-                code={flagCodes.find((x) => x.key === language)?.value || "AD"}
+                code={LANGUAGE_INFO[language].flagIconCode}
                 size={24}
-                key={`${props.id}-${language}`}
+                key={`${id}-${language}`}
               />
             ))}
           </div>
           <ResponsiveEllipsis
-            text={props.description}
+            text={description}
             maxLine="1"
             ellipsis="…"
             trimRight
             basedOn="letters"
-            css={description}
+            css={descriptionCss}
           />
         </div>
       </div>
-      <Link to={props.link} css={link} title={props.name} />
+      <Link to={link} css={linkCss} title={name} />
     </article>
   );
 }
@@ -112,11 +119,11 @@ const flagsContainer = css`
   gap: 0.5rem;
 `;
 
-const link = css`
+const linkCss = css`
   grid-area: element;
 `;
 
-const description = css`
+const descriptionCss = css`
   overflow-wrap: anywhere;
 `;
 

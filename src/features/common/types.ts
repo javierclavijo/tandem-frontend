@@ -1,3 +1,4 @@
+import { FlagIconCode } from "react-flag-kit";
 import { ChatMessage } from "../chats/types";
 import { UserLanguage } from "../info/types";
 
@@ -16,10 +17,13 @@ interface ChannelMembership {
   role: string;
 }
 
+export type ProficiencyLevel = "BE" | "IN" | "AD" | "NA";
+export type Language = "DE" | "EN" | "FR" | "IT" | "ES";
+
 export interface Channel extends Chat {
   description: string;
-  language: string;
-  level: string;
+  language: Language;
+  level: ProficiencyLevel;
   memberships: ChannelMembership[];
   type: "channels";
 }
@@ -29,8 +33,8 @@ interface UserMembershipChannel {
   url: string;
   name: string;
   description: string;
-  language: string;
-  level: string;
+  language: Language;
+  level: ProficiencyLevel;
   image: string | null;
 }
 
@@ -68,4 +72,14 @@ export interface Chat {
 export interface FriendChat extends Chat {
   users: User[];
   type: "users";
+}
+
+export interface LanguageInfo {
+  flagIconCode: FlagIconCode;
+  displayName: string;
+}
+
+export interface Option<T extends string = string> {
+  value: T;
+  label: string;
 }

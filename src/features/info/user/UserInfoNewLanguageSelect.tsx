@@ -5,15 +5,11 @@ import React from "react";
 import { useMutation, useQueryClient } from "react-query";
 import Select, { StylesConfig } from "react-select";
 import EditButtons from "../../../components/EditButtons";
-import {
-  Option,
-  languageOptions,
-  levelOptions,
-} from "../../../resources/languages";
+import { languageOptions, levelOptions } from "../../../resources/languages";
 import { select } from "../../../styles/components";
 import { colors } from "../../../styles/variables";
 import useAuth, { axiosApi } from "../../auth/AuthContext";
-import { User } from "../../common/types";
+import { Option, ProficiencyLevel, User } from "../../common/types";
 
 interface UserInfoNewLanguageSelectRequestData {
   language: string;
@@ -29,7 +25,8 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
   const queryClient = useQueryClient();
 
   const [languageValue, setLanguageValue] = React.useState<Option | null>(null);
-  const [levelValue, setLevelValue] = React.useState<Option | null>(null);
+  const [levelValue, setLevelValue] =
+    React.useState<Option<ProficiencyLevel> | null>(null);
   const [error, setError] = React.useState<string>("");
 
   const updateRequest = async (
@@ -85,14 +82,14 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
           placeholder="Language"
           styles={select as StylesConfig<Option>}
         />
-        <Select<Option>
+        <Select<Option<ProficiencyLevel>>
           id={`level-new`}
           value={levelValue}
           onChange={setLevelValue}
           onFocus={clearError}
           options={levelOptions}
           placeholder="Level"
-          styles={select as StylesConfig<Option>}
+          styles={select as StylesConfig<Option<ProficiencyLevel>>}
         />
         <EditButtons
           editEnabled={true}

@@ -7,11 +7,7 @@ import React, { FormEvent } from "react";
 import { DebounceInput } from "react-debounce-input";
 import { useSearchParams } from "react-router-dom";
 import Select, { StylesConfig } from "react-select";
-import {
-  languageOptions,
-  levelOptions,
-  Option,
-} from "../../resources/languages";
+import { languageOptions, levelOptions } from "../../resources/languages";
 import {
   buttonWithoutBackgroundAndBorder,
   noBorderAndBgSelectDark,
@@ -20,10 +16,11 @@ import {
   searchSelect,
 } from "../../styles/components";
 import { colors } from "../../styles/variables";
+import { Language, Option, ProficiencyLevel } from "../common/types";
 import {
   ChannelSearchParams,
-  searchTypeOptions,
   UserSearchParams,
+  searchTypeOptions,
 } from "./Search";
 
 interface SearchPanelProps {
@@ -38,9 +35,10 @@ interface SearchPanelProps {
 }
 
 /**
- * Holds the search form controls for search type and term, languages and levels. Fetches the URL search params on init and
- * sets them whenever the form is submitted. Conditionally renders search controls depending on the chosen search type
- * (users by default).
+ * Holds the search form controls for search type and term, languages and
+ * levels. Fetches the URL search params on init and sets them whenever the form
+ * is submitted. Conditionally renders search controls depending on the chosen
+ * search type (users by default).
  */
 function SearchPanel({
   setUserSearchParams,
@@ -61,12 +59,14 @@ function SearchPanel({
    * only disabled if channelLanguages is null, but is enabled if it's an empty
    * array.
    */
-  const [nativeLanguages, setNativeLanguages] = React.useState<Option[]>([]);
+  const [nativeLanguages, setNativeLanguages] = React.useState<
+    Option<Language>[]
+  >([]);
   const [learningLanguages, setLearningLanguages] = React.useState<
-    Option[] | null
+    Option<Language>[] | null
   >(null);
   const [learningLanguagesLevels, setLearningLanguagesLevels] = React.useState<
-    Option[]
+    Option<ProficiencyLevel>[]
   >([]);
 
   /**
@@ -251,23 +251,23 @@ function SearchPanel({
             {/* User native languages multi-select.
             Automatically disables options which are selected as learning 
             languages. */}
-            <Select<Option, true>
+            <Select<Option<Language>, true>
               id={`native-languages`}
               isMulti={true}
               value={nativeLanguages}
               options={languageOptions}
               onChange={(options) => setNativeLanguages([...options])}
               isOptionDisabled={(option) =>
-                !!learningLanguages?.includes(option as Option)
+                !!learningLanguages?.includes(option as Option<Language>)
               }
               placeholder="Mother tongue(s)"
               aria-label="Users' mother tongues"
-              styles={searchSelect as StylesConfig<Option, true>}
+              styles={searchSelect as StylesConfig<Option<Language>, true>}
             />
 
             {/* User learning languages multi-select. Automatically disables 
             options which are selected as native languages. */}
-            <Select<Option, true>
+            <Select<Option<Language>, true>
               id={`learning-languages`}
               isMulti={true}
               value={learningLanguages}
@@ -276,15 +276,15 @@ function SearchPanel({
                 setLearningLanguages(options?.length ? [...options] : null)
               }
               isOptionDisabled={(option) =>
-                !!nativeLanguages?.includes(option as Option)
+                !!nativeLanguages?.includes(option as Option<Language>)
               }
               placeholder="Is learning..."
               aria-label="Users' target languages"
-              styles={searchSelect as StylesConfig<Option, true>}
+              styles={searchSelect as StylesConfig<Option<Language>, true>}
             />
 
             {/* User learning languages levels select. */}
-            <Select<Option, true>
+            <Select<Option<ProficiencyLevel>, true>
               id={`learning-languages-levels`}
               isMulti={true}
               value={learningLanguagesLevels}
@@ -293,7 +293,9 @@ function SearchPanel({
               isDisabled={!learningLanguages || !learningLanguages.length}
               placeholder="Level(s)"
               aria-label="Proficiency levels of users' target languages"
-              styles={searchSelect as StylesConfig<Option, true>}
+              styles={
+                searchSelect as StylesConfig<Option<ProficiencyLevel>, true>
+              }
             />
           </React.Fragment>
         ) : (

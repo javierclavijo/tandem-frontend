@@ -1,10 +1,11 @@
+import { Globe, ThreeStars } from "iconoir-react";
 import React from "react";
+import { ProficiencyLevel } from "../../features/common/types";
 import Beginner from "./Beginner";
 import Intermediate from "./Intermediate";
-import { Globe, ThreeStars } from "iconoir-react";
 
 interface ProficiencyLevelIconProps extends React.SVGProps<SVGSVGElement> {
-  level: string;
+  level: ProficiencyLevel;
 }
 
 /**
@@ -14,15 +15,18 @@ function ProficiencyLevelIcon(
   { level, ...props }: ProficiencyLevelIconProps,
   svgRef?: React.Ref<SVGSVGElement>,
 ) {
-  return level === "BE" ? (
-    <Beginner {...props} ref={svgRef} />
-  ) : level === "IN" ? (
-    <Intermediate {...props} ref={svgRef} />
-  ) : level === "AD" ? (
-    <ThreeStars {...props} ref={svgRef} />
-  ) : level === "NA" ? (
-    <Globe {...props} ref={svgRef} />
-  ) : null;
+  const Component = components[level];
+  return <Component ref={svgRef} {...props} />;
 }
+
+const components: Record<
+  ProficiencyLevel,
+  React.FC<React.SVGProps<SVGSVGElement>>
+> = {
+  BE: Beginner,
+  IN: Intermediate,
+  AD: ThreeStars,
+  NA: Globe,
+};
 
 export default React.forwardRef(ProficiencyLevelIcon);

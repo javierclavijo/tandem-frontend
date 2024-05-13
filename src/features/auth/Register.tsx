@@ -8,12 +8,13 @@ import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import { animated } from "react-spring";
-import Nav from "../../components/Header/Nav";
-import { Option, languageOptions } from "../../resources/languages";
+import Nav from "../../components/Nav/Nav";
+import { languageOptions } from "../../resources/languages";
 import { select } from "../../styles/components";
 import { baseAppContainerWithoutTabs } from "../../styles/layout";
 import { ServerErrorResponse } from "../chats/list/ChannelCreationForm";
 import { useFadeIn } from "../common/transitions";
+import { Option } from "../common/types";
 import useAuth, { LogInRequestData, axiosApi } from "./AuthContext";
 import { useRedirectIfLoggedIn } from "./hooks";
 import {

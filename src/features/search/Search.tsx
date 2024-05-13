@@ -6,9 +6,8 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useInfiniteQuery } from "react-query";
 import { useMediaQuery } from "react-responsive";
 import { animated } from "react-spring";
-import Nav from "../../components/Header/Nav";
+import Nav from "../../components/Nav/Nav";
 import Tabs from "../../components/Tabs";
-import { Option } from "../../resources/languages";
 import { homeSearchStyles } from "../../styles/components";
 import {
   baseAppContainerWithoutTabs,
@@ -19,7 +18,13 @@ import {
 import { axiosApi } from "../auth/AuthContext";
 import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 import { useFadeIn } from "../common/transitions";
-import { Channel, User } from "../common/types";
+import {
+  Channel,
+  Language,
+  Option,
+  ProficiencyLevel,
+  User,
+} from "../common/types";
 import SearchPanel from "./SearchPanel";
 import { ChannelSearchResults, UserSearchResults } from "./SearchResults";
 
@@ -56,9 +61,9 @@ interface BaseSearchParams {
 
 export interface UserSearchParams extends BaseSearchParams {
   search?: string;
-  nativeLanguages?: string[] | null;
-  learningLanguages?: string[] | null;
-  learningLanguagesLevels?: string[] | null;
+  nativeLanguages?: Language[] | null;
+  learningLanguages?: Language[] | null;
+  learningLanguagesLevels?: ProficiencyLevel[] | null;
 }
 
 export interface ChannelSearchParams extends BaseSearchParams {
