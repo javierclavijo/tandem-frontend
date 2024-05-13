@@ -13,7 +13,8 @@ import { colors, textSizes } from "../../../styles/variables";
 import useAuth from "../../auth/AuthContext";
 
 /**
- * Input form for the chat room. Includes the chat message input, a send button and an emoji picker.
+ * Input form for the chat room. Includes the chat message input, a send button
+ * and an emoji picker.
  */
 function ChatInputForm({ chat }: { chat: Chat }) {
   const { isLoggedIn } = useAuth();
@@ -94,16 +95,16 @@ function ChatInputForm({ chat }: { chat: Chat }) {
    * Handles the emoji click event. Appends the emoji to the input's value.
    */
   const onEmojiClick: MouseDownEvent = React.useCallback(
-    (event, emojiObject) => {
-      //@ts-ignore
-      setInputValue(inputValue.concat(emojiObject.emoji));
+    (emojiData) => {
+      setInputValue(inputValue.concat(emojiData.emoji));
     },
     [inputValue, setInputValue],
   );
 
   /**
-   * Handles key input, sending the message if the user presses the Enter key, but not the Ctrl or
-   * Meta key. This allows the user to insert new lines in their message.
+   * Handles key input, sending the message if the user presses the Enter key,
+   * but not the Ctrl or Meta key. This allows the user to insert new lines in
+   * their message.
    */
   const handleKeyDown = async (
     event: React.KeyboardEvent<HTMLTextAreaElement>,
@@ -157,7 +158,7 @@ function ChatInputForm({ chat }: { chat: Chat }) {
           name="chat-text-input"
           ref={elementRef}
           value={inputValue}
-          onChange={(e: any) => setInputValue(e.target.value)}
+          onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
           minRows={1}
           maxRows={12}

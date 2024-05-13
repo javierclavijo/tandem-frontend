@@ -6,7 +6,7 @@ import qs from "qs";
 import React, { FormEvent } from "react";
 import { DebounceInput } from "react-debounce-input";
 import { useSearchParams } from "react-router-dom";
-import Select from "react-select";
+import Select, { StylesConfig } from "react-select";
 import {
   languageOptions,
   levelOptions,
@@ -27,12 +27,14 @@ import {
 } from "./Search";
 
 interface SearchPanelProps {
-  setUserSearchParams: React.Dispatch<React.SetStateAction<UserSearchParams>>;
-  setChannelSearchParams: React.Dispatch<
-    React.SetStateAction<ChannelSearchParams>
+  setUserSearchParams: React.Dispatch<
+    React.SetStateAction<UserSearchParams | null>
   >;
-  searchType: Option;
-  setSearchType: React.Dispatch<React.SetStateAction<Option>>;
+  setChannelSearchParams: React.Dispatch<
+    React.SetStateAction<ChannelSearchParams | null>
+  >;
+  searchType: Option | null;
+  setSearchType: React.Dispatch<React.SetStateAction<Option | null>>;
 }
 
 /**
@@ -55,36 +57,38 @@ function SearchPanel({
 
   /**
    * User search controls values.
+   * learningLanguages can be null, as the level select depends on it -- it's
+   * only disabled if channelLanguages is null, but is enabled if it's an empty
+   * array.
    */
-  const [nativeLanguages, setNativeLanguages] = React.useState<Option[] | null>(
-    null,
-  );
+  const [nativeLanguages, setNativeLanguages] = React.useState<Option[]>([]);
   const [learningLanguages, setLearningLanguages] = React.useState<
     Option[] | null
   >(null);
   const [learningLanguagesLevels, setLearningLanguagesLevels] = React.useState<
-    Option[] | null
-  >(null);
+    Option[]
+  >([]);
 
   /**
    * Channel search controls values.
+   * channelLanguages follows the same logic as learningLanguages with regard
+   * to being null.
    */
   const [channelLanguages, setChannelLanguages] = React.useState<
     Option[] | null
   >(null);
-  const [channelLevels, setChannelLevels] = React.useState<Option[] | null>(
-    null,
-  );
+  const [channelLevels, setChannelLevels] = React.useState<Option[]>([]);
 
   /**
-   * Controls whether the values have already been set according to the route's search params (i.e. if the hook below
-   * has been executed)
+   * Controls whether the values have already been set according to the route's
+   * search params (i.e. if the hook below has been executed)
    */
   const [areInitialValuesSet, setAreInitialValuesSet] =
     React.useState<boolean>(false);
 
   /**
-   * Set the values to the route's search params on init. Select values must be found in the option arrays first.
+   * Set the values to the route's search params on init. Select values must be
+   * found in the option arrays first.
    */
   React.useEffect(() => {
     if (!areInitialValuesSet) {
@@ -127,14 +131,15 @@ function SearchPanel({
   }, [areInitialValuesSet, setSearchType, searchParams]);
 
   /**
-   * Sets the corresponding URL search params, plus the query search params state itself.
+   * Sets the corresponding URL search params, plus the query search params
+   * state itself.
    * @param [e]: The search form's submit event.
    */
   const handleSubmit = React.useCallback(
     (e?: FormEvent<HTMLFormElement>) => {
       e?.preventDefault();
       if (searchType === searchTypeOptions.USERS) {
-        const params: any = {
+        const params: UserSearchParams = {
           type: searchTypeOptions.USERS.value,
           search: inputValue,
           nativeLanguages: nativeLanguages?.map((language) => language.value),
@@ -142,7 +147,8 @@ function SearchPanel({
             (language) => language.value,
           ),
         };
-        // Check that at least a learning language is selected before adding the level param.
+        // Check that at least a learning language is selected before adding the
+        // level param.
         if (learningLanguages?.length) {
           params.learningLanguagesLevels = learningLanguagesLevels?.map(
             (level) => level.value,
@@ -151,12 +157,13 @@ function SearchPanel({
         setSearchParams(qs.stringify(params, { arrayFormat: "repeat" }));
         setUserSearchParams(params);
       } else {
-        const params: any = {
+        const params: ChannelSearchParams = {
           type: searchTypeOptions.CHANNELS.value,
           search: inputValue,
           languages: channelLanguages?.map((language) => language.value),
         };
-        // Check that at least a learning language is selected before adding the level params.
+        // Check that at least a learning language is selected before adding the
+        // level params.
         if (channelLevels?.length) {
           params.levels = channelLevels.map((level) => level.value);
         }
@@ -179,8 +186,8 @@ function SearchPanel({
   );
 
   /**
-   * Submit the search whenever any select's values are updated, but only if the initial values from search params
-   * have been set already.
+   * Submit the search whenever any select's values are updated, but only if the
+   * initial values from search params have been set already.
    */
   React.useEffect(() => {
     if (areInitialValuesSet) handleSubmit();
@@ -211,15 +218,17 @@ function SearchPanel({
           css={searchInputElement}
         />
         <div css={searchTypeSelectContainer}>
-          {/* Search type select. Allows the user to toggle between user and channel search. */}
-          <Select
+          {/* Search type select. Allows the user to toggle between user and 
+          channel search. */}
+          <Select<Option>
             id={`search-type`}
             value={searchType}
             options={[searchTypeOptions.USERS, searchTypeOptions.CHANNELS]}
-            onChange={(option: any) => setSearchType(option)}
+            onChange={setSearchType}
             defaultValue={searchTypeOptions.USERS}
             placeholder="Type"
-            styles={noBorderAndBgSelectDark}
+            // TODO: create generic styled select components
+            styles={noBorderAndBgSelectDark as StylesConfig<Option>}
             aria-label="Search type"
           />
 
@@ -240,54 +249,51 @@ function SearchPanel({
            */
           <React.Fragment>
             {/* User native languages multi-select.
-                        Automatically disables options which are selected as learning languages. */}
-            <Select
+            Automatically disables options which are selected as learning 
+            languages. */}
+            <Select<Option, true>
               id={`native-languages`}
               isMulti={true}
               value={nativeLanguages}
               options={languageOptions}
-              onChange={(options: any) => setNativeLanguages(options)}
+              onChange={(options) => setNativeLanguages([...options])}
               isOptionDisabled={(option) =>
                 !!learningLanguages?.includes(option as Option)
               }
               placeholder="Mother tongue(s)"
               aria-label="Users' mother tongues"
-              styles={searchSelect}
+              styles={searchSelect as StylesConfig<Option, true>}
             />
 
-            {/* User learning languages multi-select.
-                        Automatically disables options which are selected as native languages.
-                        Is set to null if no option is selected, as the level select is not disabled if the language
-                        state is set to an empty array. */}
-            <Select
+            {/* User learning languages multi-select. Automatically disables 
+            options which are selected as native languages. */}
+            <Select<Option, true>
               id={`learning-languages`}
               isMulti={true}
               value={learningLanguages}
               options={languageOptions}
-              onChange={(options: any) =>
-                setLearningLanguages(options.length ? options : null)
+              onChange={(options) =>
+                setLearningLanguages(options?.length ? [...options] : null)
               }
               isOptionDisabled={(option) =>
                 !!nativeLanguages?.includes(option as Option)
               }
               placeholder="Is learning..."
               aria-label="Users' target languages"
-              styles={searchSelect}
+              styles={searchSelect as StylesConfig<Option, true>}
             />
 
             {/* User learning languages levels select. */}
-            <Select
+            <Select<Option, true>
               id={`learning-languages-levels`}
               isMulti={true}
               value={learningLanguagesLevels}
               options={levelOptions}
-              onChange={async (option: any) =>
-                setLearningLanguagesLevels(option)
-              }
+              onChange={(options) => setLearningLanguagesLevels([...options])}
               isDisabled={!learningLanguages || !learningLanguages.length}
               placeholder="Level(s)"
               aria-label="Proficiency levels of users' target languages"
-              styles={searchSelect}
+              styles={searchSelect as StylesConfig<Option, true>}
             />
           </React.Fragment>
         ) : (
@@ -295,33 +301,33 @@ function SearchPanel({
            * Channel search controls.
            */
           <React.Fragment>
-            {/* Channel language multi-select.
-                        Is set to null if no option is selected, as the level select is not disabled if the language
-                        state is set to an empty array. */}
-            <Select
+            {/* Channel language multi-select. Is set to null if no option is 
+            selected, as the level select is not disabled if the language state 
+            is set to an empty array. */}
+            <Select<Option, true>
               id={`channel-languages`}
               isMulti={true}
               value={channelLanguages}
               options={languageOptions}
-              onChange={(options: any) =>
-                setChannelLanguages(options.length ? options : null)
+              onChange={(options) =>
+                setChannelLanguages(options.length ? [...options] : null)
               }
               placeholder="Language(s)"
               aria-label="Channel languages"
-              styles={searchSelect}
+              styles={searchSelect as StylesConfig<Option, true>}
             />
 
             {/* Channel level select. */}
-            <Select
+            <Select<Option, true>
               id={`channel-levels`}
               isMulti={true}
               value={channelLevels}
               options={levelOptions}
-              onChange={async (options: any) => setChannelLevels(options)}
+              onChange={(options) => setChannelLevels([...options])}
               isDisabled={!channelLanguages || !channelLanguages.length}
               placeholder="Level(s)"
               aria-label="Proficiency levels of channel languages"
-              styles={searchSelect}
+              styles={searchSelect as StylesConfig<Option, true>}
             />
           </React.Fragment>
         )}

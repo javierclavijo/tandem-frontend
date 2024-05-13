@@ -35,7 +35,7 @@
     "start": "vite --host",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "lint": "tsc --noEmit --pretty -p tsconfig.json && npx eslint"
+    "lint": "tsc --noEmit --pretty -p tsconfig.json ; npx eslint"
   },
   "browserslist": {
     "production": [

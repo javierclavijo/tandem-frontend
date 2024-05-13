@@ -1,27 +1,27 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
-import { Channel } from "../../../entities/Channel";
-import { useEditField } from "./hooks";
 import { css } from "@emotion/react";
-import { colors } from "../../../styles/variables";
-import { editElement } from "../styles";
+import React from "react";
+import { useMutation, useQueryClient } from "react-query";
 import EditButtons from "../../../components/EditButtons";
-import { axiosApi } from "../../auth/AuthContext";
-import { useMutation, UseMutationResult, useQueryClient } from "react-query";
+import { Channel } from "../../../entities/Channel";
 import { Chat } from "../../../entities/Chat";
 import { User } from "../../../entities/User";
+import { colors } from "../../../styles/variables";
+import { axiosApi } from "../../auth/AuthContext";
+import { editElement } from "../styles";
+import { useEditField } from "./hooks";
 
-interface NameInputProps<T> {
-  data: T;
-  dataKey: keyof T;
-  mutation: UseMutationResult<any, unknown, any, unknown>;
+interface NameInputProps<TData> {
+  data: TData;
+  dataKey: keyof TData;
+  onSubmit: (value: string) => Promise<void>;
 }
 
 /**
  * Base name input component for detail views.
  */
-function NameInput<T>({ data, dataKey, mutation }: NameInputProps<T>) {
+function NameInput<TData>({ data, dataKey, onSubmit }: NameInputProps<TData>) {
   const {
     editEnabled,
     setEditEnabled,
@@ -33,7 +33,7 @@ function NameInput<T>({ data, dataKey, mutation }: NameInputProps<T>) {
     handleChange,
     handleFocus,
     handleCancel,
-  } = useEditField<HTMLInputElement, T>(data, dataKey);
+  } = useEditField<HTMLInputElement, TData>(data, dataKey);
 
   // Used in handleBlur() to handle the case of submitting through keyboard.
   const keyboardSubmitRef = React.useRef<boolean>(false);
@@ -59,9 +59,7 @@ function NameInput<T>({ data, dataKey, mutation }: NameInputProps<T>) {
       setError("Name must have a length between 1 and 50 characters.");
       return false;
     }
-    const requestData = {} as any;
-    requestData[dataKey] = value;
-    await mutation.mutateAsync(requestData);
+    onSubmit(value);
     setEditEnabled(false);
     return true;
   };
@@ -161,9 +159,10 @@ export function ChannelNameInput({ data }: { data: Channel }) {
     },
   });
 
-  return (
-    <NameInput<Channel> data={data} dataKey="name" mutation={updateMutation} />
-  );
+  const onSubmit = async (value: string) =>
+    await updateMutation.mutateAsync({ name: value });
+
+  return <NameInput<Channel> data={data} dataKey="name" onSubmit={onSubmit} />;
 }
 
 /**
@@ -189,9 +188,10 @@ export function UserNameInput({ data }: { data: User }) {
     },
   });
 
-  return (
-    <NameInput<User> data={data} dataKey="username" mutation={updateMutation} />
-  );
+  const onSubmit = async (value: string) =>
+    await updateMutation.mutateAsync({ username: value });
+
+  return <NameInput<User> data={data} dataKey="username" onSubmit={onSubmit} />;
 }
 
 const container = css`

@@ -17,6 +17,7 @@ import useAuth, { axiosApi } from "../auth/AuthContext";
  * Sorts messages or chats according to sent datetime. If the message is undefined (usually due to a chat having
  * no messages, which shouldn't happen in practice), the current datetime is used.
  */
+// TODO: move this stuff to its own module.
 export const messageSortFn = (
   a: ChatMessage | undefined,
   b: ChatMessage | undefined,
@@ -146,7 +147,7 @@ export const useChannelChatList = () => {
  */
 export const useChat = (
   id: string,
-  queryOptions: Omit<UseInfiniteQueryOptions, any> | undefined,
+  queryOptions: UseInfiniteQueryOptions<ChatMessageResponse> | undefined,
 ) => {
   const navigate = useNavigate();
   const { data: chatList } = useAllChatList();

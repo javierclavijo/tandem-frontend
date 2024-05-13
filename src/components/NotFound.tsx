@@ -10,8 +10,8 @@ import {
   baseAppContainerWithTabs,
 } from "../styles/layout";
 import { colors } from "../styles/variables";
-import Nav from "./Header/Nav";
 import { useFadeIn } from "../utils/transitions";
+import Nav from "./Header/Nav";
 
 /**
  * Component for the 404 error page.
@@ -30,7 +30,7 @@ function NotFound() {
       <Nav />
       <main css={main}>
         <h2>Not found</h2>
-        <p>We couldn't find what you're looking for.</p>
+        <p>We couldn&apos;t find what you&apos;re looking for.</p>
         <Link to="/" css={link}>
           Back to Home
         </Link>

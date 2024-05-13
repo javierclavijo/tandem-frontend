@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
 import { css, SerializedStyles } from "@emotion/react";
+import React from "react";
 import { buttonWithoutBackgroundAndBorder } from "../styles/components";
 
 interface EditButtonProps {
@@ -12,7 +12,8 @@ interface EditButtonProps {
 }
 
 /*
- * Edit button component which allows visibility toggling, click event handling and ref forwarding.
+ * Edit button component which allows visibility toggling, click event handling
+ * and ref forwarding.
  */
 const Button = React.forwardRef<HTMLButtonElement, EditButtonProps>(
   (props: EditButtonProps, ref?) => {
@@ -28,5 +29,7 @@ const Button = React.forwardRef<HTMLButtonElement, EditButtonProps>(
     );
   },
 );
+
+Button.displayName = "Button";
 
 export default Button;

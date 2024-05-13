@@ -3,12 +3,15 @@
 import { css } from "@emotion/react";
 import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";
-import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import Select from "react-select";
-import { languageOptions, levelOptions } from "../../../resources/languages";
+import Select, { StylesConfig } from "react-select";
+import {
+  Option,
+  languageOptions,
+  levelOptions,
+} from "../../../resources/languages";
 import { modal, select } from "../../../styles/components";
 import { colors, textSizes } from "../../../styles/variables";
 import { axiosApi } from "../../auth/AuthContext";
@@ -24,19 +27,26 @@ export interface ServerErrorResponse {
   [key: string]: string[];
 }
 
+interface ChannelCreationFormValues {
+  name: string;
+  language: Option | null;
+  level: Option | null;
+}
+
 /**
  * Form which allows the user to create a new channel, used in NewChannelModal.
  */
 function ChannelCreationForm({ closeModal }: { closeModal: () => void }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  // TODO: add form types
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
     setError,
-  } = useForm();
+  } = useForm<ChannelCreationFormValues>();
 
   const request = async (data: ChannelCreationRequestData) =>
     await axiosApi.post("channels/", data);
@@ -45,31 +55,39 @@ function ChannelCreationForm({ closeModal }: { closeModal: () => void }) {
     onSuccess: () => queryClient.invalidateQueries(["chats", "list", "all"]),
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: ChannelCreationFormValues) => {
     try {
+      if (data.language == null || data.level == null) {
+        return;
+      }
+
       const response = await mutation.mutateAsync({
         name: data.name,
         language: data.language.value,
         level: data.level.value,
       });
       if (response.status === 201) {
-        // If the channel has been created successfully, close the modal and navigate to its detail page.
+        // If the channel has been created successfully, close the modal and
+        // navigate to its detail page.
         closeModal();
         navigate(`/chats/channels/${response.data.id}`);
       }
     } catch (e) {
+      // TODO: add generic error handling with middlewares.
       if (axios.isAxiosError(e) && e.response) {
-        // If the server returned any errors, set them in the form. The server returns errors as string arrays,
-        // so we must first iterate over the response's entries, and then over the entries' values, setting the
+        // If the server returned any errors, set them in the form. The server
+        // returns errors as string arrays, so we must first iterate over the
+        // response's entries, and then over the entries' values, setting the
         // error's key as the error's field's name.
         Object.entries(e.response.data as ServerErrorResponse).forEach(
           ([key, value]) =>
             value.forEach((valueError) =>
               setError(
-                key,
+                key as keyof ChannelCreationFormValues,
                 {
                   type: "focus",
-                  // Capitalize the message's first letter before setting it as the error message
+                  // Capitalize the message's first letter before setting it as
+                  // the error message
                   message:
                     valueError[0].toUpperCase() + valueError.substring(1),
                 },
@@ -124,12 +142,12 @@ function ChannelCreationForm({ closeModal }: { closeModal: () => void }) {
             name="level"
             rules={{ required: "Proficiency level is required" }}
             render={({ field }) => (
-              <Select
+              <Select<Option>
                 id={`new-channel-level`}
                 {...field}
                 options={levelOptions}
                 placeholder="Level"
-                styles={select}
+                styles={select as StylesConfig<Option>}
               />
             )}
           />

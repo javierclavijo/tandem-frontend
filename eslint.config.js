@@ -23,7 +23,9 @@ export default tseslint.config(
     },
     rules: {
       ...eslintPluginReact.configs.recommended.rules,
+      ...eslintPluginReact.configs["jsx-runtime"].rules,
       ...eslintPluginReactHooks.configs.recommended.rules,
+      "react/no-unknown-property": ["error", { ignore: ["css"] }], // Avoid issues with emotion
     },
     settings: { react: { version: "detect" } },
   },

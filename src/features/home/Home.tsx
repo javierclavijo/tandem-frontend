@@ -77,7 +77,7 @@ function Home() {
                 />
               ))}
             {!friendChats?.length ? (
-              <p>You haven't chatted with anyone yet.</p>
+              <p>You haven&apos;t chatted with anyone yet.</p>
             ) : null}
           </div>
           <footer css={sectionFooter}>
@@ -113,7 +113,7 @@ function Home() {
                 />
               ))}
             {!channelChats?.length ? (
-              <p>You haven't joined any chats yet.</p>
+              <p>You haven&apos;t joined any chats yet.</p>
             ) : null}
           </div>
           <footer css={sectionFooter}>

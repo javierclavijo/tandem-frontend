@@ -33,6 +33,7 @@ import {
 } from "../styles";
 import ChannelEditLanguageBadge from "./ChannelEditLanguageBadge";
 import DeleteChannelModal from "./DeleteChannelModal";
+import LeaveChannelModal from "./LeaveChannelModal";
 import {
   useChangeUserRole,
   useChannel,
@@ -40,7 +41,6 @@ import {
   useJoinChannel,
   useLeaveChannel,
 } from "./hooks";
-import LeaveChannelModal from "./LeaveChannelModal";
 
 import defaultImg from "../../../static/images/user_placeholder.png";
 
@@ -281,7 +281,7 @@ function ChannelInfo() {
           {/* Empty list */}
           {!data?.memberships.length ? (
             <li css={emptyContainer}>
-              <p>This channel doesn't have any members yet.</p>
+              <p>This channel doesn&apos;t have any members yet.</p>
             </li>
           ) : null}
         </ul>

@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
 import { css } from "@emotion/react";
 import { Search } from "iconoir-react";
-import { colors, textSizes } from "../../../styles/variables";
+import React from "react";
 import { searchInput, searchInputElement } from "../../../styles/components";
-import { visuallyHidden } from "../../../styles/layout";
+import { colors, textSizes } from "../../../styles/variables";
 
 /**
  * Chat list filter form.

@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
 import { css } from "@emotion/react";
+import React from "react";
 import {
   FetchNextPageOptions,
   InfiniteData,
@@ -40,7 +40,7 @@ function NotFound() {
 export function UserSearchResults(props: UserSearchResultsProps) {
   return props.data ? (
     <React.Fragment>
-      {[...props.data?.pages].map((page, pageIndex) => (
+      {props.data?.pages.map((page, pageIndex) => (
         <React.Fragment key={`page-${pageIndex}`}>
           {[...page.results].map((element) => (
             <SearchResultElement
@@ -69,7 +69,7 @@ export function UserSearchResults(props: UserSearchResultsProps) {
 export function ChannelSearchResults(props: ChannelSearchResultsProps) {
   return props.data ? (
     <React.Fragment>
-      {[...props.data?.pages].map((page, pageIndex) => (
+      {props.data?.pages.map((page, pageIndex) => (
         <React.Fragment key={`page-${pageIndex}`}>
           {[...page.results].map((element) => (
             <SearchResultElement

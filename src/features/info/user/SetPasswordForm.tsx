@@ -41,15 +41,16 @@ function SetPasswordForm({ closeModal }: { closeModal: () => void }) {
 
   const mutation = useMutation(request);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: SetPasswordFormData) => {
     try {
       const response = await mutation.mutateAsync({
         newPassword: data.newPassword,
         oldPassword: data.oldPassword,
       });
-      if (response.status === 200) {
+
+      if (response.status === 200 && user != null) {
         closeModal();
-        login({ username: user?.username!, password: data.newPassword });
+        login({ username: user.username, password: data.newPassword });
       }
     } catch (e) {
       if (axios.isAxiosError(e) && e.response) {

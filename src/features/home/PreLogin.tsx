@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
-import { useRedirectIfLoggedIn } from "../auth/hooks";
-import { baseAppContainerWithoutTabs } from "../../styles/layout";
-import Nav from "../../components/Header/Nav";
 import { css } from "@emotion/react";
-import { colors, textSizes } from "../../styles/variables";
+import React from "react";
 import { Link } from "react-router-dom";
+import Nav from "../../components/Header/Nav";
 import { button } from "../../styles/components";
+import { baseAppContainerWithoutTabs } from "../../styles/layout";
+import { colors, textSizes } from "../../styles/variables";
+import { useRedirectIfLoggedIn } from "../auth/hooks";
 
 import topImage from "../../static/images/loren-dosti-M8cpBt6RSns-unsplash.webp";
 import middleImage from "../../static/images/toa-heftiba-ANNsvl-6AG0-unsplash.webp";
@@ -40,8 +40,8 @@ function PreLogin() {
           <div css={imageGradient} />
           <div css={imageQuoteContainer}>
             <p css={imageQuote}>
-              Running water never grows stale. So you just have to 'keep on
-              flowing.' <span css={imageQuoteAuthor}>Bruce Lee</span>
+              Running water never grows stale. So you just have to &apos;keep on
+              flowing.&apos; <span css={imageQuoteAuthor}>Bruce Lee</span>
             </p>
           </div>
         </div>

@@ -1,26 +1,31 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
 import { css } from "@emotion/react";
+import React from "react";
 import { FlagIcon } from "react-flag-kit";
-import { colors } from "../../../styles/variables";
+import { useMutation, useQueryClient } from "react-query";
+import Select, { StylesConfig } from "react-select";
+import ProficiencyLevelIcon from "../../../components/Icons/ProficiencyLevelIcon";
+import { Channel } from "../../../entities/Channel";
+import { UserLanguage } from "../../../entities/User";
 import {
+  Option,
   flagCodes,
   languageOptions,
   levelOptions,
-  Option,
 } from "../../../resources/languages";
 import { badge, noBorderAndBgSelectWhite } from "../../../styles/components";
-import { UserLanguage } from "../../../entities/User";
-import { useMutation, useQueryClient } from "react-query";
+import { colors } from "../../../styles/variables";
 import { axiosApi } from "../../auth/AuthContext";
-import Select from "react-select";
-import { Channel } from "../../../entities/Channel";
-import ProficiencyLevelIcon from "../../../components/Icons/ProficiencyLevelIcon";
 
 interface LanguageBadgeProps {
   data: UserLanguage;
   bg: string;
+}
+
+interface UpdateRequest {
+  language?: string;
+  level?: string;
 }
 
 /**
@@ -33,7 +38,7 @@ function UserInfoEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
   const [levelValue, setLevelValue] = React.useState<Option | null>(null);
 
   const updateRequest = React.useCallback(
-    async (requestData: { language: string }) => {
+    async (requestData: UpdateRequest) => {
       if (data) {
         const response = await axiosApi.patch(data?.url, requestData);
         return response.data;
@@ -51,10 +56,21 @@ function UserInfoEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
     },
   });
 
-  const handleChange = async (option: Option, key: keyof Channel) => {
-    const requestData = {} as any;
-    requestData[key] = option.value;
-    await updateMutation.mutateAsync(requestData);
+  // TODO: abstractunion type
+  const handleLanguageChange = async (option: Option | null) => {
+    if (option == null) {
+      return;
+    }
+
+    await updateMutation.mutateAsync({ language: option.value });
+  };
+
+  const handleLevelChange = async (option: Option | null) => {
+    if (option == null) {
+      return;
+    }
+
+    await updateMutation.mutateAsync({ level: option.value });
   };
 
   React.useEffect(() => {
@@ -79,15 +95,15 @@ function UserInfoEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
         code={flagCodes.find((x) => x.key === data.language)?.value || "AD"}
         size={24}
       />
-      <Select
+      <Select<Option>
         id={`language-${data.id}`}
         value={languageValue}
-        onChange={async (option: any) => {
+        onChange={async (option) => {
           setLanguageValue(option);
-          await handleChange(option, "language");
+          await handleLanguageChange(option);
         }}
         options={languageOptions}
-        styles={noBorderAndBgSelectWhite}
+        styles={noBorderAndBgSelectWhite as StylesConfig<Option>}
       />
       <span>|</span>
       <ProficiencyLevelIcon
@@ -96,15 +112,15 @@ function UserInfoEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
         height={24}
         width={24}
       />
-      <Select
+      <Select<Option>
         id={`level-${data.id}`}
         value={levelValue}
-        onChange={async (option: any) => {
+        onChange={async (option) => {
           setLevelValue(option);
-          await handleChange(option, "level");
+          await handleLevelChange(option);
         }}
         options={levelOptions}
-        styles={noBorderAndBgSelectWhite}
+        styles={noBorderAndBgSelectWhite as StylesConfig<Option>}
       />
     </div>
   );
