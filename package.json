@@ -11,6 +11,7 @@
     "@use-it/event-listener": "^0.1.7",
     "axios": "^1.6.8",
     "emoji-picker-react": "^4.9.2",
+    "globals": "^15.2.0",
     "iconoir-react": "^7.7.0",
     "luxon": "^3.4.4",
     "qs": "^6.12.1",
