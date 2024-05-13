@@ -1,7 +1,7 @@
+import React from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { User } from "../../../entities/User";
 import useAuth, { axiosApi } from "../../auth/AuthContext";
-import React from "react";
 
 /**
  * Holds a user's data
@@ -14,7 +14,6 @@ export function useUser(id: string | undefined) {
       return response.data;
     },
     {
-      staleTime: 15000,
       enabled: !!id,
     },
   );

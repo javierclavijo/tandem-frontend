@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   UseInfiniteQueryOptions,
   useInfiniteQuery,
@@ -100,7 +100,7 @@ export const useAllChatList = () => {
       // Whenever data is either fetched or updated with setQueryData(), sort chats according to their latest messages
       onSuccess: (data) =>
         data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
-      staleTime: 5000,
+      staleTime: 15000,
       enabled: !!user,
     },
   );
@@ -118,7 +118,7 @@ export const useFriendChatList = () => {
       // Whenever data is either fetched or updated with setQueryData(), sort chats according to their latest messages
       onSuccess: (data) =>
         data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
-      staleTime: 5000,
+      staleTime: 15000,
       enabled: !!user,
     },
   );
@@ -136,7 +136,7 @@ export const useChannelChatList = () => {
       // Whenever data is either fetched or updated with setQueryData(), sort chats according to their latest messages
       onSuccess: (data) =>
         data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
-      staleTime: 5000,
+      staleTime: 15000,
       enabled: !!user,
     },
   );

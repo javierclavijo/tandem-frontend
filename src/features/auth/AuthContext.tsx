@@ -30,6 +30,7 @@ export const AuthContext = React.createContext<AuthContextType>(
 export const axiosApi = axios.create({
   baseURL: import.meta.env.VITE_API_URL ?? "http://localhost:8000/api",
   withCredentials: true,
+  withXSRFToken: true,
 
   // Names of the CSRF token cookie and header used by Django.
   xsrfCookieName: "csrftoken",
@@ -82,7 +83,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     },
     {
       enabled: isLoggedIn && !!url && !!id,
-      staleTime: 15000,
     },
   );
 

@@ -1,17 +1,17 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
-import { useParams } from "react-router-dom";
-import { useChat, useSetChatRoomHeader } from "../hooks";
-import useAuth from "../../auth/AuthContext";
 import { css } from "@emotion/react";
-import ChatRoomMessage from "./ChatRoomMessage";
-import ChatInputForm from "./ChatInputForm";
-import { useMediaQuery } from "react-responsive";
-import { chatRoom, chatRoomMobile } from "./styles";
+import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useMediaQuery } from "react-responsive";
+import { useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import { useFadeIn } from "../../../utils/transitions";
+import useAuth from "../../auth/AuthContext";
+import { useChat, useSetChatRoomHeader } from "../hooks";
+import ChatInputForm from "./ChatInputForm";
+import ChatRoomMessage from "./ChatRoomMessage";
+import { chatRoom, chatRoomMobile } from "./styles";
 
 /**
  * Renders a chat's messages, plus the input form to send messages to the chat.

@@ -8,7 +8,11 @@ import App from "./App";
 import { AuthProvider } from "./features/auth/AuthContext";
 import "./styles/index.css";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  // Increase the default stale time to 60 seconds to avoid fetching data too
+  // often.
+  defaultOptions: { queries: { staleTime: 60000 } },
+});
 
 const browserRouter = (
   <React.StrictMode>
