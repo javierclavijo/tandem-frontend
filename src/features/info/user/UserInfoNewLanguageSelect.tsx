@@ -1,19 +1,19 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
-import useAuth, { axiosApi } from "../../auth/AuthContext";
-import { useMutation, useQueryClient } from "react-query";
 import { css } from "@emotion/react";
-import Select from "react-select";
-import { colors } from "../../../styles/variables";
-import { User } from "../../../entities/User";
-import { select } from "../../../styles/components";
+import React from "react";
+import { useMutation, useQueryClient } from "react-query";
+import Select, { StylesConfig } from "react-select";
 import EditButtons from "../../../components/EditButtons";
+import { User } from "../../../entities/User";
 import {
+  Option,
   languageOptions,
   levelOptions,
-  Option,
 } from "../../../resources/languages";
+import { select } from "../../../styles/components";
+import { colors } from "../../../styles/variables";
+import useAuth, { axiosApi } from "../../auth/AuthContext";
 
 interface UserInfoNewLanguageSelectRequestData {
   language: string;
@@ -33,7 +33,7 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
   const [error, setError] = React.useState<string>("");
 
   const updateRequest = async (
-    requestData: UserInfoNewLanguageSelectRequestData
+    requestData: UserInfoNewLanguageSelectRequestData,
   ) => {
     const response = await axiosApi.post("user_languages/", requestData);
     return response.data;
@@ -68,35 +68,31 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
   }, [languageValue, levelValue, mutation, onClose, user]);
 
   return (
-    <div
-      css={outerContainer}
-    >
-      <div
-        css={innerContainer}
-      >
-        <Select
+    <div css={outerContainer}>
+      <div css={innerContainer}>
+        <Select<Option>
           id={`language-new`}
           value={languageValue}
-          onChange={(option: any) => setLanguageValue(option)}
+          onChange={setLanguageValue}
           onFocus={clearError}
           options={languageOptions}
-          isOptionDisabled={(option: any) =>
-            // Disable the options for languages the user already has
+          isOptionDisabled={(option) =>
+            // Disable the options for languages the user already has.
             !!user?.languages.find(
-              (language) => language.language === option.value
+              (language) => language.language === option.value,
             )
           }
           placeholder="Language"
-          styles={select}
+          styles={select as StylesConfig<Option>}
         />
-        <Select
+        <Select<Option>
           id={`level-new`}
           value={levelValue}
-          onChange={(option: any) => setLevelValue(option)}
+          onChange={setLevelValue}
           onFocus={clearError}
           options={levelOptions}
           placeholder="Level"
-          styles={select}
+          styles={select as StylesConfig<Option>}
         />
         <EditButtons
           editEnabled={true}
@@ -105,13 +101,7 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
           color={colors.PRIMARY}
         />
       </div>
-      {error ? (
-        <p
-          css={errorText}
-        >
-          {error}
-        </p>
-      ) : null}
+      {error ? <p css={errorText}>{error}</p> : null}
     </div>
   );
 }

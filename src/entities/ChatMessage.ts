@@ -8,6 +8,7 @@ export interface ChatMessage {
   };
   content: string;
   timestamp: string;
+  chat_id: string;
 }
 
 export interface ChatMessageResponse {

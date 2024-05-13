@@ -14,10 +14,10 @@ const fetchDiscoverUsersList = async (user: User | undefined) => {
       // Add the user's learning languages as the native languages for the query, and viceversa.
       params: {
         native_language: user.languages.filter(
-          (language) => language.level !== "NA"
+          (language) => language.level !== "NA",
         ),
         learning_language: user.languages.filter(
-          (language) => language.level === "NA"
+          (language) => language.level === "NA",
         ),
         size: 9,
       },
@@ -41,6 +41,6 @@ export const useDiscoverUsersList = () => {
       // Whenever data is either fetched or updated with setQueryData(), sort chats according to their latest messages
       staleTime: 5000,
       enabled: !!user,
-    }
+    },
   );
 };

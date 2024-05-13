@@ -1,23 +1,23 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
 import { css } from "@emotion/react";
+import { Xmark } from "iconoir-react";
+import React from "react";
 import { FlagIcon } from "react-flag-kit";
-import { colors } from "../../../styles/variables";
+import { useMutation, useQueryClient } from "react-query";
+import Select, { SingleValue, StylesConfig } from "react-select";
+import Button from "../../../components/Button";
+import ProficiencyLevelIcon from "../../../components/Icons/ProficiencyLevelIcon";
+import { User, UserLanguage } from "../../../entities/User";
 import {
+  Option,
   flagCodes,
   languages,
   levelOptions,
-  Option,
 } from "../../../resources/languages";
 import { badge, noBorderAndBgSelectWhite } from "../../../styles/components";
-import { User, UserLanguage } from "../../../entities/User";
-import { useMutation, useQueryClient } from "react-query";
+import { colors } from "../../../styles/variables";
 import useAuth, { axiosApi } from "../../auth/AuthContext";
-import Select from "react-select";
-import Button from "../../../components/Button";
-import ProficiencyLevelIcon from "../../../components/Icons/ProficiencyLevelIcon";
-import { Cancel } from "iconoir-react";
 
 interface LanguageBadgeProps {
   data: UserLanguage;
@@ -41,7 +41,7 @@ function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
         return response.data;
       }
     },
-    [data]
+    [data],
   );
 
   const mutation = useMutation(updateRequest, {
@@ -53,10 +53,12 @@ function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
     },
   });
 
-  const onChange = async (option: any) => {
-    const requestData = { level: option.value as string };
-    await mutation.mutateAsync(requestData);
-    setValue(option);
+  const onChange = async (option: SingleValue<Option>) => {
+    if (option != null) {
+      const requestData = { level: option.value as string };
+      await mutation.mutateAsync(requestData);
+      setValue(option);
+    }
   };
 
   React.useEffect(() => {
@@ -86,15 +88,15 @@ function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
         height={24}
         width={24}
       />
-      <Select
+      <Select<Option>
         id={`level-${data.id}`}
         value={value}
         onChange={onChange}
         options={levelOptions}
-        styles={noBorderAndBgSelectWhite}
+        styles={noBorderAndBgSelectWhite as StylesConfig<Option>}
       />
       <Button visible={true} onClick={onDelete}>
-        <Cancel color={colors.WHITE} width={"1.5rem"} height={"1.5rem"} />
+        <Xmark color={colors.WHITE} width={"1.5rem"} height={"1.5rem"} />
       </Button>
     </div>
   );

@@ -87,7 +87,7 @@ const link = {
   width: "100%",
   height: "100%",
   display: "flex",
-  flexDirection: "column" as "column",
+  flexDirection: "column" as const,
   justifyContent: "center",
   alignItems: "center",
   textDecoration: "none",

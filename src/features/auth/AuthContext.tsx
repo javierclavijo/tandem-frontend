@@ -1,15 +1,15 @@
-import React, { useContext, useMemo, useState } from "react";
 import axios from "axios";
+import React, { useContext, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { User } from "../../entities/User";
 import { useNavigate } from "react-router-dom";
+import { User } from "../../entities/User";
 
 interface AuthContextType {
   user: User | undefined;
   error: string;
   loading: boolean;
   isLoggedIn: boolean;
-  login: (requestData: LogInRequestData) => Promise<any>;
+  login: (requestData: LogInRequestData) => Promise<void>;
   logout: () => void;
 }
 
@@ -19,14 +19,16 @@ export type LogInRequestData = {
 };
 
 export const AuthContext = React.createContext<AuthContextType>(
-  {} as AuthContextType
+  // TODO:review this type assertion
+  {} as AuthContextType,
 );
 
+// TODO: move this somewhere else.
 /**
  * Main axios instance used throughout the app.
  */
 export const axiosApi = axios.create({
-  baseURL: process.env.REACT_APP_API_URL ?? "http://localhost:8000/api",
+  baseURL: import.meta.env.VITE_API_URL ?? "http://localhost:8000/api",
   withCredentials: true,
 
   // Names of the CSRF token cookie and header used by Django.
@@ -81,7 +83,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     {
       enabled: isLoggedIn && !!url && !!id,
       staleTime: 15000,
-    }
+    },
   );
 
   /**
@@ -115,7 +117,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             navigate("/404");
           }
           return Promise.reject(error);
-        }
+        },
       );
     }
   }, [navigate]);
@@ -124,7 +126,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
    * Sends a login request.
    */
   const loginMutation = useMutation(
-    async (data: LogInRequestData) => await axiosApi.post("login/", data)
+    async (data: LogInRequestData) =>
+      await axiosApi.post<LogInRequestData>("login/", data),
   );
 
   /**
@@ -132,11 +135,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
    */
   const login = React.useCallback(
     async (data: LogInRequestData) => {
-      let response;
       setLoading(true);
       setError("");
       try {
-        response = await loginMutation.mutateAsync(data);
+        await loginMutation.mutateAsync(data);
         await fetchSessionInfo();
         setIsLoggedIn(true);
       } catch (e) {
@@ -150,16 +152,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } finally {
         setLoading(false);
       }
-      return response;
+      return;
     },
-    [loginMutation, fetchSessionInfo]
+    [loginMutation, fetchSessionInfo],
   );
 
   /**
    * Sends a logout request.
    */
   const logoutMutation = useMutation(
-    async () => await axiosApi.post("logout/")
+    async () => await axiosApi.post("logout/"),
   );
 
   /**
@@ -173,6 +175,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     queryClient.removeQueries(["users", id], { exact: true });
   }, [id, queryClient, logoutMutation]);
 
+  // TODO: review this. Does it make sense to memoize?
   const memoedValue = useMemo(
     () => ({
       user,
@@ -182,7 +185,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       login,
       logout,
     }),
-    [user, error, loading, isLoggedIn, login, logout]
+    [user, error, loading, isLoggedIn, login, logout],
   );
 
   return (

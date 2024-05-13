@@ -1,25 +1,26 @@
-import {
-  useInfiniteQuery,
-  UseInfiniteQueryOptions,
-  useQuery,
-} from "react-query";
-import { Chat, FriendChat } from "../../entities/Chat";
-import useAuth, { axiosApi } from "../auth/AuthContext";
-import { ChatMessage, ChatMessageResponse } from "../../entities/ChatMessage";
 import { DateTime } from "luxon";
 import React, { useCallback, useState } from "react";
-import { User } from "../../entities/User";
+import {
+  UseInfiniteQueryOptions,
+  useInfiniteQuery,
+  useQuery,
+} from "react-query";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { ChatHeaderProps } from "../../components/ChatHeader";
 import useWebSocket from "react-use-websocket";
+import { ChatHeaderProps } from "../../components/ChatHeader";
+import { Chat, FriendChat } from "../../entities/Chat";
+import { ChatMessage, ChatMessageResponse } from "../../entities/ChatMessage";
+import { User } from "../../entities/User";
+import useAuth, { axiosApi } from "../auth/AuthContext";
 
 /**
  * Sorts messages or chats according to sent datetime. If the message is undefined (usually due to a chat having
  * no messages, which shouldn't happen in practice), the current datetime is used.
  */
+// TODO: move this stuff to its own module.
 export const messageSortFn = (
   a: ChatMessage | undefined,
-  b: ChatMessage | undefined
+  b: ChatMessage | undefined,
 ) => {
   const aDateTime = a?.timestamp
     ? DateTime.fromISO(a.timestamp)
@@ -101,7 +102,7 @@ export const useAllChatList = () => {
         data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
       staleTime: 5000,
       enabled: !!user,
-    }
+    },
   );
 };
 
@@ -119,7 +120,7 @@ export const useFriendChatList = () => {
         data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
       staleTime: 5000,
       enabled: !!user,
-    }
+    },
   );
 };
 
@@ -137,7 +138,7 @@ export const useChannelChatList = () => {
         data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
       staleTime: 5000,
       enabled: !!user,
-    }
+    },
   );
 };
 
@@ -146,7 +147,7 @@ export const useChannelChatList = () => {
  */
 export const useChat = (
   id: string,
-  queryOptions: Omit<UseInfiniteQueryOptions, any> | undefined
+  queryOptions: UseInfiniteQueryOptions<ChatMessageResponse> | undefined,
 ) => {
   const navigate = useNavigate();
   const { data: chatList } = useAllChatList();
@@ -167,7 +168,7 @@ export const useChat = (
     async ({ pageParam = 1 }) => {
       if (chat) {
         const response = await axiosApi.get(
-          chat?.messageUrl + `&page=${pageParam}`
+          chat?.messageUrl + `&page=${pageParam}`,
         );
         return response.data;
       }
@@ -179,7 +180,7 @@ export const useChat = (
       getPreviousPageParam: (firstPage) =>
         firstPage.previousPageNumber ?? undefined,
       getNextPageParam: (lastPage) => lastPage.nextPageNumber ?? undefined,
-    }
+    },
   );
 
   return { ...query, chat };
@@ -194,7 +195,7 @@ export const useSetChatRoomHeader = (chat: Chat | undefined | null) => {
     useOutletContext<
       [
         ChatHeaderProps | null,
-        React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>
+        React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>,
       ]
     >();
 
@@ -228,13 +229,13 @@ export function useJoinWSChat() {
   const { isLoggedIn } = useAuth();
 
   const { sendJsonMessage } = useWebSocket(
-    `${process.env.REACT_APP_WS_URL}/ws/chats/`,
+    `${import.meta.env.VITE_WS_URL}/ws/chats/`,
     {
       onClose: () => console.error("Chat socket closed unexpectedly"),
       shouldReconnect: () => true,
       share: true,
     },
-    isLoggedIn
+    isLoggedIn,
   );
 
   return useCallback(
@@ -245,6 +246,6 @@ export function useJoinWSChat() {
       };
       sendJsonMessage(message);
     },
-    [sendJsonMessage]
+    [sendJsonMessage],
   );
 }

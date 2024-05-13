@@ -37,10 +37,10 @@ function ChatListElements({
         data?.filter((chat) =>
           filter
             ? chat.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase())
-            : true
-        )
+            : true,
+        ),
       ),
-    [data, filter]
+    [data, filter],
   );
 
   return (

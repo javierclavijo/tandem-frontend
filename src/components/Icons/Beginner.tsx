@@ -5,7 +5,7 @@ import React from "react";
  */
 function Beginner(
   props: React.SVGProps<SVGSVGElement>,
-  svgRef?: React.Ref<SVGSVGElement>
+  svgRef?: React.Ref<SVGSVGElement>,
 ) {
   return (
     <svg

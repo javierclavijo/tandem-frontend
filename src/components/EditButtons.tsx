@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 
+import { css } from "@emotion/react";
+import { Check, Xmark } from "iconoir-react";
 import React from "react";
 import Button from "./Button";
-import { css } from "@emotion/react";
-import { Cancel, Check } from "iconoir-react";
 
 interface EditButtonsProps {
   editEnabled: boolean;
@@ -33,7 +33,7 @@ function EditButtons({
         <Check color={color} width={"1.5rem"} height={"1.5rem"} />
       </Button>
       <Button visible={editEnabled} onClick={handleCancel}>
-        <Cancel color={color} width={"1.5rem"} height={"1.5rem"} />
+        <Xmark color={color} width={"1.5rem"} height={"1.5rem"} />
       </Button>
     </div>
   );

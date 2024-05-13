@@ -60,22 +60,24 @@ function Home() {
             <h3 css={homeSearchStyles.sectionHeading}>Recent chats</h3>
           </header>
           <div css={homeSearchStyles.sectionItemsContainer}>
-            {friendChats?.slice(0, 6).map((chat) => (
-              <RecentElement
-                id={chat.id}
-                name={chat.name}
-                latestMessage={`${
-                  chat.messages[0].author.id === user.id
-                    ? "You"
-                    : chat.messages[0].author.username
-                }: ${chat.messages[0].content}`}
-                link={`/chats/${chat.id}`}
-                image={chat.image}
-                key={chat.id}
-              />
-            ))}
+            {friendChats
+              ?.slice(0, 6)
+              .map((chat) => (
+                <RecentElement
+                  id={chat.id}
+                  name={chat.name}
+                  latestMessage={`${
+                    chat.messages[0].author.id === user.id
+                      ? "You"
+                      : chat.messages[0].author.username
+                  }: ${chat.messages[0].content}`}
+                  link={`/chats/${chat.id}`}
+                  image={chat.image}
+                  key={chat.id}
+                />
+              ))}
             {!friendChats?.length ? (
-              <p>You haven't chatted with anyone yet.</p>
+              <p>You haven&apos;t chatted with anyone yet.</p>
             ) : null}
           </div>
           <footer css={sectionFooter}>
@@ -94,22 +96,24 @@ function Home() {
             <h3 css={homeSearchStyles.sectionHeading}>Your channels</h3>
           </header>
           <div css={homeSearchStyles.sectionItemsContainer}>
-            {channelChats?.slice(0, 6).map((chat) => (
-              <RecentElement
-                id={chat.id}
-                name={chat.name}
-                latestMessage={`${
-                  chat.messages[0].author.id === user.id
-                    ? "You"
-                    : chat.messages[0].author.username
-                }: ${chat.messages[0].content}`}
-                link={`/chats/${chat.id}`}
-                image={chat.image}
-                key={chat.id}
-              />
-            ))}
+            {channelChats
+              ?.slice(0, 6)
+              .map((chat) => (
+                <RecentElement
+                  id={chat.id}
+                  name={chat.name}
+                  latestMessage={`${
+                    chat.messages[0].author.id === user.id
+                      ? "You"
+                      : chat.messages[0].author.username
+                  }: ${chat.messages[0].content}`}
+                  link={`/chats/${chat.id}`}
+                  image={chat.image}
+                  key={chat.id}
+                />
+              ))}
             {!channelChats?.length ? (
-              <p>You haven't joined any chats yet.</p>
+              <p>You haven&apos;t joined any chats yet.</p>
             ) : null}
           </div>
           <footer css={sectionFooter}>
@@ -128,17 +132,21 @@ function Home() {
             <h3 css={homeSearchStyles.sectionHeading}>Discover</h3>
           </header>
           <div css={homeSearchStyles.sectionItemsContainer}>
-            {discoverUsers?.slice(0, 9).map((user) => (
-              <SearchResultElement
-                id={user.id}
-                name={user.username}
-                languages={user.languages.map((language) => language.language)}
-                description={user.description}
-                link={`/chats/users/${user.id}`}
-                image={user.image}
-                key={user.id}
-              />
-            ))}
+            {discoverUsers
+              ?.slice(0, 9)
+              .map((user) => (
+                <SearchResultElement
+                  id={user.id}
+                  name={user.username}
+                  languages={user.languages.map(
+                    (language) => language.language,
+                  )}
+                  description={user.description}
+                  link={`/chats/users/${user.id}`}
+                  image={user.image}
+                  key={user.id}
+                />
+              ))}
           </div>
           <footer css={sectionFooter}>
             <Link

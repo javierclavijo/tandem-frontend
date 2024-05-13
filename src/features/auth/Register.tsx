@@ -95,9 +95,9 @@ function Register() {
                 },
                 {
                   shouldFocus: true,
-                }
-              )
-            )
+                },
+              ),
+            ),
         );
       }
     }

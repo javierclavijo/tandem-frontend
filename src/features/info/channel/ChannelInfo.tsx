@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from "@emotion/react";
-import { FastArrowDownBox, FastArrowUpBox } from "iconoir-react";
+import { FastArrowDownSquare, FastArrowUpSquare } from "iconoir-react";
 import React from "react";
 import {
   useLocation,
@@ -33,6 +33,7 @@ import {
 } from "../styles";
 import ChannelEditLanguageBadge from "./ChannelEditLanguageBadge";
 import DeleteChannelModal from "./DeleteChannelModal";
+import LeaveChannelModal from "./LeaveChannelModal";
 import {
   useChangeUserRole,
   useChannel,
@@ -40,7 +41,6 @@ import {
   useJoinChannel,
   useLeaveChannel,
 } from "./hooks";
-import LeaveChannelModal from "./LeaveChannelModal";
 
 import defaultImg from "../../../static/images/user_placeholder.png";
 
@@ -55,7 +55,7 @@ function ChannelInfo() {
     useOutletContext<
       [
         ChatHeaderProps | null,
-        React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>
+        React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>,
       ]
     >();
   const navigate = useNavigate();
@@ -71,7 +71,7 @@ function ChannelInfo() {
    */
   const userIsStaff = React.useCallback(
     () => userRole === "A" || userRole === "M",
-    [userRole]
+    [userRole],
   );
 
   /**
@@ -122,7 +122,7 @@ function ChannelInfo() {
    */
   React.useEffect(() => {
     const userMembership = data?.memberships.find(
-      (membership) => membership.user.id === user?.id
+      (membership) => membership.user.id === user?.id,
     );
     if (userMembership) {
       setUserRole(userMembership.role);
@@ -232,8 +232,8 @@ function ChannelInfo() {
                   membership.role === "A"
                     ? "Admin"
                     : membership.role === "M"
-                    ? "Moderator"
-                    : undefined
+                      ? "Moderator"
+                      : undefined
                 }
                 description={membership.user.description}
                 key={membership.url}
@@ -252,7 +252,7 @@ function ChannelInfo() {
                         }
                       >
                         Promote
-                        <FastArrowUpBox
+                        <FastArrowUpSquare
                           color={colors.PRIMARY}
                           height={"1.5rem"}
                           width={"1.5rem"}
@@ -266,7 +266,7 @@ function ChannelInfo() {
                         }
                       >
                         Demote
-                        <FastArrowDownBox
+                        <FastArrowDownSquare
                           color={colors.PRIMARY}
                           height={"1.5rem"}
                           width={"1.5rem"}
@@ -276,12 +276,12 @@ function ChannelInfo() {
                   </React.Fragment>
                 }
               />
-            ) : null
+            ) : null,
           )}
           {/* Empty list */}
           {!data?.memberships.length ? (
             <li css={emptyContainer}>
-              <p>This channel doesn't have any members yet.</p>
+              <p>This channel doesn&apos;t have any members yet.</p>
             </li>
           ) : null}
         </ul>

@@ -50,14 +50,19 @@ export interface ChannelSearchResponse {
   previousPageNumber: number | null;
 }
 
-export interface UserSearchParams {
+interface BaseSearchParams {
+  type: string;
+  search?: string;
+}
+
+export interface UserSearchParams extends BaseSearchParams {
   search?: string;
   nativeLanguages?: string[] | null;
   learningLanguages?: string[] | null;
   learningLanguagesLevels?: string[] | null;
 }
 
-export interface ChannelSearchParams {
+export interface ChannelSearchParams extends BaseSearchParams {
   search?: string;
   languages?: string[] | null;
   levels?: string[] | null;
@@ -75,15 +80,15 @@ function Search() {
    * Search params state.
    */
   const [userSearchParams, setUserSearchParams] =
-    React.useState<UserSearchParams>({});
+    React.useState<UserSearchParams | null>(null);
   const [channelSearchParams, setChannelSearchParams] =
-    React.useState<ChannelSearchParams>({});
+    React.useState<ChannelSearchParams | null>(null);
 
   /**
    * Search type state.
    */
-  const [searchType, setSearchType] = React.useState<Option>(
-    searchTypeOptions.USERS
+  const [searchType, setSearchType] = React.useState<Option | null>(
+    searchTypeOptions.USERS,
   );
 
   /**
@@ -100,10 +105,10 @@ function Search() {
       const response = await axiosApi.get(`users/`, {
         params: {
           page: pageParam,
-          search: userSearchParams.search ?? null,
-          native_language: userSearchParams.nativeLanguages,
-          learning_language: userSearchParams.learningLanguages,
-          level: userSearchParams.learningLanguagesLevels,
+          search: userSearchParams?.search ?? null,
+          native_language: userSearchParams?.nativeLanguages,
+          learning_language: userSearchParams?.learningLanguages,
+          level: userSearchParams?.learningLanguagesLevels,
           size: 18,
         },
         paramsSerializer: (params) =>
@@ -117,7 +122,7 @@ function Search() {
         firstPage.previousPageNumber ?? undefined,
       getNextPageParam: (lastPage) => lastPage.nextPageNumber ?? undefined,
       enabled: searchType === searchTypeOptions.USERS,
-    }
+    },
   );
 
   /**
@@ -150,7 +155,7 @@ function Search() {
         firstPage.previousPageNumber ?? undefined,
       getNextPageParam: (lastPage) => lastPage.nextPageNumber ?? undefined,
       enabled: searchType === searchTypeOptions.CHANNELS,
-    }
+    },
   );
 
   /**

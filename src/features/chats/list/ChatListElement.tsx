@@ -54,7 +54,7 @@ function ChatListElement({
               {/* If the chat has messages, show the date when the latest message was sent. */}
               {chat.messages.length
                 ? DateTime.fromISO(chat.messages[0].timestamp).toLocaleString(
-                    DateTime.DATE_SHORT
+                    DateTime.DATE_SHORT,
                   )
                 : null}
             </span>

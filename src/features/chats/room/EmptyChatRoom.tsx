@@ -17,7 +17,7 @@ function EmptyChatRoom() {
     useOutletContext<
       [
         ChatHeaderProps | null,
-        React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>
+        React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>,
       ]
     >();
 
