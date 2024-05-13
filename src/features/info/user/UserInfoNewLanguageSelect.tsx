@@ -5,7 +5,6 @@ import React from "react";
 import { useMutation, useQueryClient } from "react-query";
 import Select, { StylesConfig } from "react-select";
 import EditButtons from "../../../components/EditButtons";
-import { User } from "../../../entities/User";
 import {
   Option,
   languageOptions,
@@ -14,6 +13,7 @@ import {
 import { select } from "../../../styles/components";
 import { colors } from "../../../styles/variables";
 import useAuth, { axiosApi } from "../../auth/AuthContext";
+import { User } from "../../common/types";
 
 interface UserInfoNewLanguageSelectRequestData {
   language: string;

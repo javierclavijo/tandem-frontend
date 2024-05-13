@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
-import { ChatMessage } from "../../../entities/ChatMessage";
 import { css } from "@emotion/react";
-import { colors, textSizes } from "../../../styles/variables";
 import { DateTime } from "luxon";
+import React from "react";
+import { colors, textSizes } from "../../../styles/variables";
+import { ChatMessage } from "../types";
 
 interface ChatRoomMessageProps {
   message: ChatMessage;

@@ -1,7 +1,7 @@
 import React from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { User } from "../../../entities/User";
 import useAuth, { axiosApi } from "../../auth/AuthContext";
+import { User } from "../../common/types";
 
 /**
  * Holds a user's data

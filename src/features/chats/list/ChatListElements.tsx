@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 
+import { css } from "@emotion/react";
 import React from "react";
+import { Chat } from "../../common/types";
+import { messageSortFn } from "../hooks";
 import { listElementContainerCss } from "../styles";
 import ChatListElement from "./ChatListElement";
-import { Chat } from "../../../entities/Chat";
-import { css } from "@emotion/react";
-import { messageSortFn } from "../hooks";
 
 interface ChatListElementsProps {
   data: Chat[];

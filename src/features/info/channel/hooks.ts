@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { Channel } from "../../../entities/Channel";
 import useAuth, { axiosApi } from "../../auth/AuthContext";
+import { Channel } from "../../common/types";
 
 /**
  * Query which fetches and holds a channel's data

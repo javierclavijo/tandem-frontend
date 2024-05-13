@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useContext, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { User } from "../../entities/User";
+import { User } from "../common/types";
 
 interface AuthContextType {
   user: User | undefined;

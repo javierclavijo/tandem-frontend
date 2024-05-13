@@ -1,7 +1,7 @@
 import qs from "qs";
 import { useQuery } from "react-query";
-import { User } from "../../entities/User";
 import useAuth, { axiosApi } from "../auth/AuthContext";
+import { User } from "../common/types";
 
 /**
  * Fetches a list of random users who aren't friends of the session's user,

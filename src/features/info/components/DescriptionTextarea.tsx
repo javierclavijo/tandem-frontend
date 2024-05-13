@@ -1,16 +1,15 @@
 /** @jsxImportSource @emotion/react */
 
-import React from "react";
-import { Channel } from "../../../entities/Channel";
 import { css } from "@emotion/react";
-import { colors } from "../../../styles/variables";
-import TextareaAutosize from "react-textarea-autosize";
-import { axiosApi } from "../../auth/AuthContext";
+import React from "react";
 import { useMutation, useQueryClient } from "react-query";
-import { useEditField } from "./hooks";
-import { editElement } from "../styles";
+import TextareaAutosize from "react-textarea-autosize";
 import EditButtons from "../../../components/EditButtons";
-import { User } from "../../../entities/User";
+import { colors } from "../../../styles/variables";
+import { axiosApi } from "../../auth/AuthContext";
+import { Channel, User } from "../../common/types";
+import { editElement } from "../styles";
+import { useEditField } from "./hooks";
 
 interface DescriptionTextareaProps {
   data: Channel | User;

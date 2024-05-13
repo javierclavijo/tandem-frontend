@@ -4,11 +4,11 @@ import { css } from "@emotion/react";
 import { DateTime } from "luxon";
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { Chat } from "../../../entities/Chat";
 import defaultImg from "../../../static/images/user_placeholder.png";
 import { thumbnailContainer, thumbnailImg } from "../../../styles/components";
 import { colors, textSizes } from "../../../styles/variables";
 import ResponsiveEllipsis from "../../../utils/ResponsiveEllipsis";
+import { Chat } from "../../common/types";
 import { elementContentContainer, link } from "../styles";
 
 interface ChatListElementProps {

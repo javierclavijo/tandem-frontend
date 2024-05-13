@@ -7,7 +7,6 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import { ChatHeaderProps } from "../../../components/ChatHeader";
 import LanguageBadge from "../../../components/LanguageBadge";
-import { UserLanguage } from "../../../entities/User";
 import { colors } from "../../../styles/variables";
 import { useFadeIn } from "../../../utils/transitions";
 import useAuth from "../../auth/AuthContext";
@@ -25,6 +24,7 @@ import {
   listSectionList,
   profileImg,
 } from "../styles";
+import { UserLanguage } from "../types";
 import DeleteLanguageModal from "./DeleteLanguageModal";
 import NewLanguageModal from "./NewLanguageModal";
 import SetPasswordModal from "./SetPasswordModal";

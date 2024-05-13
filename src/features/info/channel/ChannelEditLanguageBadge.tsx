@@ -6,8 +6,6 @@ import { FlagIcon } from "react-flag-kit";
 import { useMutation, useQueryClient } from "react-query";
 import Select, { StylesConfig } from "react-select";
 import ProficiencyLevelIcon from "../../../components/Icons/ProficiencyLevelIcon";
-import { Channel } from "../../../entities/Channel";
-import { UserLanguage } from "../../../entities/User";
 import {
   Option,
   flagCodes,
@@ -17,6 +15,8 @@ import {
 import { badge, noBorderAndBgSelectWhite } from "../../../styles/components";
 import { colors } from "../../../styles/variables";
 import { axiosApi } from "../../auth/AuthContext";
+import { Channel } from "../../common/types";
+import { UserLanguage } from "../types";
 
 interface LanguageBadgeProps {
   data: UserLanguage;

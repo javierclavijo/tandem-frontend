@@ -8,8 +8,6 @@ import { useMediaQuery } from "react-responsive";
 import { animated } from "react-spring";
 import Nav from "../../components/Header/Nav";
 import Tabs from "../../components/Tabs";
-import { Channel } from "../../entities/Channel";
-import { User } from "../../entities/User";
 import { Option } from "../../resources/languages";
 import { homeSearchStyles } from "../../styles/components";
 import {
@@ -21,6 +19,7 @@ import {
 import { useFadeIn } from "../../utils/transitions";
 import { axiosApi } from "../auth/AuthContext";
 import { useRedirectIfNotLoggedIn } from "../auth/hooks";
+import { Channel, User } from "../common/types";
 import SearchPanel from "./SearchPanel";
 import { ChannelSearchResults, UserSearchResults } from "./SearchResults";
 

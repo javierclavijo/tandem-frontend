@@ -9,8 +9,6 @@ import useWebSocket from "react-use-websocket";
 import ChatHeader, { ChatHeaderProps } from "../../components/ChatHeader";
 import Nav from "../../components/Header/Nav";
 import Tabs from "../../components/Tabs";
-import { Chat } from "../../entities/Chat";
-import { ChatMessageResponse } from "../../entities/ChatMessage";
 import {
   baseAppContainerWithTabs,
   baseAppContainerWithoutTabs,
@@ -18,10 +16,11 @@ import {
 import { useFadeIn } from "../../utils/transitions";
 import useAuth from "../auth/AuthContext";
 import { useRedirectIfNotLoggedIn } from "../auth/hooks";
+import { Chat } from "../common/types";
 import ChatList from "./list/ChatList";
 import { chatRoom, chatRoomMobile } from "./room/styles";
 import { chatMain, chatMainMobile } from "./styles";
-import { WsChatMessage } from "./types";
+import { ChatMessageResponse, WsChatMessage } from "./types";
 
 /**
  * Main chat component. Holds the chat list, chat room and user/channel detail components.

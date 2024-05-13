@@ -8,9 +8,9 @@ import { ArrowRightCircle, Emoji } from "iconoir-react";
 import React, { CSSProperties, useCallback, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import useWebSocket from "react-use-websocket";
-import { Chat } from "../../../entities/Chat";
 import { colors, textSizes } from "../../../styles/variables";
 import useAuth from "../../auth/AuthContext";
+import { Chat } from "../../common/types";
 
 /**
  * Input form for the chat room. Includes the chat message input, a send button

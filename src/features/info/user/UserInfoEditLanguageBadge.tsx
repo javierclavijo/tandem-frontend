@@ -8,7 +8,6 @@ import { useMutation, useQueryClient } from "react-query";
 import Select, { SingleValue, StylesConfig } from "react-select";
 import Button from "../../../components/Button";
 import ProficiencyLevelIcon from "../../../components/Icons/ProficiencyLevelIcon";
-import { User, UserLanguage } from "../../../entities/User";
 import {
   Option,
   flagCodes,
@@ -18,6 +17,8 @@ import {
 import { badge, noBorderAndBgSelectWhite } from "../../../styles/components";
 import { colors } from "../../../styles/variables";
 import useAuth, { axiosApi } from "../../auth/AuthContext";
+import { User } from "../../common/types";
+import { UserLanguage } from "../types";
 
 interface LanguageBadgeProps {
   data: UserLanguage;

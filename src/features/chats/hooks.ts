@@ -8,10 +8,9 @@ import {
 import { useOutletContext } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import { ChatHeaderProps } from "../../components/ChatHeader";
-import { Chat, FriendChat } from "../../entities/Chat";
-import { ChatMessage, ChatMessageResponse } from "../../entities/ChatMessage";
-import { User } from "../../entities/User";
 import useAuth, { axiosApi } from "../auth/AuthContext";
+import { Chat, FriendChat, User } from "../common/types";
+import { ChatMessage, ChatMessageResponse } from "./types";
 
 /**
  * Sorts messages or chats according to sent datetime. If the message is undefined (usually due to a chat having
