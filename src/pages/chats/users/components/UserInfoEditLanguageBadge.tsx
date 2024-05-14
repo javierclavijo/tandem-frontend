@@ -1,21 +1,19 @@
 import { css } from "@emotion/react";
 import { Xmark } from "iconoir-react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FlagIcon } from "react-flag-kit";
-import { useMutation, useQueryClient } from "react-query";
 import Select, { SingleValue, StylesConfig } from "react-select";
-import { axiosApi } from "../../../../api";
 import {
   LANGUAGE_INFO,
   levelOptions,
 } from "../../../../common/resources/languages";
 import { COLORS } from "../../../../common/resources/style-variables";
-import { Option, ProficiencyLevel, User } from "../../../../common/types";
+import { Option, ProficiencyLevel } from "../../../../common/types";
 import Button from "../../../../components/Button";
 import ProficiencyLevelIcon from "../../../../components/icons/ProficiencyLevelIcon";
 import { badge, noBorderAndBgSelectWhite } from "../../../../components/styles";
-import useAuth from "../../../auth/AuthContext/AuthContext";
 import { UserLanguage } from "../../types";
+import { useUpdateUserLanguageMutation } from "../queries";
 
 interface LanguageBadgeProps {
   data: UserLanguage;
@@ -28,30 +26,11 @@ interface LanguageBadgeProps {
  * and allows selecting the language's level.
  */
 function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
-  const queryClient = useQueryClient();
   const [levelValue, setLevelValue] = useState<Option<ProficiencyLevel> | null>(
     null,
   );
-  const { user } = useAuth();
 
-  const updateRequest = useCallback(
-    async (requestData: { level: ProficiencyLevel }) => {
-      if (data) {
-        const response = await axiosApi.patch(data.url, requestData);
-        return response.data;
-      }
-    },
-    [data],
-  );
-
-  const mutation = useMutation(updateRequest, {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries<User | undefined>([
-        "users",
-        user?.id,
-      ]);
-    },
-  });
+  const mutation = useUpdateUserLanguageMutation(data.url);
 
   const onChange = async (option: SingleValue<Option<ProficiencyLevel>>) => {
     if (option != null) {

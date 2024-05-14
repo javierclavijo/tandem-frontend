@@ -18,7 +18,7 @@ import {
 import { useFadeIn } from "../../common/transitions";
 import { useChannelChatList, useFriendChatList } from "../chats/queries";
 import RecentElement from "./components/RecentElement";
-import { useDiscoverUsersList } from "./hooks";
+import { useDiscoverUsersList } from "./queries";
 
 /**
  * Post-login home component.

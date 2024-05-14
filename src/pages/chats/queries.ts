@@ -2,13 +2,19 @@ import { useMemo } from "react";
 import {
   UseInfiniteQueryOptions,
   useInfiniteQuery,
+  useMutation,
   useQuery,
+  useQueryClient,
 } from "react-query";
 import { axiosApi } from "../../api";
-import { Chat, User } from "../../common/types";
+import { Channel, Chat, User } from "../../common/types";
 import useAuth from "../auth/AuthContext/AuthContext";
 import { getFriendFromFriendChat, messageSortFn } from "./hooks";
-import { ChatMessageResponse } from "./types";
+import {
+  ChatMessageResponse,
+  UpdateChannelDescriptionQueryKey,
+  UpdateChannelDescriptionRequest,
+} from "./types";
 
 export const fetchAllChatList = async (user: User | undefined) => {
   const friendChats = await fetchFriendChatList(user);
@@ -151,4 +157,119 @@ export const useChannelChatList = () => {
       enabled: !!user,
     },
   );
+};
+
+export const useUpdateChannelNameMutation = (data: Channel) => {
+  const queryClient = useQueryClient();
+
+  const updateRequest = async (requestData: { name: string }) => {
+    const response = await axiosApi.patch(data.url, requestData);
+    return response.data;
+  };
+
+  return useMutation(updateRequest, {
+    onSuccess: async (requestData) => {
+      // Update chat data in the channel's detail query, and also in the chat list and chat detail queries, to
+      // update the header and the chat list
+      queryClient.setQueryData<Channel | undefined>(
+        ["channels", data?.id],
+        (old) => {
+          if (old) {
+            old.name = requestData.name;
+          }
+          return old;
+        },
+      );
+      queryClient.setQueryData<Chat[] | undefined>(
+        ["chats", "list", "all"],
+        (old) => {
+          const oldChat = old?.find((chat) => chat.id === requestData.id);
+          if (oldChat) {
+            oldChat.name = requestData.name;
+          }
+          return old;
+        },
+      );
+      queryClient.setQueryData<Chat | undefined>(
+        ["chats", "messages", requestData.id],
+        (old) => {
+          if (old) {
+            old.name = requestData.name;
+          }
+          return old;
+        },
+      );
+    },
+  });
+};
+
+export const useUpdateUsernameMutation = (data: User) => {
+  const queryClient = useQueryClient();
+
+  const updateRequest = async (requestData: { username: string }) => {
+    const response = await axiosApi.patch(data.url, requestData);
+    return response.data;
+  };
+
+  return useMutation(updateRequest, {
+    onSuccess: async (requestData) => {
+      // Update chat data in the user's query
+      queryClient.setQueryData<User | undefined>(["users", data.id], (old) => {
+        if (old) {
+          old.username = requestData.username;
+        }
+        return old;
+      });
+    },
+  });
+};
+
+export const useUpdateChannelDescriptionMutation = (
+  data: Channel | User,
+  queryKey: UpdateChannelDescriptionQueryKey,
+) => {
+  const queryClient = useQueryClient();
+
+  const updateRequest = async (
+    requestData: UpdateChannelDescriptionRequest,
+  ) => {
+    const response = await axiosApi.patch(data?.url, requestData);
+    return response.data;
+  };
+
+  return useMutation(updateRequest, {
+    onSuccess: async (requestData) => {
+      queryClient.setQueryData<Channel | undefined>(
+        [queryKey, data?.id],
+        (old) => {
+          if (old) {
+            old.description = requestData.description;
+          }
+          return old;
+        },
+      );
+    },
+  });
+};
+
+export const useUpdateImage = (
+  url: string,
+  invalidateQueryKey: string | unknown[],
+) => {
+  const queryClient = useQueryClient();
+
+  const request = async (data: FormData) => {
+    const response = await axiosApi.patch(url, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  };
+
+  return useMutation(request, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(invalidateQueryKey);
+    },
+  });
 };

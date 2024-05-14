@@ -32,3 +32,8 @@ export interface UserLanguage {
   language: Language;
   level: ProficiencyLevel;
 }
+export type UpdateChannelDescriptionQueryKey = "users" | "channels";
+
+export interface UpdateChannelDescriptionRequest {
+  description: string;
+}

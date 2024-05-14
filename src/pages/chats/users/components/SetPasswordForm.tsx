@@ -1,24 +1,16 @@
 import { css } from "@emotion/react";
 import { ErrorMessage } from "@hookform/error-message";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
-import { useMutation } from "react-query";
-import { axiosApi } from "../../../../api";
+import { ServerErrorResponse } from "../../../../common/types";
 import { modal } from "../../../../components/styles";
 import useAuth from "../../../auth/AuthContext/AuthContext";
 import { errorStyle, input, label } from "../../../auth/styles";
-
-interface SetPasswordRequestData {
-  newPassword: string;
-  oldPassword: string;
-}
+import { useSetPasswordMutation } from "../queries";
+import { SetPasswordRequestData } from "../types";
 
 interface SetPasswordFormData extends SetPasswordRequestData {
   confirmNewPassword: string;
-}
-
-export interface ServerErrorResponse {
-  [key: string]: string[];
 }
 
 /**
@@ -34,34 +26,31 @@ function SetPasswordForm({ closeModal }: { closeModal: () => void }) {
     setError,
   } = useForm<SetPasswordFormData>();
 
-  const request = async (data: SetPasswordRequestData) =>
-    await axiosApi.patch("set_password/", data);
+  const onMutationError = (e: AxiosError<ServerErrorResponse>) => {
+    if (axios.isAxiosError(e) && e.response) {
+      // If the server returned any errors, set them in the form. The server returns errors as string arrays,
+      // so we must first iterate over the response's entries, and then over the entries' values, setting the
+      // error's key as the error's field's name.
+      if (e.response.status === 401) {
+        setError("oldPassword", {
+          type: "server",
+          message: "Unable to authenticate with provided password.",
+        });
+      }
+    }
+  };
 
-  const mutation = useMutation(request);
+  const mutation = useSetPasswordMutation({ onError: onMutationError });
 
   const onSubmit = async (data: SetPasswordFormData) => {
-    try {
-      const response = await mutation.mutateAsync({
-        newPassword: data.newPassword,
-        oldPassword: data.oldPassword,
-      });
+    const response = await mutation.mutateAsync({
+      newPassword: data.newPassword,
+      oldPassword: data.oldPassword,
+    });
 
-      if (response.status === 200 && user != null) {
-        closeModal();
-        login({ username: user.username, password: data.newPassword });
-      }
-    } catch (e) {
-      if (axios.isAxiosError(e) && e.response) {
-        // If the server returned any errors, set them in the form. The server returns errors as string arrays,
-        // so we must first iterate over the response's entries, and then over the entries' values, setting the
-        // error's key as the error's field's name.
-        if (e.response.status === 401) {
-          setError("oldPassword", {
-            type: "server",
-            message: "Unable to authenticate with provided password.",
-          });
-        }
-      }
+    if (response.status === 200 && user != null) {
+      closeModal();
+      login({ username: user.username, password: data.newPassword });
     }
   };
 

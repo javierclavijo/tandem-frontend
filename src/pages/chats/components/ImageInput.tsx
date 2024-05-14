@@ -1,8 +1,7 @@
 import { css } from "@emotion/react";
 import React, { useRef, useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
-import { axiosApi } from "../../../api";
 import { COLORS, FONT_SIZES } from "../../../common/resources/style-variables";
+import { useUpdateImage } from "../queries";
 import { profileImg } from "../styles";
 
 interface ImageInputProps {
@@ -43,27 +42,13 @@ function ImageInput({
   url,
   invalidateQueryKey,
 }: ImageInputProps) {
-  const queryClient = useQueryClient();
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   // State which controls the visibility of the label. Activated on hover (:hover would not work, as the label needs
   // to be on top of the input for that, which causes image dropping to not work)
   const [isLabelDisplayed, setIsLabelDisplayed] = useState<boolean>(false);
 
-  const request = async (data: FormData) => {
-    const response = await axiosApi.patch(url, data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    return response.data;
-  };
-
-  const mutation = useMutation(request, {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(invalidateQueryKey);
-    },
-  });
+  const mutation = useUpdateImage(url, invalidateQueryKey);
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

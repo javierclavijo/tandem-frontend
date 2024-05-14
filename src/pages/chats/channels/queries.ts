@@ -1,9 +1,10 @@
 import { useCallback, useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { axiosApi } from "../../../api";
+import { axiosApi, queryClient } from "../../../api";
 import { Channel } from "../../../common/types";
 import useAuth from "../../auth/AuthContext/AuthContext";
+import { UpdateLanguageRequest } from "./types";
 
 /**
  * Query which fetches and holds a channel's data
@@ -21,22 +22,19 @@ export function useChannel(id: string | undefined) {
   );
 }
 
+/**
+ * Deletes a channel.
+ */
 export function useDeleteChannel(data: Channel | undefined) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  /**
-   * Deletes the channel.
-   */
   const deleteChannelRequest = async () => {
     if (data) {
       return await axiosApi.delete(data?.url);
     }
   };
 
-  /**
-   * Sends the request to delete the channel.
-   */
   const deleteChannelMutation = useMutation(deleteChannelRequest, {
     onSuccess: () => queryClient.invalidateQueries(["chats", "list", "all"]),
   });
@@ -152,3 +150,21 @@ export function useLeaveChannel(channel: Channel | undefined) {
     },
   });
 }
+
+const updateLanguageRequest = async (requestData: UpdateLanguageRequest) => {
+  const { url, ...body } = requestData;
+  if (url != null) {
+    const response = await axiosApi.patch(url, body);
+    return response.data;
+  }
+};
+
+export const useUpdateLanguageMutation = (id: string | undefined) =>
+  useMutation(updateLanguageRequest, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries<Channel | undefined>([
+        "channels",
+        id,
+      ]);
+    },
+  });

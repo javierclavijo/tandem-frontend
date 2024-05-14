@@ -1,11 +1,9 @@
 import { css } from "@emotion/react";
 import { ErrorMessage } from "@hookform/error-message";
-import axios from "axios";
 import { Controller, useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import Select, { StylesConfig } from "react-select";
-import { axiosApi } from "../../../../api";
+import { useSetFormErrorOnRequestError } from "../../../../common/hooks";
 import {
   languageOptions,
   levelOptions,
@@ -14,20 +12,10 @@ import {
   COLORS,
   FONT_SIZES,
 } from "../../../../common/resources/style-variables";
-import {
-  Language,
-  Option,
-  ProficiencyLevel,
-  ServerErrorResponse,
-} from "../../../../common/types";
+import { Language, Option, ProficiencyLevel } from "../../../../common/types";
 import { modal, select } from "../../../../components/styles";
 import { errorStyle } from "../../../auth/styles";
-
-interface ChannelCreationRequestData {
-  name: string;
-  language: string;
-  level: ProficiencyLevel;
-}
+import { useCreateChannelMutation } from "./queries";
 
 interface ChannelCreationFormValues {
   name: string;
@@ -35,13 +23,16 @@ interface ChannelCreationFormValues {
   level: Option<ProficiencyLevel> | null;
 }
 
+interface ChannelCreationFormProps {
+  closeModal: () => void;
+}
+
 /**
  * Form which allows the user to create a new channel, used in NewChannelModal.
  */
-function ChannelCreationForm({ closeModal }: { closeModal: () => void }) {
-  const queryClient = useQueryClient();
+function ChannelCreationForm({ closeModal }: ChannelCreationFormProps) {
   const navigate = useNavigate();
-  // TODO: add form types
+
   const {
     register,
     handleSubmit,
@@ -50,56 +41,26 @@ function ChannelCreationForm({ closeModal }: { closeModal: () => void }) {
     setError,
   } = useForm<ChannelCreationFormValues>();
 
-  const request = async (data: ChannelCreationRequestData) =>
-    await axiosApi.post("channels/", data);
+  const onMutationError = useSetFormErrorOnRequestError(setError);
 
-  const mutation = useMutation(request, {
-    onSuccess: () => queryClient.invalidateQueries(["chats", "list", "all"]),
-  });
+  const mutation = useCreateChannelMutation({ onError: onMutationError });
 
   const onSubmit = async (data: ChannelCreationFormValues) => {
-    try {
-      if (data.language == null || data.level == null) {
-        return;
-      }
+    if (data.language == null || data.level == null) {
+      return;
+    }
 
-      const response = await mutation.mutateAsync({
-        name: data.name,
-        language: data.language.value,
-        level: data.level.value,
-      });
-      if (response.status === 201) {
-        // If the channel has been created successfully, close the modal and
-        // navigate to its detail page.
-        closeModal();
-        navigate(`/chats/channels/${response.data.id}`);
-      }
-    } catch (e) {
-      // TODO: add generic error handling with middlewares.
-      if (axios.isAxiosError(e) && e.response) {
-        // If the server returned any errors, set them in the form. The server
-        // returns errors as string arrays, so we must first iterate over the
-        // response's entries, and then over the entries' values, setting the
-        // error's key as the error's field's name.
-        Object.entries(e.response.data as ServerErrorResponse).forEach(
-          ([key, value]) =>
-            value.forEach((valueError) =>
-              setError(
-                key as keyof ChannelCreationFormValues,
-                {
-                  type: "focus",
-                  // Capitalize the message's first letter before setting it as
-                  // the error message
-                  message:
-                    valueError[0].toUpperCase() + valueError.substring(1),
-                },
-                {
-                  shouldFocus: true,
-                },
-              ),
-            ),
-        );
-      }
+    const response = await mutation.mutateAsync({
+      name: data.name,
+      language: data.language.value,
+      level: data.level.value,
+    });
+
+    if (response.status === 201) {
+      // If the channel has been created successfully, close the modal and
+      // navigate to its detail page.
+      closeModal();
+      navigate(`/chats/channels/${response.data.id}`);
     }
   };
 

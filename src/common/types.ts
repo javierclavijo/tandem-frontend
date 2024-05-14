@@ -1,4 +1,5 @@
 import { FlagIconCode } from "react-flag-kit";
+import { FieldPath, FieldValues } from "react-hook-form";
 import { ChatMessage, UserLanguage } from "../pages/chats/types";
 
 interface ChannelMembershipUser {
@@ -84,3 +85,8 @@ export interface Option<T extends string = string> {
 }
 
 export type ServerErrorResponse = Readonly<Record<string, string[]>>;
+
+export type UseFormSetErrorName<TData extends FieldValues> =
+  | FieldPath<TData>
+  | `root.${string}`
+  | "root";

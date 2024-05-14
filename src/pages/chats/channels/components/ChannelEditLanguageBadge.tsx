@@ -1,33 +1,22 @@
 import { css } from "@emotion/react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FlagIcon } from "react-flag-kit";
-import { useMutation, useQueryClient } from "react-query";
 import Select, { StylesConfig } from "react-select";
-import { axiosApi } from "../../../../api";
 import {
   LANGUAGE_INFO,
   languageOptions,
   levelOptions,
 } from "../../../../common/resources/languages";
 import { COLORS } from "../../../../common/resources/style-variables";
-import {
-  Channel,
-  Language,
-  Option,
-  ProficiencyLevel,
-} from "../../../../common/types";
+import { Language, Option, ProficiencyLevel } from "../../../../common/types";
 import ProficiencyLevelIcon from "../../../../components/icons/ProficiencyLevelIcon";
 import { badge, noBorderAndBgSelectWhite } from "../../../../components/styles";
 import { UserLanguage } from "../../types";
+import { useUpdateLanguageMutation } from "../queries";
 
 interface LanguageBadgeProps {
   data: UserLanguage;
   bg: string;
-}
-
-interface UpdateRequest {
-  language?: Language;
-  level?: ProficiencyLevel;
 }
 
 // TODO: review this and the other badge components. Are they duplicated?
@@ -36,7 +25,6 @@ interface UpdateRequest {
  * language's name and icon and allows selecting the language and level.
  */
 function ChannelEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
-  const queryClient = useQueryClient();
   const [languageValue, setLanguageValue] = useState<Option<Language> | null>(
     null,
   );
@@ -44,24 +32,7 @@ function ChannelEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
     null,
   );
 
-  const updateRequest = useCallback(
-    async (requestData: UpdateRequest) => {
-      if (data) {
-        const response = await axiosApi.patch(data?.url, requestData);
-        return response.data;
-      }
-    },
-    [data],
-  );
-
-  const updateMutation = useMutation(updateRequest, {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries<Channel | undefined>([
-        "channels",
-        data?.id,
-      ]);
-    },
-  });
+  const updateMutation = useUpdateLanguageMutation(data?.id);
 
   // TODO: abstract union type
   const handleLanguageChange = async (option: Option<Language> | null) => {
@@ -69,7 +40,7 @@ function ChannelEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
       return;
     }
 
-    await updateMutation.mutateAsync({ language: option.value });
+    await updateMutation.mutateAsync({ url: data.url, language: option.value });
   };
 
   const handleLevelChange = async (option: Option<ProficiencyLevel> | null) => {
@@ -77,7 +48,7 @@ function ChannelEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
       return;
     }
 
-    await updateMutation.mutateAsync({ level: option.value });
+    await updateMutation.mutateAsync({ url: data.url, level: option.value });
   };
 
   useEffect(() => {

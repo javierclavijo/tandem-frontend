@@ -38,7 +38,7 @@ import {
   useDeleteChannel,
   useJoinChannel,
   useLeaveChannel,
-} from "./hooks";
+} from "./queries";
 
 /**
  * Displays a channel's details: image, name, language and level, description and members.

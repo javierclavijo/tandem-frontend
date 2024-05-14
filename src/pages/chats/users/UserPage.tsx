@@ -27,7 +27,11 @@ import DeleteLanguageModal from "./components/DeleteLanguageModal";
 import NewLanguageModal from "./components/NewLanguageModal";
 import SetPasswordModal from "./components/SetPasswordModal";
 import UserInfoEditLanguageBadge from "./components/UserInfoEditLanguageBadge";
-import { useCreateChatWithUser, useDeleteUserLanguage, useUser } from "./hooks";
+import {
+  useCreateChatWithUser,
+  useDeleteUserLanguage,
+  useUser,
+} from "./queries";
 
 /**
  * User detail component.

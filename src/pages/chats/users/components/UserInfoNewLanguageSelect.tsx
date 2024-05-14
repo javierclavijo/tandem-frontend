@@ -1,52 +1,32 @@
 import { css } from "@emotion/react";
 import { useCallback, useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
 import Select, { StylesConfig } from "react-select";
-import { axiosApi } from "../../../../api";
 import {
   languageOptions,
   levelOptions,
 } from "../../../../common/resources/languages";
 import { COLORS } from "../../../../common/resources/style-variables";
-import { Option, ProficiencyLevel, User } from "../../../../common/types";
+import { Language, Option, ProficiencyLevel } from "../../../../common/types";
 import EditButtons from "../../../../components/EditButtons";
 import { select } from "../../../../components/styles";
 import useAuth from "../../../auth/AuthContext/AuthContext";
-
-interface UserInfoNewLanguageSelectRequestData {
-  language: string;
-  level: string;
-  user: string;
-}
+import { useCreateUserLanguageMutation } from "../queries";
 
 /**
  * Contains controls to allow the user to add a new language to their profile.
  */
 function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
   const { user } = useAuth();
-  const queryClient = useQueryClient();
 
-  const [languageValue, setLanguageValue] = useState<Option | null>(null);
+  const [languageValue, setLanguageValue] = useState<Option<Language> | null>(
+    null,
+  );
   const [levelValue, setLevelValue] = useState<Option<ProficiencyLevel> | null>(
     null,
   );
   const [error, setError] = useState<string>("");
 
-  const updateRequest = async (
-    requestData: UserInfoNewLanguageSelectRequestData,
-  ) => {
-    const response = await axiosApi.post("user_languages/", requestData);
-    return response.data;
-  };
-
-  const mutation = useMutation(updateRequest, {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries<User | undefined>([
-        "users",
-        user?.id,
-      ]);
-    },
-  });
+  const mutation = useCreateUserLanguageMutation(user?.id);
 
   const clearError = () => setError("");
 
@@ -70,7 +50,7 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
   return (
     <div css={outerContainer}>
       <div css={innerContainer}>
-        <Select<Option>
+        <Select<Option<Language>>
           id={`language-new`}
           value={languageValue}
           onChange={setLanguageValue}
@@ -83,7 +63,7 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
             )
           }
           placeholder="Language"
-          styles={select as StylesConfig<Option>}
+          styles={select as StylesConfig<Option<Language>>}
         />
         <Select<Option<ProficiencyLevel>>
           id={`level-new`}

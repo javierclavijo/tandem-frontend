@@ -1,29 +1,23 @@
 import { css } from "@emotion/react";
 import React, { useRef } from "react";
-import { useMutation, useQueryClient } from "react-query";
 import TextareaAutosize from "react-textarea-autosize";
-import { axiosApi } from "../../../api";
 import { COLORS } from "../../../common/resources/style-variables";
 import { Channel, User } from "../../../common/types";
 import EditButtons from "../../../components/EditButtons";
+import { useEditField } from "../hooks";
+import { useUpdateChannelDescriptionMutation } from "../queries";
 import { editElement } from "../styles";
-import { useEditField } from "./hooks";
+import { UpdateChannelDescriptionQueryKey } from "../types";
 
 interface DescriptionTextareaProps {
   data: Channel | User;
-  queryKey: "users" | "channels";
-}
-
-interface DescriptionTextareaRequestData {
-  description: string;
+  queryKey: UpdateChannelDescriptionQueryKey;
 }
 
 /**
  * Text area component to edit a user or channel's description.
  */
 function DescriptionTextarea({ data, queryKey }: DescriptionTextareaProps) {
-  const queryClient = useQueryClient();
-
   const {
     editEnabled,
     setEditEnabled,
@@ -40,24 +34,7 @@ function DescriptionTextarea({ data, queryKey }: DescriptionTextareaProps) {
   // Used in handleBlur() to handle the case of submitting through keyboard.
   const keyboardSubmitRef = useRef<boolean>(false);
 
-  const updateRequest = async (requestData: DescriptionTextareaRequestData) => {
-    const response = await axiosApi.patch(data?.url, requestData);
-    return response.data;
-  };
-
-  const updateMutation = useMutation(updateRequest, {
-    onSuccess: async (requestData) => {
-      queryClient.setQueryData<Channel | undefined>(
-        [queryKey, data?.id],
-        (old) => {
-          if (old) {
-            old.description = requestData.description;
-          }
-          return old;
-        },
-      );
-    },
-  });
+  const updateMutation = useUpdateChannelDescriptionMutation(data, queryKey);
 
   const handleBlur = async (event: React.FocusEvent<HTMLTextAreaElement>) => {
     // If the submit button was clicked, submit the value. Else, cancel the editing.
