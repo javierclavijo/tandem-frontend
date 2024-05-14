@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { FlagIcon } from "react-flag-kit";
-import { Language, ProficiencyLevel } from "../features/common/types";
+import { Language, ProficiencyLevel } from "../common/types";
 import { LANGUAGE_INFO, LEVEL_NAMES } from "../resources/languages";
 import { COLORS } from "../resources/style-variables";
 import ProficiencyLevelIcon from "./icons/ProficiencyLevelIcon";

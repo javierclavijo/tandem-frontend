@@ -1,7 +1,6 @@
-import { css } from "@emotion/react";
 import React from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { infoButton } from "../features/info/styles";
+import { infoButton } from "../pages/chats/styles";
 
 interface ShareLinkProps {
   link: string;
@@ -31,15 +30,11 @@ function ShareLink(props: ShareLinkProps) {
 
   return (
     <CopyToClipboard text={props.link} onCopy={() => setCopied(true)}>
-      <button type="button" css={button}>
+      <button type="button" css={infoButton}>
         {!copied ? "Share" : "Copied to clipboard"}
       </button>
     </CopyToClipboard>
   );
 }
-
-const button = css`
-  ${infoButton};
-`;
 
 export default ShareLink;

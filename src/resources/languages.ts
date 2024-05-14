@@ -3,7 +3,7 @@ import {
   LanguageInfo,
   Option,
   ProficiencyLevel,
-} from "../features/common/types";
+} from "../common/types";
 
 export const LANGUAGE_INFO: Readonly<Record<Language, LanguageInfo>> = {
   DE: { flagIconCode: "DE", displayName: "German" },

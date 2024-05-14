@@ -1,12 +1,11 @@
 import { css } from "@emotion/react";
 import { NavLink } from "react-router-dom";
-import { User } from "../../features/common/types";
-import { infoButton } from "../../features/info/styles";
+import { User } from "../../common/types";
+import { infoButton } from "../../pages/chats/styles";
 import { COLORS, FONT_SIZES } from "../../resources/style-variables";
+import ChatThumbnail from "../ChatThumbnail";
 import { thumbnailContainer } from "../styles";
 import { activeNavLink } from "./Nav";
-
-import ChatThumbnail from "../ChatThumbnail";
 
 interface NavProfilePictureProps {
   user: User | undefined;

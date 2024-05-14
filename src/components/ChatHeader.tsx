@@ -1,8 +1,8 @@
 import { css } from "@emotion/react";
 import { Link, To } from "react-router-dom";
 import { animated } from "react-spring";
-import { chatHeader } from "../features/chats/room/styles";
-import { useFadeIn } from "../features/common/transitions";
+import { useFadeIn } from "../common/transitions";
+import { chatHeader } from "../pages/chats/chat/styles";
 import BackButton from "./BackButton";
 import ChatThumbnail from "./ChatThumbnail";
 import { containerWithLink, thumbnailContainer } from "./styles";

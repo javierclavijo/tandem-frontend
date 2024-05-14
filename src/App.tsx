@@ -4,18 +4,18 @@ import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import NotFound from "./components/NotFound";
-import { AuthProvider } from "./features/auth/AuthContext";
-import LogIn from "./features/auth/LogIn";
-import Register from "./features/auth/Register";
-import ChatMain from "./features/chats/ChatMain";
-import ChatRoom from "./features/chats/room/ChatRoom";
-import EmptyChatRoom from "./features/chats/room/EmptyChatRoom";
-import Home from "./features/home/Home";
-import PreLogin from "./features/home/PreLogin";
-import ChannelInfo from "./features/info/channel/ChannelInfo";
-import { UserInfo } from "./features/info/user/UserInfo";
-import Search from "./features/search/Search";
+import { AuthProvider } from "./pages/auth/AuthContext";
+import LoginPage from "./pages/auth/LoginPage";
+import RegisterPage from "./pages/auth/RegisterPage";
+import ChatsLayout from "./pages/chats/ChatsLayout";
+import ChannelInfo from "./pages/chats/channels/ChannelInfo";
+import ChatRoom from "./pages/chats/chat/ChatRoom";
+import EmptyChatRoom from "./pages/chats/chat/EmptyChatRoom";
+import { UserInfo } from "./pages/chats/users/UserInfo";
+import HomePage from "./pages/home/HomePage";
+import NotFoundPage from "./pages/not-found/NotFoundPage";
+import { default as PreLoginPage } from "./pages/pre-login/PreLoginPage";
+import SearchPage from "./pages/search/SearchPage";
 import globalStyles from "./styles";
 
 /**
@@ -40,7 +40,7 @@ const queryClient = new QueryClient({
 const router = createBrowserRouter([
   {
     path: "/chats",
-    element: <ChatMain />,
+    element: <ChatsLayout />,
     children: [
       // User and channel info views
       { path: "users/:id", element: <UserInfo /> },
@@ -54,12 +54,12 @@ const router = createBrowserRouter([
       },
     ],
   },
-  { path: "/search", element: <Search /> },
-  { path: "/login", element: <LogIn /> },
-  { path: "/register", element: <Register /> },
-  { path: "/home", element: <Home /> },
-  { path: "/", element: <PreLogin /> },
-  { path: "*", element: <NotFound /> },
+  { path: "/search", element: <SearchPage /> },
+  { path: "/auth/login", element: <LoginPage /> },
+  { path: "/auth/register", element: <RegisterPage /> },
+  { path: "/home", element: <HomePage /> },
+  { path: "/", element: <PreLoginPage /> },
+  { path: "*", element: <NotFoundPage /> },
 ]);
 
 export default function App() {

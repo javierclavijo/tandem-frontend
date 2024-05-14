@@ -3,8 +3,8 @@ import { ChatLines, Home, LogOut, Search } from "iconoir-react";
 import React from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import useAuth from "../../features/auth/AuthContext";
-import { infoButton } from "../../features/info/styles";
+import useAuth from "../../pages/auth/AuthContext";
+import { infoButton } from "../../pages/chats/styles";
 import { COLORS, FONT_SIZES } from "../../resources/style-variables";
 import NavProfilePicture from "./NavProfilePicture";
 
@@ -121,7 +121,7 @@ function Nav() {
             <>
               <li>
                 <NavLink
-                  to={"/login"}
+                  to={"/auth/login"}
                   css={link}
                   style={({ isActive }) => (isActive ? activeNavLink : {})}
                 >
@@ -130,7 +130,7 @@ function Nav() {
               </li>
               <li>
                 <NavLink
-                  to={"/register"}
+                  to={"/auth/register"}
                   css={link}
                   style={({ isActive }) => (isActive ? activeNavLink : {})}
                 >
