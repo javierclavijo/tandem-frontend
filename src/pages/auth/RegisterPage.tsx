@@ -14,7 +14,6 @@ import Nav from "../../components/Nav/Nav";
 import { select } from "../../components/styles";
 import useAuth from "./AuthContext/AuthContext";
 import { LogInRequestData } from "./AuthContext/types";
-import { useRedirectIfLoggedIn } from "./hooks";
 import {
   button,
   errorStyle,
@@ -44,7 +43,6 @@ interface RegisterFormData extends LogInRequestData {
 function RegisterPage() {
   const { login } = useAuth();
   const transitionProps = useFadeIn();
-  useRedirectIfLoggedIn("/home");
 
   const {
     register,

@@ -14,7 +14,6 @@ import ChatHeader, { ChatHeaderProps } from "../../components/ChatHeader";
 import Nav from "../../components/Nav/Nav";
 import Tabs from "../../components/Tabs";
 import useAuth from "../auth/AuthContext/AuthContext";
-import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 import { chatRoom, chatRoomMobile } from "./chat/styles";
 import ChatList from "./components/ChatList/ChatList";
 import { chatMain, chatMainMobile } from "./styles";
@@ -29,7 +28,6 @@ function ChatsLayout() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
   const { isLoggedIn } = useAuth();
   const transitionProps = useFadeIn();
-  useRedirectIfNotLoggedIn("/auth/login");
 
   /**
    * State used by the router outlet context which controls the header's state. This way, the header's data can be

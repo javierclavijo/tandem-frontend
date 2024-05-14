@@ -8,7 +8,6 @@ import { useFadeIn } from "../../common/transitions";
 import Nav from "../../components/Nav/Nav";
 import useAuth from "./AuthContext/AuthContext";
 import { LogInRequestData } from "./AuthContext/types";
-import { useRedirectIfLoggedIn } from "./hooks";
 import {
   button,
   errorStyle,
@@ -27,7 +26,6 @@ import {
 function LoginPage() {
   const { login, error } = useAuth();
   const transitionProps = useFadeIn();
-  useRedirectIfLoggedIn("/home");
 
   const {
     register,

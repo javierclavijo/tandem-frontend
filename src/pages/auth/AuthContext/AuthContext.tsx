@@ -7,12 +7,15 @@ import {
 } from "./queries";
 import { AuthContextType } from "./types";
 
-export const AuthContext = React.createContext<AuthContextType>(
-  // TODO:review this type assertion
-  {} as AuthContextType,
-);
-
-// TODO: refactor using RQ
+// Note on type assertion: as per React's documentation, the default value
+// shouldn't matter at all and could even be null.
+// See https://react.dev/reference/react/createContext#parameters
+export const AuthContext = React.createContext<AuthContextType>({
+  user: undefined,
+  error: undefined,
+  loading: false,
+  isLoggedIn: false,
+} as AuthContextType);
 
 /**
  * Authentication context provider for the app. Fetches and provides information
@@ -24,9 +27,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const { data: user } = useUserDetailQuery(sessionInfo);
 
-  const loginMutation = useLoginMutation(sessionInfo);
+  const userId = user?.id ?? null;
 
-  const logoutMutation = useLogoutMutation(sessionInfo);
+  const loginMutation = useLoginMutation();
+
+  const logoutMutation = useLogoutMutation(userId);
 
   const loading = useDeferredValue(
     isSessionInfoLoading || loginMutation.isLoading || logoutMutation.isLoading,

@@ -2,8 +2,12 @@ import { Global } from "@emotion/react";
 import React from "react";
 import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { queryClient } from "./api";
+import {
+  redirectToHomeIfLoggedIn,
+  redirectToLoginIfNotLoggedIn,
+} from "./common/loaders";
 import { AuthProvider } from "./pages/auth/AuthContext/AuthContext";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
@@ -18,41 +22,86 @@ import { default as PreLoginPage } from "./pages/pre-login/PreLoginPage";
 import SearchPage from "./pages/search/SearchPage";
 import globalStyles from "./styles";
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
-    path: "/chats",
-    element: <ChatsLayout />,
+    path: "",
+    element: <AppWrapper />,
     children: [
-      // User and channel info views
-      { path: "users/:id", element: <UserPage /> },
-      { path: "channels/:id", element: <ChannelPage /> },
-      // Chat room view
-      { path: ":id", element: <ChatPage /> },
-      // Chat list view.
       {
-        path: "",
-        element: <EmptyChatPage />,
+        path: "/chats",
+        element: <ChatsLayout />,
+        children: [
+          // User and channel info views
+          { path: "users/:id", element: <UserPage /> },
+          { path: "channels/:id", element: <ChannelPage /> },
+          // Chat room view
+          { path: ":id", element: <ChatPage /> },
+          // Chat list view.
+          {
+            path: "",
+            element: <EmptyChatPage />,
+          },
+        ],
+        loader: redirectToLoginIfNotLoggedIn,
       },
+      {
+        path: "/search",
+        element: <SearchPage />,
+        loader: redirectToLoginIfNotLoggedIn,
+      },
+      {
+        path: "/home",
+        element: <HomePage />,
+        loader: redirectToLoginIfNotLoggedIn,
+      },
+      {
+        path: "/auth/login",
+        element: <LoginPage />,
+        loader: redirectToHomeIfLoggedIn,
+      },
+      {
+        path: "/auth/register",
+        element: <RegisterPage />,
+        loader: redirectToHomeIfLoggedIn,
+      },
+      {
+        path: "/",
+        element: <PreLoginPage />,
+        loader: redirectToHomeIfLoggedIn,
+      },
+      { path: "*", element: <NotFoundPage /> },
     ],
   },
-  { path: "/search", element: <SearchPage /> },
-  { path: "/auth/login", element: <LoginPage /> },
-  { path: "/auth/register", element: <RegisterPage /> },
-  { path: "/home", element: <HomePage /> },
-  { path: "/", element: <PreLoginPage /> },
-  { path: "*", element: <NotFoundPage /> },
 ]);
+
+/**
+ * Wraps the apps with providers.
+ *
+ * The reason for this 'hack' is that the galaxy brains at React Router decided
+ * to create a RouterProvider component which doesn't accept children, so you
+ * can't --for example-- navigate to the home page after login if the login
+ * function is in the AuthContext outside the RouterProvider. We *could* just
+ * call the login function directly from its hook, but then we'd have to handle
+ * auth stuff (e.g. errors) manually in components.
+ */
+function AppWrapper() {
+  return (
+    <>
+      <Global styles={globalStyles} />
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <Outlet />
+        </AuthProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </>
+  );
+}
 
 export default function App() {
   return (
     <React.StrictMode>
-      <Global styles={globalStyles} />
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <RouterProvider router={router} />
-        </AuthProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
+      <RouterProvider router={router} />
     </React.StrictMode>
   );
 }

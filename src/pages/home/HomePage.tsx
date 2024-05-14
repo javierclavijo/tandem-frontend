@@ -8,7 +8,6 @@ import SearchResultElement from "../../components/SearchResultElement";
 import Tabs from "../../components/Tabs";
 import { homeSearchStyles } from "../../components/styles";
 import useAuth from "../auth/AuthContext/AuthContext";
-import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 
 import {
   baseAppContainerWithTabs,
@@ -29,7 +28,6 @@ function HomePage() {
   const transitionProps = useFadeIn();
 
   const { isLoggedIn, user } = useAuth();
-  useRedirectIfNotLoggedIn("/login");
 
   const { data: friendChats } = useFriendChatList();
   const { data: channelChats } = useChannelChatList();

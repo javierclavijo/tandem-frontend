@@ -8,7 +8,6 @@ import { axiosApi } from "../../api";
 import Nav from "../../components/Nav/Nav";
 import Tabs from "../../components/Tabs";
 import { homeSearchStyles } from "../../components/styles";
-import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 
 import {
   baseAppContainerWithTabs,
@@ -79,7 +78,6 @@ export interface ChannelSearchParams extends BaseSearchParams {
  */
 function SearchPage() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
-  useRedirectIfNotLoggedIn("/login");
   const transitionProps = useFadeIn();
 
   /**
