@@ -1,6 +1,5 @@
 import { css } from "@emotion/react";
 import { NavArrowRight } from "iconoir-react";
-import React from "react";
 import { Link } from "react-router-dom";
 import { COLORS } from "../../../common/resources/style-variables";
 import {
@@ -9,6 +8,7 @@ import {
 } from "../../../components/styles";
 import { infoListElementInnerContainer } from "../styles";
 
+import { useState } from "react";
 import ChatThumbnail from "../../../components/ChatThumbnail";
 
 interface InfoListElementProps {
@@ -25,7 +25,7 @@ interface InfoListElementProps {
  * hover.
  */
 function InfoListElement(props: InfoListElementProps) {
-  const [displayButtons, setDisplayButtons] = React.useState<boolean>(false);
+  const [displayButtons, setDisplayButtons] = useState<boolean>(false);
 
   const buttonsInnerContainer = css`
     display: flex;

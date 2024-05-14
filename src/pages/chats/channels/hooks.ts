@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { axiosApi } from "../../../api";
@@ -74,7 +74,7 @@ export function useChangeUserRole(channelId: string | undefined) {
    * Executes the mutation to promote users to moderators.
    * @param url The URL for the user's membership.
    */
-  const handleDemoteUser = React.useCallback(
+  const handleDemoteUser = useCallback(
     async (url: string) =>
       await updateMembershipMutation.mutateAsync({ url, role: "U" }),
     [updateMembershipMutation],
@@ -84,7 +84,7 @@ export function useChangeUserRole(channelId: string | undefined) {
    * Executes the mutation to demote moderators to regular users.
    * @param url The URL for the user's membership.
    */
-  const handlePromoteUser = React.useCallback(
+  const handlePromoteUser = useCallback(
     async (url: string) =>
       await updateMembershipMutation.mutateAsync({ url, role: "M" }),
     [updateMembershipMutation],

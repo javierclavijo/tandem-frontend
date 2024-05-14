@@ -1,4 +1,4 @@
-import React from "react";
+import { useCallback } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { axiosApi } from "../../../api";
 import { User } from "../../../common/types";
@@ -48,7 +48,7 @@ export function useCreateChatWithUser(otherUser: User | undefined) {
   /**
    * Creates a chat for the current user with the provided user.
    */
-  const createChatRequest = React.useCallback(async () => {
+  const createChatRequest = useCallback(async () => {
     if (otherUser) {
       return await axiosApi.post("friend_chats/", { users: [otherUser.id] });
     }

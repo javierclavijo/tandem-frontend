@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import { Chat, FriendChat, User } from "../../common/types";
@@ -48,7 +48,7 @@ export const useSetChatRoomHeader = (chat: Chat | undefined | null) => {
       ]
     >();
 
-  return React.useEffect(() => {
+  return useEffect(() => {
     if (chat) {
       let headerProps: ChatHeaderProps;
       if (chat.type === "users") {

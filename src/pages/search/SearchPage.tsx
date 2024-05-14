@@ -1,5 +1,4 @@
 import qs from "qs";
-import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useInfiniteQuery } from "react-query";
 import { useMediaQuery } from "react-responsive";
@@ -9,6 +8,7 @@ import Nav from "../../components/Nav/Nav";
 import Tabs from "../../components/Tabs";
 import { homeSearchStyles } from "../../components/styles";
 
+import { useEffect, useState } from "react";
 import {
   baseAppContainerWithTabs,
   baseAppContainerWithoutTabs,
@@ -84,14 +84,14 @@ function SearchPage() {
    * Search params state.
    */
   const [userSearchParams, setUserSearchParams] =
-    React.useState<UserSearchParams | null>(null);
+    useState<UserSearchParams | null>(null);
   const [channelSearchParams, setChannelSearchParams] =
-    React.useState<ChannelSearchParams | null>(null);
+    useState<ChannelSearchParams | null>(null);
 
   /**
    * Search type state.
    */
-  const [searchType, setSearchType] = React.useState<Option | null>(
+  const [searchType, setSearchType] = useState<Option | null>(
     searchTypeOptions.USERS,
   );
 
@@ -163,7 +163,7 @@ function SearchPage() {
   /**
    * Refetch the queries whenever the params or search type state is updated.
    */
-  React.useEffect(() => {
+  useEffect(() => {
     if (searchType === searchTypeOptions.USERS) {
       refetchUsers();
     } else {

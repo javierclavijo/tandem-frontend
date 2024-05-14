@@ -1,5 +1,5 @@
 import { ErrorMessage } from "@hookform/error-message";
-import React from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
@@ -42,7 +42,7 @@ function LoginPage() {
   /**
    * Set a message if the auth context's error state is set.
    */
-  React.useEffect(() => {
+  useEffect(() => {
     if (error) {
       setError("password", {
         type: "server",

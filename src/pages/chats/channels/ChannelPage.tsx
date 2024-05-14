@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { FastArrowDownSquare, FastArrowUpSquare } from "iconoir-react";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   useLocation,
   useNavigate,
@@ -60,12 +60,12 @@ function ChannelPage() {
   /**
    * Controls whether the user is a member of the channel, and their role in case they are.
    */
-  const [userRole, setUserRole] = React.useState<string | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
 
   /**
    * Convenience function which determines if the user is staff (admin or moderator).
    */
-  const userIsStaff = React.useCallback(
+  const userIsStaff = useCallback(
     () => userRole === "A" || userRole === "M",
     [userRole],
   );
@@ -73,19 +73,19 @@ function ChannelPage() {
   /**
    * Convenience function which determines if the user is the channel's admin.
    */
-  const userIsAdmin = React.useCallback(() => userRole === "A", [userRole]);
+  const userIsAdmin = useCallback(() => userRole === "A", [userRole]);
 
   /**
    * Controls whether the channel deletion confirmation modal is open.
    */
   const [deletionModalIsOpen, setDeletionModalIsOpen] =
-    React.useState<boolean>(false);
+    useState<boolean>(false);
 
   /**
    * Controls whether the channel leave confirmation modal is open.
    */
   const [leaveChannelModalIsOpen, setLeaveChannelModalIsOpen] =
-    React.useState<boolean>(false);
+    useState<boolean>(false);
 
   /**
    * Query which fetches and holds the channel's data
@@ -98,7 +98,7 @@ function ChannelPage() {
 
   const { mutateAsync: leaveMutateAsync } = useLeaveChannel(data);
 
-  const handleJoinChannel = React.useCallback(async () => {
+  const handleJoinChannel = useCallback(async () => {
     const response = await joinMutateAsync();
     if (response?.status === 201 && params?.id) {
       joinWSChat(params.id);
@@ -106,7 +106,7 @@ function ChannelPage() {
     }
   }, [params?.id, joinMutateAsync, navigate, joinWSChat]);
 
-  const handleLeaveChannel = React.useCallback(async () => {
+  const handleLeaveChannel = useCallback(async () => {
     await leaveMutateAsync();
     setLeaveChannelModalIsOpen(false);
     navigate("/chats/");
@@ -116,7 +116,7 @@ function ChannelPage() {
    * Checks if the user is a member of the channel and set the 'isMember' state if applicable. If the user is also an
    * admin, set the user role state.
    */
-  React.useEffect(() => {
+  useEffect(() => {
     const userMembership = data?.memberships.find(
       (membership) => membership.user.id === user?.id,
     );
@@ -141,7 +141,7 @@ function ChannelPage() {
    * added for users who are not members of the channel, and a 'leave channel' button is added for those who are
    * members (except for admins).
    */
-  React.useEffect(() => {
+  useEffect(() => {
     setHeader({
       title: "Channel info",
       actions: (

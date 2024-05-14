@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { infoButton } from "../pages/chats/styles";
 
@@ -14,12 +14,12 @@ function ShareLink(props: ShareLinkProps) {
   /**
    * Used to show a 'copied to clipboard' text whenever the user copies the link.
    */
-  const [copied, setCopied] = React.useState<boolean>(false);
+  const [copied, setCopied] = useState<boolean>(false);
 
   /**
    *  Sets a timeout of 2 seconds to clear the 'copied to clipboard' message whenever the user copies the link.
    */
-  React.useEffect(() => {
+  useEffect(() => {
     if (copied) {
       const timeout = setTimeout(() => setCopied(false), 2000);
       return () => {

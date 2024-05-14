@@ -1,4 +1,10 @@
-import React, { useMemo } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 interface UseEditType<T> {
   editEnabled: boolean;
@@ -23,20 +29,20 @@ export function useEditField<
   T extends HTMLInputElement | HTMLTextAreaElement,
   S,
 >(data: S | undefined, dataKey: keyof S): UseEditType<T> {
-  const [editEnabled, setEditEnabled] = React.useState<boolean>(false);
-  const [value, setValue] = React.useState<string>("");
-  const [error, setError] = React.useState<string>("");
+  const [editEnabled, setEditEnabled] = useState<boolean>(false);
+  const [value, setValue] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
-  const elementRef = React.useRef<T>(null);
-  const submitButtonRef = React.useRef<HTMLButtonElement>(null);
+  const elementRef = useRef<T>(null);
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
 
-  const clearError = React.useCallback(() => {
+  const clearError = useCallback(() => {
     if (error) {
       setError("");
     }
   }, [error]);
 
-  const updateInputValue = React.useCallback(() => {
+  const updateInputValue = useCallback(() => {
     const dataValue = data?.[dataKey];
     if (dataValue && typeof dataValue === "string") {
       setValue(dataValue);
@@ -44,9 +50,9 @@ export function useEditField<
   }, [data, dataKey]);
 
   // Set data on init and whenever data changes (i.e. after submitting)
-  React.useEffect(updateInputValue, [data?.[dataKey], updateInputValue]);
+  useEffect(updateInputValue, [data?.[dataKey], updateInputValue]);
 
-  const handleChange = React.useCallback(
+  const handleChange = useCallback(
     (e: React.ChangeEvent<T>) => {
       clearError();
       setValue(e.target.value);
@@ -54,12 +60,12 @@ export function useEditField<
     [clearError],
   );
 
-  const handleFocus = React.useCallback(() => {
+  const handleFocus = useCallback(() => {
     setEditEnabled(true);
     clearError();
   }, [clearError]);
 
-  const handleCancel = React.useCallback(() => {
+  const handleCancel = useCallback(() => {
     updateInputValue();
     setEditEnabled(false);
   }, [updateInputValue]);

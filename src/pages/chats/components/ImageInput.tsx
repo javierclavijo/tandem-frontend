@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import React from "react";
+import React, { useRef, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { axiosApi } from "../../../api";
 import { COLORS, FONT_SIZES } from "../../../common/resources/style-variables";
@@ -44,12 +44,11 @@ function ImageInput({
   invalidateQueryKey,
 }: ImageInputProps) {
   const queryClient = useQueryClient();
-  const inputRef = React.useRef<HTMLInputElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   // State which controls the visibility of the label. Activated on hover (:hover would not work, as the label needs
   // to be on top of the input for that, which causes image dropping to not work)
-  const [isLabelDisplayed, setIsLabelDisplayed] =
-    React.useState<boolean>(false);
+  const [isLabelDisplayed, setIsLabelDisplayed] = useState<boolean>(false);
 
   const request = async (data: FormData) => {
     const response = await axiosApi.patch(url, data, {

@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { Xmark } from "iconoir-react";
-import React from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FlagIcon } from "react-flag-kit";
 import { useMutation, useQueryClient } from "react-query";
 import Select, { SingleValue, StylesConfig } from "react-select";
@@ -29,11 +29,12 @@ interface LanguageBadgeProps {
  */
 function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
   const queryClient = useQueryClient();
-  const [levelValue, setLevelValue] =
-    React.useState<Option<ProficiencyLevel> | null>(null);
+  const [levelValue, setLevelValue] = useState<Option<ProficiencyLevel> | null>(
+    null,
+  );
   const { user } = useAuth();
 
-  const updateRequest = React.useCallback(
+  const updateRequest = useCallback(
     async (requestData: { level: ProficiencyLevel }) => {
       if (data) {
         const response = await axiosApi.patch(data.url, requestData);
@@ -60,7 +61,7 @@ function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Get the option which corresponds to the initial value prop and set it as
     // the select's value
     const initialOption = levelOptions.find((o) => o.value === data.level);

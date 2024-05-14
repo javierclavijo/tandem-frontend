@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { Plus } from "iconoir-react";
-import React from "react";
+import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useParams } from "react-router-dom";
 import { animated } from "react-spring";
@@ -26,13 +26,13 @@ function ChatList() {
   /**
    * Controls the chat list filter state.
    */
-  const [filter, setFilter] = React.useState<string>("");
+  const [filter, setFilter] = useState<string>("");
 
   /**
    * Controls whether the channel creation modal is open.
    */
   const [isChannelCreationModalOpen, setIsChannelCreationModalOpen] =
-    React.useState<boolean>(false);
+    useState<boolean>(false);
 
   return (
     <>

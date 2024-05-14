@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import React from "react";
+import { useCallback, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import Select, { StylesConfig } from "react-select";
 import { axiosApi } from "../../../../api";
@@ -26,10 +26,11 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  const [languageValue, setLanguageValue] = React.useState<Option | null>(null);
-  const [levelValue, setLevelValue] =
-    React.useState<Option<ProficiencyLevel> | null>(null);
-  const [error, setError] = React.useState<string>("");
+  const [languageValue, setLanguageValue] = useState<Option | null>(null);
+  const [levelValue, setLevelValue] = useState<Option<ProficiencyLevel> | null>(
+    null,
+  );
+  const [error, setError] = useState<string>("");
 
   const updateRequest = async (
     requestData: UserInfoNewLanguageSelectRequestData,
@@ -49,7 +50,7 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
 
   const clearError = () => setError("");
 
-  const handleSubmit = React.useCallback(async () => {
+  const handleSubmit = useCallback(async () => {
     if (!languageValue || !levelValue) {
       setError("Language and level must be selected.");
       return false;

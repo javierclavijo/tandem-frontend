@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import React from "react";
+import React, { useRef } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import TextareaAutosize from "react-textarea-autosize";
 import { axiosApi } from "../../../api";
@@ -38,7 +38,7 @@ function DescriptionTextarea({ data, queryKey }: DescriptionTextareaProps) {
   } = useEditField<HTMLTextAreaElement, Channel | User>(data, "description");
 
   // Used in handleBlur() to handle the case of submitting through keyboard.
-  const keyboardSubmitRef = React.useRef<boolean>(false);
+  const keyboardSubmitRef = useRef<boolean>(false);
 
   const updateRequest = async (requestData: DescriptionTextareaRequestData) => {
     const response = await axiosApi.patch(data?.url, requestData);

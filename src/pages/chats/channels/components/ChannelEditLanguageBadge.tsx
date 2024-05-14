@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import React from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FlagIcon } from "react-flag-kit";
 import { useMutation, useQueryClient } from "react-query";
 import Select, { StylesConfig } from "react-select";
@@ -37,12 +37,14 @@ interface UpdateRequest {
  */
 function ChannelEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
   const queryClient = useQueryClient();
-  const [languageValue, setLanguageValue] =
-    React.useState<Option<Language> | null>(null);
-  const [levelValue, setLevelValue] =
-    React.useState<Option<ProficiencyLevel> | null>(null);
+  const [languageValue, setLanguageValue] = useState<Option<Language> | null>(
+    null,
+  );
+  const [levelValue, setLevelValue] = useState<Option<ProficiencyLevel> | null>(
+    null,
+  );
 
-  const updateRequest = React.useCallback(
+  const updateRequest = useCallback(
     async (requestData: UpdateRequest) => {
       if (data) {
         const response = await axiosApi.patch(data?.url, requestData);
@@ -78,7 +80,7 @@ function ChannelEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
     await updateMutation.mutateAsync({ level: option.value });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Get the options which correspond to the data values and set them as the
     // selects' values
     const initialLevelOption = levelOptions.find((o) => o.value === data.level);

@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { ChatLines, Home, LogOut, Search } from "iconoir-react";
-import React from "react";
+import { useCallback } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { COLORS, FONT_SIZES } from "../../common/resources/style-variables";
@@ -19,7 +19,7 @@ function Nav() {
   /**
    * Handler for logout action.
    */
-  const handleLogout = React.useCallback(async () => {
+  const handleLogout = useCallback(async () => {
     await logout();
     navigate("/");
   }, [logout, navigate]);

@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { InfiniteData, useQueryClient } from "react-query";
 import { useMediaQuery } from "react-responsive";
 import { Outlet, useParams } from "react-router-dom";
@@ -33,7 +33,7 @@ function ChatsLayout() {
    * State used by the router outlet context which controls the header's state. This way, the header's data can be
    * obtained from the view components, without them having to contain the header themselves.
    */
-  const [header, setHeader] = React.useState<ChatHeaderProps | null>(null);
+  const [header, setHeader] = useState<ChatHeaderProps | null>(null);
 
   /**
    * Holds the WebSocket connection to the server. Closes the connection if the user logs out.
@@ -51,7 +51,7 @@ function ChatsLayout() {
   /**
    * Updates the chat list and the corresponding chat messages query whenever a message is received or sent.
    */
-  React.useEffect(() => {
+  useEffect(() => {
     if (!lastJsonMessage) {
       return;
     }

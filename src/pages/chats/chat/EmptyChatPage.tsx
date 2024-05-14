@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useOutletContext } from "react-router-dom";
 import { animated } from "react-spring";
@@ -21,7 +21,7 @@ function DesktopEmptyChatPage() {
       ]
     >();
 
-  React.useEffect(() => setHeader(null), [setHeader]);
+  useEffect(() => setHeader(null), [setHeader]);
   const transitionProps = useFadeIn();
 
   return (

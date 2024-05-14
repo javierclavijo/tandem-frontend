@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import React from "react";
+import React, { useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useMediaQuery } from "react-responsive";
 import { useParams } from "react-router-dom";
@@ -24,7 +24,7 @@ function ChatPage() {
   /**
    * Ref for the message container div. Used to scroll to the bottom of the page when necessary.
    */
-  const messageContainerRef = React.useRef<HTMLDivElement>(null);
+  const messageContainerRef = useRef<HTMLDivElement>(null);
 
   /**
    * Infinite query which fetches and holds the chat's messages.

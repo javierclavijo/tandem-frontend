@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import React from "react";
+import { useEffect, useState } from "react";
 import { Chat } from "../../../../common/types";
 import { messageSortFn } from "../../hooks";
 import { listElementContainerCss } from "../../styles";
@@ -24,12 +24,12 @@ function ChatListElements({
   /**
    * Holds the filtered list elements.
    */
-  const [filteredElements, setFilteredElements] = React.useState<Chat[]>([]);
+  const [filteredElements, setFilteredElements] = useState<Chat[]>([]);
 
   /**
    * Filter the data received in props through the specified filter.
    */
-  React.useEffect(
+  useEffect(
     () =>
       setFilteredElements(
         data?.filter((chat) =>

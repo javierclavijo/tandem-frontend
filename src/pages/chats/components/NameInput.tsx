@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import React from "react";
+import React, { useRef } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { axiosApi } from "../../../api";
 import { COLORS } from "../../../common/resources/style-variables";
@@ -33,7 +33,7 @@ function NameInput<TData>({ data, dataKey, onSubmit }: NameInputProps<TData>) {
   } = useEditField<HTMLInputElement, TData>(data, dataKey);
 
   // Used in handleBlur() to handle the case of submitting through keyboard.
-  const keyboardSubmitRef = React.useRef<boolean>(false);
+  const keyboardSubmitRef = useRef<boolean>(false);
 
   const handleBlur = async (event: React.FocusEvent<HTMLInputElement>) => {
     // If the submit button was clicked, submit the value. Else, cancel the editing.

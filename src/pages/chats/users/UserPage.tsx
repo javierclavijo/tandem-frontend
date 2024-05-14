@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { Plus } from "iconoir-react";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import { COLORS } from "../../../common/resources/style-variables";
@@ -53,37 +53,36 @@ export function UserPage() {
   /**
    * Controls whether the info is editable (i.e. if edit controls are displayed)
    */
-  const [isEditable, setIsEditable] = React.useState<boolean>(false);
+  const [isEditable, setIsEditable] = useState<boolean>(false);
 
   /**
    * Controls whether the user is a friend of the current user. Used to render the 'chat with user' button.
    * Set to true by default to avoid rendering the button on the first render.
    */
-  const [isFriend, setIsFriend] = React.useState<boolean>(true);
+  const [isFriend, setIsFriend] = useState<boolean>(true);
 
   /**
    * Controls the language creation modal's rendering
    */
   const [passwordChangeModalIsOpen, setPasswordChangeModalIsOpen] =
-    React.useState(false);
+    useState(false);
 
   /**
    * Controls the language creation modal's rendering
    */
-  const [newLanguageModalIsOpen, setNewLanguageModalIsOpen] =
-    React.useState(false);
+  const [newLanguageModalIsOpen, setNewLanguageModalIsOpen] = useState(false);
 
   /**
    * Is set whenever a language's delete button is selected. Holds the selected language's data
    */
   const [selectedDeleteLanguage, setSelectedDeleteLanguage] =
-    React.useState<UserLanguage | null>(null);
+    useState<UserLanguage | null>(null);
 
   /**
    * Set the view as editable if the info's user's ID is the same as the user's. If not, check if the user is a friend
    * of the current user (i.e. has a friend chat with them).
    */
-  React.useEffect(() => {
+  useEffect(() => {
     const isCurrentUser = !!user?.id && user?.id === data?.id;
     setIsEditable(isCurrentUser);
     if (data && !isCurrentUser) {
@@ -104,7 +103,7 @@ export function UserPage() {
    */
   const { mutateAsync: creationMutateAsync } = useCreateChatWithUser(data);
 
-  const handleDeleteLanguage = React.useCallback(async () => {
+  const handleDeleteLanguage = useCallback(async () => {
     if (selectedDeleteLanguage) {
       await deletionMutateAsync(selectedDeleteLanguage.url);
       setSelectedDeleteLanguage(null);
@@ -116,7 +115,7 @@ export function UserPage() {
   /**
    * Click event handler to create chat.
    */
-  const onClickChatCreate = React.useCallback(async () => {
+  const onClickChatCreate = useCallback(async () => {
     const response = await creationMutateAsync();
     const newChatId = response?.data?.id;
     if (response?.status === 201 && newChatId) {
@@ -129,7 +128,7 @@ export function UserPage() {
    * Set header to render the title 'user info', plus a button to chat with the user if the user is not already a
    * friend of the current user (i.e. doesn't have any friend chats with them).
    */
-  React.useEffect(() => {
+  useEffect(() => {
     setHeader({
       title: "User info",
       actions: (
