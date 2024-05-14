@@ -5,6 +5,7 @@ import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import { animated } from "react-spring";
+import { axiosApi } from "../../App";
 import Nav from "../../components/Nav/Nav";
 import { select } from "../../components/styles";
 import { languageOptions } from "../../resources/languages";
@@ -12,7 +13,7 @@ import { ServerErrorResponse } from "../chats/list/ChannelCreationForm";
 import { baseAppContainerWithoutTabs } from "../common/styles";
 import { useFadeIn } from "../common/transitions";
 import { Option } from "../common/types";
-import useAuth, { LogInRequestData, axiosApi } from "./AuthContext";
+import useAuth, { LogInRequestData } from "./AuthContext";
 import { useRedirectIfLoggedIn } from "./hooks";
 import {
   button,

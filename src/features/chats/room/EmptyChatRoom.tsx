@@ -1,16 +1,18 @@
 import { css } from "@emotion/react";
 import React from "react";
+import { useMediaQuery } from "react-responsive";
 import { useOutletContext } from "react-router-dom";
 import { animated } from "react-spring";
 import { ChatHeaderProps } from "../../../components/ChatHeader";
 import { COLORS } from "../../../resources/style-variables";
 import { useFadeIn } from "../../common/transitions";
+import ChatList from "../list/ChatList";
 import { chatHeader, chatRoom } from "./styles";
 
 /**
  * Empty chat room component. Only used in the desktop chat list.
  */
-function EmptyChatRoom() {
+function DesktopEmptyChatRoom() {
   const [, setHeader] =
     useOutletContext<
       [
@@ -32,6 +34,14 @@ function EmptyChatRoom() {
       </div>
     </animated.div>
   );
+}
+
+/**
+ * Empty chat room component.
+ */
+function EmptyChatRoom() {
+  const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+  return isDesktop ? <DesktopEmptyChatRoom /> : <ChatList />;
 }
 
 const container = css`

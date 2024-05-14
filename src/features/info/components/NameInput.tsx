@@ -1,9 +1,9 @@
 import { css } from "@emotion/react";
 import React from "react";
 import { useMutation, useQueryClient } from "react-query";
+import { axiosApi } from "../../../App";
 import EditButtons from "../../../components/EditButtons";
 import { COLORS } from "../../../resources/style-variables";
-import { axiosApi } from "../../auth/AuthContext";
 import { Channel, Chat, User } from "../../common/types";
 import { editElement } from "../styles";
 import { useEditField } from "./hooks";

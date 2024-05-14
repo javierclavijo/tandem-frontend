@@ -7,8 +7,9 @@ import {
 } from "react-query";
 import { useOutletContext } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
+import { axiosApi } from "../../App";
 import { ChatHeaderProps } from "../../components/ChatHeader";
-import useAuth, { axiosApi } from "../auth/AuthContext";
+import useAuth from "../auth/AuthContext";
 import { Chat, FriendChat, User } from "../common/types";
 import { ChatMessage, ChatMessageResponse } from "./types";
 

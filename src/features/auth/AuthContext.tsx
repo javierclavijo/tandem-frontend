@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useContext, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
+import { axiosApi } from "../../App";
 import { User } from "../common/types";
 
 interface AuthContextType {
@@ -23,27 +23,12 @@ export const AuthContext = React.createContext<AuthContextType>(
   {} as AuthContextType,
 );
 
-// TODO: move this somewhere else.
-/**
- * Main axios instance used throughout the app.
- */
-export const axiosApi = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ?? "http://localhost:8000/api",
-  withCredentials: true,
-  withXSRFToken: true,
-
-  // Names of the CSRF token cookie and header used by Django.
-  xsrfCookieName: "csrftoken",
-  xsrfHeaderName: "X-CSRFToken",
-});
-
 /**
  * Authentication context provider for the app. Fetches and provides information about authentication and the user,
  * and provides functions to log in and log out.
  */
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   /**
    * ID of the session's user. Used in the user's query key to identify the query.
@@ -69,8 +54,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
    * Holds whether the login request is being executed or not.
    */
   const [loading, setLoading] = useState<boolean>(true);
-
-  const axiosInterceptorRef = React.useRef<number | null>(null);
 
   /**
    * Session's user query. Is disabled unless the user is logged in.
@@ -107,20 +90,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   React.useEffect(() => {
     fetchSessionInfo();
   }, [fetchSessionInfo]);
-
-  React.useEffect(() => {
-    if (!axiosInterceptorRef.current) {
-      axiosInterceptorRef.current = axiosApi.interceptors.response.use(
-        (response) => response,
-        (error) => {
-          if (error.response.status === 404) {
-            navigate("/404");
-          }
-          return Promise.reject(error);
-        },
-      );
-    }
-  }, [navigate]);
 
   /**
    * Sends a login request.

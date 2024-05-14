@@ -4,10 +4,10 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useInfiniteQuery } from "react-query";
 import { useMediaQuery } from "react-responsive";
 import { animated } from "react-spring";
+import { axiosApi } from "../../App";
 import Nav from "../../components/Nav/Nav";
 import { homeSearchStyles } from "../../components/styles";
 import Tabs from "../../components/Tabs";
-import { axiosApi } from "../auth/AuthContext";
 import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 import {
   baseAppContainerWithoutTabs,

@@ -3,6 +3,7 @@ import React from "react";
 import { FlagIcon } from "react-flag-kit";
 import { useMutation, useQueryClient } from "react-query";
 import Select, { StylesConfig } from "react-select";
+import { axiosApi } from "../../../App";
 import ProficiencyLevelIcon from "../../../components/icons/ProficiencyLevelIcon";
 import { badge, noBorderAndBgSelectWhite } from "../../../components/styles";
 import {
@@ -11,7 +12,6 @@ import {
   levelOptions,
 } from "../../../resources/languages";
 import { COLORS } from "../../../resources/style-variables";
-import { axiosApi } from "../../auth/AuthContext";
 import {
   Channel,
   Language,

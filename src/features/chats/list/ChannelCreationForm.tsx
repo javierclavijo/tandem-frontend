@@ -5,10 +5,10 @@ import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import Select, { StylesConfig } from "react-select";
+import { axiosApi } from "../../../App";
 import { modal, select } from "../../../components/styles";
 import { languageOptions, levelOptions } from "../../../resources/languages";
 import { COLORS, FONT_SIZES } from "../../../resources/style-variables";
-import { axiosApi } from "../../auth/AuthContext";
 import { errorStyle } from "../../auth/styles";
 import { Language, Option, ProficiencyLevel } from "../../common/types";
 
