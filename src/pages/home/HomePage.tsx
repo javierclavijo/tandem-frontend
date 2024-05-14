@@ -16,7 +16,7 @@ import {
   homeSearchMainMobile,
 } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
-import { useChannelChatList, useFriendChatList } from "../chats/hooks";
+import { useChannelChatList, useFriendChatList } from "../chats/queries";
 import RecentElement from "./components/RecentElement";
 import { useDiscoverUsersList } from "./hooks";
 

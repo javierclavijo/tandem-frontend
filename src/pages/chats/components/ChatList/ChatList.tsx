@@ -7,7 +7,7 @@ import { animated } from "react-spring";
 import { COLORS } from "../../../../common/resources/style-variables";
 import { useFadeIn } from "../../../../common/transitions";
 import useAuth from "../../../auth/AuthContext/AuthContext";
-import { useAllChatList } from "../../hooks";
+import { useAllChatList } from "../../queries";
 import { listContainer, listContainerMobile } from "../../styles";
 import ChatListElements from "./ChatListElements";
 import ChatListFilter from "./ChatListFilter";
