@@ -37,32 +37,32 @@ const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 60000 } },
 });
 
-export default function App() {
-  const router = createBrowserRouter([
-    {
-      path: "/chats",
-      element: <ChatMain />,
-      children: [
-        // User and channel info views
-        { path: "users/:id", element: <UserInfo /> },
-        { path: "channels/:id", element: <ChannelInfo /> },
-        // Chat room view
-        { path: ":id", element: <ChatRoom /> },
-        // Chat list view.
-        {
-          path: "",
-          element: <EmptyChatRoom />,
-        },
-      ],
-    },
-    { path: "/search", element: <Search /> },
-    { path: "/login", element: <LogIn /> },
-    { path: "/register", element: <Register /> },
-    { path: "/home", element: <Home /> },
-    { path: "/", element: <PreLogin /> },
-    { path: "*", element: <NotFound /> },
-  ]);
+const router = createBrowserRouter([
+  {
+    path: "/chats",
+    element: <ChatMain />,
+    children: [
+      // User and channel info views
+      { path: "users/:id", element: <UserInfo /> },
+      { path: "channels/:id", element: <ChannelInfo /> },
+      // Chat room view
+      { path: ":id", element: <ChatRoom /> },
+      // Chat list view.
+      {
+        path: "",
+        element: <EmptyChatRoom />,
+      },
+    ],
+  },
+  { path: "/search", element: <Search /> },
+  { path: "/login", element: <LogIn /> },
+  { path: "/register", element: <Register /> },
+  { path: "/home", element: <Home /> },
+  { path: "/", element: <PreLogin /> },
+  { path: "*", element: <NotFound /> },
+]);
 
+export default function App() {
   return (
     <React.StrictMode>
       <Global styles={globalStyles} />
