@@ -6,10 +6,6 @@ import { COLORS, FONT_SIZES } from "../../resources/style-variables";
 import { useRedirectIfLoggedIn } from "../auth/hooks";
 import { baseAppContainerWithoutTabs } from "../common/styles";
 
-import topImage from "../../static/images/loren-dosti-M8cpBt6RSns-unsplash.webp";
-import middleImage from "../../static/images/toa-heftiba-ANNsvl-6AG0-unsplash.webp";
-import bottomImage from "../../static/images/zachary-nelson-98Elr-LIvD8-unsplash.webp";
-
 /**
  * Pre-login home/index page component.
  */
@@ -30,7 +26,7 @@ function PreLogin() {
         </div>
         <div css={imageContainer}>
           <img
-            src={topImage}
+            src="/images/pre-login-top.webp"
             alt="A team of rafters rowing in a body of water."
             css={image}
           />
@@ -51,15 +47,15 @@ function PreLogin() {
             <p css={disclaimer}>Users of this app might not always be real.</p>
           </div>
           <img
-            src={middleImage}
+            src="/images/pre-login-middle.webp"
             alt="A young person clad in urban attire, smiling."
             css={splitImage}
           />
         </div>
         <div css={splitContainer}>
           <img
-            src={bottomImage}
-            alt="Young people jumping and overall looking excited."
+            src="/images/pre-login-bottom.webp"
+            alt="Young people jumping and looking excited overall."
             css={splitImage}
           />
           <div css={splitTextContainer}>

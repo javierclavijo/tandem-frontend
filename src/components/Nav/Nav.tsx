@@ -6,7 +6,6 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../features/auth/AuthContext";
 import { infoButton } from "../../features/info/styles";
 import { COLORS, FONT_SIZES } from "../../resources/style-variables";
-import langflowLogo from "../../static/svg/langflow_logo.svg";
 import NavProfilePicture from "./NavProfilePicture";
 
 /**
@@ -29,7 +28,7 @@ function Nav() {
     <header css={header}>
       <nav css={nav} role="navigation">
         <Link to="/" css={titleLink}>
-          <img src={langflowLogo} alt="Logo" css={logo} />
+          <img src="/svg/langflow_logo.svg" alt="LangFlow" css={logo} />
           <h1 css={title}>LangFlow</h1>
         </Link>
         <ul css={navList}>

@@ -194,7 +194,7 @@ export const useSetChatRoomHeader = (chat: Chat | undefined | null) => {
 
   return React.useEffect(() => {
     if (chat) {
-      let headerProps;
+      let headerProps: ChatHeaderProps;
       if (chat.type === "users") {
         const friend = getFriendFromFriendChat(user!, chat as FriendChat);
         headerProps = {

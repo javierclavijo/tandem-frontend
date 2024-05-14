@@ -2,14 +2,10 @@ import { css } from "@emotion/react";
 import { NavArrowRight } from "iconoir-react";
 import { Link } from "react-router-dom";
 import ResponsiveEllipsis from "../../components/ResponsiveEllipsis";
-import {
-  containerWithLink,
-  thumbnailContainer,
-  thumbnailImg,
-} from "../../components/styles";
+import { containerWithLink, thumbnailContainer } from "../../components/styles";
 import { COLORS } from "../../resources/style-variables";
 
-import defaultImg from "../../static/images/user_placeholder.png";
+import ChatThumbnail from "../../components/ChatThumbnail";
 
 interface SearchElementProps {
   id: string;
@@ -27,7 +23,7 @@ function RecentElement(props: SearchElementProps) {
     <article css={outerContainer}>
       <div css={innerContainer}>
         <div css={imgContainer}>
-          <img src={props.image ?? defaultImg} alt="" css={thumbnailImg} />
+          <ChatThumbnail src={props.image} />
         </div>
         <div css={contentContainer}>
           <div css={upperInnerContainer}>

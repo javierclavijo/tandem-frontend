@@ -40,8 +40,6 @@ import {
   useLeaveChannel,
 } from "./hooks";
 
-import defaultImg from "../../../static/images/user_placeholder.png";
-
 /**
  * Displays a channel's details: image, name, language and level, description and members.
  */
@@ -182,7 +180,8 @@ function ChannelInfo() {
           <>
             <ImageInput
               image={data.image}
-              defaultImage={defaultImg}
+              // TODO: remove direct references like this.
+              defaultImage="/images/user-placeholder.png"
               url={data.url}
               invalidateQueryKey={["channels", data.id]}
             />
@@ -190,7 +189,11 @@ function ChannelInfo() {
           </>
         ) : (
           <>
-            <img src={data.image ?? defaultImg} alt="" css={profileImg} />
+            <img
+              src={data.image ?? "/images/user-placeholder.png"}
+              alt=""
+              css={profileImg}
+            />
             <p>{data?.name}</p>
           </>
         )}

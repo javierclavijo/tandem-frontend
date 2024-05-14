@@ -2,6 +2,9 @@ import { css } from "@emotion/react";
 import { StylesConfig } from "react-select";
 import { COLORS, FONT_SIZES } from "../resources/style-variables";
 
+// TODO: substitute all these css declarations with styled components or CSS
+// modules.
+
 export const badge = css`
   display: flex;
   border-radius: 5px;
@@ -153,12 +156,6 @@ export const buttonWithoutBackgroundAndBorder = css`
   cursor: pointer;
   gap: 0.5rem;
   font-size: ${FONT_SIZES.S};
-`;
-
-export const thumbnailImg = css`
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
 `;
 
 export const thumbnailContainer = css`

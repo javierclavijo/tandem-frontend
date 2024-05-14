@@ -245,7 +245,7 @@ function SearchPanel({
           /**
            * User search controls.
            */
-          <React.Fragment>
+          <>
             {/* User native languages multi-select.
             Automatically disables options which are selected as learning 
             languages. */}
@@ -295,12 +295,12 @@ function SearchPanel({
                 searchSelect as StylesConfig<Option<ProficiencyLevel>, true>
               }
             />
-          </React.Fragment>
+          </>
         ) : (
           /**
            * Channel search controls.
            */
-          <React.Fragment>
+          <>
             {/* Channel language multi-select. Is set to null if no option is 
             selected, as the level select is not disabled if the language state 
             is set to an empty array. */}
@@ -329,7 +329,7 @@ function SearchPanel({
               aria-label="Proficiency levels of channel languages"
               styles={searchSelect as StylesConfig<Option, true>}
             />
-          </React.Fragment>
+          </>
         )}
       </div>
     </form>

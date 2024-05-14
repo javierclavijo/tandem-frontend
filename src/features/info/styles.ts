@@ -2,6 +2,8 @@ import { css } from "@emotion/react";
 import { buttonWithoutBackgroundAndBorder } from "../../components/styles";
 import { COLORS, FONT_SIZES } from "../../resources/style-variables";
 
+// TODO: substitute all this for CSS modules (also in other features)
+
 export const infoSection = css`
   background-color: ${COLORS.DARK_PRIMARY};
   color: ${COLORS.WHITE};

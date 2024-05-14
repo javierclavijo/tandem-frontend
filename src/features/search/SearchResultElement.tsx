@@ -3,15 +3,11 @@ import { NavArrowRight } from "iconoir-react";
 import { FlagIcon } from "react-flag-kit";
 import { Link } from "react-router-dom";
 import ResponsiveEllipsis from "../../components/ResponsiveEllipsis";
-import {
-  containerWithLink,
-  thumbnailContainer,
-  thumbnailImg,
-} from "../../components/styles";
+import { containerWithLink, thumbnailContainer } from "../../components/styles";
 import { COLORS } from "../../resources/style-variables";
 
+import ChatThumbnail from "../../components/ChatThumbnail";
 import { LANGUAGE_INFO } from "../../resources/languages";
-import defaultImg from "../../static/images/user_placeholder.png";
 import { Language } from "../common/types";
 
 interface SearchElementProps {
@@ -38,7 +34,7 @@ function SearchResultElement({
     <article css={outerContainer}>
       <div css={innerContainer}>
         <div css={imgContainer}>
-          <img src={image ?? defaultImg} alt="" css={thumbnailImg} />
+          <ChatThumbnail src={image} />
         </div>
         <div css={contentContainer}>
           <div css={upperInnerContainer}>

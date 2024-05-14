@@ -3,10 +3,10 @@ import { NavLink } from "react-router-dom";
 import { User } from "../../features/common/types";
 import { infoButton } from "../../features/info/styles";
 import { COLORS, FONT_SIZES } from "../../resources/style-variables";
-import { thumbnailContainer, thumbnailImg } from "../styles";
+import { thumbnailContainer } from "../styles";
 import { activeNavLink } from "./Nav";
 
-import defaultImg from "../../static/images/user_placeholder.png";
+import ChatThumbnail from "../ChatThumbnail";
 
 interface NavProfilePictureProps {
   user: User | undefined;
@@ -24,7 +24,7 @@ function NavProfilePicture({ user }: NavProfilePictureProps) {
       title="Go to your profile"
     >
       <div css={imageContainer}>
-        <img src={user?.image ?? defaultImg} alt="" css={pictureImg} />
+        <ChatThumbnail src={user?.image} css={pictureImg} />
       </div>
       <p>{user?.username}</p>
     </NavLink>
@@ -45,7 +45,6 @@ const link = css`
 `;
 
 const pictureImg = css`
-  ${thumbnailImg};
   flex: 1 0 auto;
 `;
 

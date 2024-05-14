@@ -3,10 +3,9 @@ import { Link, To } from "react-router-dom";
 import { animated } from "react-spring";
 import { chatHeader } from "../features/chats/room/styles";
 import { useFadeIn } from "../features/common/transitions";
-import { containerWithLink, thumbnailContainer, thumbnailImg } from "./styles";
 import BackButton from "./BackButton";
-
-import defaultImg from "../static/images/user_placeholder.png";
+import ChatThumbnail from "./ChatThumbnail";
+import { containerWithLink, thumbnailContainer } from "./styles";
 
 export interface ChatHeaderProps {
   title?: string;
@@ -30,11 +29,7 @@ function ChatHeader(props: ChatHeaderProps) {
           <div css={innerContainer}>
             {props.image || props.image === null ? (
               <div css={imageContainer}>
-                <img
-                  src={props.image ?? defaultImg}
-                  alt=""
-                  css={thumbnailImg}
-                />
+                <ChatThumbnail src={props.image} />
               </div>
             ) : null}
             <h2>{props.title}</h2>

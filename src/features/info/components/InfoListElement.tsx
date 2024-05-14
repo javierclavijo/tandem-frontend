@@ -5,12 +5,11 @@ import { Link } from "react-router-dom";
 import {
   containerWithLink,
   thumbnailContainer,
-  thumbnailImg,
 } from "../../../components/styles";
 import { COLORS } from "../../../resources/style-variables";
 import { infoListElementInnerContainer } from "../styles";
 
-import defaultImg from "../../../static/images/user_placeholder.png";
+import ChatThumbnail from "../../../components/ChatThumbnail";
 
 interface InfoListElementProps {
   name: string;
@@ -45,7 +44,7 @@ function InfoListElement(props: InfoListElementProps) {
     >
       <div css={infoListElementInnerContainer}>
         <div css={pictureContainer}>
-          <img src={props.image ?? defaultImg} alt="" css={thumbnailImg} />
+          <ChatThumbnail src={props.image} />
         </div>
         <div css={contentContainer}>
           <div css={upperInnerContentContainer}>

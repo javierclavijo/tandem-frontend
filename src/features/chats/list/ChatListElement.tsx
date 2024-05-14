@@ -1,10 +1,10 @@
 import { css } from "@emotion/react";
 import { DateTime } from "luxon";
 import { NavLink } from "react-router-dom";
+import ChatThumbnail from "../../../components/ChatThumbnail";
 import ResponsiveEllipsis from "../../../components/ResponsiveEllipsis";
-import { thumbnailContainer, thumbnailImg } from "../../../components/styles";
+import { thumbnailContainer } from "../../../components/styles";
 import { COLORS, FONT_SIZES } from "../../../resources/style-variables";
-import defaultImg from "../../../static/images/user_placeholder.png";
 import { Chat } from "../../common/types";
 import { elementContentContainer, link } from "../styles";
 
@@ -42,7 +42,7 @@ function ChatListElement({
     <li css={chatListElementContainer}>
       <div css={elementContentContainer}>
         <div css={thumbnailContainer}>
-          <img src={chat.image ?? defaultImg} alt="" css={thumbnailImg} />
+          <ChatThumbnail src={chat.image} />
         </div>
         <div css={innerContainer}>
           <span css={title}>

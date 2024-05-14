@@ -37,7 +37,7 @@ function NotFound() {
  */
 export function UserSearchResults(props: UserSearchResultsProps) {
   return props.data ? (
-    <React.Fragment>
+    <>
       {props.data?.pages.map((page, pageIndex) => (
         <React.Fragment key={`page-${pageIndex}`}>
           {[...page.results].map((element) => (
@@ -57,7 +57,7 @@ export function UserSearchResults(props: UserSearchResultsProps) {
       props.data?.pages[0].results.length === 0 ? (
         <NotFound />
       ) : null}
-    </React.Fragment>
+    </>
   ) : null;
 }
 
@@ -66,7 +66,7 @@ export function UserSearchResults(props: UserSearchResultsProps) {
  */
 export function ChannelSearchResults(props: ChannelSearchResultsProps) {
   return props.data ? (
-    <React.Fragment>
+    <>
       {props.data?.pages.map((page, pageIndex) => (
         <React.Fragment key={`page-${pageIndex}`}>
           {[...page.results].map((element) => (
@@ -86,6 +86,6 @@ export function ChannelSearchResults(props: ChannelSearchResultsProps) {
       props.data?.pages[0].results.length === 0 ? (
         <NotFound />
       ) : null}
-    </React.Fragment>
+    </>
   ) : null;
 }

@@ -29,8 +29,6 @@ import SetPasswordModal from "./SetPasswordModal";
 import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
 import { useCreateChatWithUser, useDeleteUserLanguage, useUser } from "./hooks";
 
-import defaultImg from "../../../static/images/user_placeholder.png";
-
 /**
  * User detail component.
  */
@@ -135,7 +133,8 @@ export function UserInfo() {
     setHeader({
       title: "User info",
       actions: (
-        <React.Fragment>
+        // TODO: this doesn't look too good (open-closed).
+        <>
           {!isFriend ? (
             <button type="button" onClick={onClickChatCreate} css={infoButton}>
               Chat with user
@@ -150,7 +149,7 @@ export function UserInfo() {
               Change password
             </button>
           ) : null}
-        </React.Fragment>
+        </>
       ),
     });
   }, [
@@ -162,27 +161,32 @@ export function UserInfo() {
   ]);
 
   return data ? (
-    <React.Fragment>
+    <>
       <animated.div css={container} style={transitionProps}>
         {/* Main user information
             Contains the user's picture, username, languages and description.
             */}
         <section css={infoSection}>
           {isEditable && data ? (
-            <React.Fragment>
+            <>
               <ImageInput
                 image={data.image}
-                defaultImage={defaultImg}
+                // TODO: remove direct references like this.
+                defaultImage="/images/user-placeholder.png"
                 url={data.url}
                 invalidateQueryKey={["users", user?.id]}
               />
               <UserNameInput data={data} />
-            </React.Fragment>
+            </>
           ) : (
-            <React.Fragment>
-              <img src={data.image ?? defaultImg} alt="" css={picture} />
+            <>
+              <img
+                src={data.image ?? "/images/user-placeholder.png"}
+                alt=""
+                css={picture}
+              />
               <p>{data?.username}</p>
-            </React.Fragment>
+            </>
           )}
 
           {/* Languages
@@ -192,7 +196,7 @@ export function UserInfo() {
             <h3>Languages</h3>
             <div css={languagesInnerContainer}>
               {isEditable ? (
-                <React.Fragment>
+                <>
                   {/* Render selects for the user's non-native languages, as native languages can't be edited
                             by the user */}
                   {data.languages.map((language) =>
@@ -221,7 +225,7 @@ export function UserInfo() {
                     Add
                     <Plus />
                   </button>
-                </React.Fragment>
+                </>
               ) : (
                 data.languages.map((language) => (
                   <LanguageBadge
@@ -239,10 +243,10 @@ export function UserInfo() {
             {isEditable ? (
               <DescriptionTextarea data={data} queryKey={"users"} />
             ) : (
-              <React.Fragment>
+              <>
                 <h3>Description</h3>
                 <p>{data?.description}</p>
-              </React.Fragment>
+              </>
             )}
           </section>
         </section>
@@ -335,7 +339,7 @@ export function UserInfo() {
           setIsOpen={setPasswordChangeModalIsOpen}
         />
       ) : null}
-    </React.Fragment>
+    </>
   ) : null;
 }
 
