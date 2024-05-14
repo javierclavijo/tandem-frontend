@@ -5,16 +5,16 @@ import { useMediaQuery } from "react-responsive";
 import { useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import { useFadeIn } from "../../../common/transitions";
-import useAuth from "../../auth/AuthContext";
+import useAuth from "../../auth/AuthContext/AuthContext";
 import { useChat, useSetChatRoomHeader } from "../hooks";
-import ChatInputForm from "./ChatInputForm";
-import ChatRoomMessage from "./ChatRoomMessage";
+import ChatInputForm from "./components/ChatInputForm";
+import ChatRoomMessage from "./components/ChatRoomMessage";
 import { chatRoom, chatRoomMobile } from "./styles";
 
 /**
  * Renders a chat's messages, plus the input form to send messages to the chat.
  */
-function ChatRoom() {
+function ChatPage() {
   const params = useParams();
   const { user } = useAuth();
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
@@ -86,4 +86,4 @@ const container = css`
   flex-direction: column-reverse;
 `;
 
-export default ChatRoom;
+export default ChatPage;

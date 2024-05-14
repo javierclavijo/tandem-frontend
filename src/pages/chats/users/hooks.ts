@@ -2,7 +2,7 @@ import React from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { axiosApi } from "../../../App";
 import { User } from "../../../common/types";
-import useAuth from "../../auth/AuthContext";
+import useAuth from "../../auth/AuthContext/AuthContext";
 
 /**
  * Holds a user's data

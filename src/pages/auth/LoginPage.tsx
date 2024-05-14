@@ -6,7 +6,8 @@ import { animated } from "react-spring";
 import { baseAppContainerWithoutTabs } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
 import Nav from "../../components/Nav/Nav";
-import useAuth, { LogInRequestData } from "./AuthContext";
+import useAuth from "./AuthContext/AuthContext";
+import { LogInRequestData } from "./AuthContext/types";
 import { useRedirectIfLoggedIn } from "./hooks";
 import {
   button,

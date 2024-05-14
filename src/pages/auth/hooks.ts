@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuth from "./AuthContext";
+import useAuth from "./AuthContext/AuthContext";
 
 /**
  * Redirects the user to the specified location if they are not logged in.

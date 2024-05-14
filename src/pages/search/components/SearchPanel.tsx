@@ -5,6 +5,11 @@ import React, { FormEvent } from "react";
 import { DebounceInput } from "react-debounce-input";
 import { useSearchParams } from "react-router-dom";
 import Select, { StylesConfig } from "react-select";
+import {
+  languageOptions,
+  levelOptions,
+} from "../../../common/resources/languages";
+import { COLORS } from "../../../common/resources/style-variables";
 import { Language, Option, ProficiencyLevel } from "../../../common/types";
 import {
   buttonWithoutBackgroundAndBorder,
@@ -13,8 +18,6 @@ import {
   searchInputElement,
   searchSelect,
 } from "../../../components/styles";
-import { languageOptions, levelOptions } from "../../../resources/languages";
-import { COLORS } from "../../../resources/style-variables";
 import {
   ChannelSearchParams,
   UserSearchParams,

@@ -8,18 +8,18 @@ import {
   useParams,
 } from "react-router-dom";
 import { animated } from "react-spring";
+import { COLORS } from "../../../common/resources/style-variables";
 import { useFadeIn } from "../../../common/transitions";
 import Button from "../../../components/Button";
 import { ChatHeaderProps } from "../../../components/ChatHeader";
 import LanguageBadge from "../../../components/LanguageBadge";
 import ShareLink from "../../../components/ShareLink";
-import { COLORS } from "../../../resources/style-variables";
-import useAuth from "../../auth/AuthContext";
-import { useJoinWSChat } from "../../chats/hooks";
+import useAuth from "../../auth/AuthContext/AuthContext";
 import DescriptionTextarea from "../components/DescriptionTextarea";
 import ImageInput from "../components/ImageInput";
 import InfoListElement from "../components/InfoListElement";
 import { ChannelNameInput } from "../components/NameInput";
+import { useJoinWSChat } from "../hooks";
 import {
   descriptionSection,
   infoButton,
@@ -29,9 +29,9 @@ import {
   listSectionList,
   profileImg,
 } from "../styles";
-import ChannelEditLanguageBadge from "./ChannelEditLanguageBadge";
-import DeleteChannelModal from "./DeleteChannelModal";
-import LeaveChannelModal from "./LeaveChannelModal";
+import ChannelEditLanguageBadge from "./components/ChannelEditLanguageBadge";
+import DeleteChannelModal from "./components/DeleteChannelModal";
+import LeaveChannelModal from "./components/LeaveChannelModal";
 import {
   useChangeUserRole,
   useChannel,
@@ -43,7 +43,7 @@ import {
 /**
  * Displays a channel's details: image, name, language and level, description and members.
  */
-function ChannelInfo() {
+function ChannelPage() {
   const params = useParams();
   const { user } = useAuth();
   const location = useLocation();
@@ -318,4 +318,4 @@ const emptyContainer = css`
   padding: 0.5rem 1rem;
 `;
 
-export default ChannelInfo;
+export default ChannelPage;

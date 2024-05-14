@@ -3,9 +3,9 @@ import { ChatLines, Home, LogOut, Search } from "iconoir-react";
 import React from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import useAuth from "../../pages/auth/AuthContext";
+import { COLORS, FONT_SIZES } from "../../common/resources/style-variables";
+import useAuth from "../../pages/auth/AuthContext/AuthContext";
 import { infoButton } from "../../pages/chats/styles";
-import { COLORS, FONT_SIZES } from "../../resources/style-variables";
 import NavProfilePicture from "./NavProfilePicture";
 
 /**

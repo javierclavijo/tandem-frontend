@@ -3,9 +3,9 @@ import React from "react";
 import { useMutation, useQueryClient } from "react-query";
 import TextareaAutosize from "react-textarea-autosize";
 import { axiosApi } from "../../../App";
+import { COLORS } from "../../../common/resources/style-variables";
 import { Channel, User } from "../../../common/types";
 import EditButtons from "../../../components/EditButtons";
-import { COLORS } from "../../../resources/style-variables";
 import { editElement } from "../styles";
 import { useEditField } from "./hooks";
 

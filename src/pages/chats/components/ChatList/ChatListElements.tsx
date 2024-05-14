@@ -1,8 +1,8 @@
 import { css } from "@emotion/react";
 import React from "react";
-import { Chat } from "../../../common/types";
-import { messageSortFn } from "../hooks";
-import { listElementContainerCss } from "../styles";
+import { Chat } from "../../../../common/types";
+import { messageSortFn } from "../../hooks";
+import { listElementContainerCss } from "../../styles";
 import ChatListElement from "./ChatListElement";
 
 interface ChatListElementsProps {

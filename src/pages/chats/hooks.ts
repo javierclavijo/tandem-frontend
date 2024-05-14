@@ -10,7 +10,7 @@ import useWebSocket from "react-use-websocket";
 import { axiosApi } from "../../App";
 import { Chat, FriendChat, User } from "../../common/types";
 import { ChatHeaderProps } from "../../components/ChatHeader";
-import useAuth from "../auth/AuthContext";
+import useAuth from "../auth/AuthContext/AuthContext";
 import { ChatMessage, ChatMessageResponse } from "./types";
 
 /**

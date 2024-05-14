@@ -3,10 +3,10 @@ import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
-import { axiosApi } from "../../../App";
-import { modal } from "../../../components/styles";
-import useAuth from "../../auth/AuthContext";
-import { errorStyle, input, label } from "../../auth/styles";
+import { axiosApi } from "../../../../App";
+import { modal } from "../../../../components/styles";
+import useAuth from "../../../auth/AuthContext/AuthContext";
+import { errorStyle, input, label } from "../../../auth/styles";
 
 interface SetPasswordRequestData {
   newPassword: string;

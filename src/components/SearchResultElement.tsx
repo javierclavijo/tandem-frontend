@@ -2,12 +2,12 @@ import { css } from "@emotion/react";
 import { NavArrowRight } from "iconoir-react";
 import { FlagIcon } from "react-flag-kit";
 import { Link } from "react-router-dom";
-import { COLORS } from "../resources/style-variables";
+import { COLORS } from "../common/resources/style-variables";
 import ResponsiveEllipsis from "./ResponsiveEllipsis";
 import { containerWithLink, thumbnailContainer } from "./styles";
 
+import { LANGUAGE_INFO } from "../common/resources/languages";
 import { Language } from "../common/types";
-import { LANGUAGE_INFO } from "../resources/languages";
 import ChatThumbnail from "./ChatThumbnail";
 
 interface SearchElementProps {

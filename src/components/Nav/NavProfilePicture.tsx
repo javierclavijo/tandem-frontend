@@ -1,8 +1,8 @@
 import { css } from "@emotion/react";
 import { NavLink } from "react-router-dom";
+import { COLORS, FONT_SIZES } from "../../common/resources/style-variables";
 import { User } from "../../common/types";
 import { infoButton } from "../../pages/chats/styles";
-import { COLORS, FONT_SIZES } from "../../resources/style-variables";
 import ChatThumbnail from "../ChatThumbnail";
 import { thumbnailContainer } from "../styles";
 import { activeNavLink } from "./Nav";
