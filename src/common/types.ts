@@ -82,3 +82,5 @@ export interface Option<T extends string = string> {
   value: T;
   label: string;
 }
+
+export type ServerErrorResponse = Readonly<Record<string, string[]>>;

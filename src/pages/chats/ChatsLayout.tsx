@@ -13,10 +13,10 @@ import { Chat } from "../../common/types";
 import ChatHeader, { ChatHeaderProps } from "../../components/ChatHeader";
 import Nav from "../../components/Nav/Nav";
 import Tabs from "../../components/Tabs";
-import useAuth from "../auth/AuthContext";
+import useAuth from "../auth/AuthContext/AuthContext";
 import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 import { chatRoom, chatRoomMobile } from "./chat/styles";
-import ChatList from "./list/ChatList";
+import ChatList from "./components/ChatList/ChatList";
 import { chatMain, chatMainMobile } from "./styles";
 import { ChatMessageResponse, WsChatMessage } from "./types";
 

@@ -4,18 +4,18 @@ import React from "react";
 import { FlagIcon } from "react-flag-kit";
 import { useMutation, useQueryClient } from "react-query";
 import Select, { SingleValue, StylesConfig } from "react-select";
-import { axiosApi } from "../../../App";
+import { axiosApi } from "../../../../App";
 import {
   LANGUAGE_INFO,
   levelOptions,
-} from "../../../common/resources/languages";
-import { COLORS } from "../../../common/resources/style-variables";
-import { Option, ProficiencyLevel, User } from "../../../common/types";
-import Button from "../../../components/Button";
-import ProficiencyLevelIcon from "../../../components/icons/ProficiencyLevelIcon";
-import { badge, noBorderAndBgSelectWhite } from "../../../components/styles";
-import useAuth from "../../auth/AuthContext";
-import { UserLanguage } from "../types";
+} from "../../../../common/resources/languages";
+import { COLORS } from "../../../../common/resources/style-variables";
+import { Option, ProficiencyLevel, User } from "../../../../common/types";
+import Button from "../../../../components/Button";
+import ProficiencyLevelIcon from "../../../../components/icons/ProficiencyLevelIcon";
+import { badge, noBorderAndBgSelectWhite } from "../../../../components/styles";
+import useAuth from "../../../auth/AuthContext/AuthContext";
+import { UserLanguage } from "../../types";
 
 interface LanguageBadgeProps {
   data: UserLanguage;

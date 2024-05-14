@@ -14,6 +14,7 @@ interface NameInputProps<TData> {
   onSubmit: (value: string) => Promise<void>;
 }
 
+// TODO: review, looks suspicious.
 /**
  * Base name input component for detail views.
  */

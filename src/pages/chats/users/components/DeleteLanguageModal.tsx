@@ -1,8 +1,8 @@
 import React from "react";
 import ReactModal from "react-modal";
-import { LANGUAGE_INFO } from "../../../common/resources/languages";
-import { modal } from "../../../components/styles";
-import { UserLanguage } from "../types";
+import { LANGUAGE_INFO } from "../../../../common/resources/languages";
+import { modal } from "../../../../components/styles";
+import { UserLanguage } from "../../types";
 
 // Set the modal's app element to "hide the application from assistive screenreaders and other assistive technologies
 // while the modal is open" (see react-modal docs: https://reactcommunity.org/react-modal/examples/set_app_element/).

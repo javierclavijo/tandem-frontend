@@ -1,36 +1,36 @@
 import React from "react";
 import ReactModal from "react-modal";
-import { modal } from "../../../components/styles";
+import { modal } from "../../../../components/styles";
 
 // Set the modal's app element to "hide the application from assistive screenreaders and other assistive technologies
 // while the modal is open" (see react-modal docs: https://reactcommunity.org/react-modal/examples/set_app_element/).
 ReactModal.setAppElement("#root");
 
-interface LeaveChannelModalProps {
+interface DeleteChannelModalProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleLeave: () => Promise<void>;
+  handleDelete: () => Promise<void>;
 }
 
 /**
- * Confirmation modal window for channel leave action.
+ * Channel deletion confirmation modal window.
  */
-function LeaveChannelModal({
+function DeleteChannelModal({
   isOpen,
   setIsOpen,
-  handleLeave,
-}: LeaveChannelModalProps) {
+  handleDelete,
+}: DeleteChannelModalProps) {
   return (
     <ReactModal
       isOpen={isOpen}
       onRequestClose={() => setIsOpen(false)}
-      contentLabel="Leave channel"
+      contentLabel="Delete channel"
       style={modal.container}
     >
-      <p css={modal.title}>Leave channel?</p>
+      <p css={modal.title}>Delete channel?</p>
       <div css={modal.buttonsContainer}>
-        <button onClick={handleLeave} css={modal.button}>
-          Leave
+        <button onClick={handleDelete} css={modal.button}>
+          Delete
         </button>
         <button onClick={() => setIsOpen(false)} css={modal.cancelButton}>
           Cancel
@@ -40,4 +40,4 @@ function LeaveChannelModal({
   );
 }
 
-export default LeaveChannelModal;
+export default DeleteChannelModal;

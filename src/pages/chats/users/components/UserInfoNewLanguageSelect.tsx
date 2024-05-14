@@ -2,16 +2,16 @@ import { css } from "@emotion/react";
 import React from "react";
 import { useMutation, useQueryClient } from "react-query";
 import Select, { StylesConfig } from "react-select";
-import { axiosApi } from "../../../App";
+import { axiosApi } from "../../../../App";
 import {
   languageOptions,
   levelOptions,
-} from "../../../common/resources/languages";
-import { COLORS } from "../../../common/resources/style-variables";
-import { Option, ProficiencyLevel, User } from "../../../common/types";
-import EditButtons from "../../../components/EditButtons";
-import { select } from "../../../components/styles";
-import useAuth from "../../auth/AuthContext";
+} from "../../../../common/resources/languages";
+import { COLORS } from "../../../../common/resources/style-variables";
+import { Option, ProficiencyLevel, User } from "../../../../common/types";
+import EditButtons from "../../../../components/EditButtons";
+import { select } from "../../../../components/styles";
+import useAuth from "../../../auth/AuthContext/AuthContext";
 
 interface UserInfoNewLanguageSelectRequestData {
   language: string;

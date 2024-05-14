@@ -9,11 +9,11 @@ import { axiosApi } from "../../App";
 import { languageOptions } from "../../common/resources/languages";
 import { baseAppContainerWithoutTabs } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
-import { Option } from "../../common/types";
+import { Option, ServerErrorResponse } from "../../common/types";
 import Nav from "../../components/Nav/Nav";
 import { select } from "../../components/styles";
-import { ServerErrorResponse } from "../chats/list/ChannelCreationForm";
-import useAuth, { LogInRequestData } from "./AuthContext";
+import useAuth from "./AuthContext/AuthContext";
+import { LogInRequestData } from "./AuthContext/types";
 import { useRedirectIfLoggedIn } from "./hooks";
 import {
   button,

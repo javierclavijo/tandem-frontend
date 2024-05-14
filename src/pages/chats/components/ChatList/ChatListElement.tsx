@@ -1,12 +1,15 @@
 import { css } from "@emotion/react";
 import { DateTime } from "luxon";
 import { NavLink } from "react-router-dom";
-import { COLORS, FONT_SIZES } from "../../../common/resources/style-variables";
-import { Chat } from "../../../common/types";
-import ChatThumbnail from "../../../components/ChatThumbnail";
-import ResponsiveEllipsis from "../../../components/ResponsiveEllipsis";
-import { thumbnailContainer } from "../../../components/styles";
-import { elementContentContainer, link } from "../styles";
+import {
+  COLORS,
+  FONT_SIZES,
+} from "../../../../common/resources/style-variables";
+import { Chat } from "../../../../common/types";
+import ChatThumbnail from "../../../../components/ChatThumbnail";
+import ResponsiveEllipsis from "../../../../components/ResponsiveEllipsis";
+import { thumbnailContainer } from "../../../../components/styles";
+import { elementContentContainer, link } from "../../styles";
 
 interface ChatListElementProps {
   chat: Chat;

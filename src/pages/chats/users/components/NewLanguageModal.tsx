@@ -1,6 +1,6 @@
 import React from "react";
 import ReactModal from "react-modal";
-import { modal } from "../../../components/styles";
+import { modal } from "../../../../components/styles";
 import UserInfoNewLanguageSelect from "./UserInfoNewLanguageSelect";
 
 // Set the modal's app element to "hide the application from assistive screenreaders and other assistive technologies

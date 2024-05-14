@@ -7,7 +7,7 @@ import Nav from "../../components/Nav/Nav";
 import SearchResultElement from "../../components/SearchResultElement";
 import Tabs from "../../components/Tabs";
 import { homeSearchStyles } from "../../components/styles";
-import useAuth from "../auth/AuthContext";
+import useAuth from "../auth/AuthContext/AuthContext";
 import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 
 import {

@@ -4,7 +4,7 @@ import React from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { COLORS, FONT_SIZES } from "../../common/resources/style-variables";
-import useAuth from "../../pages/auth/AuthContext";
+import useAuth from "../../pages/auth/AuthContext/AuthContext";
 import { infoButton } from "../../pages/chats/styles";
 import NavProfilePicture from "./NavProfilePicture";
 

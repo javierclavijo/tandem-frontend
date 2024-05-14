@@ -6,13 +6,13 @@ import { animated } from "react-spring";
 import { COLORS } from "../../../common/resources/style-variables";
 import { useFadeIn } from "../../../common/transitions";
 import { ChatHeaderProps } from "../../../components/ChatHeader";
-import ChatList from "../list/ChatList";
+import ChatList from "../components/ChatList/ChatList";
 import { chatHeader, chatRoom } from "./styles";
 
 /**
- * Empty chat room component. Only used in the desktop chat list.
+ * Empty chat page component. Only used in the desktop chat list.
  */
-function DesktopEmptyChatRoom() {
+function DesktopEmptyChatPage() {
   const [, setHeader] =
     useOutletContext<
       [
@@ -37,11 +37,11 @@ function DesktopEmptyChatRoom() {
 }
 
 /**
- * Empty chat room component.
+ * Empty chat page component.
  */
-function EmptyChatRoom() {
+function EmptyChatPage() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
-  return isDesktop ? <DesktopEmptyChatRoom /> : <ChatList />;
+  return isDesktop ? <DesktopEmptyChatPage /> : <ChatList />;
 }
 
 const container = css`
@@ -58,4 +58,4 @@ const text = css`
   color: ${COLORS.DARK};
 `;
 
-export default EmptyChatRoom;
+export default EmptyChatPage;

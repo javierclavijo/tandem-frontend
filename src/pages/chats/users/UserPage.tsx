@@ -7,12 +7,12 @@ import { COLORS } from "../../../common/resources/style-variables";
 import { useFadeIn } from "../../../common/transitions";
 import { ChatHeaderProps } from "../../../components/ChatHeader";
 import LanguageBadge from "../../../components/LanguageBadge";
-import useAuth from "../../auth/AuthContext";
-import { getFriendFromFriendChat, useJoinWSChat } from "../../chats/hooks";
+import useAuth from "../../auth/AuthContext/AuthContext";
 import DescriptionTextarea from "../components/DescriptionTextarea";
 import ImageInput from "../components/ImageInput";
 import InfoListElement from "../components/InfoListElement";
 import { UserNameInput } from "../components/NameInput";
+import { getFriendFromFriendChat, useJoinWSChat } from "../hooks";
 import {
   descriptionSection,
   infoButton,
@@ -23,16 +23,16 @@ import {
   profileImg,
 } from "../styles";
 import { UserLanguage } from "../types";
-import DeleteLanguageModal from "./DeleteLanguageModal";
-import NewLanguageModal from "./NewLanguageModal";
-import SetPasswordModal from "./SetPasswordModal";
-import UserInfoEditLanguageBadge from "./UserInfoEditLanguageBadge";
+import DeleteLanguageModal from "./components/DeleteLanguageModal";
+import NewLanguageModal from "./components/NewLanguageModal";
+import SetPasswordModal from "./components/SetPasswordModal";
+import UserInfoEditLanguageBadge from "./components/UserInfoEditLanguageBadge";
 import { useCreateChatWithUser, useDeleteUserLanguage, useUser } from "./hooks";
 
 /**
  * User detail component.
  */
-export function UserInfo() {
+export function UserPage() {
   const params = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();

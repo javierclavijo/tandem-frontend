@@ -4,14 +4,14 @@ import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { AuthProvider } from "./pages/auth/AuthContext";
+import { AuthProvider } from "./pages/auth/AuthContext/AuthContext";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import ChatsLayout from "./pages/chats/ChatsLayout";
-import ChannelInfo from "./pages/chats/channels/ChannelInfo";
-import ChatRoom from "./pages/chats/chat/ChatRoom";
-import EmptyChatRoom from "./pages/chats/chat/EmptyChatRoom";
-import { UserInfo } from "./pages/chats/users/UserInfo";
+import ChannelPage from "./pages/chats/channels/ChannelPage";
+import ChatPage from "./pages/chats/chat/ChatPage";
+import EmptyChatPage from "./pages/chats/chat/EmptyChatPage";
+import { UserPage } from "./pages/chats/users/UserPage";
 import HomePage from "./pages/home/HomePage";
 import NotFoundPage from "./pages/not-found/NotFoundPage";
 import { default as PreLoginPage } from "./pages/pre-login/PreLoginPage";
@@ -43,14 +43,14 @@ const router = createBrowserRouter([
     element: <ChatsLayout />,
     children: [
       // User and channel info views
-      { path: "users/:id", element: <UserInfo /> },
-      { path: "channels/:id", element: <ChannelInfo /> },
+      { path: "users/:id", element: <UserPage /> },
+      { path: "channels/:id", element: <ChannelPage /> },
       // Chat room view
-      { path: ":id", element: <ChatRoom /> },
+      { path: ":id", element: <ChatPage /> },
       // Chat list view.
       {
         path: "",
-        element: <EmptyChatRoom />,
+        element: <EmptyChatPage />,
       },
     ],
   },

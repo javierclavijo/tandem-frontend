@@ -1,27 +1,16 @@
 import axios from "axios";
 import React, { useContext, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { axiosApi } from "../../App";
-import { User } from "../../common/types";
-
-interface AuthContextType {
-  user: User | undefined;
-  error: string;
-  loading: boolean;
-  isLoggedIn: boolean;
-  login: (requestData: LogInRequestData) => Promise<void>;
-  logout: () => void;
-}
-
-export type LogInRequestData = {
-  username: string;
-  password: string;
-};
+import { axiosApi } from "../../../App";
+import { User } from "../../../common/types";
+import { AuthContextType, LogInRequestData } from "./types";
 
 export const AuthContext = React.createContext<AuthContextType>(
   // TODO:review this type assertion
   {} as AuthContextType,
 );
+
+// TODO: refactor using RQ
 
 /**
  * Authentication context provider for the app. Fetches and provides information about authentication and the user,
