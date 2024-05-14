@@ -1,8 +1,5 @@
-/** @jsxImportSource @emotion/react */
-
 import { css } from "@emotion/react";
 import { DateTime } from "luxon";
-import React from "react";
 import { NavLink } from "react-router-dom";
 import ResponsiveEllipsis from "../../../components/ResponsiveEllipsis";
 import defaultImg from "../../../static/images/user_placeholder.png";

@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import { css } from "@emotion/react";
 import { Check, Xmark } from "iconoir-react";
 import React from "react";

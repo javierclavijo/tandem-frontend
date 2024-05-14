@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import { css } from "@emotion/react";
 import { Search } from "iconoir-react";
 import qs from "qs";

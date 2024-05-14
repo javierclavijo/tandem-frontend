@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import { css } from "@emotion/react";
 import { FlagIcon } from "react-flag-kit";
 import { Language, ProficiencyLevel } from "../features/common/types";

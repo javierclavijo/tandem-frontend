@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import { css, SerializedStyles } from "@emotion/react";
 import React from "react";
 import { buttonWithoutBackgroundAndBorder } from "../styles/components";

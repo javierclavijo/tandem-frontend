@@ -1,7 +1,4 @@
-/** @jsxImportSource @emotion/react */
-
 import { css } from "@emotion/react";
-import React from "react";
 import { NavLink } from "react-router-dom";
 import { User } from "../../features/common/types";
 import { infoButton } from "../../features/info/styles";

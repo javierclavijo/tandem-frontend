@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import { css } from "@emotion/react";
 import { ChatLines, Home, LogOut, Search } from "iconoir-react";
 import React from "react";

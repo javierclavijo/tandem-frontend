@@ -1,7 +1,4 @@
-/** @jsxImportSource @emotion/react */
-
 import { css } from "@emotion/react";
-import React from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";

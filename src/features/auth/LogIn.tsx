@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import { ErrorMessage } from "@hookform/error-message";
 import React from "react";
 import { useForm } from "react-hook-form";

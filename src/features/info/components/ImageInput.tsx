@@ -1,11 +1,9 @@
-/** @jsxImportSource @emotion/react */
-
-import React from "react";
-import { profileImg } from "../styles";
-import { useMutation, useQueryClient } from "react-query";
-import { axiosApi } from "../../auth/AuthContext";
 import { css } from "@emotion/react";
+import React from "react";
+import { useMutation, useQueryClient } from "react-query";
 import { colors, textSizes } from "../../../styles/variables";
+import { axiosApi } from "../../auth/AuthContext";
+import { profileImg } from "../styles";
 
 interface ImageInputProps {
   image: string | null;

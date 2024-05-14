@@ -1,8 +1,5 @@
-/** @jsxImportSource @emotion/react */
-
 import { css } from "@emotion/react";
 import { ChatLines, Home, Search } from "iconoir-react";
-import React from "react";
 import { NavLink } from "react-router-dom";
 import { colors, textSizes } from "../styles/variables";
 

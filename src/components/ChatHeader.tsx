@@ -1,7 +1,4 @@
-/** @jsxImportSource @emotion/react */
-
 import { css } from "@emotion/react";
-import React from "react";
 import { Link, To } from "react-router-dom";
 import { animated } from "react-spring";
 import { chatHeader } from "../features/chats/room/styles";

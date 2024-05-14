@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import { css } from "@emotion/react";
 import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";

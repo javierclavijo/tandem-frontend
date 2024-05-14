@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import { css } from "@emotion/react";
 import useEventListener from "@use-it/event-listener";
 import Picker, { EmojiStyle } from "emoji-picker-react";

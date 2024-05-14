@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import React from "react";
 import { InfiniteData, useQueryClient } from "react-query";
 import { useMediaQuery } from "react-responsive";

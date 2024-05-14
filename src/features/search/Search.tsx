@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import qs from "qs";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";

@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import { css } from "@emotion/react";
 import { NavArrowRight } from "iconoir-react";
 import { FlagIcon } from "react-flag-kit";

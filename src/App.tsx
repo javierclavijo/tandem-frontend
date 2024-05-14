@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import { Global } from "@emotion/react";
 import React from "react";
 import { useMediaQuery } from "react-responsive";

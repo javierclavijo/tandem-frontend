@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import { css } from "@emotion/react";
 import { FastArrowDownSquare, FastArrowUpSquare } from "iconoir-react";
 import React from "react";

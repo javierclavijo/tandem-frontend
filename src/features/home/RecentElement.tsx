@@ -1,8 +1,5 @@
-/** @jsxImportSource @emotion/react */
-
 import { css } from "@emotion/react";
 import { NavArrowRight } from "iconoir-react";
-import React from "react";
 import { Link } from "react-router-dom";
 import ResponsiveEllipsis from "../../components/ResponsiveEllipsis";
 import {

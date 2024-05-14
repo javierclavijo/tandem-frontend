@@ -1,8 +1,5 @@
-/** @jsxImportSource @emotion/react */
-
 import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";
-import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
