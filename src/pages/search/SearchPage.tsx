@@ -4,11 +4,10 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useInfiniteQuery } from "react-query";
 import { useMediaQuery } from "react-responsive";
 import { animated } from "react-spring";
-import { axiosApi } from "../../App";
+import { axiosApi } from "../../api";
 import Nav from "../../components/Nav/Nav";
 import Tabs from "../../components/Tabs";
 import { homeSearchStyles } from "../../components/styles";
-import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 
 import {
   baseAppContainerWithTabs,
@@ -79,7 +78,6 @@ export interface ChannelSearchParams extends BaseSearchParams {
  */
 function SearchPage() {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
-  useRedirectIfNotLoggedIn("/login");
   const transitionProps = useFadeIn();
 
   /**

@@ -3,7 +3,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
-import { axiosApi } from "../../../../App";
+import { axiosApi } from "../../../../api";
 import { modal } from "../../../../components/styles";
 import useAuth from "../../../auth/AuthContext/AuthContext";
 import { errorStyle, input, label } from "../../../auth/styles";

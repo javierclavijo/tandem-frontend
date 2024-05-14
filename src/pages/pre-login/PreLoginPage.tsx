@@ -4,14 +4,11 @@ import { COLORS, FONT_SIZES } from "../../common/resources/style-variables";
 import { baseAppContainerWithoutTabs } from "../../common/styles";
 import Nav from "../../components/Nav/Nav";
 import { button } from "../../components/styles";
-import { useRedirectIfLoggedIn } from "../auth/hooks";
 
 /**
  * Pre-login home/index page component.
  */
 function PreLogin() {
-  useRedirectIfLoggedIn("/home");
-
   return (
     <div css={baseAppContainerWithoutTabs}>
       <Nav />

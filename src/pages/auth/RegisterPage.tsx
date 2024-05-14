@@ -5,7 +5,7 @@ import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import { animated } from "react-spring";
-import { axiosApi } from "../../App";
+import { axiosApi } from "../../api";
 import { languageOptions } from "../../common/resources/languages";
 import { baseAppContainerWithoutTabs } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
@@ -14,7 +14,6 @@ import Nav from "../../components/Nav/Nav";
 import { select } from "../../components/styles";
 import useAuth from "./AuthContext/AuthContext";
 import { LogInRequestData } from "./AuthContext/types";
-import { useRedirectIfLoggedIn } from "./hooks";
 import {
   button,
   errorStyle,
@@ -44,7 +43,6 @@ interface RegisterFormData extends LogInRequestData {
 function RegisterPage() {
   const { login } = useAuth();
   const transitionProps = useFadeIn();
-  useRedirectIfLoggedIn("/home");
 
   const {
     register,
