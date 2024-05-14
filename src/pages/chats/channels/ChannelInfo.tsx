@@ -8,12 +8,12 @@ import {
   useParams,
 } from "react-router-dom";
 import { animated } from "react-spring";
+import { COLORS } from "../../../common/resources/style-variables";
 import { useFadeIn } from "../../../common/transitions";
 import Button from "../../../components/Button";
 import { ChatHeaderProps } from "../../../components/ChatHeader";
 import LanguageBadge from "../../../components/LanguageBadge";
 import ShareLink from "../../../components/ShareLink";
-import { COLORS } from "../../../resources/style-variables";
 import useAuth from "../../auth/AuthContext";
 import { useJoinWSChat } from "../../chats/hooks";
 import DescriptionTextarea from "../components/DescriptionTextarea";

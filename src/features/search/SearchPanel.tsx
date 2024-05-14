@@ -8,21 +8,25 @@ import Select, { StylesConfig } from "react-select";
 import {
   languageOptions,
   levelOptions,
-} from "../../../common/resources/languages";
-import { COLORS } from "../../../common/resources/style-variables";
-import { Language, Option, ProficiencyLevel } from "../../../common/types";
+} from "../../common/resources/languages";
+import { COLORS } from "../../common/resources/style-variables";
 import {
   buttonWithoutBackgroundAndBorder,
   noBorderAndBgSelectDark,
   searchInput,
   searchInputElement,
   searchSelect,
-} from "../../../components/styles";
+} from "../../components/styles";
+import {
+  Language,
+  Option,
+  ProficiencyLevel,
+} from "../../features/common/types";
 import {
   ChannelSearchParams,
   UserSearchParams,
   searchTypeOptions,
-} from "../SearchPage";
+} from "./Search";
 
 interface SearchPanelProps {
   setUserSearchParams: React.Dispatch<

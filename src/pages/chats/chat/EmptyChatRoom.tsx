@@ -3,9 +3,9 @@ import React from "react";
 import { useMediaQuery } from "react-responsive";
 import { useOutletContext } from "react-router-dom";
 import { animated } from "react-spring";
+import { COLORS } from "../../../common/resources/style-variables";
 import { useFadeIn } from "../../../common/transitions";
 import { ChatHeaderProps } from "../../../components/ChatHeader";
-import { COLORS } from "../../../resources/style-variables";
 import ChatList from "../list/ChatList";
 import { chatHeader, chatRoom } from "./styles";
 

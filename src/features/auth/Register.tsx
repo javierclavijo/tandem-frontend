@@ -7,12 +7,12 @@ import Select from "react-select";
 import { animated } from "react-spring";
 import { axiosApi } from "../../App";
 import { languageOptions } from "../../common/resources/languages";
-import { baseAppContainerWithoutTabs } from "../../common/styles";
-import { useFadeIn } from "../../common/transitions";
-import { Option } from "../../common/types";
 import Nav from "../../components/Nav/Nav";
 import { select } from "../../components/styles";
 import { ServerErrorResponse } from "../chats/list/ChannelCreationForm";
+import { baseAppContainerWithoutTabs } from "../common/styles";
+import { useFadeIn } from "../common/transitions";
+import { Option } from "../common/types";
 import useAuth, { LogInRequestData } from "./AuthContext";
 import { useRedirectIfLoggedIn } from "./hooks";
 import {
@@ -41,7 +41,7 @@ interface RegisterFormData extends LogInRequestData {
 /**
  * Register form component.
  */
-function RegisterPage() {
+function Register() {
   const { login } = useAuth();
   const transitionProps = useFadeIn();
   useRedirectIfLoggedIn("/home");
@@ -218,4 +218,4 @@ function RegisterPage() {
   );
 }
 
-export default RegisterPage;
+export default Register;

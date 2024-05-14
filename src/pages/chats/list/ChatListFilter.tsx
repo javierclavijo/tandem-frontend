@@ -1,8 +1,8 @@
 import { css } from "@emotion/react";
 import { Search } from "iconoir-react";
 import React from "react";
+import { COLORS, FONT_SIZES } from "../../../common/resources/style-variables";
 import { searchInput, searchInputElement } from "../../../components/styles";
-import { COLORS, FONT_SIZES } from "../../../resources/style-variables";
 
 /**
  * Chat list filter form.

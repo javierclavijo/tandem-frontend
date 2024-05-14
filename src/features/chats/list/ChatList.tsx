@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import { COLORS } from "../../../common/resources/style-variables";
 import { useFadeIn } from "../../../common/transitions";
-import useAuth from "../../auth/AuthContext";
+import useAuth from "../../../pages/auth/AuthContext";
 import { useAllChatList } from "../hooks";
 import { listContainer, listContainerMobile } from "../styles";
 import ChatListElements from "./ChatListElements";

@@ -2,13 +2,13 @@ import { css } from "@emotion/react";
 import { NavArrowRight } from "iconoir-react";
 import { FlagIcon } from "react-flag-kit";
 import { Link } from "react-router-dom";
-import { COLORS } from "../common/resources/style-variables";
-import ResponsiveEllipsis from "./ResponsiveEllipsis";
-import { containerWithLink, thumbnailContainer } from "./styles";
+import { COLORS } from "../../common/resources/style-variables";
+import ResponsiveEllipsis from "../../components/ResponsiveEllipsis";
+import { containerWithLink, thumbnailContainer } from "../../components/styles";
 
-import { LANGUAGE_INFO } from "../common/resources/languages";
-import { Language } from "../common/types";
-import ChatThumbnail from "./ChatThumbnail";
+import { LANGUAGE_INFO } from "../../common/resources/languages";
+import ChatThumbnail from "../../components/ChatThumbnail";
+import { Language } from "../../features/common/types";
 
 interface SearchElementProps {
   id: string;

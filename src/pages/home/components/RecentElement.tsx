@@ -1,12 +1,12 @@
 import { css } from "@emotion/react";
 import { NavArrowRight } from "iconoir-react";
 import { Link } from "react-router-dom";
+import { COLORS } from "../../../common/resources/style-variables";
 import ResponsiveEllipsis from "../../../components/ResponsiveEllipsis";
 import {
   containerWithLink,
   thumbnailContainer,
 } from "../../../components/styles";
-import { COLORS } from "../../../resources/style-variables";
 
 import ChatThumbnail from "../../../components/ChatThumbnail";
 

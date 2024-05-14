@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import React from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { axiosApi } from "../../../App";
-import { COLORS, FONT_SIZES } from "../../../resources/style-variables";
+import { COLORS, FONT_SIZES } from "../../../common/resources/style-variables";
 import { profileImg } from "../styles";
 
 interface ImageInputProps {

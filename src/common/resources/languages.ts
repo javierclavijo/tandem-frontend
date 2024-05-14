@@ -1,9 +1,4 @@
-import {
-  Language,
-  LanguageInfo,
-  Option,
-  ProficiencyLevel,
-} from "../common/types";
+import { Language, LanguageInfo, Option, ProficiencyLevel } from "../types";
 
 export const LANGUAGE_INFO: Readonly<Record<Language, LanguageInfo>> = {
   DE: { flagIconCode: "DE", displayName: "German" },

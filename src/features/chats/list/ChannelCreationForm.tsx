@@ -11,9 +11,9 @@ import {
   levelOptions,
 } from "../../../common/resources/languages";
 import { COLORS, FONT_SIZES } from "../../../common/resources/style-variables";
-import { Language, Option, ProficiencyLevel } from "../../../common/types";
 import { modal, select } from "../../../components/styles";
-import { errorStyle } from "../../auth/styles";
+import { errorStyle } from "../../../pages/auth/styles";
+import { Language, Option, ProficiencyLevel } from "../../common/types";
 
 interface ChannelCreationRequestData {
   name: string;

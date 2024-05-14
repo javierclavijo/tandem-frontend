@@ -6,8 +6,8 @@ import { ArrowRightCircle, Emoji } from "iconoir-react";
 import React, { CSSProperties, useCallback, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import useWebSocket from "react-use-websocket";
+import { COLORS, FONT_SIZES } from "../../../common/resources/style-variables";
 import { Chat } from "../../../common/types";
-import { COLORS, FONT_SIZES } from "../../../resources/style-variables";
 import useAuth from "../../auth/AuthContext";
 
 /**

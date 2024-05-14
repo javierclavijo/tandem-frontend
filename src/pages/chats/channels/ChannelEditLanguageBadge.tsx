@@ -5,6 +5,12 @@ import { useMutation, useQueryClient } from "react-query";
 import Select, { StylesConfig } from "react-select";
 import { axiosApi } from "../../../App";
 import {
+  LANGUAGE_INFO,
+  languageOptions,
+  levelOptions,
+} from "../../../common/resources/languages";
+import { COLORS } from "../../../common/resources/style-variables";
+import {
   Channel,
   Language,
   Option,
@@ -12,12 +18,6 @@ import {
 } from "../../../common/types";
 import ProficiencyLevelIcon from "../../../components/icons/ProficiencyLevelIcon";
 import { badge, noBorderAndBgSelectWhite } from "../../../components/styles";
-import {
-  LANGUAGE_INFO,
-  languageOptions,
-  levelOptions,
-} from "../../../resources/languages";
-import { COLORS } from "../../../resources/style-variables";
 import { UserLanguage } from "../types";
 
 interface LanguageBadgeProps {
