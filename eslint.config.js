@@ -30,6 +30,7 @@ export default tseslint.config(
       ...eslintPluginReact.configs["jsx-runtime"].rules,
       ...eslintPluginReactHooks.configs.recommended.rules,
       "react/no-unknown-property": ["error", { ignore: ["css"] }], // Avoid issues with emotion
+      "react/jsx-fragments": ["error", "syntax"],
     },
     settings: { react: { version: "detect" } },
   },

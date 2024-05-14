@@ -1,10 +1,7 @@
-/** @jsxImportSource @emotion/react */
-
 import { css } from "@emotion/react";
 import { ChatLines, Home, Search } from "iconoir-react";
-import React from "react";
 import { NavLink } from "react-router-dom";
-import { colors, textSizes } from "../styles/variables";
+import { COLORS, FONT_SIZES } from "../resources/style-variables";
 
 /**
  * Renders a nav element with tabs to the app's main sections. Only renders in the mobile layout.
@@ -19,7 +16,7 @@ function Tabs() {
             style={({ isActive }) => (isActive ? activeLink : link)}
             css={additionalLinkStyles}
           >
-            <ChatLines color={colors.WHITE} width="1.5rem" height="1.5rem" />
+            <ChatLines color={COLORS.WHITE} width="1.5rem" height="1.5rem" />
             Chats
           </NavLink>
         </li>
@@ -29,7 +26,7 @@ function Tabs() {
             style={({ isActive }) => (isActive ? activeLink : link)}
             css={additionalLinkStyles}
           >
-            <Home color={colors.WHITE} width="1.5rem" height="1.5rem" />
+            <Home color={COLORS.WHITE} width="1.5rem" height="1.5rem" />
             Home
           </NavLink>
         </li>
@@ -39,7 +36,7 @@ function Tabs() {
             style={({ isActive }) => (isActive ? activeLink : link)}
             css={additionalLinkStyles}
           >
-            <Search color={colors.WHITE} width="1.5rem" height="1.5rem" />
+            <Search color={COLORS.WHITE} width="1.5rem" height="1.5rem" />
             Search
           </NavLink>
         </li>
@@ -61,7 +58,7 @@ const ul = css`
   height: 100%;
   align-items: center;
   justify-content: space-evenly;
-  background-color: ${colors.PRIMARY};
+  background-color: ${COLORS.PRIMARY};
   padding: 0;
   list-style-type: none;
 
@@ -79,7 +76,7 @@ const tab = css`
   transition: background-color 0.1s;
 
   &:hover {
-    background-color: ${colors.DARK_PRIMARY}60;
+    background-color: ${COLORS.DARK_PRIMARY}60;
   }
 `;
 
@@ -91,18 +88,18 @@ const link = {
   justifyContent: "center",
   alignItems: "center",
   textDecoration: "none",
-  fontSize: textSizes.S,
-  color: colors.WHITE,
+  fontSize: FONT_SIZES.S,
+  color: COLORS.WHITE,
 };
 
 const activeLink = {
   ...link,
-  backgroundColor: colors.DARK_PRIMARY,
+  backgroundColor: COLORS.DARK_PRIMARY,
 };
 
 const additionalLinkStyles = css`
   &:visited {
-    color: ${colors.WHITE};
+    color: ${COLORS.WHITE};
   }
 `;
 

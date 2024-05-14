@@ -1,19 +1,11 @@
-/** @jsxImportSource @emotion/react */
-
-import React from "react";
-import { chatHeader } from "../features/chats/room/styles";
-import BackButton from "./BackButton";
-import { Link, To } from "react-router-dom";
 import { css } from "@emotion/react";
-import {
-  containerWithLink,
-  thumbnailContainer,
-  thumbnailImg,
-} from "../styles/components";
-import { useFadeIn } from "../utils/transitions";
+import { Link, To } from "react-router-dom";
 import { animated } from "react-spring";
-
-import defaultImg from "../static/images/user_placeholder.png";
+import { useFadeIn } from "../common/transitions";
+import { chatHeader } from "../pages/chats/chat/styles";
+import BackButton from "./BackButton";
+import ChatThumbnail from "./ChatThumbnail";
+import { containerWithLink, thumbnailContainer } from "./styles";
 
 export interface ChatHeaderProps {
   title?: string;
@@ -37,11 +29,7 @@ function ChatHeader(props: ChatHeaderProps) {
           <div css={innerContainer}>
             {props.image || props.image === null ? (
               <div css={imageContainer}>
-                <img
-                  src={props.image ?? defaultImg}
-                  alt=""
-                  css={thumbnailImg}
-                />
+                <ChatThumbnail src={props.image} />
               </div>
             ) : null}
             <h2>{props.title}</h2>

@@ -1,34 +1,26 @@
-import { FlagIconCode } from "react-flag-kit";
+import {
+  Language,
+  LanguageInfo,
+  Option,
+  ProficiencyLevel,
+} from "../common/types";
 
-export const languages = [
-  { key: "DE", value: "German" },
-  { key: "EN", value: "English" },
-  { key: "FR", value: "French" },
-  { key: "IT", value: "Italian" },
-  { key: "ES", value: "Spanish" },
-];
+export const LANGUAGE_INFO: Readonly<Record<Language, LanguageInfo>> = {
+  DE: { flagIconCode: "DE", displayName: "German" },
+  EN: { flagIconCode: "GB", displayName: "English" },
+  FR: { flagIconCode: "FR", displayName: "French" },
+  IT: { flagIconCode: "IT", displayName: "Italian" },
+  ES: { flagIconCode: "ES", displayName: "Spanish" },
+};
 
-export const levels = [
-  { key: "BE", value: "Beginner" },
-  { key: "IN", value: "Intermediate" },
-  { key: "AD", value: "Advanced" },
-  { key: "NA", value: "Native" },
-];
+export const LEVEL_NAMES: Readonly<Record<ProficiencyLevel, string>> = {
+  BE: "Beginner",
+  IN: "Intermediate",
+  AD: "Advanced",
+  NA: "Native",
+};
 
-export const flagCodes: { key: string; value: FlagIconCode }[] = [
-  { key: "DE", value: "DE" },
-  { key: "EN", value: "GB" },
-  { key: "FR", value: "FR" },
-  { key: "IT", value: "IT" },
-  { key: "ES", value: "ES" },
-];
-
-export interface Option {
-  value: string;
-  label: string;
-}
-
-export const languageOptions: Option[] = [
+export const languageOptions: Option<Language>[] = [
   { value: "EN", label: "English" },
   { value: "FR", label: "French" },
   { value: "DE", label: "German" },
@@ -36,7 +28,7 @@ export const languageOptions: Option[] = [
   { value: "ES", label: "Spanish" },
 ];
 
-export const levelOptions: Option[] = [
+export const levelOptions: Option<ProficiencyLevel>[] = [
   { value: "BE", label: "Beginner" },
   { value: "IN", label: "Intermediate" },
   { value: "AD", label: "Advanced" },
