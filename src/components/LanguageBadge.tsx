@@ -2,9 +2,9 @@ import { css } from "@emotion/react";
 import { FlagIcon } from "react-flag-kit";
 import { Language, ProficiencyLevel } from "../features/common/types";
 import { LANGUAGE_INFO, LEVEL_NAMES } from "../resources/languages";
-import { badge } from "../styles/components";
-import { colors } from "../styles/variables";
+import { COLORS } from "../resources/style-variables";
 import ProficiencyLevelIcon from "./icons/ProficiencyLevelIcon";
+import { badge } from "./styles";
 
 interface LanguageBadgeProps {
   language: Language;
@@ -32,7 +32,7 @@ function LanguageBadge({ language, level, bg }: LanguageBadgeProps) {
       <span>|</span>
       <ProficiencyLevelIcon
         level={level}
-        color={colors.WHITE}
+        color={COLORS.WHITE}
         height={24}
         width={24}
       />

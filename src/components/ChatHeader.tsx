@@ -3,11 +3,7 @@ import { Link, To } from "react-router-dom";
 import { animated } from "react-spring";
 import { chatHeader } from "../features/chats/room/styles";
 import { useFadeIn } from "../features/common/transitions";
-import {
-  containerWithLink,
-  thumbnailContainer,
-  thumbnailImg,
-} from "../styles/components";
+import { containerWithLink, thumbnailContainer, thumbnailImg } from "./styles";
 import BackButton from "./BackButton";
 
 import defaultImg from "../static/images/user_placeholder.png";

@@ -5,16 +5,16 @@ import { useInfiniteQuery } from "react-query";
 import { useMediaQuery } from "react-responsive";
 import { animated } from "react-spring";
 import Nav from "../../components/Nav/Nav";
+import { homeSearchStyles } from "../../components/styles";
 import Tabs from "../../components/Tabs";
-import { homeSearchStyles } from "../../styles/components";
+import { axiosApi } from "../auth/AuthContext";
+import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 import {
   baseAppContainerWithoutTabs,
   baseAppContainerWithTabs,
   homeSearchMain,
   homeSearchMainMobile,
-} from "../../styles/layout";
-import { axiosApi } from "../auth/AuthContext";
-import { useRedirectIfNotLoggedIn } from "../auth/hooks";
+} from "../common/styles";
 import { useFadeIn } from "../common/transitions";
 import {
   Channel,
@@ -229,21 +229,21 @@ function Search() {
               </header>
               <div css={homeSearchStyles.sectionItemsContainer}>
                 {searchType === searchTypeOptions.USERS ? (
-                  <React.Fragment>
+                  <>
                     <UserSearchResults
                       data={usersData}
                       fetchNextPage={fetchNextUsersPage}
                       hasNextPage={hasNextUsersPage}
                     />
-                  </React.Fragment>
+                  </>
                 ) : (
-                  <React.Fragment>
+                  <>
                     <ChannelSearchResults
                       data={channelsData}
                       fetchNextPage={fetchNextChannelsPage}
                       hasNextPage={hasNextChannelsPage}
                     />
-                  </React.Fragment>
+                  </>
                 )}
               </div>
             </section>

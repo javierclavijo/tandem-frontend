@@ -12,7 +12,7 @@ import Button from "../../../components/Button";
 import { ChatHeaderProps } from "../../../components/ChatHeader";
 import LanguageBadge from "../../../components/LanguageBadge";
 import ShareLink from "../../../components/ShareLink";
-import { colors } from "../../../styles/variables";
+import { COLORS } from "../../../resources/style-variables";
 import useAuth from "../../auth/AuthContext";
 import { useJoinWSChat } from "../../chats/hooks";
 import { useFadeIn } from "../../common/transitions";
@@ -179,7 +179,7 @@ function ChannelInfo() {
     <animated.div css={container} style={transitionProps}>
       <section css={infoSection}>
         {userIsStaff() && data ? (
-          <React.Fragment>
+          <>
             <ImageInput
               image={data.image}
               defaultImage={defaultImg}
@@ -187,12 +187,12 @@ function ChannelInfo() {
               invalidateQueryKey={["channels", data.id]}
             />
             <ChannelNameInput data={data} />
-          </React.Fragment>
+          </>
         ) : (
-          <React.Fragment>
+          <>
             <img src={data.image ?? defaultImg} alt="" css={profileImg} />
             <p>{data?.name}</p>
-          </React.Fragment>
+          </>
         )}
         <p>
           Channel ·&nbsp;
@@ -200,22 +200,22 @@ function ChannelInfo() {
           {data?.memberships.length === 1 ? "member" : "members"}
         </p>
         {userIsStaff() ? (
-          <ChannelEditLanguageBadge data={data} bg={colors.DARK} />
+          <ChannelEditLanguageBadge data={data} bg={COLORS.DARK} />
         ) : (
           <LanguageBadge
             language={data.language}
             level={data.level}
-            bg={colors.DARK}
+            bg={COLORS.DARK}
           />
         )}
         <section css={descriptionSection}>
           {userIsStaff() && data ? (
             <DescriptionTextarea data={data} queryKey={"channels"} />
           ) : (
-            <React.Fragment>
+            <>
               <h3>Description</h3>
               <p>{data?.description}</p>
-            </React.Fragment>
+            </>
           )}
         </section>
       </section>
@@ -238,7 +238,7 @@ function ChannelInfo() {
                 image={membership.user.image}
                 link={`/chats/users/${membership.user.id}`}
                 buttons={
-                  <React.Fragment>
+                  <>
                     {/* If the user is a regular user, show a button to promote them to
                                                  moderator. If they are a moderator, show a button to demote them to
                                                  regular user. If they are admin, show nothing. */}
@@ -251,7 +251,7 @@ function ChannelInfo() {
                       >
                         Promote
                         <FastArrowUpSquare
-                          color={colors.PRIMARY}
+                          color={COLORS.PRIMARY}
                           height={"1.5rem"}
                           width={"1.5rem"}
                         />
@@ -265,13 +265,13 @@ function ChannelInfo() {
                       >
                         Demote
                         <FastArrowDownSquare
-                          color={colors.PRIMARY}
+                          color={COLORS.PRIMARY}
                           height={"1.5rem"}
                           width={"1.5rem"}
                         />
                       </Button>
                     ) : null}
-                  </React.Fragment>
+                  </>
                 }
               />
             ) : null,

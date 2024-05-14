@@ -5,8 +5,8 @@ import { useMediaQuery } from "react-responsive";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../features/auth/AuthContext";
 import { infoButton } from "../../features/info/styles";
+import { COLORS, FONT_SIZES } from "../../resources/style-variables";
 import langflowLogo from "../../static/svg/langflow_logo.svg";
-import { colors, textSizes } from "../../styles/variables";
 import NavProfilePicture from "./NavProfilePicture";
 
 /**
@@ -37,14 +37,14 @@ function Nav() {
           {isLoggedIn ? (
             isDesktop ? (
               // Post-login desktop header
-              <React.Fragment>
+              <>
                 <li>
                   <NavLink
                     to={"/"}
                     css={link}
                     style={({ isActive }) => (isActive ? activeNavLink : {})}
                   >
-                    <Home color={colors.WHITE} width="1.5rem" height="1.5rem" />
+                    <Home color={COLORS.WHITE} width="1.5rem" height="1.5rem" />
                     Home
                   </NavLink>
                 </li>
@@ -56,7 +56,7 @@ function Nav() {
                     end
                   >
                     <ChatLines
-                      color={colors.WHITE}
+                      color={COLORS.WHITE}
                       width="1.5rem"
                       height="1.5rem"
                     />
@@ -70,7 +70,7 @@ function Nav() {
                     style={({ isActive }) => (isActive ? activeNavLink : {})}
                   >
                     <Search
-                      color={colors.WHITE}
+                      color={COLORS.WHITE}
                       width="1.5rem"
                       height="1.5rem"
                     />
@@ -87,17 +87,17 @@ function Nav() {
                     css={logoutButton}
                   >
                     <LogOut
-                      color={colors.WHITE}
+                      color={COLORS.WHITE}
                       width="1.5rem"
                       height="1.5rem"
                     />
                     Log out
                   </button>
                 </li>
-              </React.Fragment>
+              </>
             ) : (
               // Post-login mobile header
-              <React.Fragment>
+              <>
                 <li>
                   <NavProfilePicture user={user} />
                 </li>
@@ -108,18 +108,18 @@ function Nav() {
                     css={logoutButton}
                   >
                     <LogOut
-                      color={colors.WHITE}
+                      color={COLORS.WHITE}
                       width="1.5rem"
                       height="1.5rem"
                     />
                     Log out
                   </button>
                 </li>
-              </React.Fragment>
+              </>
             )
           ) : (
             // Pre-login header
-            <React.Fragment>
+            <>
               <li>
                 <NavLink
                   to={"/login"}
@@ -138,7 +138,7 @@ function Nav() {
                   Sign in
                 </NavLink>
               </li>
-            </React.Fragment>
+            </>
           )}
         </ul>
       </nav>
@@ -153,7 +153,7 @@ const header = css`
 
 const nav = css`
   height: 100%;
-  background: ${colors.DARK_PRIMARY};
+  background: ${COLORS.DARK_PRIMARY};
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -170,12 +170,12 @@ const logo = css`
 `;
 
 const title = css`
-  color: ${colors.WHITE};
+  color: ${COLORS.WHITE};
   margin: 0;
-  font-size: ${textSizes.L};
+  font-size: ${FONT_SIZES.L};
 
   @media (min-width: 576px) {
-    font-size: ${textSizes.XL};
+    font-size: ${FONT_SIZES.XL};
   }
 `;
 
@@ -195,8 +195,8 @@ const navList = css`
 export const link = css`
   ${infoButton};
   text-decoration: none;
-  color: ${colors.WHITE};
-  font-size: ${textSizes.M};
+  color: ${COLORS.WHITE};
+  font-size: ${FONT_SIZES.M};
   text-align: center;
 `;
 
@@ -208,19 +208,19 @@ export const titleLink = css`
 `;
 
 export const activeNavLink = {
-  borderBottom: `2px solid ${colors.SECONDARY}`,
+  borderBottom: `2px solid ${COLORS.SECONDARY}`,
 };
 
 const logoutButton = css`
   ${infoButton};
-  font-size: ${textSizes.S};
+  font-size: ${FONT_SIZES.S};
   display: flex;
   flex-direction: column;
   align-items: center;
 
   @media (min-width: 576px) {
     flex-direction: row;
-    font-size: ${textSizes.M};
+    font-size: ${FONT_SIZES.M};
   }
 `;
 

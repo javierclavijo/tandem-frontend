@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { DateTime } from "luxon";
 import React from "react";
-import { colors, textSizes } from "../../../styles/variables";
+import { COLORS, FONT_SIZES } from "../../../resources/style-variables";
 import { ChatMessage } from "../types";
 
 interface ChatRoomMessageProps {
@@ -57,7 +57,7 @@ const innerContainer = css`
   width: fit-content;
   padding: 0.5rem;
   box-sizing: border-box;
-  color: ${colors.WHITE};
+  color: ${COLORS.WHITE};
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -66,42 +66,42 @@ const innerContainer = css`
 const ownMessage = css`
   ${innerContainer};
   align-self: flex-end;
-  background-color: ${colors.PRIMARY};
+  background-color: ${COLORS.PRIMARY};
   border-radius: 5px 0 5px 5px;
 `;
 
 const otherMessage = css`
   ${innerContainer};
-  background-color: ${colors.DARK};
+  background-color: ${COLORS.DARK};
   border-radius: 0 5px 5px 5px;
 `;
 
 const speechBubbleOwnMessage = css`
   clip-path: polygon(100% 0, 0 0, 0 100%);
-  background-color: ${colors.PRIMARY};
+  background-color: ${COLORS.PRIMARY};
   width: 0.5rem;
   height: 1rem;
 `;
 
 const speechBubbleOtherMessage = css`
   clip-path: polygon(100% 0, 0 0, 100% 100%);
-  background-color: ${colors.DARK};
+  background-color: ${COLORS.DARK};
   width: 0.5rem;
   height: 1rem;
 `;
 
 const username = css`
-  font-size: ${textSizes.S};
+  font-size: ${FONT_SIZES.S};
   width: fit-content;
 `;
 
 const datetime = css`
-  font-size: ${textSizes.S};
+  font-size: ${FONT_SIZES.S};
   align-self: flex-end;
 `;
 
 const content = css`
-  font-size: ${textSizes.M};
+  font-size: ${FONT_SIZES.M};
   white-space: pre-line;
   overflow-wrap: anywhere;
   flex: 0 1 auto;

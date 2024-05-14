@@ -2,12 +2,12 @@ import { css } from "@emotion/react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
-import { useFadeIn } from "../features/common/transitions";
 import {
   baseAppContainerWithoutTabs,
   baseAppContainerWithTabs,
-} from "../styles/layout";
-import { colors } from "../styles/variables";
+} from "../features/common/styles";
+import { useFadeIn } from "../features/common/transitions";
+import { COLORS } from "../resources/style-variables";
 import Nav from "./Nav/Nav";
 
 /**
@@ -37,7 +37,7 @@ function NotFound() {
 }
 
 const main = css`
-  background-color: ${colors.WHITE};
+  background-color: ${COLORS.WHITE};
   margin: 1rem 3.125rem;
   display: flex;
   flex-direction: column;
@@ -49,10 +49,10 @@ const main = css`
 
 const link = css`
   text-decoration: none;
-  color: ${colors.PRIMARY};
+  color: ${COLORS.PRIMARY};
 
   &:visited {
-    color: ${colors.PRIMARY};
+    color: ${COLORS.PRIMARY};
   }
 `;
 

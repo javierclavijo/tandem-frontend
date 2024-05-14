@@ -4,13 +4,13 @@ import { FlagIcon } from "react-flag-kit";
 import { useMutation, useQueryClient } from "react-query";
 import Select, { StylesConfig } from "react-select";
 import ProficiencyLevelIcon from "../../../components/icons/ProficiencyLevelIcon";
+import { badge, noBorderAndBgSelectWhite } from "../../../components/styles";
 import {
   LANGUAGE_INFO,
   languageOptions,
   levelOptions,
 } from "../../../resources/languages";
-import { badge, noBorderAndBgSelectWhite } from "../../../styles/components";
-import { colors } from "../../../styles/variables";
+import { COLORS } from "../../../resources/style-variables";
 import { axiosApi } from "../../auth/AuthContext";
 import {
   Channel,
@@ -116,7 +116,7 @@ function UserInfoEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
       <span>|</span>
       <ProficiencyLevelIcon
         level={data.level}
-        color={colors.WHITE}
+        color={COLORS.WHITE}
         height={24}
         width={24}
       />

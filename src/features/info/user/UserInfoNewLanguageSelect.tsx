@@ -3,9 +3,9 @@ import React from "react";
 import { useMutation, useQueryClient } from "react-query";
 import Select, { StylesConfig } from "react-select";
 import EditButtons from "../../../components/EditButtons";
+import { select } from "../../../components/styles";
 import { languageOptions, levelOptions } from "../../../resources/languages";
-import { select } from "../../../styles/components";
-import { colors } from "../../../styles/variables";
+import { COLORS } from "../../../resources/style-variables";
 import useAuth, { axiosApi } from "../../auth/AuthContext";
 import { Option, ProficiencyLevel, User } from "../../common/types";
 
@@ -93,7 +93,7 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
           editEnabled={true}
           handleSubmit={handleSubmit}
           handleCancel={onClose}
-          color={colors.PRIMARY}
+          color={COLORS.PRIMARY}
         />
       </div>
       {error ? <p css={errorText}>{error}</p> : null}
@@ -115,7 +115,7 @@ const innerContainer = css`
 `;
 
 const errorText = css`
-  color: ${colors.CONTRAST};
+  color: ${COLORS.CONTRAST};
 `;
 
 export default UserInfoNewLanguageSelect;

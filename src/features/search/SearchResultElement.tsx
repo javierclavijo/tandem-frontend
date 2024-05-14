@@ -7,8 +7,8 @@ import {
   containerWithLink,
   thumbnailContainer,
   thumbnailImg,
-} from "../../styles/components";
-import { colors } from "../../styles/variables";
+} from "../../components/styles";
+import { COLORS } from "../../resources/style-variables";
 
 import { LANGUAGE_INFO } from "../../resources/languages";
 import defaultImg from "../../static/images/user_placeholder.png";
@@ -44,7 +44,7 @@ function SearchResultElement({
           <div css={upperInnerContainer}>
             <h4>{name}</h4>
             <NavArrowRight
-              color={colors.PRIMARY}
+              color={COLORS.PRIMARY}
               width={"1.5rem"}
               height={"1.5rem"}
             />
@@ -86,7 +86,7 @@ const outerContainer = css`
 
   transition: background-color 0.1s;
   &:hover {
-    background-color: ${colors.LIGHT};
+    background-color: ${COLORS.LIGHT};
   }
 `;
 

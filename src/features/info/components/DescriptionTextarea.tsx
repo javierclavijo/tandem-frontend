@@ -3,7 +3,7 @@ import React from "react";
 import { useMutation, useQueryClient } from "react-query";
 import TextareaAutosize from "react-textarea-autosize";
 import EditButtons from "../../../components/EditButtons";
-import { colors } from "../../../styles/variables";
+import { COLORS } from "../../../resources/style-variables";
 import { axiosApi } from "../../auth/AuthContext";
 import { Channel, User } from "../../common/types";
 import { editElement } from "../styles";
@@ -106,7 +106,7 @@ function DescriptionTextarea({ data, queryKey }: DescriptionTextareaProps) {
   };
 
   return (
-    <React.Fragment>
+    <>
       <div css={titleContainer}>
         <h3>Description</h3>
         <EditButtons
@@ -114,7 +114,7 @@ function DescriptionTextarea({ data, queryKey }: DescriptionTextareaProps) {
           submitButtonRef={submitButtonRef}
           handleSubmit={handleSubmit}
           handleCancel={handleCancel}
-          color={colors.WHITE}
+          color={COLORS.WHITE}
         />
       </div>
       <TextareaAutosize
@@ -132,7 +132,7 @@ function DescriptionTextarea({ data, queryKey }: DescriptionTextareaProps) {
         placeholder="Add a description…"
       />
       {error ? <p css={errorText}>{error}</p> : null}
-    </React.Fragment>
+    </>
   );
 }
 
@@ -145,7 +145,7 @@ const titleContainer = css`
 `;
 
 const errorText = css`
-  color: ${colors.CONTRAST};
+  color: ${COLORS.CONTRAST};
 `;
 
 export default DescriptionTextarea;

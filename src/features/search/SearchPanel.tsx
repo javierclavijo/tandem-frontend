@@ -5,15 +5,15 @@ import React, { FormEvent } from "react";
 import { DebounceInput } from "react-debounce-input";
 import { useSearchParams } from "react-router-dom";
 import Select, { StylesConfig } from "react-select";
-import { languageOptions, levelOptions } from "../../resources/languages";
 import {
   buttonWithoutBackgroundAndBorder,
   noBorderAndBgSelectDark,
   searchInput,
   searchInputElement,
   searchSelect,
-} from "../../styles/components";
-import { colors } from "../../styles/variables";
+} from "../../components/styles";
+import { languageOptions, levelOptions } from "../../resources/languages";
+import { COLORS } from "../../resources/style-variables";
 import { Language, Option, ProficiencyLevel } from "../common/types";
 import {
   ChannelSearchParams,
@@ -236,7 +236,7 @@ function SearchPanel({
             aria-label="Submit search filters"
             css={submitButton}
           >
-            <Search color={colors.PRIMARY} width={"1.5rem"} height={"1.5rem"} />
+            <Search color={COLORS.PRIMARY} width={"1.5rem"} height={"1.5rem"} />
           </button>
         </div>
       </div>

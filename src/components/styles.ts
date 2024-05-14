@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { StylesConfig } from "react-select";
-import { colors, textSizes } from "./variables";
+import { COLORS, FONT_SIZES } from "../resources/style-variables";
 
 export const badge = css`
   display: flex;
@@ -41,7 +41,7 @@ export const noBorderAndBgSelectWhite: StylesConfig = {
     ...provided,
     width: "max-content",
     minWidth: "100%",
-    color: colors.DARK,
+    color: COLORS.DARK,
   }),
   control: (provided) => ({
     ...provided,
@@ -51,11 +51,11 @@ export const noBorderAndBgSelectWhite: StylesConfig = {
   }),
   dropdownIndicator: (provided) => ({
     ...provided,
-    color: colors.WHITE,
+    color: COLORS.WHITE,
   }),
   singleValue: (provided) => ({
     ...provided,
-    color: colors.WHITE,
+    color: COLORS.WHITE,
   }),
   indicatorSeparator: (provided) => ({
     ...provided,
@@ -67,11 +67,11 @@ export const noBorderAndBgSelectDark: StylesConfig = {
   ...noBorderAndBgSelectWhite,
   dropdownIndicator: (provided) => ({
     ...provided,
-    color: colors.DARK,
+    color: COLORS.DARK,
   }),
   singleValue: (provided) => ({
     ...provided,
-    color: colors.DARK,
+    color: COLORS.DARK,
   }),
   container: (provided) => ({
     ...provided,
@@ -84,16 +84,16 @@ export const button = css`
   padding: 0.5rem;
   border-radius: 3px;
   border: none;
-  background-color: ${colors.PRIMARY};
-  color: ${colors.WHITE};
-  font-size: ${textSizes.M};
+  background-color: ${COLORS.PRIMARY};
+  color: ${COLORS.WHITE};
+  font-size: ${FONT_SIZES.M};
   cursor: pointer;
 
   transition: background-color 0.1s;
   &:active,
   &:hover,
   &:focus {
-    background-color: ${colors.DARK_PRIMARY};
+    background-color: ${COLORS.DARK_PRIMARY};
   }
 `;
 
@@ -113,7 +113,7 @@ export const modal = {
 
   title: css`
     margin-bottom: 1rem;
-    color: ${colors.DARK};
+    color: ${COLORS.DARK};
   `,
 
   buttonsContainer: css`
@@ -128,17 +128,17 @@ export const modal = {
     padding: 0.5rem;
     border-radius: 3px;
     border: none;
-    background-color: ${colors.PRIMARY};
-    color: ${colors.WHITE};
-    font-size: ${textSizes.M};
+    background-color: ${COLORS.PRIMARY};
+    color: ${COLORS.WHITE};
+    font-size: ${FONT_SIZES.M};
     cursor: pointer;
-    background-color: ${colors.DARK}80;
+    background-color: ${COLORS.DARK}80;
 
     transition: background-color 0.1s;
     &:active,
     &:hover,
     &:focus {
-      background-color: ${colors.DARK};
+      background-color: ${COLORS.DARK};
     }
   `,
 };
@@ -152,7 +152,7 @@ export const buttonWithoutBackgroundAndBorder = css`
   justify-content: center;
   cursor: pointer;
   gap: 0.5rem;
-  font-size: ${textSizes.S};
+  font-size: ${FONT_SIZES.S};
 `;
 
 export const thumbnailImg = css`
@@ -182,20 +182,20 @@ export const containerWithLink = css`
 export const homeSearchStyles = {
   header: css`
     padding: 1rem;
-    background-color: ${colors.WHITE};
-    color: ${colors.DARK};
+    background-color: ${COLORS.WHITE};
+    color: ${COLORS.DARK};
     display: flex;
     flex-direction: column;
     gap: 1rem;
   `,
 
   h2: css`
-    color: ${colors.PRIMARY};
+    color: ${COLORS.PRIMARY};
   `,
 
   section: css`
     height: auto;
-    background-color: ${colors.WHITE};
+    background-color: ${COLORS.WHITE};
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -204,7 +204,7 @@ export const homeSearchStyles = {
   `,
 
   sectionHeading: css`
-    color: ${colors.PRIMARY};
+    color: ${COLORS.PRIMARY};
   `,
 
   sectionItemsContainer: css`
@@ -218,13 +218,13 @@ export const homeSearchStyles = {
 };
 
 export const searchInput = css`
-  background-color: ${colors.LIGHT};
+  background-color: ${COLORS.LIGHT};
   display: flex;
   border-radius: 3px;
   transition: background-color 0.1s;
 
   &:hover {
-    background-color: ${colors.SECONDARY}40;
+    background-color: ${COLORS.SECONDARY}40;
   }
 `;
 
@@ -234,5 +234,5 @@ export const searchInputElement = css`
   border: none;
   flex: 1 1 auto;
   min-width: 4rem;
-  font-size: ${textSizes.M};
+  font-size: ${FONT_SIZES.M};
 `;

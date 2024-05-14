@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import React from "react";
 import { useMutation, useQueryClient } from "react-query";
-import { colors, textSizes } from "../../../styles/variables";
+import { COLORS, FONT_SIZES } from "../../../resources/style-variables";
 import { axiosApi } from "../../auth/AuthContext";
 import { profileImg } from "../styles";
 
@@ -84,10 +84,10 @@ function ImageInput({
     z-index: 5;
     height: 100%;
     width: 100%;
-    background-color: ${colors.LIGHT}80;
+    background-color: ${COLORS.LIGHT}80;
     border-radius: 50%;
     -webkit-text-stroke: 1px black;
-    font-size: ${textSizes.L};
+    font-size: ${FONT_SIZES.L};
     backdrop-filter: blur(2px);
     // Set the opacity of the element
     opacity: ${isLabelDisplayed ? 1 : 0};

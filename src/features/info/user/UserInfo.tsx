@@ -5,7 +5,7 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import { ChatHeaderProps } from "../../../components/ChatHeader";
 import LanguageBadge from "../../../components/LanguageBadge";
-import { colors } from "../../../styles/variables";
+import { COLORS } from "../../../resources/style-variables";
 import useAuth from "../../auth/AuthContext";
 import { getFriendFromFriendChat, useJoinWSChat } from "../../chats/hooks";
 import { useFadeIn } from "../../common/transitions";
@@ -200,14 +200,14 @@ export function UserInfo() {
                       <LanguageBadge
                         language={language.language}
                         level={language.level}
-                        bg={colors.DARK}
+                        bg={COLORS.DARK}
                         key={language.id}
                       />
                     ) : (
                       <div css={editableLanguage} key={language.id}>
                         <UserInfoEditLanguageBadge
                           data={language}
-                          bg={colors.DARK}
+                          bg={COLORS.DARK}
                           onDelete={() => setSelectedDeleteLanguage(language)}
                         />
                       </div>
@@ -227,7 +227,7 @@ export function UserInfo() {
                   <LanguageBadge
                     language={language.language}
                     level={language.level}
-                    bg={colors.DARK}
+                    bg={COLORS.DARK}
                     key={language.id}
                   />
                 ))

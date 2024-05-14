@@ -2,8 +2,8 @@ import { css } from "@emotion/react";
 import { NavLink } from "react-router-dom";
 import { User } from "../../features/common/types";
 import { infoButton } from "../../features/info/styles";
-import { thumbnailContainer, thumbnailImg } from "../../styles/components";
-import { colors, textSizes } from "../../styles/variables";
+import { COLORS, FONT_SIZES } from "../../resources/style-variables";
+import { thumbnailContainer, thumbnailImg } from "../styles";
 import { activeNavLink } from "./Nav";
 
 import defaultImg from "../../static/images/user_placeholder.png";
@@ -34,13 +34,13 @@ function NavProfilePicture({ user }: NavProfilePictureProps) {
 const link = css`
   ${infoButton};
   text-decoration: none;
-  color: ${colors.WHITE};
-  font-size: ${textSizes.S};
+  color: ${COLORS.WHITE};
+  font-size: ${FONT_SIZES.S};
   flex-direction: column;
 
   @media (min-width: 576px) {
     flex-direction: row;
-    font-size: ${textSizes.M};
+    font-size: ${FONT_SIZES.M};
   }
 `;
 

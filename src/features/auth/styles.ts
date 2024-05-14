@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { colors, textSizes } from "../../styles/variables";
+import { COLORS, FONT_SIZES } from "../../resources/style-variables";
 
 export const main = css`
   grid-area: main;
@@ -11,8 +11,8 @@ export const main = css`
 `;
 
 export const section = css`
-  background-color: ${colors.WHITE};
-  color: ${colors.PRIMARY};
+  background-color: ${COLORS.WHITE};
+  color: ${COLORS.PRIMARY};
   border-radius: 3px;
   padding: 1.25rem;
   box-sizing: border-box;
@@ -22,7 +22,7 @@ export const section = css`
 
 export const header = css`
   font-weight: 400;
-  font-size: ${textSizes.L};
+  font-size: ${FONT_SIZES.L};
   margin: 0 0 1rem 0;
   text-align: center;
 `;
@@ -38,16 +38,16 @@ export const label = css`
   width: 100%;
   display: flex;
   flex-direction: column;
-  font-size: ${textSizes.M};
+  font-size: ${FONT_SIZES.M};
   gap: 0.5rem;
 `;
 
 export const input = css`
-  color: ${colors.DARK};
+  color: ${COLORS.DARK};
   width: 100%;
   border: none;
-  border-bottom: 1px solid ${colors.PRIMARY};
-  font-size: ${textSizes.M};
+  border-bottom: 1px solid ${COLORS.PRIMARY};
+  font-size: ${FONT_SIZES.M};
   padding-bottom: 0.5rem;
 
   &:focus {
@@ -56,35 +56,35 @@ export const input = css`
 `;
 
 export const button = css`
-  font-size: ${textSizes.M};
+  font-size: ${FONT_SIZES.M};
   padding: 0.5rem 1rem;
   box-sizing: border-box;
-  background-color: ${colors.PRIMARY};
+  background-color: ${COLORS.PRIMARY};
   border: none;
   border-radius: 3px;
-  color: ${colors.WHITE};
+  color: ${COLORS.WHITE};
   cursor: pointer;
 
   transition: background-color 0.1s;
   &:active,
   &:hover,
   &:focus {
-    background-color: ${colors.DARK_PRIMARY};
+    background-color: ${COLORS.DARK_PRIMARY};
   }
 `;
 
 export const errorStyle = css`
-  color: ${colors.CONTRAST};
-  font-size: ${textSizes.S};
+  color: ${COLORS.CONTRAST};
+  font-size: ${FONT_SIZES.S};
   margin: 0;
   width: 100%;
   text-align: start;
 `;
 
 export const link = css`
-  color: ${colors.PRIMARY};
+  color: ${COLORS.PRIMARY};
 
   &:visited {
-    color: ${colors.PRIMARY};
+    color: ${COLORS.PRIMARY};
   }
 `;

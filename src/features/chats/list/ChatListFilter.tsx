@@ -1,8 +1,8 @@
 import { css } from "@emotion/react";
 import { Search } from "iconoir-react";
 import React from "react";
-import { searchInput, searchInputElement } from "../../../styles/components";
-import { colors, textSizes } from "../../../styles/variables";
+import { searchInput, searchInputElement } from "../../../components/styles";
+import { COLORS, FONT_SIZES } from "../../../resources/style-variables";
 
 /**
  * Chat list filter form.
@@ -30,7 +30,7 @@ function ChatListFilter({
             aria-label="Filter chat list"
           >
             <Search
-              color={colors.DARK_PRIMARY}
+              color={COLORS.DARK_PRIMARY}
               width="1.5rem"
               height="1.5rem"
             />
@@ -43,15 +43,15 @@ function ChatListFilter({
 
 const innerContainer = css`
   padding-bottom: 1rem;
-  border-bottom: 1px solid ${colors.LIGHT};
+  border-bottom: 1px solid ${COLORS.LIGHT};
 `;
 
 const searchInputForm = css`
   width: 100%;
-  font-size: ${textSizes.M};
+  font-size: ${FONT_SIZES.M};
   padding: 0.5rem;
   box-sizing: border-box;
-  color: ${colors.DARK};
+  color: ${COLORS.DARK};
   background: none;
   border-radius: 3px;
   border: none;

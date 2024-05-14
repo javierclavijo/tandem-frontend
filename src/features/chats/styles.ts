@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { colors } from "../../styles/variables";
+import { COLORS } from "../../resources/style-variables";
 
 export const chatMain = css`
   grid-area: main;
@@ -28,7 +28,7 @@ export const listContainer = css`
   border-radius: 3px;
   display: flex;
   flex-direction: column;
-  background-color: ${colors.WHITE};
+  background-color: ${COLORS.WHITE};
   width: 100%;
   position: relative;
 `;
@@ -37,7 +37,7 @@ export const listContainerMobile = css`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  background-color: ${colors.WHITE};
+  background-color: ${COLORS.WHITE};
   width: 100%;
   max-height: calc(100vh - 8rem);
   position: relative;

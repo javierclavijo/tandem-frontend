@@ -7,12 +7,12 @@ import useWebSocket from "react-use-websocket";
 import ChatHeader, { ChatHeaderProps } from "../../components/ChatHeader";
 import Nav from "../../components/Nav/Nav";
 import Tabs from "../../components/Tabs";
+import useAuth from "../auth/AuthContext";
+import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 import {
   baseAppContainerWithTabs,
   baseAppContainerWithoutTabs,
-} from "../../styles/layout";
-import useAuth from "../auth/AuthContext";
-import { useRedirectIfNotLoggedIn } from "../auth/hooks";
+} from "../common/styles";
 import { useFadeIn } from "../common/transitions";
 import { Chat } from "../common/types";
 import ChatList from "./list/ChatList";

@@ -2,9 +2,9 @@ import { css } from "@emotion/react";
 import { DateTime } from "luxon";
 import { NavLink } from "react-router-dom";
 import ResponsiveEllipsis from "../../../components/ResponsiveEllipsis";
+import { thumbnailContainer, thumbnailImg } from "../../../components/styles";
+import { COLORS, FONT_SIZES } from "../../../resources/style-variables";
 import defaultImg from "../../../static/images/user_placeholder.png";
-import { thumbnailContainer, thumbnailImg } from "../../../styles/components";
-import { colors, textSizes } from "../../../styles/variables";
 import { Chat } from "../../common/types";
 import { elementContentContainer, link } from "../styles";
 
@@ -25,16 +25,16 @@ function ChatListElement({
 }: ChatListElementProps) {
   const chatListElementContainer = css`
     display: grid;
-    border-bottom: 1px solid ${colors.LIGHT};
-    color: ${selected ? colors.WHITE : colors.DARK};
+    border-bottom: 1px solid ${COLORS.LIGHT};
+    color: ${selected ? COLORS.WHITE : COLORS.DARK};
     width: 100%;
-    background-color: ${selected ? colors.PRIMARY : colors.WHITE};
+    background-color: ${selected ? COLORS.PRIMARY : COLORS.WHITE};
     padding: 0 1rem;
     box-sizing: border-box;
     transition: background-color 0.1s;
 
     &:hover {
-      ${!selected ? `background-color: ${colors.LIGHT};` : ""}
+      ${!selected ? `background-color: ${COLORS.LIGHT};` : ""}
     }
   `;
 
@@ -97,7 +97,7 @@ const title = css`
 `;
 
 const latestMessageDatetime = css`
-  font-size: ${textSizes.S};
+  font-size: ${FONT_SIZES.S};
 `;
 
 const content = css`

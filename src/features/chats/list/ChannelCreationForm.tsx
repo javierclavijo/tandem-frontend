@@ -5,9 +5,9 @@ import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import Select, { StylesConfig } from "react-select";
+import { modal, select } from "../../../components/styles";
 import { languageOptions, levelOptions } from "../../../resources/languages";
-import { modal, select } from "../../../styles/components";
-import { colors, textSizes } from "../../../styles/variables";
+import { COLORS, FONT_SIZES } from "../../../resources/style-variables";
 import { axiosApi } from "../../auth/AuthContext";
 import { errorStyle } from "../../auth/styles";
 import { Language, Option, ProficiencyLevel } from "../../common/types";
@@ -172,12 +172,12 @@ const form = css`
 `;
 
 const nameInput = css`
-  font-size: ${textSizes.M};
+  font-size: ${FONT_SIZES.M};
   border-radius: 3px;
-  border: 1px solid ${colors.DARK}50;
+  border: 1px solid ${COLORS.DARK}50;
   padding: 0.5rem;
   outline: none;
-  color: ${colors.DARK};
+  color: ${COLORS.DARK};
 `;
 
 const fieldset = css`

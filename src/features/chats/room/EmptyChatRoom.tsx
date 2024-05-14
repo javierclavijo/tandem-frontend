@@ -3,7 +3,7 @@ import React from "react";
 import { useOutletContext } from "react-router-dom";
 import { animated } from "react-spring";
 import { ChatHeaderProps } from "../../../components/ChatHeader";
-import { colors } from "../../../styles/variables";
+import { COLORS } from "../../../resources/style-variables";
 import { useFadeIn } from "../../common/transitions";
 import { chatHeader, chatRoom } from "./styles";
 
@@ -45,7 +45,7 @@ const container = css`
 
 const text = css`
   margin: 0;
-  color: ${colors.DARK};
+  color: ${COLORS.DARK};
 `;
 
 export default EmptyChatRoom;

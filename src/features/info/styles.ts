@@ -1,10 +1,10 @@
 import { css } from "@emotion/react";
-import { buttonWithoutBackgroundAndBorder } from "../../styles/components";
-import { colors, textSizes } from "../../styles/variables";
+import { buttonWithoutBackgroundAndBorder } from "../../components/styles";
+import { COLORS, FONT_SIZES } from "../../resources/style-variables";
 
 export const infoSection = css`
-  background-color: ${colors.DARK_PRIMARY};
-  color: ${colors.WHITE};
+  background-color: ${COLORS.DARK_PRIMARY};
+  color: ${COLORS.WHITE};
   padding: 1rem;
   box-sizing: border-box;
 
@@ -38,8 +38,8 @@ export const languageItem = css`
 
 export const listSection = css`
   padding: 1rem 0;
-  background-color: ${colors.WHITE};
-  color: ${colors.DARK};
+  background-color: ${COLORS.WHITE};
+  color: ${COLORS.DARK};
 
   display: flex;
   flex-direction: column;
@@ -71,43 +71,43 @@ export const infoListElementImg = css`
 export const editElement = css`
   width: 100%;
   height: fit-content;
-  font-size: ${textSizes.M};
+  font-size: ${FONT_SIZES.M};
   resize: none;
   background: none;
-  color: ${colors.WHITE};
+  color: ${COLORS.WHITE};
   border: none;
   border-radius: 5px;
 
   transition: background-color 0.1s;
 
   // Add bottom border with 0 opacity to avoid resizing on focus
-  border-bottom: 1px solid ${colors.PRIMARY}00;
+  border-bottom: 1px solid ${COLORS.PRIMARY}00;
 
   &:hover:not(:focus) {
-    background: ${colors.SECONDARY}30;
+    background: ${COLORS.SECONDARY}30;
   }
 
   &:focus {
     outline: none;
-    border-bottom: 1px solid ${colors.LIGHT};
+    border-bottom: 1px solid ${COLORS.LIGHT};
     border-radius: 0;
   }
 `;
 
 export const buttonHover = css`
-  color: ${colors.WHITE};
-  border-bottom: 2px solid ${colors.SECONDARY}00;
+  color: ${COLORS.WHITE};
+  border-bottom: 2px solid ${COLORS.SECONDARY}00;
 
   transition: border-bottom 0.1s;
   &:hover {
-    border-bottom: 2px solid ${colors.SECONDARY}90;
+    border-bottom: 2px solid ${COLORS.SECONDARY}90;
   }
 `;
 
 export const infoButton = css`
   ${buttonWithoutBackgroundAndBorder};
   ${buttonHover};
-  font-size: ${textSizes.S};
+  font-size: ${FONT_SIZES.S};
   height: fit-content;
   padding: 0.25rem;
 `;

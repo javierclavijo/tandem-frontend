@@ -4,21 +4,21 @@ import { Link } from "react-router-dom";
 import { animated } from "react-spring";
 import Nav from "../../components/Nav/Nav";
 import Tabs from "../../components/Tabs";
-import { homeSearchStyles } from "../../styles/components";
-import {
-  baseAppContainerWithoutTabs,
-  baseAppContainerWithTabs,
-  homeSearchMain,
-  homeSearchMainMobile,
-} from "../../styles/layout";
-import { colors } from "../../styles/variables";
+import { homeSearchStyles } from "../../components/styles";
+import { COLORS } from "../../resources/style-variables";
 import useAuth from "../auth/AuthContext";
 import { useRedirectIfNotLoggedIn } from "../auth/hooks";
 import { useChannelChatList, useFriendChatList } from "../chats/hooks";
+import {
+  baseAppContainerWithTabs,
+  baseAppContainerWithoutTabs,
+  homeSearchMain,
+  homeSearchMainMobile,
+} from "../common/styles";
 import { useFadeIn } from "../common/transitions";
 import SearchResultElement from "../search/SearchResultElement";
-import { useDiscoverUsersList } from "./hooks";
 import RecentElement from "./RecentElement";
+import { useDiscoverUsersList } from "./hooks";
 
 /**
  * Post-login home component.
@@ -34,6 +34,7 @@ function Home() {
   const { data: channelChats } = useChannelChatList();
   const { data: discoverUsers } = useDiscoverUsersList();
 
+  // TODO: I don't like this. Please change it using media queries.
   const container = css`
     ${isDesktop ? baseAppContainerWithoutTabs : baseAppContainerWithTabs};
     height: ${isDesktop ? "auto" : "100vh"};
@@ -168,10 +169,10 @@ const sectionFooter = css`
 
 const sectionFooterLink = css`
   text-decoration: none;
-  color: ${colors.PRIMARY};
+  color: ${COLORS.PRIMARY};
 
   &:visited {
-    color: ${colors.PRIMARY};
+    color: ${COLORS.PRIMARY};
   }
 `;
 

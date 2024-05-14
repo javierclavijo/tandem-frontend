@@ -6,8 +6,8 @@ import {
   containerWithLink,
   thumbnailContainer,
   thumbnailImg,
-} from "../../../styles/components";
-import { colors } from "../../../styles/variables";
+} from "../../../components/styles";
+import { COLORS } from "../../../resources/style-variables";
 import { infoListElementInnerContainer } from "../styles";
 
 import defaultImg from "../../../static/images/user_placeholder.png";
@@ -58,7 +58,7 @@ function InfoListElement(props: InfoListElementProps) {
             <div css={upperOuterContentContainer}>
               <div css={buttonsInnerContainer}>{props.buttons}</div>
               <NavArrowRight
-                color={colors.PRIMARY}
+                color={COLORS.PRIMARY}
                 width={"1.5rem"}
                 height={"1.5rem"}
               />
@@ -80,7 +80,7 @@ const outerContainer = css`
 
   transition: background-color 0.1s;
   &:hover {
-    background-color: ${colors.LIGHT};
+    background-color: ${COLORS.LIGHT};
   }
 `;
 
@@ -138,7 +138,7 @@ const pictureContainer = css`
 `;
 
 const additionalInfoText = css`
-  color: ${colors.PRIMARY};
+  color: ${COLORS.PRIMARY};
 `;
 
 export default InfoListElement;

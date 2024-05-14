@@ -4,7 +4,7 @@ import React from "react";
 import { useMediaQuery } from "react-responsive";
 import { useParams } from "react-router-dom";
 import { animated } from "react-spring";
-import { colors } from "../../../styles/variables";
+import { COLORS } from "../../../resources/style-variables";
 import useAuth from "../../auth/AuthContext";
 import { useFadeIn } from "../../common/transitions";
 import { useAllChatList } from "../hooks";
@@ -35,7 +35,7 @@ function ChatList() {
     React.useState<boolean>(false);
 
   return (
-    <React.Fragment>
+    <>
       <animated.section
         css={isDesktop ? listContainer : listContainerMobile}
         style={transitionProps}
@@ -59,7 +59,7 @@ function ChatList() {
           onClick={() => setIsChannelCreationModalOpen(true)}
           aria-label="Create new channel"
         >
-          <Plus height={"2rem"} width={"2rem"} color={colors.WHITE} />
+          <Plus height={"2rem"} width={"2rem"} color={COLORS.WHITE} />
         </button>
       </animated.section>
 
@@ -68,13 +68,13 @@ function ChatList() {
         isOpen={isChannelCreationModalOpen}
         setIsOpen={setIsChannelCreationModalOpen}
       />
-    </React.Fragment>
+    </>
   );
 }
 
 const newChatButtonContainer = css`
   position: absolute;
-  background-color: ${colors.PRIMARY};
+  background-color: ${COLORS.PRIMARY};
   border-radius: 50%;
   padding: 0.25rem;
   bottom: 0;
@@ -91,7 +91,7 @@ const newChatButtonContainer = css`
   &:hover,
   &:active,
   &:focus {
-    background-color: ${colors.DARK_PRIMARY};
+    background-color: ${COLORS.DARK_PRIMARY};
     outline: none;
   }
 `;

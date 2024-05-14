@@ -6,9 +6,9 @@ import { useMutation, useQueryClient } from "react-query";
 import Select, { SingleValue, StylesConfig } from "react-select";
 import Button from "../../../components/Button";
 import ProficiencyLevelIcon from "../../../components/icons/ProficiencyLevelIcon";
+import { badge, noBorderAndBgSelectWhite } from "../../../components/styles";
 import { LANGUAGE_INFO, levelOptions } from "../../../resources/languages";
-import { badge, noBorderAndBgSelectWhite } from "../../../styles/components";
-import { colors } from "../../../styles/variables";
+import { COLORS } from "../../../resources/style-variables";
 import useAuth, { axiosApi } from "../../auth/AuthContext";
 import { Option, ProficiencyLevel, User } from "../../common/types";
 import { UserLanguage } from "../types";
@@ -81,7 +81,7 @@ function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
       <span>|</span>
       <ProficiencyLevelIcon
         level={data.level}
-        color={colors.WHITE}
+        color={COLORS.WHITE}
         height={24}
         width={24}
       />
@@ -95,7 +95,7 @@ function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
         }
       />
       <Button visible={true} onClick={onDelete}>
-        <Xmark color={colors.WHITE} width={"1.5rem"} height={"1.5rem"} />
+        <Xmark color={COLORS.WHITE} width={"1.5rem"} height={"1.5rem"} />
       </Button>
     </div>
   );

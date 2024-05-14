@@ -1,4 +1,4 @@
-export const colors = {
+export const COLORS: Readonly<Record<string, string>> = {
   DARK_PRIMARY: "#00638B",
   PRIMARY: "#287FA4",
   SECONDARY: "#8DD9F7",
@@ -7,7 +7,8 @@ export const colors = {
   DARK: "#333333",
   WHITE: "#FFFFFF",
 };
-export const textSizes = {
+
+export const FONT_SIZES: Readonly<Record<string, string>> = {
   S: "0.875rem",
   M: "1rem",
   L: "1.5rem",

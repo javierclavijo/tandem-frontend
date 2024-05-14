@@ -6,7 +6,7 @@ import { ArrowRightCircle, Emoji } from "iconoir-react";
 import React, { CSSProperties, useCallback, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import useWebSocket from "react-use-websocket";
-import { colors, textSizes } from "../../../styles/variables";
+import { COLORS, FONT_SIZES } from "../../../resources/style-variables";
 import useAuth from "../../auth/AuthContext";
 import { Chat } from "../../common/types";
 
@@ -148,7 +148,7 @@ function ChatInputForm({ chat }: { chat: Chat }) {
           css={button}
           aria-label="Open emoji picker"
         >
-          <Emoji color={`${colors.DARK}99`} width="1.5rem" height="1.5rem" />
+          <Emoji color={`${COLORS.DARK}99`} width="1.5rem" height="1.5rem" />
         </button>
 
         <TextareaAutosize
@@ -172,7 +172,7 @@ function ChatInputForm({ chat }: { chat: Chat }) {
           aria-disabled={!inputValue}
         >
           <ArrowRightCircle
-            color={inputValue ? colors.PRIMARY : `${colors.DARK}99`}
+            color={inputValue ? COLORS.PRIMARY : `${COLORS.DARK}99`}
             width="1.5rem"
             height="1.5rem"
           />
@@ -188,7 +188,7 @@ const container = css`
 
 const form = css`
   width: 100%;
-  background-color: ${colors.LIGHT};
+  background-color: ${COLORS.LIGHT};
   border-radius: 3px;
   display: flex;
   position: relative;
@@ -204,7 +204,7 @@ const input = css`
   padding: 0.5rem;
   box-sizing: border-box;
   resize: none;
-  font-size: ${textSizes.M};
+  font-size: ${FONT_SIZES.M};
 `;
 
 const button = css`

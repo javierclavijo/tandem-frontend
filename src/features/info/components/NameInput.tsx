@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import React from "react";
 import { useMutation, useQueryClient } from "react-query";
 import EditButtons from "../../../components/EditButtons";
-import { colors } from "../../../styles/variables";
+import { COLORS } from "../../../resources/style-variables";
 import { axiosApi } from "../../auth/AuthContext";
 import { Channel, Chat, User } from "../../common/types";
 import { editElement } from "../styles";
@@ -80,7 +80,7 @@ function NameInput<TData>({ data, dataKey, onSubmit }: NameInputProps<TData>) {
   };
 
   return (
-    <React.Fragment>
+    <>
       <div css={container}>
         <input
           type="text"
@@ -100,12 +100,12 @@ function NameInput<TData>({ data, dataKey, onSubmit }: NameInputProps<TData>) {
           submitButtonRef={submitButtonRef}
           handleSubmit={handleSubmit}
           handleCancel={handleCancel}
-          color={colors.WHITE}
+          color={COLORS.WHITE}
         />
       </div>
 
       {error ? <p css={errorText}>{error}</p> : null}
-    </React.Fragment>
+    </>
   );
 }
 
@@ -205,5 +205,5 @@ const input = css`
 `;
 
 const errorText = css`
-  color: ${colors.CONTRAST};
+  color: ${COLORS.CONTRAST};
 `;

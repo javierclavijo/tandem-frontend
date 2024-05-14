@@ -1,10 +1,10 @@
 import { css } from "@emotion/react";
 import { Link } from "react-router-dom";
 import Nav from "../../components/Nav/Nav";
-import { button } from "../../styles/components";
-import { baseAppContainerWithoutTabs } from "../../styles/layout";
-import { colors, textSizes } from "../../styles/variables";
+import { button } from "../../components/styles";
+import { COLORS, FONT_SIZES } from "../../resources/style-variables";
 import { useRedirectIfLoggedIn } from "../auth/hooks";
+import { baseAppContainerWithoutTabs } from "../common/styles";
 
 import topImage from "../../static/images/loren-dosti-M8cpBt6RSns-unsplash.webp";
 import middleImage from "../../static/images/toa-heftiba-ANNsvl-6AG0-unsplash.webp";
@@ -75,7 +75,7 @@ const main = css`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  background-color: ${colors.PRIMARY};
+  background-color: ${COLORS.PRIMARY};
 `;
 
 const textContainer = css`
@@ -85,8 +85,8 @@ const textContainer = css`
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  background-color: ${colors.PRIMARY};
-  color: ${colors.WHITE};
+  background-color: ${COLORS.PRIMARY};
+  color: ${COLORS.WHITE};
 
   @media (min-width: 1024px) {
     padding: 2rem 3.125rem;
@@ -96,13 +96,13 @@ const textContainer = css`
 const topText = css`
   text-align: center;
   @media (min-width: 1024px) {
-    font-size: ${textSizes.L};
+    font-size: ${FONT_SIZES.L};
   }
 `;
 
 const disclaimer = css`
   align-self: flex-end;
-  font-size: ${textSizes.S};
+  font-size: ${FONT_SIZES.S};
 
   &:before {
     content: "*";
@@ -112,12 +112,12 @@ const disclaimer = css`
 const joinButton = css`
   ${button};
   text-decoration: none;
-  background-color: ${colors.DARK_PRIMARY};
+  background-color: ${COLORS.DARK_PRIMARY};
 
   &:active,
   &:hover,
   &:focus {
-    background-color: ${colors.DARK};
+    background-color: ${COLORS.DARK};
   }
 `;
 
@@ -145,8 +145,8 @@ const imageGradient = css`
   grid-area: image;
   background: linear-gradient(
     180deg,
-    ${colors.PRIMARY}00 0%,
-    ${colors.PRIMARY} 100%
+    ${COLORS.PRIMARY}00 0%,
+    ${COLORS.PRIMARY} 100%
   );
 `;
 
@@ -154,14 +154,14 @@ const imageQuoteContainer = css`
   position: absolute;
   width: 100%;
   bottom: 0;
-  background-color: ${colors.WHITE};
-  color: ${colors.DARK_PRIMARY};
+  background-color: ${COLORS.WHITE};
+  color: ${COLORS.DARK_PRIMARY};
   padding: 1rem;
   box-sizing: border-box;
   text-align: center;
 
   @media (min-width: 1024px) {
-    font-size: ${textSizes.L};
+    font-size: ${FONT_SIZES.L};
     padding: 2rem 1rem;
   }
 `;
@@ -197,7 +197,7 @@ const splitImage = css`
 const splitTextContainer = css`
   ${textContainer};
   width: 100%;
-  background-color: ${colors.DARK_PRIMARY};
+  background-color: ${COLORS.DARK_PRIMARY};
 `;
 
 const splitText = css`
@@ -207,7 +207,7 @@ const splitText = css`
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  color: ${colors.WHITE};
+  color: ${COLORS.WHITE};
 `;
 
 export default PreLogin;
