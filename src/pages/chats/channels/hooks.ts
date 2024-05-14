@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { axiosApi } from "../../../App";
+import { axiosApi } from "../../../api";
 import { Channel } from "../../../common/types";
 import useAuth from "../../auth/AuthContext/AuthContext";
 

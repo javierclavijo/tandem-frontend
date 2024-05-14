@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import React from "react";
 import { useMutation, useQueryClient } from "react-query";
 import Select, { StylesConfig } from "react-select";
-import { axiosApi } from "../../../../App";
+import { axiosApi } from "../../../../api";
 import {
   languageOptions,
   levelOptions,

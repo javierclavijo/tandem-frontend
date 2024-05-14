@@ -1,6 +1,6 @@
 import { AxiosResponse, isAxiosError } from "axios";
 import { useMutation, useQuery } from "react-query";
-import { axiosApi, queryClient } from "../../../App";
+import { axiosApi, queryClient } from "../../../api";
 import { User } from "../../../common/types";
 import { LogInRequestData, SessionInfoResponse } from "./types";
 

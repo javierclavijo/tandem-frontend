@@ -5,7 +5,7 @@ import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import { animated } from "react-spring";
-import { axiosApi } from "../../App";
+import { axiosApi } from "../../api";
 import { languageOptions } from "../../common/resources/languages";
 import { baseAppContainerWithoutTabs } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";

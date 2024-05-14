@@ -1,9 +1,9 @@
 import { Global } from "@emotion/react";
-import axios from "axios";
 import React from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { queryClient } from "./api";
 import { AuthProvider } from "./pages/auth/AuthContext/AuthContext";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
@@ -17,25 +17,6 @@ import NotFoundPage from "./pages/not-found/NotFoundPage";
 import { default as PreLoginPage } from "./pages/pre-login/PreLoginPage";
 import SearchPage from "./pages/search/SearchPage";
 import globalStyles from "./styles";
-
-/**
- * Main axios instance used throughout the app.
- */
-export const axiosApi = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ?? "http://localhost:8000/api",
-  withCredentials: true,
-  withXSRFToken: true,
-
-  // Names of the CSRF token cookie and header used by Django.
-  xsrfCookieName: "csrftoken",
-  xsrfHeaderName: "X-CSRFToken",
-});
-
-export const queryClient = new QueryClient({
-  // Increase the default stale time to 60 seconds to avoid fetching data too
-  // often.
-  defaultOptions: { queries: { staleTime: 60000 } },
-});
 
 const router = createBrowserRouter([
   {

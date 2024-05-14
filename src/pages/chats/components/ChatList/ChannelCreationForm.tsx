@@ -5,7 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import Select, { StylesConfig } from "react-select";
-import { axiosApi } from "../../../../App";
+import { axiosApi } from "../../../../api";
 import {
   languageOptions,
   levelOptions,
