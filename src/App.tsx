@@ -31,7 +31,7 @@ export const axiosApi = axios.create({
   xsrfHeaderName: "X-CSRFToken",
 });
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   // Increase the default stale time to 60 seconds to avoid fetching data too
   // often.
   defaultOptions: { queries: { staleTime: 60000 } },
