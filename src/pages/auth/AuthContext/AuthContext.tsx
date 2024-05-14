@@ -1,9 +1,14 @@
-import axios from "axios";
-import React, { useContext, useMemo, useState } from "react";
+import axios, { AxiosResponse } from "axios";
+import React, { useContext, useDeferredValue, useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { axiosApi } from "../../../App";
 import { User } from "../../../common/types";
-import { AuthContextType, LogInRequestData } from "./types";
+import { getSessionInfoFromQueryData } from "./functions";
+import {
+  AuthContextType,
+  LogInRequestData,
+  SessionInfoResponse,
+} from "./types";
 
 export const AuthContext = React.createContext<AuthContextType>(
   // TODO:review this type assertion
@@ -13,106 +18,65 @@ export const AuthContext = React.createContext<AuthContextType>(
 // TODO: refactor using RQ
 
 /**
- * Authentication context provider for the app. Fetches and provides information about authentication and the user,
- * and provides functions to log in and log out.
+ * Authentication context provider for the app. Fetches and provides information
+ * about the user and provides functions to log in and log out.
  */
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();
 
   /**
-   * ID of the session's user. Used in the user's query key to identify the query.
+   * Fetches the current session's info from the server (user ID and URL, plus
+   * CSRF token from the csrftoken cookie) and sets it in the context's state.
+   * Runs on init.
    */
-  const [id, setId] = useState<string>("");
+  const { data: sessionInfo, isLoading: isSessionInfoLoading } =
+    useQuery<SessionInfoResponse>(["sessionInfo"], async () => {
+      const response = await axiosApi.get<SessionInfoResponse>("session_info/");
+      return response.data;
+    });
+
+  const { id, url } = getSessionInfoFromQueryData(sessionInfo);
 
   /**
-   * URL of the detail endpoint for the session's user. Used to fetch the user's data.
-   */
-  const [url, setUrl] = useState<string>("");
-
-  /**
-   * Holds whether the user is logged in or not.
-   */
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-
-  /**
-   * Holds errors sent by the server, if any.
-   */
-  const [error, setError] = useState<string>("");
-
-  /**
-   * Holds whether the login request is being executed or not.
-   */
-  const [loading, setLoading] = useState<boolean>(true);
-
-  /**
-   * Session's user query. Is disabled unless the user is logged in.
+   * User query. Is disabled unless the user is logged in (i. e. the session
+   * info query has returned the user's ID).
    */
   const { data: user } = useQuery<User>(
     ["users", id],
     async () => {
-      const response = await axiosApi.get(url);
+      const response = await axiosApi.get(url!);
       return response.data;
     },
     {
-      enabled: isLoggedIn && !!url && !!id,
+      enabled: id != null,
     },
   );
 
-  /**
-   * Fetches the current session's info from the server (user ID and URL, plus CSRF token from the csrftoken cookie)
-   * and sets it in the context's state. Runs on init.
-   */
-  const fetchSessionInfo = React.useCallback(async () => {
-    setLoading(true);
-    const response = await axiosApi.get("session_info/");
-    if (!!response.data.id && !!response.data.url) {
-      setId(response.data.id);
-      setUrl(response.data.url);
-      setIsLoggedIn(true);
-    }
-    setLoading(false);
-  }, []);
-
-  /**
-   * On init, fetch session info and get the CSRF cookie.
-   */
-  React.useEffect(() => {
-    fetchSessionInfo();
-  }, [fetchSessionInfo]);
+  const invalidateUserQueries = () => {
+    queryClient.invalidateQueries(["users", id], { exact: true });
+    queryClient.invalidateQueries(["sessionInfo"], { exact: true });
+  };
 
   /**
    * Sends a login request.
    */
-  const loginMutation = useMutation(
-    async (data: LogInRequestData) =>
-      await axiosApi.post<LogInRequestData>("login/", data),
-  );
-
-  /**
-   * Handles user login, setting the auth context's state (error, loading, isLoggedIn) accordingly.
-   */
-  const login = React.useCallback(
+  const loginMutation = useMutation<
+    AxiosResponse<void>,
+    Error,
+    LogInRequestData
+  >(
     async (data: LogInRequestData) => {
-      setLoading(true);
-      setError("");
       try {
-        await loginMutation.mutateAsync(data);
-        await fetchSessionInfo();
-        setIsLoggedIn(true);
+        return await axiosApi.post<void>("login/", data);
       } catch (e) {
-        if (axios.isAxiosError(e) && e.response) {
-          if (e.response.status === 401) {
-            setError("Unable to log in with provided credentials.");
-          } else {
-            setError("Unable to log in.");
-          }
+        if (axios.isAxiosError(e) && e.response?.status === 401) {
+          throw new Error("Unable to log in with provided credentials.");
+        } else {
+          throw new Error("Unable to log in.");
         }
-      } finally {
-        setLoading(false);
       }
-      return;
     },
-    [loginMutation, fetchSessionInfo],
+    { onSuccess: invalidateUserQueries },
   );
 
   /**
@@ -120,30 +84,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
    */
   const logoutMutation = useMutation(
     async () => await axiosApi.post("logout/"),
+    { onSuccess: invalidateUserQueries },
   );
 
-  /**
-   * Handles user logout, setting the auth context's state accordingly and removing the session user's query.
-   */
-  const logout = React.useCallback(async () => {
-    await logoutMutation.mutateAsync();
-    setIsLoggedIn(false);
+  const loading = useDeferredValue(
+    isSessionInfoLoading || loginMutation.isLoading || logoutMutation.isLoading,
+  );
 
-    // On logout, remove the logged-in user query to avoid keeping the user's data in cache
-    queryClient.removeQueries(["users", id], { exact: true });
-  }, [id, queryClient, logoutMutation]);
-
-  // TODO: review this. Does it make sense to memoize?
-  const memoedValue = useMemo(
+  const memoedValue: AuthContextType = useMemo(
     () => ({
       user,
-      error,
+      error: loginMutation.error?.message,
       loading,
-      isLoggedIn,
-      login,
-      logout,
+      isLoggedIn: sessionInfo?.id != null,
+      login: loginMutation.mutateAsync,
+      logout: logoutMutation.mutateAsync,
     }),
-    [user, error, loading, isLoggedIn, login, logout],
+    [
+      user,
+      loginMutation.error,
+      loading,
+      sessionInfo?.id,
+      loginMutation.mutateAsync,
+      logoutMutation.mutateAsync,
+    ],
   );
 
   return (
