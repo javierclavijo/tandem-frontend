@@ -124,12 +124,12 @@ function ChannelPage() {
     }
   }, [data?.memberships, user]);
 
-  const handleModalClose = () => setDeletionModalOpen(false);
-
   /**
-   * Channel deletion handler.
+   * Channel delete/leave handlers.
    */
   const handleDelete = useDeleteChannel(data);
+  const handleDeleteModalClose = () => setDeletionModalOpen(false);
+  const handleLeaveModalClose = () => setLeaveChannelModalOpen(false);
 
   /**
    * User role changing handlers.
@@ -287,14 +287,14 @@ function ChannelPage() {
       {/* Channel deletion confirmation modal */}
       <DeleteChannelModal
         isOpen={deletionModalOpen}
-        onRequestClose={handleModalClose}
+        onRequestClose={handleDeleteModalClose}
         onDelete={handleDelete}
       />
 
       {/* Channel leave confirmation modal */}
       <LeaveChannelModal
         isOpen={leaveChannelModalOpen}
-        onRequestClose={handleModalClose}
+        onRequestClose={handleLeaveModalClose}
         onLeave={handleLeaveChannel}
       />
     </animated.div>

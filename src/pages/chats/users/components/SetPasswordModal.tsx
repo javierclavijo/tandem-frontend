@@ -114,7 +114,7 @@ function SetPasswordModal({ ...props }: NewLanguageModalProps) {
           />
         </label>
         <ModalButtonsContainer>
-          <Button type="submit">Create channel</Button>
+          <Button type="submit">Set password</Button>
           <Button type="button" onClick={props.onRequestClose}>
             Cancel
           </Button>

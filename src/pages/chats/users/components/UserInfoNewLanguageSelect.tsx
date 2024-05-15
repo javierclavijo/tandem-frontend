@@ -81,6 +81,8 @@ function UserInfoNewLanguageSelect({
           placeholder="Level"
           styles={select as StylesConfig<Option<ProficiencyLevel>>}
         />
+
+        {/* TODO: substitute for regular buttons */}
         <EditButtons
           handleSubmit={handleSubmit}
           handleCancel={onClose}
