@@ -34,6 +34,9 @@ function ChatList() {
   const [isChannelCreationModalOpen, setIsChannelCreationModalOpen] =
     useState<boolean>(false);
 
+  const onChannelCreationModalClose = () =>
+    setIsChannelCreationModalOpen(false);
+
   return (
     <>
       <animated.section
@@ -66,7 +69,7 @@ function ChatList() {
       {/* Channel creation modal */}
       <NewChannelModal
         isOpen={isChannelCreationModalOpen}
-        setIsOpen={setIsChannelCreationModalOpen}
+        onRequestClose={onChannelCreationModalClose}
       />
     </>
   );

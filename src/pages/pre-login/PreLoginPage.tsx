@@ -1,7 +1,6 @@
 import { css } from "@emotion/react";
 import { Link } from "react-router-dom";
 import Nav from "../../common/components/Nav/Nav";
-import { button } from "../../common/components/styles";
 import { COLORS, FONT_SIZES } from "../../common/resources/style-variables";
 import { baseAppContainerWithoutTabs } from "../../common/styles";
 
@@ -103,7 +102,14 @@ const disclaimer = css`
 `;
 
 const joinButton = css`
-  ${button};
+  width: fit-content;
+  padding: 0.5rem;
+  border-radius: 3px;
+  border: none;
+  color: ${COLORS.WHITE};
+  font-size: ${FONT_SIZES.M};
+  cursor: pointer;
+  transition: background-color 0.1s;
   text-decoration: none;
   background-color: ${COLORS.DARK_PRIMARY};
 

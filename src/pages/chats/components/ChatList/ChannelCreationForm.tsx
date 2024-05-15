@@ -3,7 +3,8 @@ import { ErrorMessage } from "@hookform/error-message";
 import { Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Select, { StylesConfig } from "react-select";
-import { modal, select } from "../../../../common/components/styles";
+import Button from "../../../../common/components/Button";
+import { select } from "../../../../common/components/styles";
 import { useSetFormErrorOnRequestError } from "../../../../common/hooks";
 import {
   languageOptions,
@@ -118,12 +119,10 @@ function ChannelCreationForm({ closeModal }: ChannelCreationFormProps) {
         </div>
       </fieldset>
       <div css={buttonsContainer}>
-        <button type="submit" css={modal.button}>
-          Create channel
-        </button>
-        <button type="button" onClick={closeModal} css={modal.cancelButton}>
+        <Button type="submit">Create channel</Button>
+        <Button type="button" onClick={closeModal}>
           Cancel
-        </button>
+        </Button>
       </div>
     </form>
   );

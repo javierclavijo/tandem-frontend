@@ -1,8 +1,9 @@
+import { css } from "@emotion/react";
 import React, { ReactNode } from "react";
+import { COLORS, FONT_SIZES } from "../resources/style-variables";
 import { StyledEmotionComponentProps } from "../types";
-import { buttonWithoutBackgroundAndBorder } from "./styles";
 
-interface EditButtonProps
+interface ButtonProps
   extends React.ClassAttributes<HTMLButtonElement>,
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     StyledEmotionComponentProps {
@@ -10,22 +11,36 @@ interface EditButtonProps
 }
 
 /*
- * Edit button component which allows visibility toggling, click event handling
- * and ref forwarding.
+ * Generic button component.
  */
-const Button = React.forwardRef<HTMLButtonElement, EditButtonProps>(
-  ({ ...props }: EditButtonProps, ref?) => {
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ ...props }: ButtonProps, ref?) => {
     return (
-      <button
-        ref={ref}
-        {...props}
-        css={[buttonWithoutBackgroundAndBorder, props.css]}
-      >
+      <button ref={ref} {...props} css={[button, props.css]}>
         {props.children}
       </button>
     );
   },
 );
+
+const button = css`
+  width: fit-content;
+  padding: 0.5rem;
+  border-radius: 3px;
+  border: none;
+  background-color: ${COLORS.PRIMARY};
+  color: ${COLORS.WHITE};
+  font-size: ${FONT_SIZES.M};
+  cursor: pointer;
+
+  transition: background-color 0.1s;
+
+  &:active,
+  &:hover,
+  &:focus {
+    background-color: ${COLORS.DARK_PRIMARY};
+  }
+`;
 
 Button.displayName = "Button";
 

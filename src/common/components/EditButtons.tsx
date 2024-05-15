@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { Check, Xmark } from "iconoir-react";
 import React from "react";
-import Button from "./Button";
+import EditButton from "./EditButton";
 
 interface EditButtonsProps {
   submitButtonRef?: React.MutableRefObject<HTMLButtonElement | null>;
@@ -21,12 +21,12 @@ function EditButtons({
 }: EditButtonsProps) {
   return (
     <div css={container}>
-      <Button onClick={handleSubmit} ref={submitButtonRef}>
+      <EditButton onClick={handleSubmit} ref={submitButtonRef}>
         <Check color={color} width={"1.5rem"} height={"1.5rem"} />
-      </Button>
-      <Button onClick={handleCancel}>
+      </EditButton>
+      <EditButton onClick={handleCancel}>
         <Xmark color={color} width={"1.5rem"} height={"1.5rem"} />
-      </Button>
+      </EditButton>
     </div>
   );
 }

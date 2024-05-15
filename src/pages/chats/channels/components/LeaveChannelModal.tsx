@@ -1,41 +1,24 @@
-import React from "react";
-import ReactModal from "react-modal";
-import { modal } from "../../../../common/components/styles";
-import { setModalAppElement } from "../../../../common/modals";
+import Button from "../../../../common/components/Button";
+import Modal, { ModalProps } from "../../../../common/components/Modal/Modal";
+import ModalButtonsContainer from "../../../../common/components/Modal/ModalButtonsContainer";
+import ModalTitle from "../../../../common/components/Modal/ModalTitle";
 
-setModalAppElement();
-
-interface LeaveChannelModalProps {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleLeave: () => Promise<void>;
+interface LeaveChannelModalProps extends ModalProps {
+  onLeave: () => Promise<void>;
 }
 
 /**
  * Confirmation modal window for channel leave action.
  */
-function LeaveChannelModal({
-  isOpen,
-  setIsOpen,
-  handleLeave,
-}: LeaveChannelModalProps) {
+function LeaveChannelModal({ onLeave, ...props }: LeaveChannelModalProps) {
   return (
-    <ReactModal
-      isOpen={isOpen}
-      onRequestClose={() => setIsOpen(false)}
-      contentLabel="Leave channel"
-      style={modal.container}
-    >
-      <p css={modal.title}>Leave channel?</p>
-      <div css={modal.buttonsContainer}>
-        <button onClick={handleLeave} css={modal.button}>
-          Leave
-        </button>
-        <button onClick={() => setIsOpen(false)} css={modal.cancelButton}>
-          Cancel
-        </button>
-      </div>
-    </ReactModal>
+    <Modal {...props}>
+      <ModalTitle>Leave channel?</ModalTitle>
+      <ModalButtonsContainer>
+        <Button onClick={onLeave}>Leave</Button>
+        <Button onClick={props.onRequestClose}>Cancel</Button>
+      </ModalButtonsContainer>
+    </Modal>
   );
 }
 

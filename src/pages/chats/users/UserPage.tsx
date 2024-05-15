@@ -5,6 +5,7 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import LanguageBadge from "../../../common/components/LanguageBadge";
 import useAuth from "../../../common/context/AuthContext/AuthContext";
+import { LANGUAGE_INFO } from "../../../common/resources/languages";
 import { COLORS } from "../../../common/resources/style-variables";
 import { useFadeIn } from "../../../common/transitions";
 import DescriptionTextarea from "../components/DescriptionTextarea";
@@ -47,7 +48,7 @@ export function UserPage() {
       ]
     >();
   const transitionProps = useFadeIn();
-
+  // TODO: simplify state, for God's sake
   /**
    * Holds the user's data
    */
@@ -81,6 +82,11 @@ export function UserPage() {
   const [selectedDeleteLanguage, setSelectedDeleteLanguage] =
     useState<UserLanguage | null>(null);
 
+  const selectedDeleteLanguageName =
+    selectedDeleteLanguage != null
+      ? LANGUAGE_INFO[selectedDeleteLanguage?.language].displayName
+      : null;
+
   /**
    * Set the view as editable if the info's user's ID is the same as the user's. If not, check if the user is a friend
    * of the current user (i.e. has a friend chat with them).
@@ -97,16 +103,16 @@ export function UserPage() {
   }, [user, data]);
 
   /**
-   * Language deletion handler
+   * Deletes a language from a user's profile.
    */
   const { mutateAsync: deletionMutateAsync } = useDeleteUserLanguage();
 
   /**
-   * Mutation which creates a chat with the user.
+   * Creates a chat with the user.
    */
   const { mutateAsync: creationMutateAsync } = useCreateChatWithUser(data);
 
-  const handleDeleteLanguage = useCallback(async () => {
+  const onLanguageDelete = useCallback(async () => {
     if (selectedDeleteLanguage) {
       await deletionMutateAsync(selectedDeleteLanguage.url);
       setSelectedDeleteLanguage(null);
@@ -114,11 +120,7 @@ export function UserPage() {
   }, [deletionMutateAsync, selectedDeleteLanguage, setSelectedDeleteLanguage]);
 
   const joinWSChat = useJoinWSChat();
-
-  /**
-   * Click event handler to create chat.
-   */
-  const onClickChatCreate = useCallback(async () => {
+  const onChatCreateClick = useCallback(async () => {
     const response = await creationMutateAsync();
     const newChatId = response?.data?.id;
     if (response?.status === 201 && newChatId) {
@@ -126,6 +128,10 @@ export function UserPage() {
       navigate(`/chats/${newChatId}`);
     }
   }, [creationMutateAsync, navigate, joinWSChat]);
+
+  const onDeleteLanguageModalClose = () => setSelectedDeleteLanguage(null);
+  const onNewLanguageModalClose = () => setNewLanguageModalIsOpen(false);
+  const onPasswordModalClose = () => setPasswordChangeModalIsOpen(false);
 
   /**
    * Set header to render the title 'user info', plus a button to chat with the user if the user is not already a
@@ -138,7 +144,7 @@ export function UserPage() {
         // TODO: this doesn't look too good (open-closed).
         <>
           {!isFriend ? (
-            <button type="button" onClick={onClickChatCreate} css={infoButton}>
+            <button type="button" onClick={onChatCreateClick} css={infoButton}>
               Chat with user
             </button>
           ) : null}
@@ -157,7 +163,7 @@ export function UserPage() {
   }, [
     isFriend,
     setHeader,
-    onClickChatCreate,
+    onChatCreateClick,
     isEditable,
     setPasswordChangeModalIsOpen,
   ]);
@@ -166,8 +172,7 @@ export function UserPage() {
     <>
       <animated.div css={container} style={transitionProps}>
         {/* Main user information
-            Contains the user's picture, username, languages and description.
-            */}
+            Contains the user's picture, username, languages and description.*/}
         <section css={infoSection}>
           {isEditable && data ? (
             <>
@@ -192,15 +197,17 @@ export function UserPage() {
           )}
 
           {/* Languages
-                If the view is editable, contains controls for creating, editing and removing the user's languages.
-                Else, it only displays the languages */}
+                
+              If the view is editable, contains controls for creating, editing 
+              and removing the user's languages. Else, it only displays the 
+              languages */}
           <section css={languagesOuterContainer}>
             <h3>Languages</h3>
             <div css={languagesInnerContainer}>
               {isEditable ? (
                 <>
-                  {/* Render selects for the user's non-native languages, as native languages can't be edited
-                            by the user */}
+                  {/* Render selects for the user's non-native languages, as 
+                      native languages can't be edited by the user */}
                   {data.languages.map((language) =>
                     language.level === "NA" ? (
                       <LanguageBadge
@@ -314,31 +321,35 @@ export function UserPage() {
       </animated.div>
 
       {/* Language creation modal
-          Only rendered if the profile is the session user's. Opens when the 'add a language' button is pressed. */}
+          Only rendered if the profile is the session user's. Opens when the 
+          'add a language' button is pressed. */}
       {isEditable ? (
         <NewLanguageModal
           isOpen={newLanguageModalIsOpen}
-          setIsOpen={setNewLanguageModalIsOpen}
+          onRequestClose={onNewLanguageModalClose}
         />
       ) : null}
 
       {/* Language deletion modal
-          Only rendered if the profile is the session user's and a language has been selected for deletion (i.e. when a
-          language's delete button has been pressed.) */}
-      {isEditable && selectedDeleteLanguage ? (
+          Only available if the profile is the session user's and a language has
+          been selected for deletion (i.e. when a language's delete button has 
+          been pressed.) */}
+      {isEditable ? (
         <DeleteLanguageModal
-          selectedDeleteLanguage={selectedDeleteLanguage}
-          setSelectedDeleteLanguage={setSelectedDeleteLanguage}
-          handleDeleteLanguage={handleDeleteLanguage}
+          isOpen={selectedDeleteLanguage != null}
+          languageName={selectedDeleteLanguageName}
+          onRequestClose={onDeleteLanguageModalClose}
+          onDelete={onLanguageDelete}
         />
       ) : null}
 
       {/* Set password modal.
-          Only rendered if the profile is the session user's. Opens when the 'change password' button is pressed. */}
+          Only rendered if the profile is the session user's. Opens when the 
+          'change password' button is pressed. */}
       {isEditable ? (
         <SetPasswordModal
           isOpen={passwordChangeModalIsOpen}
-          setIsOpen={setPasswordChangeModalIsOpen}
+          onRequestClose={onPasswordModalClose}
         />
       ) : null}
     </>

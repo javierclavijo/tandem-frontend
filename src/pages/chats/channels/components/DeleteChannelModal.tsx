@@ -1,41 +1,24 @@
-import React from "react";
-import ReactModal from "react-modal";
-import { modal } from "../../../../common/components/styles";
-import { setModalAppElement } from "../../../../common/modals";
+import Button from "../../../../common/components/Button";
+import Modal, { ModalProps } from "../../../../common/components/Modal/Modal";
+import ModalButtonsContainer from "../../../../common/components/Modal/ModalButtonsContainer";
+import ModalTitle from "../../../../common/components/Modal/ModalTitle";
 
-setModalAppElement();
-
-interface DeleteChannelModalProps {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleDelete: () => Promise<void>;
+interface DeleteChannelModalProps extends ModalProps {
+  onDelete: () => Promise<void>;
 }
 
 /**
  * Channel deletion confirmation modal window.
  */
-function DeleteChannelModal({
-  isOpen,
-  setIsOpen,
-  handleDelete,
-}: DeleteChannelModalProps) {
+function DeleteChannelModal({ onDelete, ...props }: DeleteChannelModalProps) {
   return (
-    <ReactModal
-      isOpen={isOpen}
-      onRequestClose={() => setIsOpen(false)}
-      contentLabel="Delete channel"
-      style={modal.container}
-    >
-      <p css={modal.title}>Delete channel?</p>
-      <div css={modal.buttonsContainer}>
-        <button onClick={handleDelete} css={modal.button}>
-          Delete
-        </button>
-        <button onClick={() => setIsOpen(false)} css={modal.cancelButton}>
-          Cancel
-        </button>
-      </div>
-    </ReactModal>
+    <Modal {...props}>
+      <ModalTitle>Delete channel?</ModalTitle>
+      <ModalButtonsContainer>
+        <Button onClick={onDelete}>Delete</Button>
+        <Button onClick={props.onRequestClose}>Cancel</Button>
+      </ModalButtonsContainer>
+    </Modal>
   );
 }
 

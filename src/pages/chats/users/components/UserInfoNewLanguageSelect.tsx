@@ -12,13 +12,19 @@ import { COLORS } from "../../../../common/resources/style-variables";
 import { Language, Option, ProficiencyLevel } from "../../../../common/types";
 import { useCreateUserLanguageMutation } from "../queries";
 
+interface UserInfoNewLanguageSelectProps {
+  onClose: () => void;
+}
+
 /**
  * Contains controls to allow the user to add a new language to their profile.
  */
-function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
+function UserInfoNewLanguageSelect({
+  onClose,
+}: UserInfoNewLanguageSelectProps) {
   const { user } = useAuth();
 
-  // TODO: use RHF
+  // TODO: use RHF, move this stuff to NewLanguageModal
   const [languageValue, setLanguageValue] = useState<Option<Language> | null>(
     null,
   );

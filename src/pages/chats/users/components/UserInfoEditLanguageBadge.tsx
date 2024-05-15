@@ -3,7 +3,7 @@ import { Xmark } from "iconoir-react";
 import { useEffect, useState } from "react";
 import { FlagIcon } from "react-flag-kit";
 import Select, { SingleValue, StylesConfig } from "react-select";
-import Button from "../../../../common/components/Button";
+import EditButton from "../../../../common/components/EditButton";
 import ProficiencyLevelIcon from "../../../../common/components/icons/ProficiencyLevelIcon";
 import {
   badge,
@@ -81,9 +81,9 @@ function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
           noBorderAndBgSelectWhite as StylesConfig<Option<ProficiencyLevel>>
         }
       />
-      <Button onClick={onDelete}>
+      <EditButton onClick={onDelete}>
         <Xmark color={COLORS.WHITE} width={"1.5rem"} height={"1.5rem"} />
-      </Button>
+      </EditButton>
     </div>
   );
 }

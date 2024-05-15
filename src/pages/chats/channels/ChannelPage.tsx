@@ -8,7 +8,7 @@ import {
   useParams,
 } from "react-router-dom";
 import { animated } from "react-spring";
-import Button from "../../../common/components/Button";
+import EditButton from "../../../common/components/EditButton";
 import LanguageBadge from "../../../common/components/LanguageBadge";
 import ShareLink from "../../../common/components/ShareLink";
 import useAuth from "../../../common/context/AuthContext/AuthContext";
@@ -78,13 +78,12 @@ function ChannelPage() {
   /**
    * Controls whether the channel deletion confirmation modal is open.
    */
-  const [deletionModalIsOpen, setDeletionModalIsOpen] =
-    useState<boolean>(false);
+  const [deletionModalOpen, setDeletionModalOpen] = useState<boolean>(false);
 
   /**
    * Controls whether the channel leave confirmation modal is open.
    */
-  const [leaveChannelModalIsOpen, setLeaveChannelModalIsOpen] =
+  const [leaveChannelModalOpen, setLeaveChannelModalOpen] =
     useState<boolean>(false);
 
   /**
@@ -108,7 +107,7 @@ function ChannelPage() {
 
   const handleLeaveChannel = useCallback(async () => {
     await leaveMutateAsync();
-    setLeaveChannelModalIsOpen(false);
+    setLeaveChannelModalOpen(false);
     navigate("/chats/");
   }, [leaveMutateAsync, navigate]);
 
@@ -124,6 +123,8 @@ function ChannelPage() {
       setUserRole(userMembership.role);
     }
   }, [data?.memberships, user]);
+
+  const handleModalClose = () => setDeletionModalOpen(false);
 
   /**
    * Channel deletion handler.
@@ -153,17 +154,14 @@ function ChannelPage() {
           ) : !userIsAdmin() ? (
             <button
               type="button"
-              onClick={() => setLeaveChannelModalIsOpen(true)}
+              onClick={() => setLeaveChannelModalOpen(true)}
               css={infoButton}
             >
               Leave channel
             </button>
           ) : null}
           {userIsAdmin() ? (
-            <button
-              onClick={() => setDeletionModalIsOpen(true)}
-              css={infoButton}
-            >
+            <button onClick={() => setDeletionModalOpen(true)} css={infoButton}>
               Delete
             </button>
           ) : null}
@@ -246,7 +244,7 @@ function ChannelPage() {
                                                  moderator. If they are a moderator, show a button to demote them to
                                                  regular user. If they are admin, show nothing. */}
                     {userIsAdmin() && membership.role === "U" ? (
-                      <Button
+                      <EditButton
                         onClick={async () =>
                           await handlePromoteUser(membership.url)
                         }
@@ -257,9 +255,9 @@ function ChannelPage() {
                           height={"1.5rem"}
                           width={"1.5rem"}
                         />
-                      </Button>
+                      </EditButton>
                     ) : userIsAdmin() && membership.role === "M" ? (
-                      <Button
+                      <EditButton
                         onClick={async () =>
                           await handleDemoteUser(membership.url)
                         }
@@ -270,7 +268,7 @@ function ChannelPage() {
                           height={"1.5rem"}
                           width={"1.5rem"}
                         />
-                      </Button>
+                      </EditButton>
                     ) : null}
                   </>
                 }
@@ -288,16 +286,16 @@ function ChannelPage() {
 
       {/* Channel deletion confirmation modal */}
       <DeleteChannelModal
-        isOpen={deletionModalIsOpen}
-        setIsOpen={setDeletionModalIsOpen}
-        handleDelete={handleDelete}
+        isOpen={deletionModalOpen}
+        onRequestClose={handleModalClose}
+        onDelete={handleDelete}
       />
 
       {/* Channel leave confirmation modal */}
       <LeaveChannelModal
-        isOpen={leaveChannelModalIsOpen}
-        setIsOpen={setLeaveChannelModalIsOpen}
-        handleLeave={handleLeaveChannel}
+        isOpen={leaveChannelModalOpen}
+        onRequestClose={handleModalClose}
+        onLeave={handleLeaveChannel}
       />
     </animated.div>
   ) : null;
