@@ -25,6 +25,7 @@ interface LanguageBadgeProps {
  * language's name and icon and allows selecting the language and level.
  */
 function ChannelEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
+  // TODO: use RHF
   const [languageValue, setLanguageValue] = useState<Option<Language> | null>(
     null,
   );
@@ -51,6 +52,7 @@ function ChannelEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
     await updateMutation.mutateAsync({ url: data.url, level: option.value });
   };
 
+  // TODO: this should be cleaned up once the form has been refactored using RHF.
   useEffect(() => {
     // Get the options which correspond to the data values and set them as the
     // selects' values

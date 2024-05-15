@@ -1,5 +1,5 @@
 import { ErrorMessage } from "@hookform/error-message";
-import { Controller, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import { animated } from "react-spring";
@@ -10,6 +10,7 @@ import { useFadeIn } from "../../common/transitions";
 import Nav from "../../components/Nav/Nav";
 import { select } from "../../components/styles";
 import useAuth from "./AuthContext/AuthContext";
+import { useRegisterForm } from "./forms";
 import { useRegisterMutation } from "./queries";
 import {
   button,
@@ -38,7 +39,7 @@ function RegisterPage() {
     handleSubmit,
     control,
     watch,
-  } = useForm<RegisterFormValues>();
+  } = useRegisterForm();
 
   const onMutationError = useSetFormErrorOnRequestError(setError);
 

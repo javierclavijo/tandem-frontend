@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { ErrorMessage } from "@hookform/error-message";
-import { Controller, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Select, { StylesConfig } from "react-select";
 import { useSetFormErrorOnRequestError } from "../../../../common/hooks";
@@ -12,16 +12,12 @@ import {
   COLORS,
   FONT_SIZES,
 } from "../../../../common/resources/style-variables";
-import { Language, Option, ProficiencyLevel } from "../../../../common/types";
+import { Option } from "../../../../common/types";
 import { modal, select } from "../../../../components/styles";
 import { errorStyle } from "../../../auth/styles";
+import { useChannelCreationForm } from "./forms";
 import { useCreateChannelMutation } from "./queries";
-
-interface ChannelCreationFormValues {
-  name: string;
-  language: Option<Language> | null;
-  level: Option<ProficiencyLevel> | null;
-}
+import { ChannelCreationFormValues } from "./types";
 
 interface ChannelCreationFormProps {
   closeModal: () => void;
@@ -39,7 +35,7 @@ function ChannelCreationForm({ closeModal }: ChannelCreationFormProps) {
     control,
     formState: { errors },
     setError,
-  } = useForm<ChannelCreationFormValues>();
+  } = useChannelCreationForm();
 
   const onMutationError = useSetFormErrorOnRequestError(setError);
 

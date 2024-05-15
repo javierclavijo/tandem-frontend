@@ -1,22 +1,22 @@
 import { css } from "@emotion/react";
 import { ErrorMessage } from "@hookform/error-message";
 import axios, { AxiosError } from "axios";
-import { useForm } from "react-hook-form";
 import { ServerErrorResponse } from "../../../../common/types";
 import { modal } from "../../../../components/styles";
 import useAuth from "../../../auth/AuthContext/AuthContext";
 import { errorStyle, input, label } from "../../../auth/styles";
+import { useSetPasswordForm } from "../forms";
 import { useSetPasswordMutation } from "../queries";
-import { SetPasswordRequestData } from "../types";
+import { SetPasswordFormValues } from "../types";
 
-interface SetPasswordFormData extends SetPasswordRequestData {
-  confirmNewPassword: string;
+interface SetPasswordFormProps {
+  closeModal: () => void;
 }
 
 /**
  * Form which allows the user to change their password.
  */
-function SetPasswordForm({ closeModal }: { closeModal: () => void }) {
+function SetPasswordForm({ closeModal }: SetPasswordFormProps) {
   const { user, login } = useAuth();
   const {
     register,
@@ -24,7 +24,7 @@ function SetPasswordForm({ closeModal }: { closeModal: () => void }) {
     watch,
     formState: { errors },
     setError,
-  } = useForm<SetPasswordFormData>();
+  } = useSetPasswordForm();
 
   const onMutationError = (e: AxiosError<ServerErrorResponse>) => {
     if (axios.isAxiosError(e) && e.response) {
@@ -42,7 +42,7 @@ function SetPasswordForm({ closeModal }: { closeModal: () => void }) {
 
   const mutation = useSetPasswordMutation({ onError: onMutationError });
 
-  const onSubmit = async (data: SetPasswordFormData) => {
+  const onSubmit = async (data: SetPasswordFormValues) => {
     const response = await mutation.mutateAsync({
       newPassword: data.newPassword,
       oldPassword: data.oldPassword,

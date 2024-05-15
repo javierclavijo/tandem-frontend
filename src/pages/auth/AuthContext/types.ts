@@ -7,7 +7,7 @@ export interface AuthContextType {
   loading: boolean;
   isLoggedIn: boolean;
   login: (requestData: LogInRequestData) => Promise<AxiosResponse<void>>;
-  logout: () => void;
+  logout: () => Promise<AxiosResponse<void>>;
 }
 
 export type LogInRequestData = {

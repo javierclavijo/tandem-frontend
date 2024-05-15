@@ -1,13 +1,11 @@
 import { ErrorMessage } from "@hookform/error-message";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
 import { baseAppContainerWithoutTabs } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
 import Nav from "../../components/Nav/Nav";
 import useAuth from "./AuthContext/AuthContext";
-import { LogInRequestData } from "./AuthContext/types";
+import { useLogInForm } from "./forms";
 import {
   button,
   errorStyle,
@@ -24,34 +22,14 @@ import {
  * Login form component.
  */
 function LoginPage() {
-  const { login, error } = useAuth();
+  const { login } = useAuth();
   const transitionProps = useFadeIn();
 
   const {
     register,
     formState: { errors },
-    setError,
-    clearErrors,
     handleSubmit,
-  } = useForm<LogInRequestData>();
-
-  const onSubmit = async (data: LogInRequestData) => {
-    login(data);
-  };
-
-  /**
-   * Set a message if the auth context's error state is set.
-   */
-  useEffect(() => {
-    if (error) {
-      setError("password", {
-        type: "server",
-        message: error,
-      });
-    } else {
-      clearErrors();
-    }
-  }, [error, setError, clearErrors]);
+  } = useLogInForm();
 
   return (
     <div css={baseAppContainerWithoutTabs}>
@@ -59,7 +37,7 @@ function LoginPage() {
       <animated.main css={main} style={transitionProps}>
         <section css={section}>
           <h2 css={header}>Log in</h2>
-          <form css={form} onSubmit={handleSubmit(onSubmit)}>
+          <form css={form} onSubmit={handleSubmit(login)}>
             <label css={label} htmlFor="username">
               Username
               <input

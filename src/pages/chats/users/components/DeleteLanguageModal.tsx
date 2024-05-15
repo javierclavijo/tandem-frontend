@@ -1,12 +1,11 @@
 import React from "react";
 import ReactModal from "react-modal";
+import { setModalAppElement } from "../../../../common/modals";
 import { LANGUAGE_INFO } from "../../../../common/resources/languages";
 import { modal } from "../../../../components/styles";
 import { UserLanguage } from "../../types";
 
-// Set the modal's app element to "hide the application from assistive screenreaders and other assistive technologies
-// while the modal is open" (see react-modal docs: https://reactcommunity.org/react-modal/examples/set_app_element/).
-ReactModal.setAppElement("#root");
+setModalAppElement();
 
 interface DeleteLanguageModalProps {
   selectedDeleteLanguage: UserLanguage | null;

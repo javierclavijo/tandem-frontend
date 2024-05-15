@@ -14,3 +14,7 @@ export interface CreateUserLanguageRequestData {
 export interface UpdateUserLanguageRequestData {
   level: ProficiencyLevel;
 }
+
+export interface SetPasswordFormValues extends SetPasswordRequestData {
+  confirmNewPassword: string;
+}
