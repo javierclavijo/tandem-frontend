@@ -7,17 +7,23 @@ import {
   useRef,
   useState,
 } from "react";
+import { InfiniteData, useQueryClient } from "react-query";
 import { useOutletContext } from "react-router-dom";
-import useWebSocket from "react-use-websocket";
+import useWebSocket, { Options } from "react-use-websocket";
 import useAuth from "../../common/context/AuthContext/AuthContext";
 import { Chat, FriendChat, User } from "../../common/types";
-import { ChatHeaderData, ChatMessage } from "./types";
+import {
+  ChatHeaderData,
+  ChatMessage,
+  ChatMessageResponse,
+  ChatType,
+  WsChatMessage,
+} from "./types";
 
 /**
  * Sorts messages or chats according to sent datetime. If the message is undefined (usually due to a chat having
  * no messages, which shouldn't happen in practice), the current datetime is used.
  */
-// TODO: move this stuff to its own module.
 export const messageSortFn = (
   a: ChatMessage | undefined,
   b: ChatMessage | undefined,
@@ -41,11 +47,7 @@ export const messageSortFn = (
 export const getFriendFromFriendChat = (user: User, chat: FriendChat) =>
   chat.users.find((u: User) => u.id !== user.id);
 
-/**
- * Sets the chat header according to the current view's resource's data. Used in ChatRoom component.
- */
-export const useSetChatRoomHeader = (chat: Chat | undefined | null) => {
-  const { user } = useAuth();
+export const useSetChatHeader = () => {
   const [, setHeader] =
     useOutletContext<
       [
@@ -53,6 +55,16 @@ export const useSetChatRoomHeader = (chat: Chat | undefined | null) => {
         React.Dispatch<React.SetStateAction<ChatHeaderData | null>>,
       ]
     >();
+
+  return setHeader;
+};
+
+/**
+ * Sets the chat header according to the current view's resource's data. Used in ChatRoom component.
+ */
+export const useSetChatRoomHeader = (chat: Chat | undefined | null) => {
+  const { user } = useAuth();
+  const setHeader = useSetChatHeader();
 
   return useEffect(() => {
     if (chat) {
@@ -77,23 +89,76 @@ export const useSetChatRoomHeader = (chat: Chat | undefined | null) => {
 };
 
 /**
- * Sends a message through the WS connection when a chat is created to join the chat group.
- * The connection is closed if the user logs out.
+ * Holds the WebSocket connection to the server. Closes the connection if the
+ * user logs out.
  */
-export function useJoinWSChat() {
+function useBaseWsChatConnection(options?: Options | undefined) {
   const { isLoggedIn } = useAuth();
 
-  const { sendJsonMessage } = useWebSocket(
+  return useWebSocket<WsChatMessage>(
     `${import.meta.env.VITE_WS_URL}/ws/chats/`,
     {
       onClose: () => console.error("Chat socket closed unexpectedly"),
       shouldReconnect: () => true,
       share: true,
+      ...options,
     },
     isLoggedIn,
   );
+}
 
-  return useCallback(
+export function useWsChatListener() {
+  const queryClient = useQueryClient();
+
+  /**
+   * Updates the chat list and the corresponding chat messages query whenever a
+   * message is received or sent.
+   */
+  const onMessage = (wsMessage: MessageEvent<string>) => {
+    const { message } = JSON.parse(wsMessage.data) as WsChatMessage;
+    const { chat_id } = message;
+
+    if (chat_id == null) {
+      return;
+    }
+
+    queryClient.setQueryData<Chat[] | undefined>(
+      ["chats", "list", "all"],
+      (old) => {
+        if (old !== undefined) {
+          const oldChat = old.find((c) => c.id === chat_id);
+          if (oldChat) {
+            oldChat.messages = [message];
+          }
+        }
+        return old;
+      },
+    );
+
+    queryClient.setQueryData<InfiniteData<ChatMessageResponse> | undefined>(
+      ["chats", "messages", chat_id],
+      (old) => {
+        if (old !== undefined) {
+          // Add the message to the first page, reassign the page in the
+          // array so that the bottom-scrolling effect hook is triggered.
+          const firstPage = { ...old.pages[0] };
+          old.pages[0] = {
+            ...firstPage,
+            results: [message, ...firstPage.results],
+          };
+        }
+        return old;
+      },
+    );
+  };
+
+  return useBaseWsChatConnection({ onMessage });
+}
+
+export function useWsChatFunctions() {
+  const { sendJsonMessage } = useBaseWsChatConnection();
+
+  const joinChat = useCallback(
     (id: string) => {
       const message = {
         chat_id: id,
@@ -103,7 +168,37 @@ export function useJoinWSChat() {
     },
     [sendJsonMessage],
   );
+
+  const sendMessage = useCallback(
+    (
+      content: string,
+      chatId: string,
+      chatType: ChatType,
+      event:
+        | React.KeyboardEvent<HTMLTextAreaElement>
+        | React.FormEvent<HTMLFormElement>,
+    ) => {
+      event.preventDefault();
+      const message = {
+        type: "chat_message",
+        chat_id: chatId,
+        content,
+        chat_type: chatType,
+      };
+      sendJsonMessage(message);
+    },
+    [sendJsonMessage],
+  );
+
+  return useMemo(
+    () => ({
+      joinChat,
+      sendMessage,
+    }),
+    [joinChat, sendMessage],
+  );
 }
+
 interface UseEditType<T> {
   editEnabled: boolean;
   setEditEnabled: React.Dispatch<React.SetStateAction<boolean>>;
@@ -122,7 +217,6 @@ interface UseEditType<T> {
  * Holds state and functionality to update a user or channel's name or description.
  */
 // TODO: probably remove this altogether, substitute with RHF.
-
 export function useEditField<
   T extends HTMLInputElement | HTMLTextAreaElement,
   S,

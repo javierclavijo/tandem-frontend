@@ -1,7 +1,6 @@
 import qs from "qs";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useInfiniteQuery } from "react-query";
-import { useMediaQuery } from "react-responsive";
 import { animated } from "react-spring";
 import { axiosApi } from "../../common/apis";
 import Nav from "../../common/components/Nav/Nav";
@@ -9,6 +8,7 @@ import Tabs from "../../common/components/Tabs";
 import { homeSearchStyles } from "../../common/components/styles";
 
 import { useEffect, useState } from "react";
+import { useIsDesktop } from "../../common/hooks";
 import {
   baseAppContainerWithTabs,
   baseAppContainerWithoutTabs,
@@ -77,7 +77,7 @@ export interface ChannelSearchParams extends BaseSearchParams {
  * Main search component.
  */
 function SearchPage() {
-  const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+  const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
 
   /**

@@ -31,18 +31,16 @@ export function useDeleteChannel(data: Channel | undefined) {
 
   const deleteChannelRequest = async () => {
     if (data) {
-      return await axiosApi.delete(data?.url);
+      return await axiosApi.delete<void>(data?.url);
     }
   };
 
-  const deleteChannelMutation = useMutation(deleteChannelRequest, {
-    onSuccess: () => queryClient.invalidateQueries(["chats", "list", "all"]),
+  return useMutation(deleteChannelRequest, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["chats", "list", "all"]);
+      navigate("/chats/");
+    },
   });
-
-  return useCallback(async () => {
-    await deleteChannelMutation.mutateAsync();
-    navigate("/chats/");
-  }, [deleteChannelMutation, navigate]);
 }
 
 export function useChangeUserRole(channelId: string | undefined) {

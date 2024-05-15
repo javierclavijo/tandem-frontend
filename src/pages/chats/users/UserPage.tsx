@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { Plus } from "iconoir-react";
-import React, { useCallback, useEffect, useState } from "react";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import LanguageBadge from "../../../common/components/LanguageBadge";
 import useAuth from "../../../common/context/AuthContext/AuthContext";
@@ -12,7 +12,11 @@ import DescriptionTextarea from "../components/DescriptionTextarea";
 import ImageInput from "../components/ImageInput";
 import InfoListElement from "../components/InfoListElement";
 import { UserNameInput } from "../components/NameInput";
-import { getFriendFromFriendChat, useJoinWSChat } from "../hooks";
+import {
+  getFriendFromFriendChat,
+  useSetChatHeader,
+  useWsChatFunctions,
+} from "../hooks";
 import {
   descriptionSection,
   infoButton,
@@ -22,7 +26,7 @@ import {
   listSectionList,
   profileImg,
 } from "../styles";
-import { ChatHeaderData, UserLanguage } from "../types";
+import { UserLanguage } from "../types";
 import DeleteLanguageModal from "./components/DeleteLanguageModal";
 import NewLanguageModal from "./components/NewLanguageModal";
 import SetPasswordModal from "./components/SetPasswordModal";
@@ -36,81 +40,53 @@ import {
 /**
  * User detail component.
  */
-export function UserPage() {
+function UserPage() {
   const params = useParams();
-  const { user } = useAuth();
+  const { user: appUser } = useAuth();
   const navigate = useNavigate();
-  const [, setHeader] =
-    useOutletContext<
-      [
-        ChatHeaderData | null,
-        React.Dispatch<React.SetStateAction<ChatHeaderData | null>>,
-      ]
-    >();
   const transitionProps = useFadeIn();
-  // TODO: simplify state, for God's sake
-  /**
-   * Holds the user's data
-   */
+  const { joinChat } = useWsChatFunctions();
+  const setHeader = useSetChatHeader();
+
   const { data } = useUser(params.id);
-
-  /**
-   * Controls whether the info is editable (i.e. if edit controls are displayed)
-   */
-  const [isEditable, setIsEditable] = useState<boolean>(false);
-
-  /**
-   * Controls whether the user is a friend of the current user. Used to render the 'chat with user' button.
-   * Set to true by default to avoid rendering the button on the first render.
-   */
-  const [isFriend, setIsFriend] = useState<boolean>(true);
+  const { mutateAsync: deletionMutateAsync } = useDeleteUserLanguage();
+  const { mutateAsync: creationMutateAsync } = useCreateChatWithUser(data);
 
   /**
    * Controls the language creation modal's rendering
    */
   const [passwordChangeModalIsOpen, setPasswordChangeModalIsOpen] =
     useState(false);
-
   /**
    * Controls the language creation modal's rendering
    */
   const [newLanguageModalIsOpen, setNewLanguageModalIsOpen] = useState(false);
-
   /**
-   * Is set whenever a language's delete button is selected. Holds the selected language's data
+   * Is set whenever a language's delete button is selected. Holds the selected
+   * language's data
    */
   const [selectedDeleteLanguage, setSelectedDeleteLanguage] =
     useState<UserLanguage | null>(null);
 
+  /**
+   * Controls whether the info is editable (i.e. if edit controls are displayed)
+   */
+  const isEditable = appUser?.id != null && appUser?.id === data?.id;
+  /**
+   * Controls whether the user is a friend of the current user. Used to render
+   * the 'chat with user' button set to true by default to avoid rendering the
+   * button on the first render.
+   */
+  const isFriend = data?.friend_chats.some((chat) =>
+    chat.users.some((chatUser) => chatUser.id === appUser?.id),
+  );
+  /**
+   * Display name of the language selected for deletion, if there is one.
+   */
   const selectedDeleteLanguageName =
     selectedDeleteLanguage != null
       ? LANGUAGE_INFO[selectedDeleteLanguage?.language].displayName
       : null;
-
-  /**
-   * Set the view as editable if the info's user's ID is the same as the user's. If not, check if the user is a friend
-   * of the current user (i.e. has a friend chat with them).
-   */
-  useEffect(() => {
-    const isCurrentUser = !!user?.id && user?.id === data?.id;
-    setIsEditable(isCurrentUser);
-    if (data && !isCurrentUser) {
-      const isFriendOfCurrentUser = data?.friend_chats.some((chat) =>
-        chat.users.some((chatUser) => chatUser.id === user?.id),
-      );
-      setIsFriend(isFriendOfCurrentUser);
-    }
-  }, [user, data]);
-
-  /**
-   * Deletes a language from a user's profile.
-   */
-  const { mutateAsync: deletionMutateAsync } = useDeleteUserLanguage();
-
-  /**
-   * Creates a chat with the user.
-   */
-  const { mutateAsync: creationMutateAsync } = useCreateChatWithUser(data);
 
   const onLanguageDelete = useCallback(async () => {
     if (selectedDeleteLanguage) {
@@ -119,15 +95,14 @@ export function UserPage() {
     }
   }, [deletionMutateAsync, selectedDeleteLanguage, setSelectedDeleteLanguage]);
 
-  const joinWSChat = useJoinWSChat();
   const onChatCreateClick = useCallback(async () => {
     const response = await creationMutateAsync();
     const newChatId = response?.data?.id;
     if (response?.status === 201 && newChatId) {
-      joinWSChat(newChatId);
+      joinChat(newChatId);
       navigate(`/chats/${newChatId}`);
     }
-  }, [creationMutateAsync, navigate, joinWSChat]);
+  }, [creationMutateAsync, navigate, joinChat]);
 
   const onDeleteLanguageModalClose = () => setSelectedDeleteLanguage(null);
   const onNewLanguageModalClose = () => setNewLanguageModalIsOpen(false);
@@ -143,12 +118,13 @@ export function UserPage() {
       actions: (
         // TODO: this doesn't look too good (open-closed).
         <>
-          {!isFriend ? (
+          {!isFriend && (
             <button type="button" onClick={onChatCreateClick} css={infoButton}>
               Chat with user
             </button>
-          ) : null}
-          {isEditable ? (
+          )}
+
+          {isEditable && (
             <button
               type="button"
               onClick={() => setPasswordChangeModalIsOpen(true)}
@@ -156,7 +132,7 @@ export function UserPage() {
             >
               Change password
             </button>
-          ) : null}
+          )}
         </>
       ),
     });
@@ -168,7 +144,11 @@ export function UserPage() {
     setPasswordChangeModalIsOpen,
   ]);
 
-  return data ? (
+  if (data == null) {
+    return null;
+  }
+
+  return (
     <>
       <animated.div css={container} style={transitionProps}>
         {/* Main user information
@@ -181,7 +161,7 @@ export function UserPage() {
                 // TODO: remove direct references like this.
                 defaultImage="/images/user-placeholder.png"
                 url={data.url}
-                invalidateQueryKey={["users", user?.id]}
+                invalidateQueryKey={["users", appUser?.id]}
               />
               <UserNameInput data={data} />
             </>
@@ -220,7 +200,7 @@ export function UserPage() {
                       <div css={editableLanguage} key={language.id}>
                         <UserInfoEditLanguageBadge
                           data={language}
-                          bg={COLORS.DARK}
+                          backgroundColor={COLORS.DARK}
                           onDelete={() => setSelectedDeleteLanguage(language)}
                         />
                       </div>
@@ -279,8 +259,9 @@ export function UserPage() {
               }
               return null;
             })}
+
             {/* Empty list */}
-            {!data?.friend_chats.length ? (
+            {!data?.friend_chats.length && (
               <li css={emptyListContainer}>
                 <p>
                   {isEditable
@@ -288,7 +269,7 @@ export function UserPage() {
                     : "This user has not added any friends yet."}
                 </p>
               </li>
-            ) : null}
+            )}
           </ul>
         </section>
 
@@ -306,8 +287,9 @@ export function UserPage() {
                 link={`/chats/channels/${membership.channel.id}`}
               />
             ))}
+
             {/* Empty list */}
-            {!data?.memberships.length ? (
+            {data?.memberships.length === 0 && (
               <li css={emptyListContainer}>
                 <p>
                   {isEditable
@@ -315,7 +297,7 @@ export function UserPage() {
                     : "This user has not joined any channels yet."}
                 </p>
               </li>
-            ) : null}
+            )}
           </ul>
         </section>
       </animated.div>
@@ -323,37 +305,37 @@ export function UserPage() {
       {/* Language creation modal
           Only rendered if the profile is the session user's. Opens when the 
           'add a language' button is pressed. */}
-      {isEditable ? (
+      {isEditable && (
         <NewLanguageModal
           isOpen={newLanguageModalIsOpen}
           onRequestClose={onNewLanguageModalClose}
         />
-      ) : null}
+      )}
 
       {/* Language deletion modal
           Only available if the profile is the session user's and a language has
           been selected for deletion (i.e. when a language's delete button has 
           been pressed.) */}
-      {isEditable ? (
+      {isEditable && (
         <DeleteLanguageModal
           isOpen={selectedDeleteLanguage != null}
           languageName={selectedDeleteLanguageName}
           onRequestClose={onDeleteLanguageModalClose}
           onDelete={onLanguageDelete}
         />
-      ) : null}
+      )}
 
       {/* Set password modal.
-          Only rendered if the profile is the session user's. Opens when the 
-          'change password' button is pressed. */}
-      {isEditable ? (
+          Only rendered if the profile is the user's. Opens when the 'change 
+          password' button is pressed. */}
+      {isEditable && (
         <SetPasswordModal
           isOpen={passwordChangeModalIsOpen}
           onRequestClose={onPasswordModalClose}
         />
-      ) : null}
+      )}
     </>
-  ) : null;
+  );
 }
 
 const container = css`
@@ -394,3 +376,5 @@ const channelListContainer = css`
   ${listSection};
   padding-top: 0;
 `;
+
+export default UserPage;

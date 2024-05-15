@@ -7,11 +7,11 @@ import { Channel, User } from "../../../common/types";
 import { useEditField } from "../hooks";
 import { useUpdateChannelDescriptionMutation } from "../queries";
 import { editElement } from "../styles";
-import { UpdateChannelDescriptionQueryKey } from "../types";
+import { ChatType } from "../types";
 
 interface DescriptionTextareaProps {
   data: Channel | User;
-  queryKey: UpdateChannelDescriptionQueryKey;
+  queryKey: ChatType;
 }
 
 /**

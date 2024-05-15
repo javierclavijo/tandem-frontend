@@ -24,6 +24,8 @@ function UserInfoNewLanguageSelect({
 }: UserInfoNewLanguageSelectProps) {
   const { user } = useAuth();
 
+  const mutation = useCreateUserLanguageMutation(user?.id);
+
   // TODO: use RHF, move this stuff to NewLanguageModal
   const [languageValue, setLanguageValue] = useState<Option<Language> | null>(
     null,
@@ -32,8 +34,6 @@ function UserInfoNewLanguageSelect({
     null,
   );
   const [error, setError] = useState<string>("");
-
-  const mutation = useCreateUserLanguageMutation(user?.id);
 
   const clearError = () => setError("");
 

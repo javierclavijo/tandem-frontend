@@ -15,7 +15,7 @@ import ChatsLayout from "./pages/chats/ChatsLayout";
 import ChannelPage from "./pages/chats/channels/ChannelPage";
 import ChatPage from "./pages/chats/chat/ChatPage";
 import EmptyChatPage from "./pages/chats/chat/EmptyChatPage";
-import { UserPage } from "./pages/chats/users/UserPage";
+import UserPage from "./pages/chats/users/UserPage";
 import HomePage from "./pages/home/HomePage";
 import NotFoundPage from "./pages/not-found/NotFoundPage";
 import { default as PreLoginPage } from "./pages/pre-login/PreLoginPage";

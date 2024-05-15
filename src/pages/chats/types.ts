@@ -1,6 +1,8 @@
 import { To } from "react-router-dom";
 import { Language, ProficiencyLevel } from "../../common/types";
 
+export type ChatType = "users" | "channels";
+
 export interface ChatMessage {
   id: string;
   url: string;
@@ -33,7 +35,6 @@ export interface UserLanguage {
   language: Language;
   level: ProficiencyLevel;
 }
-export type UpdateChannelDescriptionQueryKey = "users" | "channels";
 
 export interface UpdateChannelDescriptionRequest {
   description: string;

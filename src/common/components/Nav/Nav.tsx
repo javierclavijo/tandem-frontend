@@ -1,9 +1,9 @@
 import { css } from "@emotion/react";
 import { ChatLines, Home, LogOut, Search } from "iconoir-react";
-import { useMediaQuery } from "react-responsive";
 import { Link, NavLink } from "react-router-dom";
 import { infoButton } from "../../../pages/chats/styles";
 import useAuth from "../../context/AuthContext/AuthContext";
+import { useIsDesktop } from "../../hooks";
 import { COLORS, FONT_SIZES } from "../../resources/style-variables";
 import NavProfilePicture from "./NavProfilePicture";
 
@@ -12,7 +12,7 @@ import NavProfilePicture from "./NavProfilePicture";
  */
 function Nav() {
   const { user, isLoggedIn, logout } = useAuth();
-  const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+  const isDesktop = useIsDesktop();
 
   return (
     <header css={header}>

@@ -1,8 +1,8 @@
 import { css } from "@emotion/react";
 import React, { useEffect } from "react";
-import { useMediaQuery } from "react-responsive";
 import { useOutletContext } from "react-router-dom";
 import { animated } from "react-spring";
+import { useIsDesktop } from "../../../common/hooks";
 import { COLORS } from "../../../common/resources/style-variables";
 import { useFadeIn } from "../../../common/transitions";
 import ChatList from "../components/ChatList/ChatList";
@@ -40,7 +40,7 @@ function DesktopEmptyChatPage() {
  * Empty chat page component.
  */
 function EmptyChatPage() {
-  const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+  const isDesktop = useIsDesktop();
   return isDesktop ? <DesktopEmptyChatPage /> : <ChatList />;
 }
 

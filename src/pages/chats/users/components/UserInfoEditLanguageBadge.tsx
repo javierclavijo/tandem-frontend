@@ -1,6 +1,5 @@
-import { css } from "@emotion/react";
 import { Xmark } from "iconoir-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FlagIcon } from "react-flag-kit";
 import Select, { SingleValue, StylesConfig } from "react-select";
 import EditButton from "../../../../common/components/EditButton";
@@ -20,7 +19,7 @@ import { useUpdateUserLanguageMutation } from "../queries";
 
 interface LanguageBadgeProps {
   data: UserLanguage;
-  bg: string;
+  backgroundColor: string;
   onDelete: () => void;
 }
 
@@ -28,12 +27,18 @@ interface LanguageBadgeProps {
  * Badge-like component for user info view. Displays a language's name and icon
  * and allows selecting the language's level.
  */
-function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
+function UserInfoEditLanguageBadge({
+  data,
+  backgroundColor,
+  onDelete,
+}: LanguageBadgeProps) {
+  const mutation = useUpdateUserLanguageMutation(data.url);
+
   const [levelValue, setLevelValue] = useState<Option<ProficiencyLevel> | null>(
-    null,
+    () => levelOptions.find((o) => o.value === data.level) ?? null,
   );
 
-  const mutation = useUpdateUserLanguageMutation(data.url);
+  const languageInfo = LANGUAGE_INFO[data.language];
 
   const onChange = async (option: SingleValue<Option<ProficiencyLevel>>) => {
     if (option != null) {
@@ -43,26 +48,8 @@ function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
     }
   };
 
-  useEffect(() => {
-    // Get the option which corresponds to the initial value prop and set it as
-    // the select's value
-    const initialOption = levelOptions.find((o) => o.value === data.level);
-    if (initialOption) {
-      setLevelValue(initialOption);
-    }
-  }, [data.level]);
-
-  // TODO: refactor this. Look for similar occurrences. (Probably should use
-  // CSSProperties)
-  const container = css`
-    ${badge};
-    background-color: ${bg};
-  `;
-
-  const languageInfo = LANGUAGE_INFO[data.language];
-
   return (
-    <div css={container}>
+    <div css={badge} style={{ backgroundColor }}>
       <FlagIcon code={languageInfo.flagIconCode} size={24} />
       <span>{languageInfo.displayName}</span>
       <span>|</span>

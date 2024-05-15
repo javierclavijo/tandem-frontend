@@ -1,8 +1,8 @@
 import { css } from "@emotion/react";
-import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
 import Nav from "../../common/components/Nav/Nav";
+import { useIsDesktop } from "../../common/hooks";
 import { COLORS } from "../../common/resources/style-variables";
 import {
   baseAppContainerWithoutTabs,
@@ -14,9 +14,10 @@ import { useFadeIn } from "../../common/transitions";
  * Component for the 404 error page.
  */
 function NotFound() {
-  const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+  const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
 
+  // TODO: review this kind of thing.
   const container = css`
     ${isDesktop ? baseAppContainerWithoutTabs : baseAppContainerWithTabs};
     height: auto;

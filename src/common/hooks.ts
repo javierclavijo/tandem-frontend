@@ -1,6 +1,7 @@
 import { AxiosError, isAxiosError } from "axios";
 import { useCallback } from "react";
 import { FieldValues, UseFormSetError } from "react-hook-form";
+import { useMediaQuery } from "react-responsive";
 import { ServerErrorResponse, UseFormSetErrorName } from "./types";
 
 export const useSetFormErrorOnRequestError = <TData extends FieldValues>(
@@ -31,3 +32,6 @@ export const useSetFormErrorOnRequestError = <TData extends FieldValues>(
     },
     [setError],
   );
+
+export const useIsDesktop = () =>
+  useMediaQuery({ query: "(min-width: 1024px)" });

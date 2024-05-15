@@ -1,10 +1,11 @@
+import { AxiosResponse } from "axios";
 import Button from "../../../../common/components/Button";
 import Modal, { ModalProps } from "../../../../common/components/Modal/Modal";
 import ModalButtonsContainer from "../../../../common/components/Modal/ModalButtonsContainer";
 import ModalTitle from "../../../../common/components/Modal/ModalTitle";
 
 interface DeleteChannelModalProps extends ModalProps {
-  onDelete: () => Promise<void>;
+  onDelete: () => Promise<AxiosResponse<void> | undefined>;
 }
 
 /**

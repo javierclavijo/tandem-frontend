@@ -1,93 +1,37 @@
-import { useEffect, useState } from "react";
-import { InfiniteData, useQueryClient } from "react-query";
-import { useMediaQuery } from "react-responsive";
+import { useState } from "react";
 import { Outlet, useParams } from "react-router-dom";
 import { animated } from "react-spring";
-import useWebSocket from "react-use-websocket";
 import Nav from "../../common/components/Nav/Nav";
 import Tabs from "../../common/components/Tabs";
-import useAuth from "../../common/context/AuthContext/AuthContext";
+import { useIsDesktop } from "../../common/hooks";
 import {
   baseAppContainerWithTabs,
   baseAppContainerWithoutTabs,
 } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
-import { Chat } from "../../common/types";
 import { chatRoom, chatRoomMobile } from "./chat/styles";
 import ChatHeader from "./components/ChatHeader";
 import ChatList from "./components/ChatList/ChatList";
+import { useWsChatListener } from "./hooks";
 import { chatMain, chatMainMobile } from "./styles";
-import { ChatHeaderData, ChatMessageResponse, WsChatMessage } from "./types";
+import { ChatHeaderData } from "./types";
 
 /**
  * Main chat component. Holds the chat list, chat room and user/channel detail components.
  */
 function ChatsLayout() {
-  const queryClient = useQueryClient();
   const params = useParams();
-  const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
-  const { isLoggedIn } = useAuth();
+  const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
+  useWsChatListener();
 
   /**
-   * State used by the router outlet context which controls the header's state. This way, the header's data can be
-   * obtained from the view components, without them having to contain the header themselves.
+   * State used by the router outlet context which controls the header's state.
+   * This way, the header's data can be obtained from the view components,
+   * without them having to contain the header themselves.
+   * TODO: remove this, it's a bad idea.
    */
   const [header, setHeader] = useState<ChatHeaderData | null>(null);
-
-  /**
-   * Holds the WebSocket connection to the server. Closes the connection if the user logs out.
-   */
-  const { lastJsonMessage } = useWebSocket<WsChatMessage>(
-    `${import.meta.env.VITE_WS_URL}/ws/chats/`,
-    {
-      onClose: () => console.error("Chat socket closed unexpectedly"),
-      shouldReconnect: () => true,
-      share: true,
-    },
-    isLoggedIn,
-  );
-
-  /**
-   * Updates the chat list and the corresponding chat messages query whenever a message is received or sent.
-   */
-  useEffect(() => {
-    if (!lastJsonMessage) {
-      return;
-    }
-
-    const message = lastJsonMessage.message;
-    if (message) {
-      queryClient.setQueryData<Chat[] | undefined>(
-        ["chats", "list", "all"],
-        (old) => {
-          if (old !== undefined) {
-            const oldChat = old.find((c) => c.id === message.chat_id);
-            if (oldChat) {
-              oldChat.messages = [message];
-            }
-          }
-          return old;
-        },
-      );
-
-      queryClient.setQueryData<InfiniteData<ChatMessageResponse> | undefined>(
-        ["chats", "messages", message.chat_id],
-        (old) => {
-          if (old !== undefined) {
-            // Add the message to the first page, reassign the page in the array so that the
-            // bottom-scrolling effect hook is triggered.
-            const firstPage = { ...old.pages[0] };
-            old.pages[0] = {
-              ...firstPage,
-              results: [message, ...firstPage.results],
-            };
-          }
-          return old;
-        },
-      );
-    }
-  }, [lastJsonMessage, queryClient]);
 
   return isDesktop ? (
     /**

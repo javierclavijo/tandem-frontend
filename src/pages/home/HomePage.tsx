@@ -1,5 +1,4 @@
 import { css } from "@emotion/react";
-import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
 import Nav from "../../common/components/Nav/Nav";
@@ -9,6 +8,7 @@ import { homeSearchStyles } from "../../common/components/styles";
 import useAuth from "../../common/context/AuthContext/AuthContext";
 import { COLORS } from "../../common/resources/style-variables";
 
+import { useIsDesktop } from "../../common/hooks";
 import {
   baseAppContainerWithTabs,
   baseAppContainerWithoutTabs,
@@ -24,7 +24,7 @@ import { useDiscoverUsersList } from "./queries";
  * Post-login home component.
  */
 function HomePage() {
-  const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+  const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
 
   const { isLoggedIn, user } = useAuth();

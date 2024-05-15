@@ -1,10 +1,10 @@
 import { css } from "@emotion/react";
 import React, { useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useMediaQuery } from "react-responsive";
 import { useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import useAuth from "../../../common/context/AuthContext/AuthContext";
+import { useIsDesktop } from "../../../common/hooks";
 import { useFadeIn } from "../../../common/transitions";
 import { useSetChatRoomHeader } from "../hooks";
 import { useChat } from "../queries";
@@ -18,7 +18,7 @@ import { chatRoom, chatRoomMobile } from "./styles";
 function ChatPage() {
   const params = useParams();
   const { user } = useAuth();
-  const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+  const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
 
   /**

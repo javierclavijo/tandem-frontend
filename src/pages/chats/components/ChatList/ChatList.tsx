@@ -1,10 +1,10 @@
 import { css } from "@emotion/react";
 import { Plus } from "iconoir-react";
 import { useState } from "react";
-import { useMediaQuery } from "react-responsive";
 import { useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import useAuth from "../../../../common/context/AuthContext/AuthContext";
+import { useIsDesktop } from "../../../../common/hooks";
 import { COLORS } from "../../../../common/resources/style-variables";
 import { useFadeIn } from "../../../../common/transitions";
 import { useAllChatList } from "../../queries";
@@ -18,7 +18,7 @@ import NewChannelModal from "./NewChannelModal";
  */
 function ChatList() {
   const params = useParams();
-  const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+  const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
   const { data } = useAllChatList();
   const { user } = useAuth();

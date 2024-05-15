@@ -12,7 +12,7 @@ import { Channel, Chat, User } from "../../common/types";
 import { getFriendFromFriendChat, messageSortFn } from "./hooks";
 import {
   ChatMessageResponse,
-  UpdateChannelDescriptionQueryKey,
+  ChatType,
   UpdateChannelDescriptionRequest,
 } from "./types";
 
@@ -226,7 +226,7 @@ export const useUpdateUsernameMutation = (data: User) => {
 
 export const useUpdateChannelDescriptionMutation = (
   data: Channel | User,
-  queryKey: UpdateChannelDescriptionQueryKey,
+  queryKey: ChatType,
 ) => {
   const queryClient = useQueryClient();
 
