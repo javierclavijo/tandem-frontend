@@ -1,8 +1,8 @@
 import React from "react";
 import ReactModal from "react-modal";
+import { modal } from "../../../../common/components/styles";
 import { setModalAppElement } from "../../../../common/modals";
 import { LANGUAGE_INFO } from "../../../../common/resources/languages";
-import { modal } from "../../../../components/styles";
 import { UserLanguage } from "../../types";
 
 setModalAppElement();

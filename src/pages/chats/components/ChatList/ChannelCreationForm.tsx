@@ -3,6 +3,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import { Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Select, { StylesConfig } from "react-select";
+import { modal, select } from "../../../../common/components/styles";
 import { useSetFormErrorOnRequestError } from "../../../../common/hooks";
 import {
   languageOptions,
@@ -13,7 +14,6 @@ import {
   FONT_SIZES,
 } from "../../../../common/resources/style-variables";
 import { Option } from "../../../../common/types";
-import { modal, select } from "../../../../components/styles";
 import { errorStyle } from "../../../auth/styles";
 import { useChannelCreationForm } from "./forms";
 import { useCreateChannelMutation } from "./queries";

@@ -4,9 +4,9 @@ import { useInfiniteQuery } from "react-query";
 import { useMediaQuery } from "react-responsive";
 import { animated } from "react-spring";
 import { axiosApi } from "../../common/apis";
-import Nav from "../../components/Nav/Nav";
-import Tabs from "../../components/Tabs";
-import { homeSearchStyles } from "../../components/styles";
+import Nav from "../../common/components/Nav/Nav";
+import Tabs from "../../common/components/Tabs";
+import { homeSearchStyles } from "../../common/components/styles";
 
 import { useEffect, useState } from "react";
 import {

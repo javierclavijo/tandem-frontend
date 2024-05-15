@@ -1,9 +1,9 @@
 import { css } from "@emotion/react";
 import { Link } from "react-router-dom";
+import Nav from "../../common/components/Nav/Nav";
+import { button } from "../../common/components/styles";
 import { COLORS, FONT_SIZES } from "../../common/resources/style-variables";
 import { baseAppContainerWithoutTabs } from "../../common/styles";
-import Nav from "../../components/Nav/Nav";
-import { button } from "../../components/styles";
 
 /**
  * Pre-login home/index page component.

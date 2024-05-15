@@ -6,18 +6,18 @@ import { DebounceInput } from "react-debounce-input";
 import { useSearchParams } from "react-router-dom";
 import Select, { StylesConfig } from "react-select";
 import {
-  languageOptions,
-  levelOptions,
-} from "../../../common/resources/languages";
-import { COLORS } from "../../../common/resources/style-variables";
-import { Language, Option, ProficiencyLevel } from "../../../common/types";
-import {
   buttonWithoutBackgroundAndBorder,
   noBorderAndBgSelectDark,
   searchInput,
   searchInputElement,
   searchSelect,
-} from "../../../components/styles";
+} from "../../../common/components/styles";
+import {
+  languageOptions,
+  levelOptions,
+} from "../../../common/resources/languages";
+import { COLORS } from "../../../common/resources/style-variables";
+import { Language, Option, ProficiencyLevel } from "../../../common/types";
 import {
   ChannelSearchParams,
   UserSearchParams,

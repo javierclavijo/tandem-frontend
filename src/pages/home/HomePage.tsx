@@ -2,12 +2,12 @@ import { css } from "@emotion/react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
+import Nav from "../../common/components/Nav/Nav";
+import SearchResultElement from "../../common/components/SearchResultElement";
+import Tabs from "../../common/components/Tabs";
+import { homeSearchStyles } from "../../common/components/styles";
 import useAuth from "../../common/context/AuthContext/AuthContext";
 import { COLORS } from "../../common/resources/style-variables";
-import Nav from "../../components/Nav/Nav";
-import SearchResultElement from "../../components/SearchResultElement";
-import Tabs from "../../components/Tabs";
-import { homeSearchStyles } from "../../components/styles";
 
 import {
   baseAppContainerWithTabs,

@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { StyledEmotionComponentProps } from "../common/types";
+import { StyledEmotionComponentProps } from "../types";
 import { buttonWithoutBackgroundAndBorder } from "./styles";
 
 interface EditButtonProps

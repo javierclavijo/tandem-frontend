@@ -1,13 +1,13 @@
 import { css } from "@emotion/react";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
-import { useFadeIn } from "../../../common/transitions";
-import BackButton from "../../../components/BackButton";
-import ChatThumbnail from "../../../components/UserThumbnail";
+import BackButton from "../../../common/components/BackButton";
+import ChatThumbnail from "../../../common/components/UserThumbnail";
 import {
   containerWithLink,
   thumbnailContainer,
-} from "../../../components/styles";
+} from "../../../common/components/styles";
+import { useFadeIn } from "../../../common/transitions";
 import { chatHeader } from "../chat/styles";
 import { ChatHeaderData } from "../types";
 

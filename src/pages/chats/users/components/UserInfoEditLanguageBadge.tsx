@@ -3,15 +3,18 @@ import { Xmark } from "iconoir-react";
 import { useEffect, useState } from "react";
 import { FlagIcon } from "react-flag-kit";
 import Select, { SingleValue, StylesConfig } from "react-select";
+import Button from "../../../../common/components/Button";
+import ProficiencyLevelIcon from "../../../../common/components/icons/ProficiencyLevelIcon";
+import {
+  badge,
+  noBorderAndBgSelectWhite,
+} from "../../../../common/components/styles";
 import {
   LANGUAGE_INFO,
   levelOptions,
 } from "../../../../common/resources/languages";
 import { COLORS } from "../../../../common/resources/style-variables";
 import { Option, ProficiencyLevel } from "../../../../common/types";
-import Button from "../../../../components/Button";
-import ProficiencyLevelIcon from "../../../../components/icons/ProficiencyLevelIcon";
-import { badge, noBorderAndBgSelectWhite } from "../../../../components/styles";
 import { UserLanguage } from "../../types";
 import { useUpdateUserLanguageMutation } from "../queries";
 

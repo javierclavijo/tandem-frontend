@@ -2,13 +2,13 @@ import { css } from "@emotion/react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
+import Nav from "../../common/components/Nav/Nav";
 import { COLORS } from "../../common/resources/style-variables";
 import {
   baseAppContainerWithoutTabs,
   baseAppContainerWithTabs,
 } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
-import Nav from "../../components/Nav/Nav";
 
 /**
  * Component for the 404 error page.

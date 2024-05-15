@@ -1,6 +1,6 @@
 import { ArrowLeft } from "iconoir-react";
 import { Link, LinkProps, To, useNavigate } from "react-router-dom";
-import { COLORS } from "../common/resources/style-variables";
+import { COLORS } from "../resources/style-variables";
 
 interface BackButtonProps
   extends Omit<LinkProps & React.RefAttributes<HTMLAnchorElement>, "to"> {

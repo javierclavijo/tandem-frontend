@@ -1,9 +1,9 @@
 import { css } from "@emotion/react";
 import React, { useRef } from "react";
 import TextareaAutosize from "react-textarea-autosize";
+import EditButtons from "../../../common/components/EditButtons";
 import { COLORS } from "../../../common/resources/style-variables";
 import { Channel, User } from "../../../common/types";
-import EditButtons from "../../../components/EditButtons";
 import { useEditField } from "../hooks";
 import { useUpdateChannelDescriptionMutation } from "../queries";
 import { editElement } from "../styles";

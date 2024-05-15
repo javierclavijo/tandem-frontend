@@ -1,10 +1,10 @@
 import { ErrorMessage } from "@hookform/error-message";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
+import Nav from "../../common/components/Nav/Nav";
 import useAuth from "../../common/context/AuthContext/AuthContext";
 import { baseAppContainerWithoutTabs } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
-import Nav from "../../components/Nav/Nav";
 import { useLogInForm } from "./forms";
 import {
   button,

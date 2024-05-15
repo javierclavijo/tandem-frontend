@@ -2,6 +2,11 @@ import { css } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { FlagIcon } from "react-flag-kit";
 import Select, { StylesConfig } from "react-select";
+import ProficiencyLevelIcon from "../../../../common/components/icons/ProficiencyLevelIcon";
+import {
+  badge,
+  noBorderAndBgSelectWhite,
+} from "../../../../common/components/styles";
 import {
   LANGUAGE_INFO,
   languageOptions,
@@ -9,8 +14,6 @@ import {
 } from "../../../../common/resources/languages";
 import { COLORS } from "../../../../common/resources/style-variables";
 import { Language, Option, ProficiencyLevel } from "../../../../common/types";
-import ProficiencyLevelIcon from "../../../../components/icons/ProficiencyLevelIcon";
-import { badge, noBorderAndBgSelectWhite } from "../../../../components/styles";
 import { UserLanguage } from "../../types";
 import { useUpdateLanguageMutation } from "../queries";
 

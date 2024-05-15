@@ -1,15 +1,15 @@
 import { css } from "@emotion/react";
 import { NavArrowRight } from "iconoir-react";
 import { Link } from "react-router-dom";
-import { COLORS } from "../../../common/resources/style-variables";
 import {
   containerWithLink,
   thumbnailContainer,
-} from "../../../components/styles";
+} from "../../../common/components/styles";
+import { COLORS } from "../../../common/resources/style-variables";
 import { infoListElementInnerContainer } from "../styles";
 
 import { useState } from "react";
-import ChatThumbnail from "../../../components/UserThumbnail";
+import ChatThumbnail from "../../../common/components/UserThumbnail";
 
 interface InfoListElementProps {
   name: string;

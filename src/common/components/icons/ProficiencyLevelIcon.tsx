@@ -1,6 +1,6 @@
 import { Globe, ThreeStars } from "iconoir-react";
 import React from "react";
-import { ProficiencyLevel } from "../../common/types";
+import { ProficiencyLevel } from "../../types";
 import Beginner from "./Beginner";
 import Intermediate from "./Intermediate";
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { infoButton } from "../pages/chats/styles";
+import { infoButton } from "../../pages/chats/styles";
 
 interface ShareLinkProps {
   link: string;

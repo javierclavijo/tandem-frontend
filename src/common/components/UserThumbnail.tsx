@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { memo } from "react";
-import { ImgProps } from "../common/types";
+import { ImgProps } from "../types";
 
 interface UserThumbnailProps extends Omit<ImgProps, "src"> {
   src?: string | null;
