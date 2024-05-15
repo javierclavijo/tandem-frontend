@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { User } from "../../../common/types";
+import { User } from "../../types";
 
 export interface AuthContextType {
   user: User | undefined;

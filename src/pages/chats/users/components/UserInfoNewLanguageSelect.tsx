@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 import { useCallback, useState } from "react";
 import Select, { StylesConfig } from "react-select";
+import useAuth from "../../../../common/context/AuthContext/AuthContext";
 import {
   languageOptions,
   levelOptions,
@@ -9,7 +10,6 @@ import { COLORS } from "../../../../common/resources/style-variables";
 import { Language, Option, ProficiencyLevel } from "../../../../common/types";
 import EditButtons from "../../../../components/EditButtons";
 import { select } from "../../../../components/styles";
-import useAuth from "../../../auth/AuthContext/AuthContext";
 import { useCreateUserLanguageMutation } from "../queries";
 
 /**

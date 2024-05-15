@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
-import useAuth from "./AuthContext/AuthContext";
-import { LogInRequestData } from "./AuthContext/types";
+import useAuth from "../../common/context/AuthContext/AuthContext";
+import { LogInRequestData } from "../../common/context/AuthContext/types";
 import { RegisterFormValues } from "./types";
 
 const useLogInFormErrors = (

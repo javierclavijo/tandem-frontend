@@ -4,11 +4,11 @@ import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { queryClient } from "./common/apis";
+import { AuthProvider } from "./common/context/AuthContext/AuthContext";
 import {
   redirectToHomeIfLoggedIn,
   redirectToLoginIfNotLoggedIn,
 } from "./common/loaders";
-import { AuthProvider } from "./pages/auth/AuthContext/AuthContext";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import ChatsLayout from "./pages/chats/ChatsLayout";

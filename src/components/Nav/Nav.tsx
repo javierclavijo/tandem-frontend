@@ -2,8 +2,8 @@ import { css } from "@emotion/react";
 import { ChatLines, Home, LogOut, Search } from "iconoir-react";
 import { useMediaQuery } from "react-responsive";
 import { Link, NavLink } from "react-router-dom";
+import useAuth from "../../common/context/AuthContext/AuthContext";
 import { COLORS, FONT_SIZES } from "../../common/resources/style-variables";
-import useAuth from "../../pages/auth/AuthContext/AuthContext";
 import { infoButton } from "../../pages/chats/styles";
 import NavProfilePicture from "./NavProfilePicture";
 

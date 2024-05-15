@@ -8,12 +8,12 @@ import {
   useParams,
 } from "react-router-dom";
 import { animated } from "react-spring";
+import useAuth from "../../../common/context/AuthContext/AuthContext";
 import { COLORS } from "../../../common/resources/style-variables";
 import { useFadeIn } from "../../../common/transitions";
 import Button from "../../../components/Button";
 import LanguageBadge from "../../../components/LanguageBadge";
 import ShareLink from "../../../components/ShareLink";
-import useAuth from "../../auth/AuthContext/AuthContext";
 import DescriptionTextarea from "../components/DescriptionTextarea";
 import ImageInput from "../components/ImageInput";
 import InfoListElement from "../components/InfoListElement";

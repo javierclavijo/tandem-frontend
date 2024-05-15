@@ -4,6 +4,7 @@ import { useMediaQuery } from "react-responsive";
 import { Outlet, useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import useWebSocket from "react-use-websocket";
+import useAuth from "../../common/context/AuthContext/AuthContext";
 import {
   baseAppContainerWithTabs,
   baseAppContainerWithoutTabs,
@@ -12,7 +13,6 @@ import { useFadeIn } from "../../common/transitions";
 import { Chat } from "../../common/types";
 import Nav from "../../components/Nav/Nav";
 import Tabs from "../../components/Tabs";
-import useAuth from "../auth/AuthContext/AuthContext";
 import { chatRoom, chatRoomMobile } from "./chat/styles";
 import ChatHeader from "./components/ChatHeader";
 import ChatList from "./components/ChatList/ChatList";

@@ -1,9 +1,9 @@
 import { css } from "@emotion/react";
 import { ErrorMessage } from "@hookform/error-message";
 import axios, { AxiosError } from "axios";
+import useAuth from "../../../../common/context/AuthContext/AuthContext";
 import { ServerErrorResponse } from "../../../../common/types";
 import { modal } from "../../../../components/styles";
-import useAuth from "../../../auth/AuthContext/AuthContext";
 import { errorStyle, input, label } from "../../../auth/styles";
 import { useSetPasswordForm } from "../forms";
 import { useSetPasswordMutation } from "../queries";

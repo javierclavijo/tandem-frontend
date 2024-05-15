@@ -1,5 +1,5 @@
+import { LogInRequestData } from "../../common/context/AuthContext/types";
 import { Option } from "../../common/types";
-import { LogInRequestData } from "./AuthContext/types";
 
 export interface RegisterRequestData extends LogInRequestData {
   email: string;

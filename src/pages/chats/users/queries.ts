@@ -7,12 +7,12 @@ import {
   useQueryClient,
 } from "react-query";
 import { axiosApi } from "../../../common/apis";
+import useAuth from "../../../common/context/AuthContext/AuthContext";
 import {
   ProficiencyLevel,
   ServerErrorResponse,
   User,
 } from "../../../common/types";
-import useAuth from "../../auth/AuthContext/AuthContext";
 import { UserLanguage } from "../types";
 import { CreateUserLanguageRequestData, SetPasswordRequestData } from "./types";
 

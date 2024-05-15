@@ -1,8 +1,8 @@
 import { AxiosResponse, isAxiosError } from "axios";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { axiosApi, queryClient } from "../../../common/apis";
-import { User } from "../../../common/types";
+import { axiosApi, queryClient } from "../../apis";
+import { User } from "../../types";
 import { LogInRequestData, SessionInfoResponse } from "./types";
 
 export const LOCAL_STORAGE_LOGGED_IN_KEY = "loggedIn";

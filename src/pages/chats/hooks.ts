@@ -9,8 +9,8 @@ import {
 } from "react";
 import { useOutletContext } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
+import useAuth from "../../common/context/AuthContext/AuthContext";
 import { Chat, FriendChat, User } from "../../common/types";
-import useAuth from "../auth/AuthContext/AuthContext";
 import { ChatHeaderData, ChatMessage } from "./types";
 
 /**

@@ -7,8 +7,8 @@ import {
   useQueryClient,
 } from "react-query";
 import { axiosApi } from "../../common/apis";
+import useAuth from "../../common/context/AuthContext/AuthContext";
 import { Channel, Chat, User } from "../../common/types";
-import useAuth from "../auth/AuthContext/AuthContext";
 import { getFriendFromFriendChat, messageSortFn } from "./hooks";
 import {
   ChatMessageResponse,

@@ -6,12 +6,12 @@ import { ArrowRightCircle, Emoji } from "iconoir-react";
 import React, { CSSProperties, useCallback, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import useWebSocket from "react-use-websocket";
+import useAuth from "../../../../common/context/AuthContext/AuthContext";
 import {
   COLORS,
   FONT_SIZES,
 } from "../../../../common/resources/style-variables";
 import { Chat } from "../../../../common/types";
-import useAuth from "../../../auth/AuthContext/AuthContext";
 
 /**
  * Input form for the chat room. Includes the chat message input, a send button
