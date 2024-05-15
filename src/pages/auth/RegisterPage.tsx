@@ -3,12 +3,12 @@ import { Controller } from "react-hook-form";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import { animated } from "react-spring";
+import { SimpleLayout } from "../../common/components/Layout";
 import Nav from "../../common/components/Nav/Nav";
 import { select } from "../../common/components/styles";
 import useAuth from "../../common/context/AuthContext/AuthContext";
 import { useSetFormErrorOnRequestError } from "../../common/hooks";
 import { languageOptions } from "../../common/resources/languages";
-import { baseAppContainerWithoutTabs } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
 import { useRegisterForm } from "./forms";
 import { useRegisterMutation } from "./queries";
@@ -68,7 +68,7 @@ function RegisterPage() {
   };
 
   return (
-    <animated.div css={baseAppContainerWithoutTabs} style={transitionProps}>
+    <AnimatedLayout style={transitionProps}>
       <Nav />
       <main css={main}>
         <section css={section}>
@@ -179,8 +179,10 @@ function RegisterPage() {
           </form>
         </section>
       </main>
-    </animated.div>
+    </AnimatedLayout>
   );
 }
+
+const AnimatedLayout = animated(SimpleLayout);
 
 export default RegisterPage;

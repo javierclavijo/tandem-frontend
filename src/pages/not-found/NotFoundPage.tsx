@@ -1,30 +1,19 @@
 import { css } from "@emotion/react";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
+import { ResponsiveBottomTabsLayout } from "../../common/components/Layout";
 import Nav from "../../common/components/Nav/Nav";
-import { useIsDesktop } from "../../common/hooks";
 import { COLORS } from "../../common/resources/style-variables";
-import {
-  baseAppContainerWithoutTabs,
-  baseAppContainerWithTabs,
-} from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
 
 /**
  * Component for the 404 error page.
  */
 function NotFound() {
-  const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
 
-  // TODO: review this kind of thing.
-  const container = css`
-    ${isDesktop ? baseAppContainerWithoutTabs : baseAppContainerWithTabs};
-    height: auto;
-  `;
-
   return (
-    <animated.div css={container} style={transitionProps}>
+    <AnimatedLayout style={transitionProps}>
       <Nav />
       <main css={main}>
         <h2>Not found</h2>
@@ -33,9 +22,11 @@ function NotFound() {
           Back to Home
         </Link>
       </main>
-    </animated.div>
+    </AnimatedLayout>
   );
 }
+
+const AnimatedLayout = animated(ResponsiveBottomTabsLayout);
 
 const main = css`
   background-color: ${COLORS.WHITE};

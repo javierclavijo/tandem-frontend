@@ -8,13 +8,9 @@ import { homeSearchStyles } from "../../common/components/styles";
 import useAuth from "../../common/context/AuthContext/AuthContext";
 import { COLORS } from "../../common/resources/style-variables";
 
+import { ResponsiveBottomTabsLayout } from "../../common/components/Layout";
 import { useIsDesktop } from "../../common/hooks";
-import {
-  baseAppContainerWithTabs,
-  baseAppContainerWithoutTabs,
-  homeSearchMain,
-  homeSearchMainMobile,
-} from "../../common/styles";
+import { homeSearchMain, homeSearchMainMobile } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
 import { useChannelChatList, useFriendChatList } from "../chats/queries";
 import RecentElement from "./components/RecentElement";
@@ -26,21 +22,18 @@ import { useDiscoverUsersList } from "./queries";
 function HomePage() {
   const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
-
-  const { isLoggedIn, user } = useAuth();
+  const { user } = useAuth();
 
   const { data: friendChats } = useFriendChatList();
   const { data: channelChats } = useChannelChatList();
   const { data: discoverUsers } = useDiscoverUsersList();
 
-  // TODO: I don't like this. Please change it using media queries.
-  const container = css`
-    ${isDesktop ? baseAppContainerWithoutTabs : baseAppContainerWithTabs};
-    height: ${isDesktop ? "auto" : "100vh"};
-  `;
+  if (user == null) {
+    return null;
+  }
 
-  return isLoggedIn && user ? (
-    <div css={container}>
+  return (
+    <ResponsiveBottomTabsLayout>
       <Nav />
       <main css={isDesktop ? homeSearchMain : homeSearchMainMobile}>
         <animated.header css={homeSearchStyles.header} style={transitionProps}>
@@ -156,9 +149,10 @@ function HomePage() {
           </footer>
         </animated.section>
       </main>
-      {!isDesktop ? <Tabs /> : null}
-    </div>
-  ) : null;
+
+      <Tabs />
+    </ResponsiveBottomTabsLayout>
+  );
 }
 
 const sectionFooter = css`

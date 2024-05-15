@@ -1,15 +1,15 @@
 import { css } from "@emotion/react";
 import { Link } from "react-router-dom";
+import { SimpleLayout } from "../../common/components/Layout";
 import Nav from "../../common/components/Nav/Nav";
 import { COLORS, FONT_SIZES } from "../../common/resources/style-variables";
-import { baseAppContainerWithoutTabs } from "../../common/styles";
 
 /**
  * Pre-login home/index page component.
  */
 function PreLogin() {
   return (
-    <div css={baseAppContainerWithoutTabs}>
+    <SimpleLayout>
       <Nav />
       <main css={main}>
         <div css={textContainer}>
@@ -59,7 +59,7 @@ function PreLogin() {
           </div>
         </div>
       </main>
-    </div>
+    </SimpleLayout>
   );
 }
 

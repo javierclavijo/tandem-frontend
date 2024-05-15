@@ -14,10 +14,10 @@ interface ButtonProps
  * Generic button component.
  */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ ...props }: ButtonProps, ref?) => {
+  ({ children, ...props }: ButtonProps, ref?) => {
     return (
       <button ref={ref} {...props} css={[button, props.css]}>
-        {props.children}
+        {children}
       </button>
     );
   },

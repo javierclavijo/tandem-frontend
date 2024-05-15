@@ -1,9 +1,9 @@
 import { ErrorMessage } from "@hookform/error-message";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
+import { SimpleLayout } from "../../common/components/Layout";
 import Nav from "../../common/components/Nav/Nav";
 import useAuth from "../../common/context/AuthContext/AuthContext";
-import { baseAppContainerWithoutTabs } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
 import { useLogInForm } from "./forms";
 import {
@@ -32,7 +32,7 @@ function LoginPage() {
   } = useLogInForm();
 
   return (
-    <div css={baseAppContainerWithoutTabs}>
+    <SimpleLayout>
       <Nav />
       <animated.main css={main} style={transitionProps}>
         <section css={section}>
@@ -77,7 +77,7 @@ function LoginPage() {
           </form>
         </section>
       </animated.main>
-    </div>
+    </SimpleLayout>
   );
 }
 

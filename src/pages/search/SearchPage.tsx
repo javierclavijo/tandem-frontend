@@ -8,13 +8,9 @@ import Tabs from "../../common/components/Tabs";
 import { homeSearchStyles } from "../../common/components/styles";
 
 import { useEffect, useState } from "react";
+import { ResponsiveBottomTabsLayout } from "../../common/components/Layout";
 import { useIsDesktop } from "../../common/hooks";
-import {
-  baseAppContainerWithTabs,
-  baseAppContainerWithoutTabs,
-  homeSearchMain,
-  homeSearchMainMobile,
-} from "../../common/styles";
+import { homeSearchMain, homeSearchMainMobile } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
 import {
   Channel,
@@ -178,9 +174,7 @@ function SearchPage() {
   ]);
 
   return (
-    <div
-      css={isDesktop ? baseAppContainerWithoutTabs : baseAppContainerWithTabs}
-    >
+    <ResponsiveBottomTabsLayout>
       <Nav />
       <main
         id="search-main"
@@ -252,8 +246,8 @@ function SearchPage() {
           </InfiniteScroll>
         </animated.div>
       </main>
-      {!isDesktop ? <Tabs /> : null}
-    </div>
+      <Tabs />
+    </ResponsiveBottomTabsLayout>
   );
 }
 

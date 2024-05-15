@@ -14,10 +14,10 @@ interface ModalTitleProps
  * Modal title component.
  */
 const ModalTitle = React.forwardRef<HTMLParagraphElement, ModalTitleProps>(
-  ({ ...props }: ModalTitleProps, ref?) => {
+  ({ children, ...props }: ModalTitleProps, ref?) => {
     return (
       <p ref={ref} {...props} css={[title, props.css]}>
-        {props.children}
+        {children}
       </p>
     );
   },

@@ -1,13 +1,10 @@
+import { css } from "@emotion/react";
 import { useState } from "react";
 import { Outlet, useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import Nav from "../../common/components/Nav/Nav";
 import Tabs from "../../common/components/Tabs";
 import { useIsDesktop } from "../../common/hooks";
-import {
-  baseAppContainerWithTabs,
-  baseAppContainerWithoutTabs,
-} from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
 import { chatRoom, chatRoomMobile } from "./chat/styles";
 import ChatHeader from "./components/ChatHeader";
@@ -19,6 +16,8 @@ import { ChatHeaderData } from "./types";
 /**
  * Main chat component. Holds the chat list, chat room and user/channel detail components.
  */
+// TODO: just remove this, make "dumb" layout components and reuse them in each
+// page.
 function ChatsLayout() {
   const params = useParams();
   const isDesktop = useIsDesktop();
@@ -66,5 +65,37 @@ function ChatsLayout() {
     </div>
   );
 }
+
+export const baseAppContainer = css`
+  // Main page layout
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: 100%;
+`;
+
+export const baseAppContainerWithoutTabs = css`
+  ${baseAppContainer};
+  grid-template-rows: 5rem 1fr;
+  grid-template-areas:
+    "header"
+    "main";
+`;
+
+export const baseAppContainerWithTabs = css`
+  ${baseAppContainer};
+  // Main page layout with tabs
+  grid-template-rows: 5rem 1fr 3rem;
+  grid-template-areas:
+    "header"
+    "main"
+    "tabs";
+
+  @media (min-width: 1024px) {
+    // Set "tabs" area height to zero in desktop layout
+    grid-template-rows: 5rem 1fr 0;
+  }
+`;
 
 export default ChatsLayout;
