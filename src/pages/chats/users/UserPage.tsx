@@ -5,7 +5,6 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import { COLORS } from "../../../common/resources/style-variables";
 import { useFadeIn } from "../../../common/transitions";
-import { ChatHeaderProps } from "../../../components/ChatHeader";
 import LanguageBadge from "../../../components/LanguageBadge";
 import useAuth from "../../auth/AuthContext/AuthContext";
 import DescriptionTextarea from "../components/DescriptionTextarea";
@@ -22,7 +21,7 @@ import {
   listSectionList,
   profileImg,
 } from "../styles";
-import { UserLanguage } from "../types";
+import { ChatHeaderData, UserLanguage } from "../types";
 import DeleteLanguageModal from "./components/DeleteLanguageModal";
 import NewLanguageModal from "./components/NewLanguageModal";
 import SetPasswordModal from "./components/SetPasswordModal";
@@ -43,8 +42,8 @@ export function UserPage() {
   const [, setHeader] =
     useOutletContext<
       [
-        ChatHeaderProps | null,
-        React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>,
+        ChatHeaderData | null,
+        React.Dispatch<React.SetStateAction<ChatHeaderData | null>>,
       ]
     >();
   const transitionProps = useFadeIn();

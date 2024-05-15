@@ -6,8 +6,8 @@ import {
   FONT_SIZES,
 } from "../../../../common/resources/style-variables";
 import { Chat } from "../../../../common/types";
-import ChatThumbnail from "../../../../components/ChatThumbnail";
 import ResponsiveEllipsis from "../../../../components/ResponsiveEllipsis";
+import ChatThumbnail from "../../../../components/UserThumbnail";
 import { thumbnailContainer } from "../../../../components/styles";
 import { elementContentContainer, link } from "../../styles";
 

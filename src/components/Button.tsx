@@ -1,12 +1,12 @@
-import { css, SerializedStyles } from "@emotion/react";
-import React from "react";
+import React, { ReactNode } from "react";
+import { StyledEmotionComponentProps } from "../common/types";
 import { buttonWithoutBackgroundAndBorder } from "./styles";
 
-interface EditButtonProps {
-  visible: boolean;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
-  css?: SerializedStyles;
-  children: JSX.Element | (JSX.Element | string)[] | string;
+interface EditButtonProps
+  extends React.ClassAttributes<HTMLButtonElement>,
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    StyledEmotionComponentProps {
+  children: ReactNode;
 }
 
 /*
@@ -14,14 +14,13 @@ interface EditButtonProps {
  * and ref forwarding.
  */
 const Button = React.forwardRef<HTMLButtonElement, EditButtonProps>(
-  (props: EditButtonProps, ref?) => {
-    const button = css`
-      ${buttonWithoutBackgroundAndBorder};
-      ${props.css};
-      ${!props.visible ? `display: none;` : ``}
-    `;
+  ({ ...props }: EditButtonProps, ref?) => {
     return (
-      <button ref={ref} onClick={props.onClick} css={button}>
+      <button
+        ref={ref}
+        {...props}
+        css={[buttonWithoutBackgroundAndBorder, props.css]}
+      >
         {props.children}
       </button>
     );

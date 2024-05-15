@@ -8,9 +8,9 @@ import { containerWithLink, thumbnailContainer } from "./styles";
 
 import { LANGUAGE_INFO } from "../common/resources/languages";
 import { Language } from "../common/types";
-import ChatThumbnail from "./ChatThumbnail";
+import ChatThumbnail from "./UserThumbnail";
 
-interface SearchElementProps {
+interface SearchResultElementProps {
   id: string;
   name: string;
   languages: Language[];
@@ -29,11 +29,11 @@ function SearchResultElement({
   description,
   image,
   link,
-}: SearchElementProps) {
+}: SearchResultElementProps) {
   return (
-    <article css={outerContainer}>
+    <article css={[containerWithLink, outerContainer]}>
       <div css={innerContainer}>
-        <div css={imgContainer}>
+        <div css={[thumbnailContainer, imgContainer]}>
           <ChatThumbnail src={image} />
         </div>
         <div css={contentContainer}>
@@ -41,8 +41,8 @@ function SearchResultElement({
             <h4>{name}</h4>
             <NavArrowRight
               color={COLORS.PRIMARY}
-              width={"1.5rem"}
-              height={"1.5rem"}
+              width="1.5rem"
+              height="1.5rem"
             />
           </div>
           <div css={flagsContainer}>
@@ -70,14 +70,12 @@ function SearchResultElement({
 }
 
 const imgContainer = css`
-  ${thumbnailContainer};
   height: 4.5rem;
   width: 4.5rem;
   flex: 0 0 auto;
 `;
 
 const outerContainer = css`
-  ${containerWithLink};
   width: 100%;
 
   transition: background-color 0.1s;

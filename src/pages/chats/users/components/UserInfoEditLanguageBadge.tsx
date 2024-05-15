@@ -78,7 +78,7 @@ function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
           noBorderAndBgSelectWhite as StylesConfig<Option<ProficiencyLevel>>
         }
       />
-      <Button visible={true} onClick={onDelete}>
+      <Button onClick={onDelete}>
         <Xmark color={COLORS.WHITE} width={"1.5rem"} height={"1.5rem"} />
       </Button>
     </div>

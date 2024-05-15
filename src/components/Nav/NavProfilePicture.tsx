@@ -1,31 +1,37 @@
 import { css } from "@emotion/react";
-import { NavLink } from "react-router-dom";
+import { NavLink, NavLinkProps } from "react-router-dom";
 import { COLORS, FONT_SIZES } from "../../common/resources/style-variables";
-import { User } from "../../common/types";
 import { infoButton } from "../../pages/chats/styles";
-import ChatThumbnail from "../ChatThumbnail";
+import ChatThumbnail from "../UserThumbnail";
 import { thumbnailContainer } from "../styles";
 import { activeNavLink } from "./Nav";
 
-interface NavProfilePictureProps {
-  user: User | undefined;
+interface NavProfilePictureProps
+  extends NavLinkProps,
+    React.RefAttributes<HTMLAnchorElement> {
+  image: string | undefined;
+  username: string | undefined;
 }
 
 /**
  * User profile picture component, used in the app's header.
  */
-function NavProfilePicture({ user }: NavProfilePictureProps) {
+function NavProfilePicture({
+  image,
+  username,
+  ...props
+}: NavProfilePictureProps) {
   return (
     <NavLink
-      to={`/chats/users/${user?.id}`}
       css={link}
       style={({ isActive }) => (isActive ? activeNavLink : {})}
       title="Go to your profile"
+      {...props}
     >
       <div css={imageContainer}>
-        <ChatThumbnail src={user?.image} css={pictureImg} />
+        <ChatThumbnail src={image} css={pictureImg} />
       </div>
-      <p>{user?.username}</p>
+      <p>{username}</p>
     </NavLink>
   );
 }

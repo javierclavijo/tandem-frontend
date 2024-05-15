@@ -1,8 +1,7 @@
 import { css } from "@emotion/react";
 import { ChatLines, Home, LogOut, Search } from "iconoir-react";
-import { useCallback } from "react";
 import { useMediaQuery } from "react-responsive";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { COLORS, FONT_SIZES } from "../../common/resources/style-variables";
 import useAuth from "../../pages/auth/AuthContext/AuthContext";
 import { infoButton } from "../../pages/chats/styles";
@@ -14,15 +13,6 @@ import NavProfilePicture from "./NavProfilePicture";
 function Nav() {
   const { user, isLoggedIn, logout } = useAuth();
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
-  const navigate = useNavigate();
-
-  /**
-   * Handler for logout action.
-   */
-  const handleLogout = useCallback(async () => {
-    await logout();
-    navigate("/");
-  }, [logout, navigate]);
 
   return (
     <header css={header}>
@@ -77,14 +67,14 @@ function Nav() {
                   </NavLink>
                 </li>
                 <li>
-                  <NavProfilePicture user={user} />
+                  <NavProfilePicture
+                    to={`/chats/users/${user?.id}`}
+                    image={user?.image}
+                    username={user?.username}
+                  />
                 </li>
                 <li>
-                  <button
-                    type="button"
-                    onClick={handleLogout}
-                    css={logoutButton}
-                  >
+                  <button type="button" onClick={logout} css={logoutButton}>
                     <LogOut
                       color={COLORS.WHITE}
                       width="1.5rem"
@@ -98,14 +88,14 @@ function Nav() {
               // Post-login mobile header
               <>
                 <li>
-                  <NavProfilePicture user={user} />
+                  <NavProfilePicture
+                    to={`/chats/users/${user?.id}`}
+                    image={user?.image}
+                    username={user?.username}
+                  />
                 </li>
                 <li>
-                  <button
-                    type="button"
-                    onClick={handleLogout}
-                    css={logoutButton}
-                  >
+                  <button type="button" onClick={logout} css={logoutButton}>
                     <LogOut
                       color={COLORS.WHITE}
                       width="1.5rem"

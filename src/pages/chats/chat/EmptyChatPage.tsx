@@ -5,8 +5,8 @@ import { useOutletContext } from "react-router-dom";
 import { animated } from "react-spring";
 import { COLORS } from "../../../common/resources/style-variables";
 import { useFadeIn } from "../../../common/transitions";
-import { ChatHeaderProps } from "../../../components/ChatHeader";
 import ChatList from "../components/ChatList/ChatList";
+import { ChatHeaderData } from "../types";
 import { chatHeader, chatRoom } from "./styles";
 
 /**
@@ -16,8 +16,8 @@ function DesktopEmptyChatPage() {
   const [, setHeader] =
     useOutletContext<
       [
-        ChatHeaderProps | null,
-        React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>,
+        ChatHeaderData | null,
+        React.Dispatch<React.SetStateAction<ChatHeaderData | null>>,
       ]
     >();
 

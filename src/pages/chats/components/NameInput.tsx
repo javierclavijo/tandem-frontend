@@ -100,13 +100,14 @@ function NameInput<TData>({ data, dataKey, onSubmit }: NameInputProps<TData>) {
           size={value.length}
           css={input}
         />
-        <EditButtons
-          editEnabled={editEnabled}
-          submitButtonRef={submitButtonRef}
-          handleSubmit={handleSubmit}
-          handleCancel={handleCancel}
-          color={COLORS.WHITE}
-        />
+        {editEnabled && (
+          <EditButtons
+            submitButtonRef={submitButtonRef}
+            handleSubmit={handleSubmit}
+            handleCancel={handleCancel}
+            color={COLORS.WHITE}
+          />
+        )}
       </div>
 
       {error ? <p css={errorText}>{error}</p> : null}

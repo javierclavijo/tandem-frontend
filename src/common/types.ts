@@ -1,3 +1,4 @@
+import { Interpolation, Theme } from "@emotion/react";
 import { FlagIconCode } from "react-flag-kit";
 import { FieldPath, FieldValues } from "react-hook-form";
 import { ChatMessage, UserLanguage } from "../pages/chats/types";
@@ -90,3 +91,12 @@ export type UseFormSetErrorName<TData extends FieldValues> =
   | FieldPath<TData>
   | `root.${string}`
   | "root";
+
+export interface StyledEmotionComponentProps {
+  css?: Interpolation<Theme>;
+}
+
+export type ImgProps = React.DetailedHTMLProps<
+  React.ImgHTMLAttributes<HTMLImageElement>,
+  HTMLImageElement
+>;

@@ -1,10 +1,6 @@
 import { css } from "@emotion/react";
 import { memo } from "react";
-
-type ImgProps = React.DetailedHTMLProps<
-  React.ImgHTMLAttributes<HTMLImageElement>,
-  HTMLImageElement
->;
+import { ImgProps } from "../common/types";
 
 interface ProfileImageProps extends Omit<ImgProps, "src"> {
   src?: string | null;

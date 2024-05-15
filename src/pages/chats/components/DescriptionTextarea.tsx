@@ -86,13 +86,14 @@ function DescriptionTextarea({ data, queryKey }: DescriptionTextareaProps) {
     <>
       <div css={titleContainer}>
         <h3>Description</h3>
-        <EditButtons
-          editEnabled={editEnabled}
-          submitButtonRef={submitButtonRef}
-          handleSubmit={handleSubmit}
-          handleCancel={handleCancel}
-          color={COLORS.WHITE}
-        />
+        {editEnabled && (
+          <EditButtons
+            submitButtonRef={submitButtonRef}
+            handleSubmit={handleSubmit}
+            handleCancel={handleCancel}
+            color={COLORS.WHITE}
+          />
+        )}
       </div>
       <TextareaAutosize
         id="description"

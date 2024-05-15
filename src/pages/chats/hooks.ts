@@ -10,9 +10,8 @@ import {
 import { useOutletContext } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import { Chat, FriendChat, User } from "../../common/types";
-import { ChatHeaderProps } from "../../components/ChatHeader";
 import useAuth from "../auth/AuthContext/AuthContext";
-import { ChatMessage } from "./types";
+import { ChatHeaderData, ChatMessage } from "./types";
 
 /**
  * Sorts messages or chats according to sent datetime. If the message is undefined (usually due to a chat having
@@ -50,14 +49,14 @@ export const useSetChatRoomHeader = (chat: Chat | undefined | null) => {
   const [, setHeader] =
     useOutletContext<
       [
-        ChatHeaderProps | null,
-        React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>,
+        ChatHeaderData | null,
+        React.Dispatch<React.SetStateAction<ChatHeaderData | null>>,
       ]
     >();
 
   return useEffect(() => {
     if (chat) {
-      let headerProps: ChatHeaderProps;
+      let headerProps: ChatHeaderData;
       if (chat.type === "users") {
         const friend = getFriendFromFriendChat(user!, chat as FriendChat);
         headerProps = {

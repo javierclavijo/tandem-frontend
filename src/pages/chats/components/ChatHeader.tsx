@@ -1,24 +1,23 @@
 import { css } from "@emotion/react";
-import { Link, To } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { animated } from "react-spring";
-import { useFadeIn } from "../common/transitions";
-import { chatHeader } from "../pages/chats/chat/styles";
-import BackButton from "./BackButton";
-import ChatThumbnail from "./ChatThumbnail";
-import { containerWithLink, thumbnailContainer } from "./styles";
+import { useFadeIn } from "../../../common/transitions";
+import BackButton from "../../../components/BackButton";
+import ChatThumbnail from "../../../components/UserThumbnail";
+import {
+  containerWithLink,
+  thumbnailContainer,
+} from "../../../components/styles";
+import { chatHeader } from "../chat/styles";
+import { ChatHeaderData } from "../types";
 
-export interface ChatHeaderProps {
-  title?: string;
-  link?: To;
-  image?: string | null;
-  actions?: JSX.Element;
-}
+interface ChatHeaderProps extends ChatHeaderData {}
 
 /**
  * Chat header component. Can render a title, an image and action buttons.
  * If the 'link' prop is passed, it renders the link above the component's area.
  */
-function ChatHeader(props: ChatHeaderProps) {
+function ChatHeader({ title, link, image, actions }: ChatHeaderProps) {
   const transitionProps = useFadeIn();
 
   return (
@@ -27,19 +26,17 @@ function ChatHeader(props: ChatHeaderProps) {
         <BackButton />
         <div css={containerWithLink}>
           <div css={innerContainer}>
-            {props.image || props.image === null ? (
+            {image !== null ? (
               <div css={imageContainer}>
-                <ChatThumbnail src={props.image} />
+                <ChatThumbnail src={image} />
               </div>
             ) : null}
-            <h2>{props.title}</h2>
+            <h2>{title}</h2>
           </div>
-          {props.link ? (
-            <Link to={props.link} css={link} title={props.title} />
-          ) : null}
+          {link != null ? <Link to={link} css={linkCss} title={title} /> : null}
         </div>
       </div>
-      {props.actions}
+      {actions}
     </animated.header>
   );
 }
@@ -62,7 +59,7 @@ const innerContainer = css`
   gap: 1rem;
 `;
 
-const link = css`
+const linkCss = css`
   grid-area: element;
   z-index: 10;
   width: auto;

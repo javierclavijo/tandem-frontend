@@ -18,6 +18,7 @@ import { useCreateUserLanguageMutation } from "../queries";
 function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
   const { user } = useAuth();
 
+  // TODO: use RHF
   const [languageValue, setLanguageValue] = useState<Option<Language> | null>(
     null,
   );
@@ -75,7 +76,6 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
           styles={select as StylesConfig<Option<ProficiencyLevel>>}
         />
         <EditButtons
-          editEnabled={true}
           handleSubmit={handleSubmit}
           handleCancel={onClose}
           color={COLORS.PRIMARY}

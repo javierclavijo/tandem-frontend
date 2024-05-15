@@ -8,7 +8,7 @@ import {
   thumbnailContainer,
 } from "../../../components/styles";
 
-import ChatThumbnail from "../../../components/ChatThumbnail";
+import ChatThumbnail from "../../../components/UserThumbnail";
 
 interface SearchElementProps {
   id: string;

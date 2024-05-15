@@ -10,7 +10,7 @@ interface ShareLinkProps {
  * Component which allows the user to copy a link on click, displaying a 'copied to clipboard' message which
  * clears itself after a short interval.
  */
-function ShareLink(props: ShareLinkProps) {
+function ShareLink({ link }: ShareLinkProps) {
   /**
    * Used to show a 'copied to clipboard' text whenever the user copies the link.
    */
@@ -29,7 +29,7 @@ function ShareLink(props: ShareLinkProps) {
   }, [copied]);
 
   return (
-    <CopyToClipboard text={props.link} onCopy={() => setCopied(true)}>
+    <CopyToClipboard text={link} onCopy={() => setCopied(true)}>
       <button type="button" css={infoButton}>
         {!copied ? "Share" : "Copied to clipboard"}
       </button>

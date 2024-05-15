@@ -9,7 +9,7 @@ import {
 import { infoListElementInnerContainer } from "../styles";
 
 import { useState } from "react";
-import ChatThumbnail from "../../../components/ChatThumbnail";
+import ChatThumbnail from "../../../components/UserThumbnail";
 
 interface InfoListElementProps {
   name: string;

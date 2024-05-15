@@ -10,14 +10,14 @@ import {
 } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
 import { Chat } from "../../common/types";
-import ChatHeader, { ChatHeaderProps } from "../../components/ChatHeader";
 import Nav from "../../components/Nav/Nav";
 import Tabs from "../../components/Tabs";
 import useAuth from "../auth/AuthContext/AuthContext";
 import { chatRoom, chatRoomMobile } from "./chat/styles";
+import ChatHeader from "./components/ChatHeader";
 import ChatList from "./components/ChatList/ChatList";
 import { chatMain, chatMainMobile } from "./styles";
-import { ChatMessageResponse, WsChatMessage } from "./types";
+import { ChatHeaderData, ChatMessageResponse, WsChatMessage } from "./types";
 
 /**
  * Main chat component. Holds the chat list, chat room and user/channel detail components.
@@ -33,7 +33,7 @@ function ChatsLayout() {
    * State used by the router outlet context which controls the header's state. This way, the header's data can be
    * obtained from the view components, without them having to contain the header themselves.
    */
-  const [header, setHeader] = useState<ChatHeaderProps | null>(null);
+  const [header, setHeader] = useState<ChatHeaderData | null>(null);
 
   /**
    * Holds the WebSocket connection to the server. Closes the connection if the user logs out.
