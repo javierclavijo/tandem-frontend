@@ -1,7 +1,7 @@
 import { AxiosResponse, isAxiosError } from "axios";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { axiosApi, queryClient } from "../../../api";
+import { axiosApi, queryClient } from "../../../common/apis";
 import { User } from "../../../common/types";
 import { LogInRequestData, SessionInfoResponse } from "./types";
 

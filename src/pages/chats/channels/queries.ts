@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { axiosApi, queryClient } from "../../../api";
+import { axiosApi, queryClient } from "../../../common/apis";
 import { Channel } from "../../../common/types";
 import useAuth from "../../auth/AuthContext/AuthContext";
 import { UpdateLanguageRequest } from "./types";

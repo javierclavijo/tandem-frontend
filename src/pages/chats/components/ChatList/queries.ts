@@ -1,6 +1,6 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { UseMutationOptions, useMutation, useQueryClient } from "react-query";
-import { axiosApi } from "../../../../api";
+import { axiosApi } from "../../../../common/apis";
 import { Channel, ServerErrorResponse } from "../../../../common/types";
 import { ChannelCreationRequest } from "./types";
 

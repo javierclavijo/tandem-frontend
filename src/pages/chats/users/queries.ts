@@ -6,7 +6,7 @@ import {
   useQuery,
   useQueryClient,
 } from "react-query";
-import { axiosApi } from "../../../api";
+import { axiosApi } from "../../../common/apis";
 import {
   ProficiencyLevel,
   ServerErrorResponse,

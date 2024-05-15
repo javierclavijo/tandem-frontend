@@ -1,6 +1,6 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { UseMutationOptions, useMutation } from "react-query";
-import { axiosApi } from "../../api";
+import { axiosApi } from "../../common/apis";
 import { ServerErrorResponse, User } from "../../common/types";
 import { RegisterRequestData } from "./types";
 

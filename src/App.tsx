@@ -3,7 +3,7 @@ import React from "react";
 import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
-import { queryClient } from "./api";
+import { queryClient } from "./common/apis";
 import {
   redirectToHomeIfLoggedIn,
   redirectToLoginIfNotLoggedIn,

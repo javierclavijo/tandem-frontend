@@ -1,6 +1,6 @@
 import qs from "qs";
 import { useQuery } from "react-query";
-import { axiosApi } from "../../api";
+import { axiosApi } from "../../common/apis";
 import { User } from "../../common/types";
 import useAuth from "../auth/AuthContext/AuthContext";
 
