@@ -1,45 +1,39 @@
 import { css } from "@emotion/react";
 import useEventListener from "@use-it/event-listener";
-import Picker, { EmojiStyle } from "emoji-picker-react";
+import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
 import { MouseDownEvent } from "emoji-picker-react/dist/config/config";
 import { ArrowRightCircle, Emoji } from "iconoir-react";
 import React, { CSSProperties, useCallback, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
-import useWebSocket from "react-use-websocket";
-import useAuth from "../../../../common/context/AuthContext/AuthContext";
 import {
   COLORS,
   FONT_SIZES,
 } from "../../../../common/resources/style-variables";
-import { Chat } from "../../../../common/types";
+import { useSendWsMessage } from "../../hooks";
+import { ChatType } from "../../types";
+
+interface ChatInputFormProps {
+  chatId: string;
+  chatType: ChatType;
+}
 
 /**
  * Input form for the chat room. Includes the chat message input, a send button
  * and an emoji picker.
  */
-function ChatInputForm({ chat }: { chat: Chat }) {
-  const { isLoggedIn } = useAuth();
-
-  const { sendJsonMessage } = useWebSocket(
-    `${import.meta.env.VITE_WS_URL}/ws/chats/`,
-    {
-      onClose: () => console.error("Chat socket closed unexpectedly"),
-      shouldReconnect: () => true,
-      share: true,
-    },
-    isLoggedIn,
-  );
+function ChatInputForm({ chatId, chatType }: ChatInputFormProps) {
+  const sendWsMessage = useSendWsMessage();
 
   /**
    * Message input text area ref.
    */
   const elementRef = useRef<HTMLTextAreaElement | null>(null);
 
+  // TODO:use RHF
   /**
    * Controls the value of the input field.
    */
   const [inputValue, setInputValue] = useState<string>("");
-
   /**
    * Controls whether the emoji picker is rendered.
    */
@@ -53,7 +47,6 @@ function ChatInputForm({ chat }: { chat: Chat }) {
       setShowEmojiPicker(false);
     }
   });
-
   /**
    * Close the emoji picker when the user clicks outside it.
    */
@@ -71,27 +64,40 @@ function ChatInputForm({ chat }: { chat: Chat }) {
   /**
    * Handles sending messages.
    */
-  const handleSend = useCallback(
-    (
-      event:
-        | React.KeyboardEvent<HTMLTextAreaElement>
-        | React.FormEvent<HTMLFormElement>,
-    ) => {
-      event.preventDefault();
-      if (inputValue) {
-        const message = {
-          type: "chat_message",
-          chat_id: chat.id,
-          content: inputValue,
-          chat_type: chat.type,
-        };
-        sendJsonMessage(message);
-        setInputValue("");
+  const onMessageSend = (
+    event:
+      | React.KeyboardEvent<HTMLTextAreaElement>
+      | React.FormEvent<HTMLFormElement>,
+  ) => {
+    event.preventDefault();
+    if (inputValue.length !== 0) {
+      sendWsMessage(inputValue, chatId, chatType);
+      setInputValue("");
+    }
+  };
+  /**
+   * Handles key input, sending the message if the user presses the Enter key,
+   * but not the Ctrl or Meta key. This allows the user to insert new lines in
+   * their message.
+   */
+  const onKeyDown = async (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.code === "Enter") {
+      if (event.metaKey || event.ctrlKey) {
+        setInputValue(inputValue.concat("\n"));
+      } else {
+        onMessageSend(event);
       }
-    },
-    [chat, inputValue, sendJsonMessage],
-  );
-
+    }
+  };
+  /**
+   * Toggles the emoji picker's rendering.
+   */
+  const onShowEmojiPickerClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    setShowEmojiPicker((currentValue) => !currentValue);
+    event.stopPropagation();
+  };
   /**
    * Handles the emoji click event. Appends the emoji to the input's value.
    */
@@ -102,51 +108,20 @@ function ChatInputForm({ chat }: { chat: Chat }) {
     [inputValue, setInputValue],
   );
 
-  /**
-   * Handles key input, sending the message if the user presses the Enter key,
-   * but not the Ctrl or Meta key. This allows the user to insert new lines in
-   * their message.
-   */
-  const handleKeyDown = async (
-    event: React.KeyboardEvent<HTMLTextAreaElement>,
-  ) => {
-    if (event.code === "Enter") {
-      if (event.metaKey || event.ctrlKey) {
-        setInputValue(inputValue.concat("\n"));
-      } else {
-        handleSend(event);
-      }
-    }
-  };
-
-  /**
-   * Toggles the emoji picker's rendering.
-   */
-  const toggleEmojiPicker = useCallback(() => {
-    setShowEmojiPicker(!showEmojiPicker);
-  }, [showEmojiPicker, setShowEmojiPicker]);
-
-  /**
-   * Styles for the emoji picker.
-   */
-  const emojiPickerStyle: CSSProperties = {
-    position: "absolute",
-    bottom: "100%",
-    display: showEmojiPicker ? "flex" : "none",
-    marginBottom: "1rem",
-  };
-
   return (
     <div css={container}>
-      <form css={form} onSubmit={handleSend}>
-        <Picker
+      <form css={form} onSubmit={onMessageSend}>
+        <EmojiPicker
+          open={showEmojiPicker}
           onEmojiClick={onEmojiClick}
           emojiStyle={EmojiStyle.NATIVE}
           style={emojiPickerStyle}
+          previewConfig={{ showPreview: false }}
         />
+
         <button
           type="button"
-          onClick={toggleEmojiPicker}
+          onClick={onShowEmojiPickerClick}
           id="chat-emoji"
           css={button}
           aria-label="Open emoji picker"
@@ -160,7 +135,7 @@ function ChatInputForm({ chat }: { chat: Chat }) {
           ref={elementRef}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          onKeyDown={handleKeyDown}
+          onKeyDown={onKeyDown}
           minRows={1}
           maxRows={12}
           css={input}
@@ -184,6 +159,7 @@ function ChatInputForm({ chat }: { chat: Chat }) {
     </div>
   );
 }
+
 const container = css`
   padding: 1rem;
   box-sizing: border-box;
@@ -218,5 +194,11 @@ const button = css`
   align-items: center;
   cursor: pointer;
 `;
+
+const emojiPickerStyle: CSSProperties = {
+  position: "absolute",
+  bottom: "100%",
+  marginBottom: "1rem",
+};
 
 export default ChatInputForm;

@@ -14,7 +14,7 @@ import DescriptionTextarea from "../components/DescriptionTextarea";
 import ImageInput from "../components/ImageInput";
 import InfoListElement from "../components/InfoListElement";
 import { ChannelNameInput } from "../components/NameInput";
-import { useSetChatHeader, useWsChatFunctions } from "../hooks";
+import { useJoinWsChat, useSetChatHeader } from "../hooks";
 import {
   descriptionSection,
   infoButton,
@@ -45,7 +45,7 @@ function ChannelPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const transitionProps = useFadeIn();
-  const { joinChat } = useWsChatFunctions();
+  const joinChat = useJoinWsChat();
   const setHeader = useSetChatHeader();
 
   const { data } = useChannel(params.id);

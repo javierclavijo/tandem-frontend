@@ -82,7 +82,7 @@ function ChatPage() {
             ))}
           </InfiniteScroll>
         </div>
-        <ChatInputForm chat={chat} />
+        <ChatInputForm chatId={chat.id} chatType={chat.type} />
       </animated.div>
     </>
   );

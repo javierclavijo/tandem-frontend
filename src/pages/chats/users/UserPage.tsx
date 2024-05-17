@@ -15,8 +15,8 @@ import InfoListElement from "../components/InfoListElement";
 import { UserNameInput } from "../components/NameInput";
 import {
   getFriendFromFriendChat,
+  useJoinWsChat,
   useSetChatHeader,
-  useWsChatFunctions,
 } from "../hooks";
 import {
   descriptionSection,
@@ -46,7 +46,7 @@ function UserPage() {
   const { user: appUser } = useAuth();
   const navigate = useNavigate();
   const transitionProps = useFadeIn();
-  const { joinChat } = useWsChatFunctions();
+  const joinChat = useJoinWsChat();
   const setHeader = useSetChatHeader();
 
   const { data } = useUser(params.id);
