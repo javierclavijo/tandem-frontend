@@ -1,5 +1,6 @@
 import { Global } from "@emotion/react";
 import React from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
@@ -108,10 +109,12 @@ export default function App() {
   return (
     <React.StrictMode>
       <Global styles={globalStyles} />
-      <HelmetProvider context={helmetContext}>
-        <Helmet title="LangFlow" />
-        <RouterProvider router={router} />
-      </HelmetProvider>
+      <ErrorBoundary fallback={<ErrorPage />}>
+        <HelmetProvider context={helmetContext}>
+          <Helmet title="LangFlow" />
+          <RouterProvider router={router} />
+        </HelmetProvider>
+      </ErrorBoundary>
     </React.StrictMode>
   );
 }

@@ -5,6 +5,7 @@ import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import LanguageBadge from "../../../common/components/LanguageBadge";
+import ProfileImage from "../../../common/components/ProfileImage";
 import { COLORS, LANGUAGE_INFO } from "../../../common/constants";
 import useAuth from "../../../common/context/AuthContext/AuthContext";
 import userPlaceholderImage from "../../../common/static/images/user-placeholder.png";
@@ -25,7 +26,6 @@ import {
   listSection,
   listSectionHeader,
   listSectionList,
-  profileImg,
 } from "../styles";
 import { UserLanguage } from "../types";
 import DeleteLanguageModal from "./components/DeleteLanguageModal";
@@ -172,11 +172,7 @@ function UserPage() {
             </>
           ) : (
             <>
-              <img
-                src={data.image ?? userPlaceholderImage}
-                alt=""
-                css={picture}
-              />
+              <ProfileImage src={data.image ?? userPlaceholderImage} alt="" />
               <p>{data?.username}</p>
             </>
           )}
@@ -348,11 +344,6 @@ function UserPage() {
 
 const container = css`
   overflow-y: scroll;
-`;
-
-const picture = css`
-  ${profileImg};
-  grid-area: input;
 `;
 
 const languagesOuterContainer = css`

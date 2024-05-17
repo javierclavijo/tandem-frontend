@@ -6,6 +6,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import EditButton from "../../../common/components/EditButton";
 import LanguageBadge from "../../../common/components/LanguageBadge";
+import ProfileImage from "../../../common/components/ProfileImage";
 import ShareLink from "../../../common/components/ShareLink";
 import { COLORS } from "../../../common/constants";
 import useAuth from "../../../common/context/AuthContext/AuthContext";
@@ -23,7 +24,6 @@ import {
   listSection,
   listSectionHeader,
   listSectionList,
-  profileImg,
 } from "../styles";
 import ChannelEditLanguageBadge from "./components/ChannelEditLanguageBadge";
 import DeleteChannelModal from "./components/DeleteChannelModal";
@@ -156,10 +156,12 @@ function ChannelPage() {
             </>
           ) : (
             <>
-              <img
+              <ProfileImage
                 src={data.image ?? userPlaceholderImage}
                 alt=""
-                css={profileImg}
+                css={css`
+                  display: none;
+                `}
               />
               <p>{data?.name}</p>
             </>

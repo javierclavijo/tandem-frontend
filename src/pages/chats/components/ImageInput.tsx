@@ -1,9 +1,9 @@
 import { css } from "@emotion/react";
 import React, { useRef, useState } from "react";
+import ProfileImage from "../../../common/components/ProfileImage";
 import { COLORS, FONT_SIZES } from "../../../common/constants";
 import userPlaceholderImage from "../../../common/static/images/user-placeholder.png";
 import { useUpdateImage } from "../queries";
-import { profileImg } from "../styles";
 
 interface ImageInputProps {
   image: string | null;
@@ -56,7 +56,11 @@ function ImageInput({ image, url, invalidateQueryKey }: ImageInputProps) {
       >
         Click or drop a picture here...
       </label>
-      <img src={image ?? userPlaceholderImage} alt="" css={imageElement} />
+      <ProfileImage
+        src={image ?? userPlaceholderImage}
+        alt=""
+        css={imageElement}
+      />
     </div>
   );
 }
@@ -96,7 +100,6 @@ const label = css`
 `;
 
 const imageElement = css`
-  ${profileImg};
   grid-area: input;
 `;
 

@@ -86,14 +86,6 @@ export const infoSection = css`
   gap: 1rem;
 `;
 
-export const profileImg = css`
-  width: 12rem;
-  height: 12rem;
-  max-width: 12rem;
-  border-radius: 50%;
-  object-fit: cover;
-`;
-
 export const descriptionSection = css`
   display: flex;
   flex-direction: column;
