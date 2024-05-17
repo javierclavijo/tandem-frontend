@@ -6,24 +6,37 @@ import Nav from "../../common/components/Nav/Nav";
 import { COLORS } from "../../common/resources/style-variables";
 import { useFadeIn } from "../../common/transitions";
 
+interface ErrorPageProps {
+  title: string;
+  description: string;
+}
+
 /**
- * Component for the 404 error page.
+ * Base error page.
  */
-function NotFound() {
+export function BaseErrorPage({ title, description }: ErrorPageProps) {
   const transitionProps = useFadeIn();
 
   return (
     <AnimatedLayout style={transitionProps}>
       <Nav />
       <main css={main}>
-        <h2>Not found</h2>
-        <p>We couldn&apos;t find what you&apos;re looking for.</p>
+        <h2>{title}</h2>
+        <p>{description}</p>
         <Link to="/" css={link}>
           Back to Home
         </Link>
       </main>
     </AnimatedLayout>
   );
+}
+
+/**
+ * Generic error page. Used in the app's router, plus an error boundary
+ * wrapping the app.
+ */
+function ErrorPage() {
+  return <BaseErrorPage title="Oops!" description="An error happened." />;
 }
 
 const AnimatedLayout = animated(ResponsiveBottomTabsLayout);
@@ -48,4 +61,4 @@ const link = css`
   }
 `;
 
-export default NotFound;
+export default ErrorPage;

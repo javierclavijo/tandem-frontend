@@ -1,5 +1,6 @@
 import { Global } from "@emotion/react";
 import React from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
@@ -16,8 +17,9 @@ import ChannelPage from "./pages/chats/channels/ChannelPage";
 import ChatPage from "./pages/chats/chat/ChatPage";
 import EmptyChatPage from "./pages/chats/chat/EmptyChatPage";
 import UserPage from "./pages/chats/users/UserPage";
+import ErrorPage from "./pages/error/ErrorPage";
+import NotFoundPage from "./pages/error/NotFoundPage";
 import HomePage from "./pages/home/HomePage";
-import NotFoundPage from "./pages/not-found/NotFoundPage";
 import { default as PreLoginPage } from "./pages/pre-login/PreLoginPage";
 import SearchPage from "./pages/search/SearchPage";
 import globalStyles from "./styles";
@@ -26,6 +28,7 @@ export const router = createBrowserRouter([
   {
     path: "",
     element: <AppWrapper />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/chats",
@@ -75,7 +78,7 @@ export const router = createBrowserRouter([
 ]);
 
 /**
- * Wraps the apps with providers.
+ * Wraps the apps with providers. Goes inside a React Router route.
  *
  * The reason for this 'hack' is that the galaxy brains at React Router decided
  * to create a RouterProvider component which doesn't accept children, so you
@@ -87,7 +90,6 @@ export const router = createBrowserRouter([
 function AppWrapper() {
   return (
     <>
-      <Global styles={globalStyles} />
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <Outlet />
@@ -98,10 +100,16 @@ function AppWrapper() {
   );
 }
 
+/**
+ * Main App component rendered by index.tsx.
+ */
 export default function App() {
   return (
     <React.StrictMode>
-      <RouterProvider router={router} />
+      <Global styles={globalStyles} />
+      <ErrorBoundary fallback={<ErrorPage />}>
+        <RouterProvider router={router} />
+      </ErrorBoundary>
     </React.StrictMode>
   );
 }
