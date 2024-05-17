@@ -15,13 +15,18 @@ import { ChatType } from "../../types";
 interface ChatInputFormProps {
   chatId: string;
   chatType: ChatType;
+  onMessageSend: () => void;
 }
 
 /**
  * Input form for the chat room. Includes the chat message input, a send button
  * and an emoji picker.
  */
-function ChatInputForm({ chatId, chatType }: ChatInputFormProps) {
+function ChatInputForm({
+  chatId,
+  chatType,
+  onMessageSend,
+}: ChatInputFormProps) {
   const sendWsMessage = useSendWsMessage();
 
   // TODO:use RHF
@@ -59,7 +64,7 @@ function ChatInputForm({ chatId, chatType }: ChatInputFormProps) {
   /**
    * Handles sending messages.
    */
-  const onMessageSend = (
+  const handleMessageSend = (
     event:
       | React.KeyboardEvent<HTMLTextAreaElement>
       | React.FormEvent<HTMLFormElement>,
@@ -68,6 +73,7 @@ function ChatInputForm({ chatId, chatType }: ChatInputFormProps) {
     if (inputValue.length !== 0) {
       sendWsMessage(inputValue, chatId, chatType);
       setInputValue("");
+      onMessageSend();
     }
   };
   /**
@@ -80,7 +86,7 @@ function ChatInputForm({ chatId, chatType }: ChatInputFormProps) {
       if (event.metaKey || event.ctrlKey) {
         setInputValue(inputValue.concat("\n"));
       } else {
-        onMessageSend(event);
+        handleMessageSend(event);
       }
     }
   };
@@ -105,7 +111,7 @@ function ChatInputForm({ chatId, chatType }: ChatInputFormProps) {
 
   return (
     <div css={container}>
-      <form css={form} onSubmit={onMessageSend}>
+      <form css={form} onSubmit={handleMessageSend}>
         <EmojiPicker
           open={showEmojiPicker}
           onEmojiClick={onEmojiClick}

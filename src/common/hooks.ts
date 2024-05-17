@@ -1,5 +1,5 @@
 import { AxiosError, isAxiosError } from "axios";
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { FieldValues, UseFormSetError } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
 import { ServerErrorResponse, UseFormSetErrorName } from "./types";
@@ -35,3 +35,31 @@ export const useSetFormErrorOnRequestError = <TData extends FieldValues>(
 
 export const useIsDesktop = () =>
   useMediaQuery({ query: "(min-width: 1024px)" });
+
+/**
+ * Adds a timeout to a handler callback. Cancels the timeout on component
+ * unmount. Should not be used for long timeout which may overlap, as only the
+ * last timeout is cancelled.
+ *
+ * @param handler The handler to be called after the timeout.
+ * @param timeout The timeout in ms.
+ * @returns The handler function wrapped in setTimeout.
+ */
+export const useTimeoutHandler = (
+  handler: TimerHandler,
+  timeout?: number | undefined,
+) => {
+  const timeoutIdRef = useRef<number>(-1);
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(timeoutIdRef.current);
+    };
+  }, []);
+
+  const returnHandler = () => {
+    timeoutIdRef.current = setTimeout(handler, timeout);
+  };
+
+  return returnHandler;
+};
