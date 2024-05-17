@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 import { Plus } from "iconoir-react";
 import { useCallback, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import LanguageBadge from "../../../common/components/LanguageBadge";
@@ -150,6 +151,11 @@ function UserPage() {
 
   return (
     <>
+      <Helmet
+        title={
+          isEditable ? "Your Profile | LangFlow" : `${data.username} | LangFlow`
+        }
+      />
       <animated.div css={container} style={transitionProps}>
         {/* Main user information
             Contains the user's picture, username, languages and description.*/}

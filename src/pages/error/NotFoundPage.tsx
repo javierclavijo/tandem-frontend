@@ -7,7 +7,8 @@ import { BaseErrorPage } from "./ErrorPage";
 function NotFoundPage() {
   return (
     <BaseErrorPage
-      title="Not found"
+      title="Not Found | LangFlow"
+      heading="Not Found"
       description="We couldn't find what you're looking for."
     />
   );

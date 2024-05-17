@@ -1,25 +1,19 @@
 import { css } from "@emotion/react";
-import React, { useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { animated } from "react-spring";
 import { useIsDesktop } from "../../../common/hooks";
 import { COLORS } from "../../../common/resources/style-variables";
 import { useFadeIn } from "../../../common/transitions";
 import ChatList from "../components/ChatList/ChatList";
-import { ChatHeaderData } from "../types";
+import { useSetChatHeader } from "../hooks";
 import { chatHeader, chatRoom } from "./styles";
 
 /**
  * Empty chat page component. Only used in the desktop chat list.
  */
 function DesktopEmptyChatPage() {
-  const [, setHeader] =
-    useOutletContext<
-      [
-        ChatHeaderData | null,
-        React.Dispatch<React.SetStateAction<ChatHeaderData | null>>,
-      ]
-    >();
+  const setHeader = useSetChatHeader();
 
   useEffect(() => setHeader(null), [setHeader]);
   const transitionProps = useFadeIn();
@@ -41,7 +35,12 @@ function DesktopEmptyChatPage() {
  */
 function EmptyChatPage() {
   const isDesktop = useIsDesktop();
-  return isDesktop ? <DesktopEmptyChatPage /> : <ChatList />;
+  return (
+    <>
+      <Helmet title="Chats | LangFlow" />
+      {isDesktop ? <DesktopEmptyChatPage /> : <ChatList />}
+    </>
+  );
 }
 
 const container = css`

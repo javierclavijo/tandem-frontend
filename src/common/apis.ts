@@ -20,3 +20,8 @@ export const queryClient = new QueryClient({
   // often.
   defaultOptions: { queries: { staleTime: 60000 } },
 });
+
+/**
+ * Context object for React Helmet provider.
+ */
+export const helmetContext = {};

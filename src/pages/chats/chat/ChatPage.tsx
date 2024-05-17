@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import React, { useRef } from "react";
+import { Helmet } from "react-helmet-async";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useParams } from "react-router-dom";
 import { animated } from "react-spring";
@@ -41,43 +42,50 @@ function ChatPage() {
    */
   useSetChatRoomHeader(chat);
 
-  return chat && data ? (
-    <animated.div
-      css={isDesktop ? chatRoom : chatRoomMobile}
-      style={transitionProps}
-    >
-      <div
-        id="chat-messages-container"
-        ref={messageContainerRef}
-        css={container}
+  if (chat == null || data == null) {
+    return null;
+  }
+
+  return (
+    <>
+      <Helmet title="Chats | LangFlow" />
+      <animated.div
+        css={isDesktop ? chatRoom : chatRoomMobile}
+        style={transitionProps}
       >
-        <InfiniteScroll
-          next={fetchNextPage}
-          hasMore={!!hasNextPage}
-          loader={<div />}
-          dataLength={data.pages.length}
-          scrollableTarget="chat-messages-container"
-          style={{ display: "flex", flexDirection: "column-reverse" }}
-          inverse={true}
-          aria-live="polite"
+        <div
+          id="chat-messages-container"
+          ref={messageContainerRef}
+          css={container}
         >
-          {data?.pages.reverse().map((page, pageIndex) => (
-            <React.Fragment key={`page-${pageIndex}`}>
-              {[...page.results].map((message) => (
-                <ChatRoomMessage
-                  message={message}
-                  isOwnMessage={user?.id === message.author.id}
-                  type={chat?.type}
-                  key={message.id}
-                />
-              ))}
-            </React.Fragment>
-          ))}
-        </InfiniteScroll>
-      </div>
-      <ChatInputForm chat={chat} />
-    </animated.div>
-  ) : null;
+          <InfiniteScroll
+            next={fetchNextPage}
+            hasMore={!!hasNextPage}
+            loader={<div />}
+            dataLength={data.pages.length}
+            scrollableTarget="chat-messages-container"
+            style={{ display: "flex", flexDirection: "column-reverse" }}
+            inverse={true}
+            aria-live="polite"
+          >
+            {data?.pages.reverse().map((page, pageIndex) => (
+              <React.Fragment key={`page-${pageIndex}`}>
+                {[...page.results].map((message) => (
+                  <ChatRoomMessage
+                    message={message}
+                    isOwnMessage={user?.id === message.author.id}
+                    type={chat?.type}
+                    key={message.id}
+                  />
+                ))}
+              </React.Fragment>
+            ))}
+          </InfiniteScroll>
+        </div>
+        <ChatInputForm chat={chat} />
+      </animated.div>
+    </>
+  );
 }
 
 const container = css`

@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 import { FastArrowDownSquare, FastArrowUpSquare } from "iconoir-react";
 import { useCallback, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import EditButton from "../../../common/components/EditButton";
@@ -139,124 +140,127 @@ function ChannelPage() {
   }
 
   return (
-    <animated.div css={container} style={transitionProps}>
-      <section css={infoSection}>
-        {userIsStaff ? (
-          <>
-            <ImageInput
-              image={data.image}
-              // TODO: remove direct references like this.
-              defaultImage="/images/user-placeholder.png"
-              url={data.url}
-              invalidateQueryKey={["channels", data.id]}
-            />
-            <ChannelNameInput data={data} />
-          </>
-        ) : (
-          <>
-            <img
-              src={data.image ?? "/images/user-placeholder.png"}
-              alt=""
-              css={profileImg}
-            />
-            <p>{data?.name}</p>
-          </>
-        )}
-
-        <p>
-          Channel ·&nbsp;
-          {data?.memberships.length}&nbsp;
-          {data?.memberships.length === 1 ? "member" : "members"}
-        </p>
-
-        {userIsStaff ? (
-          <ChannelEditLanguageBadge data={data} bg={COLORS.DARK} />
-        ) : (
-          <LanguageBadge
-            language={data.language}
-            level={data.level}
-            bg={COLORS.DARK}
-          />
-        )}
-
-        <section css={descriptionSection}>
-          {userIsStaff && data ? (
-            <DescriptionTextarea data={data} queryKey={"channels"} />
+    <>
+      <Helmet title={`${data.name} | LangFlow`} />
+      <animated.div css={container} style={transitionProps}>
+        <section css={infoSection}>
+          {userIsStaff ? (
+            <>
+              <ImageInput
+                image={data.image}
+                // TODO: remove direct references like this.
+                defaultImage="/images/user-placeholder.png"
+                url={data.url}
+                invalidateQueryKey={["channels", data.id]}
+              />
+              <ChannelNameInput data={data} />
+            </>
           ) : (
             <>
-              <h3>Description</h3>
-              <p>{data?.description}</p>
+              <img
+                src={data.image ?? "/images/user-placeholder.png"}
+                alt=""
+                css={profileImg}
+              />
+              <p>{data?.name}</p>
             </>
           )}
-        </section>
-      </section>
 
-      <section css={listSection}>
-        <h3 css={listSectionHeader}>Members</h3>
-        <ul css={listSectionList}>
-          {/* TODO: refactor into its own component */}
-          {data?.memberships.map((membership) => (
-            <InfoListElement
-              name={membership.user?.username}
-              additionalInfo={
-                membership.role === "A"
-                  ? "Admin"
-                  : membership.role === "M"
-                    ? "Moderator"
-                    : undefined
-              }
-              description={membership.user.description}
-              key={membership.url}
-              image={membership.user.image}
-              link={`/chats/users/${membership.user.id}`}
-              buttons={
-                <>
-                  {/* If the user is a regular user, show a button to promote
+          <p>
+            Channel ·&nbsp;
+            {data?.memberships.length}&nbsp;
+            {data?.memberships.length === 1 ? "member" : "members"}
+          </p>
+
+          {userIsStaff ? (
+            <ChannelEditLanguageBadge data={data} bg={COLORS.DARK} />
+          ) : (
+            <LanguageBadge
+              language={data.language}
+              level={data.level}
+              bg={COLORS.DARK}
+            />
+          )}
+
+          <section css={descriptionSection}>
+            {userIsStaff && data ? (
+              <DescriptionTextarea data={data} queryKey={"channels"} />
+            ) : (
+              <>
+                <h3>Description</h3>
+                <p>{data?.description}</p>
+              </>
+            )}
+          </section>
+        </section>
+
+        <section css={listSection}>
+          <h3 css={listSectionHeader}>Members</h3>
+          <ul css={listSectionList}>
+            {/* TODO: refactor into its own component */}
+            {data?.memberships.map((membership) => (
+              <InfoListElement
+                name={membership.user?.username}
+                additionalInfo={
+                  membership.role === "A"
+                    ? "Admin"
+                    : membership.role === "M"
+                      ? "Moderator"
+                      : undefined
+                }
+                description={membership.user.description}
+                key={membership.url}
+                image={membership.user.image}
+                link={`/chats/users/${membership.user.id}`}
+                buttons={
+                  <>
+                    {/* If the user is a regular user, show a button to promote
                         them to moderator. If they are a moderator, show a 
                         button to demote them to regular user. If they are 
-                        an admin, show nothing. */}
-                  {userIsAdmin && membership.role === "U" && (
-                    <EditButton
-                      onClick={async () =>
-                        await handlePromoteUser(membership.url)
-                      }
-                    >
-                      Promote
-                      <FastArrowUpSquare
-                        color={COLORS.PRIMARY}
-                        height="1.5rem"
-                        width="1.5rem"
-                      />
-                    </EditButton>
-                  )}
+                      an admin, show nothing. */}
+                    {userIsAdmin && membership.role === "U" && (
+                      <EditButton
+                        onClick={async () =>
+                          await handlePromoteUser(membership.url)
+                        }
+                      >
+                        Promote
+                        <FastArrowUpSquare
+                          color={COLORS.PRIMARY}
+                          height="1.5rem"
+                          width="1.5rem"
+                        />
+                      </EditButton>
+                    )}
 
-                  {userIsAdmin && membership.role === "M" && (
-                    <EditButton
-                      onClick={async () =>
-                        await handleDemoteUser(membership.url)
-                      }
-                    >
-                      Demote
-                      <FastArrowDownSquare
-                        color={COLORS.PRIMARY}
-                        height="1.5rem"
-                        width="1.5rem"
-                      />
-                    </EditButton>
-                  )}
-                </>
-              }
-            />
-          ))}
+                    {userIsAdmin && membership.role === "M" && (
+                      <EditButton
+                        onClick={async () =>
+                          await handleDemoteUser(membership.url)
+                        }
+                      >
+                        Demote
+                        <FastArrowDownSquare
+                          color={COLORS.PRIMARY}
+                          height="1.5rem"
+                          width="1.5rem"
+                        />
+                      </EditButton>
+                    )}
+                  </>
+                }
+              />
+            ))}
 
-          {/* Empty list */}
-          {data.memberships.length === 0 && (
-            <li css={emptyContainer}>
-              <p>This channel doesn&apos;t have any members yet.</p>
-            </li>
-          )}
-        </ul>
-      </section>
+            {/* Empty list */}
+            {data.memberships.length === 0 && (
+              <li css={emptyContainer}>
+                <p>This channel doesn&apos;t have any members yet.</p>
+              </li>
+            )}
+          </ul>
+        </section>
+      </animated.div>
 
       {/* Channel deletion confirmation modal */}
       <DeleteChannelModal
@@ -271,7 +275,7 @@ function ChannelPage() {
         onRequestClose={handleLeaveModalClose}
         onLeave={handleLeaveChannel}
       />
-    </animated.div>
+    </>
   );
 }
 
