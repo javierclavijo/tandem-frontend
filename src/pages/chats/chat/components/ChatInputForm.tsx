@@ -3,7 +3,7 @@ import useEventListener from "@use-it/event-listener";
 import EmojiPicker, { EmojiStyle } from "emoji-picker-react";
 import { MouseDownEvent } from "emoji-picker-react/dist/config/config";
 import { ArrowRightCircle, Emoji } from "iconoir-react";
-import React, { CSSProperties, useCallback, useRef, useState } from "react";
+import React, { CSSProperties, useCallback, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import {
   COLORS,
@@ -23,11 +23,6 @@ interface ChatInputFormProps {
  */
 function ChatInputForm({ chatId, chatType }: ChatInputFormProps) {
   const sendWsMessage = useSendWsMessage();
-
-  /**
-   * Message input text area ref.
-   */
-  const elementRef = useRef<HTMLTextAreaElement | null>(null);
 
   // TODO:use RHF
   /**
@@ -132,7 +127,6 @@ function ChatInputForm({ chatId, chatType }: ChatInputFormProps) {
         <TextareaAutosize
           id="chat-text-input"
           name="chat-text-input"
-          ref={elementRef}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={onKeyDown}

@@ -1,7 +1,7 @@
 import { Interpolation, Theme } from "@emotion/react";
 import { FlagIconCode } from "react-flag-kit";
 import { FieldPath, FieldValues } from "react-hook-form";
-import { ChatMessage, UserLanguage } from "../pages/chats/types";
+import { ChatMessage, ChatType, UserLanguage } from "../pages/chats/types";
 
 export type ProficiencyLevel = "BE" | "IN" | "AD" | "NA";
 export type Language = "DE" | "EN" | "FR" | "IT" | "ES";
@@ -63,7 +63,7 @@ export interface Chat {
   url: string;
   messages: ChatMessage[];
   image: string | null;
-  type: "users" | "channels";
+  type: ChatType;
   name: string;
   // Contains the URL for the endpoint to fetch the channel's chat messages
   messageUrl: string;

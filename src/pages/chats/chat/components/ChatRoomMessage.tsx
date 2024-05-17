@@ -5,12 +5,14 @@ import {
   COLORS,
   FONT_SIZES,
 } from "../../../../common/resources/style-variables";
-import { ChatMessage } from "../../types";
+import { ChatType } from "../../types";
 
 interface ChatRoomMessageProps {
-  message: ChatMessage;
+  authorName: string;
+  content: string;
+  timestamp: string;
   isOwnMessage: boolean;
-  type: "users" | "channels";
+  chatType: ChatType;
 }
 
 /**
@@ -19,9 +21,19 @@ interface ChatRoomMessageProps {
  * message's author's name above the message's contents.
  */
 function ChatRoomMessage(
-  { message, isOwnMessage, type }: ChatRoomMessageProps,
+  {
+    authorName,
+    content,
+    timestamp,
+    isOwnMessage,
+    chatType: type,
+  }: ChatRoomMessageProps,
   ref: React.Ref<HTMLDivElement>,
 ) {
+  const formattedDateTime = DateTime.fromISO(timestamp).toLocaleString(
+    DateTime.DATETIME_SHORT,
+  );
+
   return (
     <div
       css={isOwnMessage ? ownMessageOuterContainer : outerContainer}
@@ -30,14 +42,10 @@ function ChatRoomMessage(
       {!isOwnMessage ? <div css={speechBubbleOtherMessage} /> : null}
       <div css={isOwnMessage ? ownMessage : otherMessage}>
         {!isOwnMessage && type === "channels" ? (
-          <span css={username}>{message.author.username}</span>
+          <span css={username}>{authorName}</span>
         ) : null}
-        <span css={content}>{message.content}</span>
-        <span css={datetime}>
-          {DateTime.fromISO(message.timestamp).toLocaleString(
-            DateTime.DATETIME_SHORT,
-          )}
-        </span>
+        <span css={contentCss}>{content}</span>
+        <span css={datetime}>{formattedDateTime}</span>
       </div>
       {isOwnMessage ? <div css={speechBubbleOwnMessage} /> : null}
     </div>
@@ -103,7 +111,7 @@ const datetime = css`
   align-self: flex-end;
 `;
 
-const content = css`
+const contentCss = css`
   font-size: ${FONT_SIZES.M};
   white-space: pre-line;
   overflow-wrap: anywhere;

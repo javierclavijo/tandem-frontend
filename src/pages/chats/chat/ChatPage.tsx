@@ -72,9 +72,11 @@ function ChatPage() {
               <React.Fragment key={`page-${pageIndex}`}>
                 {[...page.results].map((message) => (
                   <ChatRoomMessage
-                    message={message}
+                    authorName={message.author.username}
+                    content={message.content}
+                    timestamp={message.timestamp}
                     isOwnMessage={user?.id === message.author.id}
-                    type={chat?.type}
+                    chatType={chat?.type}
                     key={message.id}
                   />
                 ))}
