@@ -80,15 +80,15 @@ function PreLoginHelmet() {
     <Helmet>
       <title>LangFlow</title>
       <link
-        ref="preload"
+        rel="preload"
         fetchPriority="high"
         as="image"
         href={topImage}
         type="image/webp"
       />
-      <link ref="preload" as="image" href={middleImage} type="image/webp" />
-      <link ref="preload" as="image" href={bottomImage} type="image/webp" />
-      <link ref="preload" as="image" href={langflowLogo} type="image/svg+xml" />
+      <link rel="preload" as="image" href={middleImage} type="image/webp" />
+      <link rel="preload" as="image" href={bottomImage} type="image/webp" />
+      <link rel="preload" as="image" href={langflowLogo} type="image/svg+xml" />
     </Helmet>
   );
 }

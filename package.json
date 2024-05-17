@@ -38,7 +38,7 @@
     "start": "vite --host",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "lint": "tsc --noEmit --pretty -p tsconfig.json ; npx eslint"
+    "lint": "cross-env-shell tsc --noEmit --pretty -p tsconfig.json ; npx eslint $INIT_CWD/src"
   },
   "browserslist": {
     "production": [
@@ -69,7 +69,8 @@
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
     "@vitejs/plugin-react": "^4.2.1",
-    "eslint": "^9.2.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-react": "^7.34.1",
