@@ -3,7 +3,6 @@ import { BaseErrorPage } from "./ErrorPage";
 /**
  * 404 error page. Used in the app's router.
  */
-
 function NotFoundPage() {
   return (
     <BaseErrorPage

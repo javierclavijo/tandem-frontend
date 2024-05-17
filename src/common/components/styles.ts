@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { StylesConfig } from "react-select";
-import { COLORS, FONT_SIZES } from "../resources/style-variables";
+import { COLORS, FONT_SIZES } from "../constants";
 
 // TODO: substitute all these css declarations with styled components or CSS
 // modules.

@@ -13,10 +13,10 @@ import {
   searchSelect,
 } from "../../../common/components/styles";
 import {
-  languageOptions,
-  levelOptions,
-} from "../../../common/resources/languages";
-import { COLORS } from "../../../common/resources/style-variables";
+  COLORS,
+  LANGUAGE_OPTIONS,
+  LEVEL_OPTIONS,
+} from "../../../common/constants";
 import { Language, Option, ProficiencyLevel } from "../../../common/types";
 import {
   ChannelSearchParams,
@@ -99,16 +99,16 @@ function SearchPanel({
       if (searchType === searchTypeOptions.USERS.value) {
         setSearchType(searchTypeOptions.USERS);
         setNativeLanguages(
-          languageOptions.filter((option) =>
+          LANGUAGE_OPTIONS.filter((option) =>
             searchParams.getAll("nativeLanguages").includes(option.value),
           ),
         );
         setLearningLanguages(
-          languageOptions.filter((option) =>
+          LANGUAGE_OPTIONS.filter((option) =>
             searchParams.getAll("learningLanguages").includes(option.value),
           ),
         );
-        const levels = levelOptions.filter((option) =>
+        const levels = LEVEL_OPTIONS.filter((option) =>
           searchParams.getAll("learningLanguagesLevels").includes(option.value),
         );
         if (levels) {
@@ -117,12 +117,12 @@ function SearchPanel({
       } else if (searchType === searchTypeOptions.CHANNELS.value) {
         setSearchType(searchTypeOptions.CHANNELS);
         setChannelLanguages(
-          languageOptions.filter((option) =>
+          LANGUAGE_OPTIONS.filter((option) =>
             searchParams.getAll("languages").includes(option.value),
           ),
         );
         setChannelLevels(
-          levelOptions.filter((option) =>
+          LEVEL_OPTIONS.filter((option) =>
             searchParams.getAll("levels").includes(option.value),
           ),
         );
@@ -256,7 +256,7 @@ function SearchPanel({
               id={`native-languages`}
               isMulti={true}
               value={nativeLanguages}
-              options={languageOptions}
+              options={LANGUAGE_OPTIONS}
               onChange={(options) => setNativeLanguages([...options])}
               isOptionDisabled={(option) =>
                 !!learningLanguages?.includes(option as Option<Language>)
@@ -272,7 +272,7 @@ function SearchPanel({
               id={`learning-languages`}
               isMulti={true}
               value={learningLanguages}
-              options={languageOptions}
+              options={LANGUAGE_OPTIONS}
               onChange={(options) =>
                 setLearningLanguages(options?.length ? [...options] : null)
               }
@@ -289,7 +289,7 @@ function SearchPanel({
               id={`learning-languages-levels`}
               isMulti={true}
               value={learningLanguagesLevels}
-              options={levelOptions}
+              options={LEVEL_OPTIONS}
               onChange={(options) => setLearningLanguagesLevels([...options])}
               isDisabled={!learningLanguages || !learningLanguages.length}
               placeholder="Level(s)"
@@ -311,7 +311,7 @@ function SearchPanel({
               id={`channel-languages`}
               isMulti={true}
               value={channelLanguages}
-              options={languageOptions}
+              options={LANGUAGE_OPTIONS}
               onChange={(options) =>
                 setChannelLanguages(options.length ? [...options] : null)
               }
@@ -325,7 +325,7 @@ function SearchPanel({
               id={`channel-levels`}
               isMulti={true}
               value={channelLevels}
-              options={levelOptions}
+              options={LEVEL_OPTIONS}
               onChange={(options) => setChannelLevels([...options])}
               isDisabled={!channelLanguages || !channelLanguages.length}
               placeholder="Level(s)"

@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import React, { ReactNode } from "react";
-import { COLORS } from "../../resources/style-variables";
+import { COLORS } from "../../constants";
 import { StyledEmotionComponentProps } from "../../types";
 
 interface ModalTitleProps

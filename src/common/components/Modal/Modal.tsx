@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import ReactModal from "react-modal";
-import { COLORS, FONT_SIZES } from "../../resources/style-variables";
+import { COLORS, FONT_SIZES } from "../../constants";
 
 export interface ModalProps extends ReactModal.Props {}
 

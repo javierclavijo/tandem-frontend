@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { COLORS, FONT_SIZES } from "../../common/resources/style-variables";
+import { COLORS, FONT_SIZES } from "../../common/constants";
 
 export const main = css`
   grid-area: main;

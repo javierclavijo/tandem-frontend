@@ -1,15 +1,20 @@
 import { css } from "@emotion/react";
 import { Plus } from "iconoir-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { animated } from "react-spring";
+import { COLORS } from "../../../../common/constants";
 import useAuth from "../../../../common/context/AuthContext/AuthContext";
 import { useIsDesktop } from "../../../../common/hooks";
-import { COLORS } from "../../../../common/resources/style-variables";
 import { useFadeIn } from "../../../../common/transitions";
+import { messageSortFn } from "../../hooks";
 import { useAllChatList } from "../../queries";
-import { listContainer, listContainerMobile } from "../../styles";
-import ChatListElements from "./ChatListElements";
+import {
+  listContainer,
+  listContainerMobile,
+  listElementContainerCss,
+} from "../../styles";
+import ChatListElement from "./ChatListElement";
 import ChatListFilter from "./ChatListFilter";
 import NewChannelModal from "./NewChannelModal";
 
@@ -20,22 +25,34 @@ function ChatList() {
   const params = useParams();
   const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
-  const { data } = useAllChatList();
   const { user } = useAuth();
+  const { data } = useAllChatList();
 
   /**
    * Controls the chat list filter state.
    */
   const [filter, setFilter] = useState<string>("");
-
   /**
    * Controls whether the channel creation modal is open.
    */
   const [isChannelCreationModalOpen, setIsChannelCreationModalOpen] =
     useState<boolean>(false);
 
+  // Sort chats according to their latest messages' sent datetime.
+  const sortedFilteredElements = useMemo(() => {
+    return data
+      ?.filter((chat) =>
+        chat.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()),
+      )
+      .sort((a, b) => messageSortFn(a.messages[0], b.messages[0]));
+  }, [data, filter]);
+
   const onChannelCreationModalClose = () =>
     setIsChannelCreationModalOpen(false);
+
+  if (data == null || user == null) {
+    return null;
+  }
 
   return (
     <>
@@ -44,17 +61,37 @@ function ChatList() {
         style={transitionProps}
       >
         {/* Chat list filter */}
-        <ChatListFilter setFilter={setFilter} />
+        <ChatListFilter value={filter} onFilterChange={setFilter} />
 
-        {/* Chat list elements */}
-        {data && user ? (
-          <ChatListElements
-            data={data}
-            filter={filter}
-            selectedId={params.id}
-            userId={user?.id}
-          />
-        ) : null}
+        {/* The list itself */}
+        <ul css={listElementContainerCss} role="navigation">
+          {sortedFilteredElements?.map((chat) => (
+            <ChatListElement
+              chatId={chat.id}
+              chatName={chat.name}
+              chatImage={chat.image}
+              lastMessageText={chat.messages[0].content}
+              lastMessageDateTime={chat.messages[0].timestamp}
+              lastMessageAuthor={chat.messages[0].author.username}
+              isOwnMessage={chat.messages[0]?.author.id === user.id}
+              selected={chat.id === params.id}
+              key={chat.id}
+            />
+          ))}
+
+          {/* Empty list. Has different strings for cases where the user has 
+              chats and is filtering, and where the user doesn't have any chats.
+              */}
+          {!sortedFilteredElements?.length && (
+            <li css={emptyList}>
+              <p>
+                {data.length
+                  ? "No chats match your query."
+                  : "You don't have any chats yet."}
+              </p>
+            </li>
+          )}
+        </ul>
 
         {/* Channel creation button */}
         <button
@@ -62,7 +99,7 @@ function ChatList() {
           onClick={() => setIsChannelCreationModalOpen(true)}
           aria-label="Create new channel"
         >
-          <Plus height={"2rem"} width={"2rem"} color={COLORS.WHITE} />
+          <Plus height="2rem" width="2rem" color={COLORS.WHITE} />
         </button>
       </animated.section>
 
@@ -97,6 +134,10 @@ const newChatButtonContainer = css`
     background-color: ${COLORS.DARK_PRIMARY};
     outline: none;
   }
+`;
+
+const emptyList = css`
+  padding: 0 1rem 1rem 1rem;
 `;
 
 export default ChatList;

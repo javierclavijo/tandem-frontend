@@ -1,10 +1,7 @@
 import { css } from "@emotion/react";
 import { DateTime } from "luxon";
 import React from "react";
-import {
-  COLORS,
-  FONT_SIZES,
-} from "../../../../common/resources/style-variables";
+import { COLORS, FONT_SIZES } from "../../../../common/constants";
 import { ChatType } from "../../types";
 
 interface ChatRoomMessageProps {

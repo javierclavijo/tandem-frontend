@@ -5,9 +5,9 @@ import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import LanguageBadge from "../../../common/components/LanguageBadge";
+import { COLORS, LANGUAGE_INFO } from "../../../common/constants";
 import useAuth from "../../../common/context/AuthContext/AuthContext";
-import { LANGUAGE_INFO } from "../../../common/resources/languages";
-import { COLORS } from "../../../common/resources/style-variables";
+import userPlaceholderImage from "../../../common/static/images/user-placeholder.png";
 import { useFadeIn } from "../../../common/transitions";
 import DescriptionTextarea from "../components/DescriptionTextarea";
 import ImageInput from "../components/ImageInput";
@@ -110,8 +110,9 @@ function UserPage() {
   const onPasswordModalClose = () => setPasswordChangeModalIsOpen(false);
 
   /**
-   * Set header to render the title 'user info', plus a button to chat with the user if the user is not already a
-   * friend of the current user (i.e. doesn't have any friend chats with them).
+   * Set header to render the title 'user info', plus a button to chat with the
+   * user if the user is not already a friend of the current user (i.e. doesn't
+   * have any friend chats with them).
    */
   useEffect(() => {
     setHeader({
@@ -164,8 +165,6 @@ function UserPage() {
             <>
               <ImageInput
                 image={data.image}
-                // TODO: remove direct references like this.
-                defaultImage="/images/user-placeholder.png"
                 url={data.url}
                 invalidateQueryKey={["users", appUser?.id]}
               />
@@ -174,7 +173,7 @@ function UserPage() {
           ) : (
             <>
               <img
-                src={data.image ?? "/images/user-placeholder.png"}
+                src={data.image ?? userPlaceholderImage}
                 alt=""
                 css={picture}
               />
@@ -205,7 +204,10 @@ function UserPage() {
                     ) : (
                       <div css={editableLanguage} key={language.id}>
                         <UserInfoEditLanguageBadge
-                          data={language}
+                          id={language.id}
+                          language={language.language}
+                          level={language.level}
+                          url={language.url}
                           backgroundColor={COLORS.DARK}
                           onDelete={() => setSelectedDeleteLanguage(language)}
                         />

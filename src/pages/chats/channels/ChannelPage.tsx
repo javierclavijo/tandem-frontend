@@ -7,8 +7,9 @@ import { animated } from "react-spring";
 import EditButton from "../../../common/components/EditButton";
 import LanguageBadge from "../../../common/components/LanguageBadge";
 import ShareLink from "../../../common/components/ShareLink";
+import { COLORS } from "../../../common/constants";
 import useAuth from "../../../common/context/AuthContext/AuthContext";
-import { COLORS } from "../../../common/resources/style-variables";
+import userPlaceholderImage from "../../../common/static/images/user-placeholder.png";
 import { useFadeIn } from "../../../common/transitions";
 import DescriptionTextarea from "../components/DescriptionTextarea";
 import ImageInput from "../components/ImageInput";
@@ -148,8 +149,6 @@ function ChannelPage() {
             <>
               <ImageInput
                 image={data.image}
-                // TODO: remove direct references like this.
-                defaultImage="/images/user-placeholder.png"
                 url={data.url}
                 invalidateQueryKey={["channels", data.id]}
               />
@@ -158,7 +157,7 @@ function ChannelPage() {
           ) : (
             <>
               <img
-                src={data.image ?? "/images/user-placeholder.png"}
+                src={data.image ?? userPlaceholderImage}
                 alt=""
                 css={profileImg}
               />

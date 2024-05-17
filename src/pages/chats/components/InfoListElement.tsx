@@ -5,10 +5,9 @@ import {
   containerWithLink,
   thumbnailContainer,
 } from "../../../common/components/styles";
-import { COLORS } from "../../../common/resources/style-variables";
+import { COLORS } from "../../../common/constants";
 import { infoListElementInnerContainer } from "../styles";
 
-import { useState } from "react";
 import ChatThumbnail from "../../../common/components/UserThumbnail";
 
 interface InfoListElementProps {
@@ -21,54 +20,48 @@ interface InfoListElementProps {
 }
 
 /**
- * List element for lists in channel and user info components. Admits a 'buttons' JSX prop which is made visible on
- * hover.
+ * List element for lists in channel and user info components. Admits a
+ * 'buttons' JSX prop which is made visible on hover.
  */
-function InfoListElement(props: InfoListElementProps) {
-  const [displayButtons, setDisplayButtons] = useState<boolean>(false);
-
-  const buttonsInnerContainer = css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    z-index: 10;
-    visibility: ${displayButtons ? "visible" : "hidden"};
-  `;
-
+function InfoListElement({
+  name,
+  additionalInfo,
+  description,
+  image,
+  link,
+  buttons,
+}: InfoListElementProps) {
   return (
-    <li
-      onMouseEnter={() => setDisplayButtons(true)}
-      onMouseLeave={() => setDisplayButtons(false)}
-      css={outerContainer}
-    >
+    <li css={outerContainer}>
       <div css={infoListElementInnerContainer}>
         <div css={pictureContainer}>
-          <ChatThumbnail src={props.image} />
+          <ChatThumbnail src={image} />
         </div>
         <div css={contentContainer}>
           <div css={upperInnerContentContainer}>
             <span css={title}>
-              <h4>{props.name}</h4>
-              {props.additionalInfo ? (
-                <p css={additionalInfoText}>{props.additionalInfo}</p>
+              <h4>{name}</h4>
+              {additionalInfo ? (
+                <p css={additionalInfoText}>{additionalInfo}</p>
               ) : null}
             </span>
             <div css={upperOuterContentContainer}>
-              <div css={buttonsInnerContainer}>{props.buttons}</div>
+              <div css={buttonsInnerContainer} className="buttons-container">
+                {buttons}
+              </div>
               <NavArrowRight
                 color={COLORS.PRIMARY}
-                width={"1.5rem"}
-                height={"1.5rem"}
+                width="1.5rem"
+                height="1.5rem"
               />
             </div>
           </div>
           <div css={descriptionContainer}>
-            <p css={descriptionText}>{props.description}</p>
+            <p css={descriptionText}>{description}</p>
           </div>
         </div>
       </div>
-      <Link to={props.link} css={link} title={props.name} />
+      <Link to={link} css={linkCss} title={name} />
     </li>
   );
 }
@@ -78,9 +71,23 @@ const outerContainer = css`
   padding: 0.5rem 1rem;
 
   transition: background-color 0.1s;
+
   &:hover {
     background-color: ${COLORS.LIGHT};
+
+    & .buttons-container {
+      visibility: visible;
+    }
   }
+`;
+
+const buttonsInnerContainer = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  z-index: 10;
+  visibility: hidden;
 `;
 
 const title = css`
@@ -88,7 +95,7 @@ const title = css`
   gap: 1rem;
 `;
 
-const link = css`
+const linkCss = css`
   grid-area: element;
   height: 100%;
   width: 100%;

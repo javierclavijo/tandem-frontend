@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { COLORS } from "./common/resources/style-variables";
+import { COLORS } from "./common/constants";
 
 const globalStyles = css`
   * {

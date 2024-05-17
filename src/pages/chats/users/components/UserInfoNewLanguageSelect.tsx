@@ -3,12 +3,12 @@ import { useCallback, useState } from "react";
 import Select, { StylesConfig } from "react-select";
 import EditButtons from "../../../../common/components/EditButtons";
 import { select } from "../../../../common/components/styles";
-import useAuth from "../../../../common/context/AuthContext/AuthContext";
 import {
-  languageOptions,
-  levelOptions,
-} from "../../../../common/resources/languages";
-import { COLORS } from "../../../../common/resources/style-variables";
+  COLORS,
+  LANGUAGE_OPTIONS,
+  LEVEL_OPTIONS,
+} from "../../../../common/constants";
+import useAuth from "../../../../common/context/AuthContext/AuthContext";
 import { Language, Option, ProficiencyLevel } from "../../../../common/types";
 import { useCreateUserLanguageMutation } from "../queries";
 
@@ -62,7 +62,7 @@ function UserInfoNewLanguageSelect({
           value={languageValue}
           onChange={setLanguageValue}
           onFocus={clearError}
-          options={languageOptions}
+          options={LANGUAGE_OPTIONS}
           isOptionDisabled={(option) =>
             // Disable the options for languages the user already has.
             !!user?.languages.find(
@@ -77,7 +77,7 @@ function UserInfoNewLanguageSelect({
           value={levelValue}
           onChange={setLevelValue}
           onFocus={clearError}
-          options={levelOptions}
+          options={LEVEL_OPTIONS}
           placeholder="Level"
           styles={select as StylesConfig<Option<ProficiencyLevel>>}
         />

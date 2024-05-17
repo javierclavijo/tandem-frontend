@@ -5,10 +5,7 @@ import { MouseDownEvent } from "emoji-picker-react/dist/config/config";
 import { ArrowRightCircle, Emoji } from "iconoir-react";
 import React, { CSSProperties, useCallback, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
-import {
-  COLORS,
-  FONT_SIZES,
-} from "../../../../common/resources/style-variables";
+import { COLORS, FONT_SIZES } from "../../../../common/constants";
 import { useSendWsMessage } from "../../hooks";
 import { ChatType } from "../../types";
 

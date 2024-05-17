@@ -26,14 +26,14 @@ function ChatHeader({ title, link, image, actions }: ChatHeaderProps) {
         <BackButton />
         <div css={containerWithLink}>
           <div css={innerContainer}>
-            {image !== null ? (
+            {image !== null && (
               <div css={imageContainer}>
                 <ChatThumbnail src={image} />
               </div>
-            ) : null}
+            )}
             <h2>{title}</h2>
           </div>
-          {link != null ? <Link to={link} css={linkCss} title={title} /> : null}
+          {link != null && <Link to={link} css={linkCss} title={title} />}
         </div>
       </div>
       {actions}

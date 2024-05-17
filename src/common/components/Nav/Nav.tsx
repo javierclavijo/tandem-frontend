@@ -1,10 +1,11 @@
 import { css } from "@emotion/react";
 import { ChatLines, Home, LogOut, Search } from "iconoir-react";
 import { Link, NavLink } from "react-router-dom";
+import langflowLogo from "../../../common/static/svg/langflow_logo.svg";
 import { infoButton } from "../../../pages/chats/styles";
+import { COLORS, FONT_SIZES } from "../../constants";
 import useAuth from "../../context/AuthContext/AuthContext";
 import { useIsDesktop } from "../../hooks";
-import { COLORS, FONT_SIZES } from "../../resources/style-variables";
 import NavProfilePicture from "./NavProfilePicture";
 
 /**
@@ -18,7 +19,7 @@ function Nav() {
     <header css={header}>
       <nav css={nav} role="navigation">
         <Link to="/" css={titleLink}>
-          <img src="/svg/langflow_logo.svg" alt="LangFlow" css={logo} />
+          <img src={langflowLogo} alt="LangFlow" css={logo} />
           <h1 css={title}>LangFlow</h1>
         </Link>
         <ul css={navList}>

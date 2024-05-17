@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { animated } from "react-spring";
 import { ResponsiveBottomTabsLayout } from "../../common/components/Layout";
 import Nav from "../../common/components/Nav/Nav";
-import { COLORS } from "../../common/resources/style-variables";
+import { COLORS } from "../../common/constants";
 import { useFadeIn } from "../../common/transitions";
 
 interface ErrorPageProps {

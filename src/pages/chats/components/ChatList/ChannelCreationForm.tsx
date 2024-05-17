@@ -5,15 +5,13 @@ import { useNavigate } from "react-router-dom";
 import Select, { StylesConfig } from "react-select";
 import Button from "../../../../common/components/Button";
 import { select } from "../../../../common/components/styles";
-import { useSetFormErrorOnRequestError } from "../../../../common/hooks";
-import {
-  languageOptions,
-  levelOptions,
-} from "../../../../common/resources/languages";
 import {
   COLORS,
   FONT_SIZES,
-} from "../../../../common/resources/style-variables";
+  LANGUAGE_OPTIONS,
+  LEVEL_OPTIONS,
+} from "../../../../common/constants";
+import { useSetFormErrorOnRequestError } from "../../../../common/hooks";
 import { Option } from "../../../../common/types";
 import { errorStyle } from "../../../auth/styles";
 import { useChannelCreationForm } from "./forms";
@@ -25,11 +23,10 @@ interface ChannelCreationFormProps {
 }
 
 /**
- * Form which allows the user to create a new channel, used in NewChannelModal.
+ * Allows the user to create a new channel, used in NewChannelModal.
  */
 function ChannelCreationForm({ closeModal }: ChannelCreationFormProps) {
   const navigate = useNavigate();
-
   const {
     register,
     handleSubmit,
@@ -37,9 +34,7 @@ function ChannelCreationForm({ closeModal }: ChannelCreationFormProps) {
     formState: { errors },
     setError,
   } = useChannelCreationForm();
-
   const onMutationError = useSetFormErrorOnRequestError(setError);
-
   const mutation = useCreateChannelMutation({ onError: onMutationError });
 
   const onSubmit = async (data: ChannelCreationFormValues) => {
@@ -84,7 +79,7 @@ function ChannelCreationForm({ closeModal }: ChannelCreationFormProps) {
               <Select
                 id={`new-channel-language`}
                 {...field}
-                options={languageOptions}
+                options={LANGUAGE_OPTIONS}
                 placeholder="Language"
                 styles={select}
               />
@@ -105,7 +100,7 @@ function ChannelCreationForm({ closeModal }: ChannelCreationFormProps) {
               <Select<Option>
                 id={`new-channel-level`}
                 {...field}
-                options={levelOptions}
+                options={LEVEL_OPTIONS}
                 placeholder="Level"
                 styles={select as StylesConfig<Option>}
               />

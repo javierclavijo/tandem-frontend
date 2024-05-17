@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import { memo } from "react";
+import userPlaceholderImage from "../../common/static/images/user-placeholder.png";
 import { ImgProps } from "../types";
 
 interface ProfileImageProps extends Omit<ImgProps, "src"> {
@@ -7,13 +8,7 @@ interface ProfileImageProps extends Omit<ImgProps, "src"> {
 }
 
 function ProfileImage({ ...props }: ProfileImageProps) {
-  return (
-    <img
-      {...props}
-      src={props.src ?? "/images/user-placeholder.png"}
-      css={img}
-    />
-  );
+  return <img {...props} src={props.src ?? userPlaceholderImage} css={img} />;
 }
 
 export const img = css`

@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import React, { ReactNode } from "react";
-import { COLORS, FONT_SIZES } from "../resources/style-variables";
+import { COLORS, FONT_SIZES } from "../constants";
 import { StyledEmotionComponentProps } from "../types";
 
 interface ButtonProps

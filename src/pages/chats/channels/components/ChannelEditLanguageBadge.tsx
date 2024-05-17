@@ -8,11 +8,11 @@ import {
   noBorderAndBgSelectWhite,
 } from "../../../../common/components/styles";
 import {
+  COLORS,
   LANGUAGE_INFO,
-  languageOptions,
-  levelOptions,
-} from "../../../../common/resources/languages";
-import { COLORS } from "../../../../common/resources/style-variables";
+  LANGUAGE_OPTIONS,
+  LEVEL_OPTIONS,
+} from "../../../../common/constants";
 import { Language, Option, ProficiencyLevel } from "../../../../common/types";
 import { UserLanguage } from "../../types";
 import { useUpdateLanguageMutation } from "../queries";
@@ -59,8 +59,10 @@ function ChannelEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
   useEffect(() => {
     // Get the options which correspond to the data values and set them as the
     // selects' values
-    const initialLevelOption = levelOptions.find((o) => o.value === data.level);
-    const initialLanguageOption = languageOptions.find(
+    const initialLevelOption = LEVEL_OPTIONS.find(
+      (o) => o.value === data.level,
+    );
+    const initialLanguageOption = LANGUAGE_OPTIONS.find(
       (o) => o.value === data.language,
     );
     if (initialLevelOption && initialLanguageOption) {
@@ -88,7 +90,7 @@ function ChannelEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
           setLanguageValue(option);
           await handleLanguageChange(option);
         }}
-        options={languageOptions}
+        options={LANGUAGE_OPTIONS}
         styles={noBorderAndBgSelectWhite as StylesConfig<Option<Language>>}
       />
       <span>|</span>
@@ -105,7 +107,7 @@ function ChannelEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
           setLevelValue(option);
           await handleLevelChange(option);
         }}
-        options={levelOptions}
+        options={LEVEL_OPTIONS}
         styles={
           noBorderAndBgSelectWhite as StylesConfig<Option<ProficiencyLevel>>
         }

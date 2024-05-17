@@ -5,8 +5,8 @@ import Nav from "../../common/components/Nav/Nav";
 import SearchResultElement from "../../common/components/SearchResultElement";
 import Tabs from "../../common/components/Tabs";
 import { homeSearchStyles } from "../../common/components/styles";
+import { COLORS } from "../../common/constants";
 import useAuth from "../../common/context/AuthContext/AuthContext";
-import { COLORS } from "../../common/resources/style-variables";
 
 import { Helmet } from "react-helmet-async";
 import { ResponsiveBottomTabsLayout } from "../../common/components/Layout";
@@ -47,7 +47,8 @@ function HomePage() {
             <p>Welcome back, {user.username}</p>
           </animated.header>
 
-          {/* 'Recent chats' section. Contains a list of the latest friend chats. */}
+          {/* 'Recent chats' section. Contains a list of the latest friend 
+              chats. */}
           <animated.section
             css={homeSearchStyles.section}
             style={transitionProps}
