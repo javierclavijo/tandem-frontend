@@ -11,10 +11,11 @@ import { COLORS } from "../../../common/constants";
 import ChatThumbnail from "../../../common/components/UserThumbnail";
 
 interface RecentElementProps {
-  id: string;
-  name: string;
-  latestMessage: string;
-  image?: string | null;
+  chatName: string;
+  chatImage: string | null;
+  lastMessageText: string;
+  lastMessageAuthorName: string;
+  isOwnMessage: boolean;
   link: string;
 }
 
@@ -23,29 +24,34 @@ interface RecentElementProps {
  * Element component for post-login home 'recent' sections.
  */
 function RecentElement({
-  id,
-  name,
-  latestMessage,
-  image,
+  chatName,
+  chatImage,
+  lastMessageText,
+  lastMessageAuthorName,
+  isOwnMessage,
   link,
 }: RecentElementProps) {
+  const displayedMessageContent = `${
+    isOwnMessage ? "You" : lastMessageAuthorName
+  }: ${lastMessageText}`;
+
   return (
     <article css={outerContainer}>
       <div css={innerContainer}>
         <div css={imgContainer}>
-          <ChatThumbnail src={image} />
+          <ChatThumbnail src={chatImage} />
         </div>
         <div css={contentContainer}>
           <div css={upperInnerContainer}>
-            <h4>{name}</h4>
+            <h4>{chatName}</h4>
             <NavArrowRight
               color={COLORS.PRIMARY}
-              width={"1.5rem"}
-              height={"1.5rem"}
+              width="1.5rem"
+              height="1.5rem"
             />
           </div>
           <ResponsiveEllipsis
-            text={latestMessage}
+            text={displayedMessageContent}
             maxLine="2"
             ellipsis="…"
             trimRight
@@ -54,7 +60,7 @@ function RecentElement({
           />
         </div>
       </div>
-      <Link to={link} css={linkCss} title={name} />
+      <Link to={link} css={linkCss} title={chatName} />
     </article>
   );
 }
@@ -69,8 +75,8 @@ const imgContainer = css`
 const outerContainer = css`
   ${containerWithLink};
   width: 100%;
-
   transition: background-color 0.1s;
+
   &:hover {
     background-color: ${COLORS.LIGHT};
   }

@@ -39,13 +39,15 @@ function ChatList() {
     useState<boolean>(false);
 
   // Sort chats according to their latest messages' sent datetime.
-  const sortedFilteredElements = useMemo(() => {
-    return data
-      ?.filter((chat) =>
-        chat.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()),
-      )
-      .sort((a, b) => messageSortFn(a.messages[0], b.messages[0]));
-  }, [data, filter]);
+  const sortedFilteredElements = useMemo(
+    () =>
+      data
+        ?.filter((chat) =>
+          chat.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()),
+        )
+        .sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
+    [data, filter],
+  );
 
   const onChannelCreationModalClose = () =>
     setIsChannelCreationModalOpen(false);
