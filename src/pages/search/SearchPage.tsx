@@ -1,14 +1,14 @@
 import qs from "qs";
+import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useInfiniteQuery } from "react-query";
 import { animated } from "react-spring";
 import { axiosApi } from "../../common/apis";
+import { ResponsiveBottomTabsLayout } from "../../common/components/Layout";
 import Nav from "../../common/components/Nav/Nav";
 import Tabs from "../../common/components/Tabs";
 import { homeSearchStyles } from "../../common/components/styles";
-
-import { useEffect, useState } from "react";
-import { ResponsiveBottomTabsLayout } from "../../common/components/Layout";
 import { useIsDesktop } from "../../common/hooks";
 import { homeSearchMain, homeSearchMainMobile } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
@@ -174,80 +174,83 @@ function SearchPage() {
   ]);
 
   return (
-    <ResponsiveBottomTabsLayout>
-      <Nav />
-      <main
-        id="search-main"
-        css={isDesktop ? homeSearchMain : homeSearchMainMobile}
-      >
-        {/* Infinite scroll component. Includes the search panel and results. Its properties are assigned
+    <>
+      <Helmet title="Search | LangFlow" />
+      <ResponsiveBottomTabsLayout>
+        <Nav />
+        <main
+          id="search-main"
+          css={isDesktop ? homeSearchMain : homeSearchMainMobile}
+        >
+          {/* Infinite scroll component. Includes the search panel and results. Its properties are assigned
                 conditionally based on the selected search type. */}
-        <animated.div style={transitionProps}>
-          <InfiniteScroll
-            next={
-              searchType === searchTypeOptions.USERS
-                ? fetchNextUsersPage
-                : fetchNextChannelsPage
-            }
-            hasMore={
-              searchType === searchTypeOptions.USERS
-                ? hasNextUsersPage ?? false
-                : hasNextChannelsPage ?? false
-            }
-            loader={<p>Loading...</p>}
-            dataLength={
-              searchType === searchTypeOptions.USERS
-                ? usersData?.pages.length ?? 0
-                : channelsData?.pages.length ?? 0
-            }
-            scrollableTarget="search-main"
-            style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-          >
-            {/* Heading and search panel. */}
-            <header css={homeSearchStyles.header}>
-              <h2 css={homeSearchStyles.h2}>Find Users & Channels</h2>
-              <SearchPanel
-                setUserSearchParams={setUserSearchParams}
-                setChannelSearchParams={setChannelSearchParams}
-                searchType={searchType}
-                setSearchType={setSearchType}
-              />
-            </header>
-
-            {/* Search results. */}
-            <section css={homeSearchStyles.section}>
-              <header>
-                <h3 css={homeSearchStyles.sectionHeading}>
-                  {searchType === searchTypeOptions.USERS
-                    ? "Users"
-                    : "Channels"}
-                </h3>
+          <animated.div style={transitionProps}>
+            <InfiniteScroll
+              next={
+                searchType === searchTypeOptions.USERS
+                  ? fetchNextUsersPage
+                  : fetchNextChannelsPage
+              }
+              hasMore={
+                searchType === searchTypeOptions.USERS
+                  ? hasNextUsersPage ?? false
+                  : hasNextChannelsPage ?? false
+              }
+              loader={<p>Loading...</p>}
+              dataLength={
+                searchType === searchTypeOptions.USERS
+                  ? usersData?.pages.length ?? 0
+                  : channelsData?.pages.length ?? 0
+              }
+              scrollableTarget="search-main"
+              style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+            >
+              {/* Heading and search panel. */}
+              <header css={homeSearchStyles.header}>
+                <h2 css={homeSearchStyles.h2}>Find Users & Channels</h2>
+                <SearchPanel
+                  setUserSearchParams={setUserSearchParams}
+                  setChannelSearchParams={setChannelSearchParams}
+                  searchType={searchType}
+                  setSearchType={setSearchType}
+                />
               </header>
-              <div css={homeSearchStyles.sectionItemsContainer}>
-                {searchType === searchTypeOptions.USERS ? (
-                  <>
-                    <UserSearchResults
-                      data={usersData}
-                      fetchNextPage={fetchNextUsersPage}
-                      hasNextPage={hasNextUsersPage}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <ChannelSearchResults
-                      data={channelsData}
-                      fetchNextPage={fetchNextChannelsPage}
-                      hasNextPage={hasNextChannelsPage}
-                    />
-                  </>
-                )}
-              </div>
-            </section>
-          </InfiniteScroll>
-        </animated.div>
-      </main>
-      <Tabs />
-    </ResponsiveBottomTabsLayout>
+
+              {/* Search results. */}
+              <section css={homeSearchStyles.section}>
+                <header>
+                  <h3 css={homeSearchStyles.sectionHeading}>
+                    {searchType === searchTypeOptions.USERS
+                      ? "Users"
+                      : "Channels"}
+                  </h3>
+                </header>
+                <div css={homeSearchStyles.sectionItemsContainer}>
+                  {searchType === searchTypeOptions.USERS ? (
+                    <>
+                      <UserSearchResults
+                        data={usersData}
+                        fetchNextPage={fetchNextUsersPage}
+                        hasNextPage={hasNextUsersPage}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <ChannelSearchResults
+                        data={channelsData}
+                        fetchNextPage={fetchNextChannelsPage}
+                        hasNextPage={hasNextChannelsPage}
+                      />
+                    </>
+                  )}
+                </div>
+              </section>
+            </InfiniteScroll>
+          </animated.div>
+        </main>
+        <Tabs />
+      </ResponsiveBottomTabsLayout>
+    </>
   );
 }
 

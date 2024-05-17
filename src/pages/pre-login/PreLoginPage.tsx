@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { SimpleLayout } from "../../common/components/Layout";
 import Nav from "../../common/components/Nav/Nav";
@@ -7,59 +8,99 @@ import { COLORS, FONT_SIZES } from "../../common/resources/style-variables";
 /**
  * Pre-login home/index page component.
  */
-function PreLogin() {
+function PreLoginPage() {
   return (
-    <SimpleLayout>
-      <Nav />
-      <main css={main}>
-        <div css={textContainer}>
-          <p css={topText}>
-            Welcome to the coolest language learning community ever!
-          </p>
-          <Link to="/auth/register" css={joinButton}>
-            Join Now
-          </Link>
-        </div>
-        <div css={imageContainer}>
-          <img
-            src="/images/pre-login-top.webp"
-            alt="A team of rafters rowing in a body of water."
-            css={image}
-          />
-          <div css={imageGradient} />
-          <div css={imageQuoteContainer}>
-            <p css={imageQuote}>
-              Running water never grows stale. So you just have to &apos;keep on
-              flowing.&apos; <span css={imageQuoteAuthor}>Bruce Lee</span>
+    <>
+      <PreLoginHelmet />
+      <SimpleLayout>
+        <Nav />
+        <main css={main}>
+          <div css={textContainer}>
+            <p css={topText}>
+              Welcome to the coolest language learning community ever!
             </p>
+            <Link to="/auth/register" css={joinButton}>
+              Join Now
+            </Link>
           </div>
-        </div>
-        <div css={splitContainer}>
-          <div css={splitTextContainer}>
-            <p css={splitText}>
-              Chat with native speakers of your target language who share your
-              interests
-            </p>
-            <p css={disclaimer}>Users of this app might not always be real.</p>
+          <div css={imageContainer}>
+            <img
+              src="/images/pre-login-top.webp"
+              alt="A team of rafters rowing in a body of water."
+              css={image}
+            />
+            <div css={imageGradient} />
+            <div css={imageQuoteContainer}>
+              <p css={imageQuote}>
+                Running water never grows stale. So you just have to &apos;keep
+                on flowing.&apos; <span css={imageQuoteAuthor}>Bruce Lee</span>
+              </p>
+            </div>
           </div>
-          <img
-            src="/images/pre-login-middle.webp"
-            alt="A young person clad in urban attire, smiling."
-            css={splitImage}
-          />
-        </div>
-        <div css={splitContainer}>
-          <img
-            src="/images/pre-login-bottom.webp"
-            alt="Young people jumping and looking excited overall."
-            css={splitImage}
-          />
-          <div css={splitTextContainer}>
-            <p css={splitText}>Create channels and chat with other learners</p>
+          <div css={splitContainer}>
+            <div css={splitTextContainer}>
+              <p css={splitText}>
+                Chat with native speakers of your target language who share your
+                interests
+              </p>
+              <p css={disclaimer}>
+                Users of this app might not always be real.
+              </p>
+            </div>
+            <img
+              src="/images/pre-login-middle.webp"
+              alt="A young person clad in urban attire, smiling."
+              css={splitImage}
+            />
           </div>
-        </div>
-      </main>
-    </SimpleLayout>
+          <div css={splitContainer}>
+            <img
+              src="/images/pre-login-bottom.webp"
+              alt="Young people jumping and looking excited overall."
+              css={splitImage}
+            />
+            <div css={splitTextContainer}>
+              <p css={splitText}>
+                Create channels and chat with other learners
+              </p>
+            </div>
+          </div>
+        </main>
+      </SimpleLayout>
+    </>
+  );
+}
+
+function PreLoginHelmet() {
+  return (
+    <Helmet>
+      <title>LangFlow</title>
+      <link
+        ref="preload"
+        fetchPriority="high"
+        as="image"
+        href="/images/pre-login-top.webp"
+        type="image/webp"
+      />
+      <link
+        ref="preload"
+        as="image"
+        href="/images/pre-login-middle.webp"
+        type="image/webp"
+      />
+      <link
+        ref="preload"
+        as="image"
+        href="/images/pre-login-bottom.webp"
+        type="image/webp"
+      />
+      <link
+        ref="preload"
+        as="image"
+        href="/svg/langflow_logo.svg"
+        type="image/svg+xml"
+      />
+    </Helmet>
   );
 }
 
@@ -136,7 +177,7 @@ const image = css`
   object-fit: cover;
   display: block;
   user-select: none;
-  user-drag: none;
+  -webkit-user-drag: none;
   grid-area: image;
 `;
 
@@ -209,4 +250,4 @@ const splitText = css`
   color: ${COLORS.WHITE};
 `;
 
-export default PreLogin;
+export default PreLoginPage;

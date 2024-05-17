@@ -1,10 +1,10 @@
 import { Global } from "@emotion/react";
 import React from "react";
-import { ErrorBoundary } from "react-error-boundary";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
-import { queryClient } from "./common/apis";
+import { helmetContext, queryClient } from "./common/apis";
 import { AuthProvider } from "./common/context/AuthContext/AuthContext";
 import {
   redirectToHomeIfLoggedIn,
@@ -101,15 +101,17 @@ function AppWrapper() {
 }
 
 /**
- * Main App component rendered by index.tsx.
+ * Main App component rendered by index.tsx. Contains stuff that doesn't need to
+ * access React Router APIs (i.e. hooks), plus the RouterProvider itself.
  */
 export default function App() {
   return (
     <React.StrictMode>
       <Global styles={globalStyles} />
-      <ErrorBoundary fallback={<ErrorPage />}>
+      <HelmetProvider context={helmetContext}>
+        <Helmet title="LangFlow" />
         <RouterProvider router={router} />
-      </ErrorBoundary>
+      </HelmetProvider>
     </React.StrictMode>
   );
 }
