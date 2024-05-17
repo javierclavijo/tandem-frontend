@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { Search } from "iconoir-react";
 import qs from "qs";
-import React, { FormEvent, useCallback, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 import { DebounceInput } from "react-debounce-input";
 import { useSearchParams } from "react-router-dom";
 import Select, { StylesConfig } from "react-select";
@@ -18,21 +18,15 @@ import {
   LEVEL_OPTIONS,
 } from "../../../common/constants";
 import { Language, Option, ProficiencyLevel } from "../../../common/types";
-import {
-  ChannelSearchParams,
-  UserSearchParams,
-  searchTypeOptions,
-} from "../SearchPage";
+import { ChatType } from "../../chats/types";
+import { searchTypeOptions } from "../SearchPage";
+import { ChannelSearchParams, UserSearchParams } from "../types";
 
 interface SearchPanelProps {
-  setUserSearchParams: React.Dispatch<
-    React.SetStateAction<UserSearchParams | null>
-  >;
-  setChannelSearchParams: React.Dispatch<
-    React.SetStateAction<ChannelSearchParams | null>
-  >;
-  searchType: Option | null;
-  setSearchType: React.Dispatch<React.SetStateAction<Option | null>>;
+  onUserParamsChange: (params: UserSearchParams) => void;
+  onChannelParamsChange: (params: ChannelSearchParams) => void;
+  onSearchTypeChange: (newValue: Option<ChatType> | null) => void;
+  searchType: Option<ChatType> | null;
 }
 
 /**
@@ -42,13 +36,13 @@ interface SearchPanelProps {
  * search type (users by default).
  */
 function SearchPanel({
-  setUserSearchParams,
-  setChannelSearchParams,
+  onUserParamsChange,
+  onChannelParamsChange,
+  onSearchTypeChange,
   searchType,
-  setSearchType,
 }: SearchPanelProps) {
+  // TODO: use RHF pls
   const [searchParams, setSearchParams] = useSearchParams();
-
   /**
    * Search query input value.
    */
@@ -79,7 +73,6 @@ function SearchPanel({
     null,
   );
   const [channelLevels, setChannelLevels] = useState<Option[]>([]);
-
   /**
    * Controls whether the values have already been set according to the route's
    * search params (i.e. if the hook below has been executed)
@@ -91,13 +84,14 @@ function SearchPanel({
    * Set the values to the route's search params on init. Select values must be
    * found in the option arrays first.
    */
+  // TODO: use RR's loader functions feature
   useEffect(() => {
     if (!areInitialValuesSet) {
       const searchType = searchParams.get("type");
       setInputValue(searchParams.get("search") ?? "");
 
       if (searchType === searchTypeOptions.USERS.value) {
-        setSearchType(searchTypeOptions.USERS);
+        onSearchTypeChange(searchTypeOptions.USERS);
         setNativeLanguages(
           LANGUAGE_OPTIONS.filter((option) =>
             searchParams.getAll("nativeLanguages").includes(option.value),
@@ -115,7 +109,7 @@ function SearchPanel({
           setLearningLanguagesLevels(levels);
         }
       } else if (searchType === searchTypeOptions.CHANNELS.value) {
-        setSearchType(searchTypeOptions.CHANNELS);
+        onSearchTypeChange(searchTypeOptions.CHANNELS);
         setChannelLanguages(
           LANGUAGE_OPTIONS.filter((option) =>
             searchParams.getAll("languages").includes(option.value),
@@ -129,7 +123,7 @@ function SearchPanel({
       }
       setAreInitialValuesSet(true);
     }
-  }, [areInitialValuesSet, setSearchType, searchParams]);
+  }, [areInitialValuesSet, onSearchTypeChange, searchParams]);
 
   /**
    * Sets the corresponding URL search params, plus the query search params
@@ -156,7 +150,7 @@ function SearchPanel({
           );
         }
         setSearchParams(qs.stringify(params, { arrayFormat: "repeat" }));
-        setUserSearchParams(params);
+        onUserParamsChange(params);
       } else {
         const params: ChannelSearchParams = {
           type: searchTypeOptions.CHANNELS.value,
@@ -169,7 +163,7 @@ function SearchPanel({
           params.levels = channelLevels.map((level) => level.value);
         }
         setSearchParams(qs.stringify(params, { arrayFormat: "repeat" }));
-        setChannelSearchParams(params);
+        onChannelParamsChange(params);
       }
     },
     [
@@ -180,8 +174,8 @@ function SearchPanel({
       learningLanguagesLevels,
       nativeLanguages,
       searchType,
-      setUserSearchParams,
-      setChannelSearchParams,
+      onUserParamsChange,
+      onChannelParamsChange,
       setSearchParams,
     ],
   );
@@ -221,15 +215,15 @@ function SearchPanel({
         <div css={searchTypeSelectContainer}>
           {/* Search type select. Allows the user to toggle between user and 
           channel search. */}
-          <Select<Option>
+          <Select<Option<ChatType>>
             id={`search-type`}
             value={searchType}
             options={[searchTypeOptions.USERS, searchTypeOptions.CHANNELS]}
-            onChange={setSearchType}
+            onChange={onSearchTypeChange}
             defaultValue={searchTypeOptions.USERS}
             placeholder="Type"
             // TODO: create generic styled select components
-            styles={noBorderAndBgSelectDark as StylesConfig<Option>}
+            styles={noBorderAndBgSelectDark as StylesConfig<Option<ChatType>>}
             aria-label="Search type"
           />
 
@@ -239,7 +233,7 @@ function SearchPanel({
             aria-label="Submit search filters"
             css={submitButton}
           >
-            <Search color={COLORS.PRIMARY} width={"1.5rem"} height={"1.5rem"} />
+            <Search color={COLORS.PRIMARY} width="1.5rem" height="1.5rem" />
           </button>
         </div>
       </div>
@@ -250,8 +244,8 @@ function SearchPanel({
            */
           <>
             {/* User native languages multi-select.
-            Automatically disables options which are selected as learning 
-            languages. */}
+                Automatically disables options which are selected as learning 
+                languages. */}
             <Select<Option<Language>, true>
               id={`native-languages`}
               isMulti={true}
@@ -259,15 +253,15 @@ function SearchPanel({
               options={LANGUAGE_OPTIONS}
               onChange={(options) => setNativeLanguages([...options])}
               isOptionDisabled={(option) =>
-                !!learningLanguages?.includes(option as Option<Language>)
+                !!learningLanguages?.includes(option)
               }
-              placeholder="Mother tongue(s)"
-              aria-label="Users' mother tongues"
+              placeholder="Native language(s)"
+              aria-label="Users' native languages"
               styles={searchSelect as StylesConfig<Option<Language>, true>}
             />
 
             {/* User learning languages multi-select. Automatically disables 
-            options which are selected as native languages. */}
+                options which are selected as native languages. */}
             <Select<Option<Language>, true>
               id={`learning-languages`}
               isMulti={true}
@@ -276,22 +270,22 @@ function SearchPanel({
               onChange={(options) =>
                 setLearningLanguages(options?.length ? [...options] : null)
               }
-              isOptionDisabled={(option) =>
-                !!nativeLanguages?.includes(option as Option<Language>)
-              }
+              isOptionDisabled={(option) => nativeLanguages?.includes(option)}
               placeholder="Is learning..."
               aria-label="Users' target languages"
               styles={searchSelect as StylesConfig<Option<Language>, true>}
             />
 
-            {/* User learning languages levels select. */}
+            {/* User learning language levels select. */}
             <Select<Option<ProficiencyLevel>, true>
               id={`learning-languages-levels`}
               isMulti={true}
               value={learningLanguagesLevels}
               options={LEVEL_OPTIONS}
               onChange={(options) => setLearningLanguagesLevels([...options])}
-              isDisabled={!learningLanguages || !learningLanguages.length}
+              isDisabled={
+                learningLanguages == null || learningLanguages.length === 0
+              }
               placeholder="Level(s)"
               aria-label="Proficiency levels of users' target languages"
               styles={
@@ -305,8 +299,8 @@ function SearchPanel({
            */
           <>
             {/* Channel language multi-select. Is set to null if no option is 
-            selected, as the level select is not disabled if the language state 
-            is set to an empty array. */}
+                selected, as the level select is not disabled if the language 
+                state is set to an empty array. */}
             <Select<Option, true>
               id={`channel-languages`}
               isMulti={true}
@@ -327,7 +321,9 @@ function SearchPanel({
               value={channelLevels}
               options={LEVEL_OPTIONS}
               onChange={(options) => setChannelLevels([...options])}
-              isDisabled={!channelLanguages || !channelLanguages.length}
+              isDisabled={
+                channelLanguages == null || channelLanguages.length === 0
+              }
               placeholder="Level(s)"
               aria-label="Proficiency levels of channel languages"
               styles={searchSelect as StylesConfig<Option, true>}

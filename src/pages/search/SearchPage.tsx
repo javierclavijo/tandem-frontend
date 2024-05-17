@@ -1,76 +1,24 @@
-import qs from "qs";
-import { useEffect, useState } from "react";
+import { css } from "@emotion/react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useInfiniteQuery } from "react-query";
 import { animated } from "react-spring";
-import { axiosApi } from "../../common/apis";
 import { ResponsiveBottomTabsLayout } from "../../common/components/Layout";
 import Nav from "../../common/components/Nav/Nav";
+import SearchResultElement from "../../common/components/SearchResultElement";
 import Tabs from "../../common/components/Tabs";
 import { homeSearchStyles } from "../../common/components/styles";
 import { useIsDesktop } from "../../common/hooks";
 import { homeSearchMain, homeSearchMainMobile } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
-import {
-  Channel,
-  Language,
-  Option,
-  ProficiencyLevel,
-  User,
-} from "../../common/types";
+import { Option } from "../../common/types";
+import { ChatType } from "../chats/types";
 import SearchPanel from "./components/SearchPanel";
-import {
-  ChannelSearchResults,
-  UserSearchResults,
-} from "./components/SearchResults";
+import { useChannelSearchQuery, useUserSearchQuery } from "./queries";
+import { ChannelSearchParams, UserSearchParams } from "./types";
 
 /**
- * Options for the search type select. Includes a search panel and the search results list.
- */
-export const searchTypeOptions = {
-  USERS: { value: "users", label: "Users" },
-  CHANNELS: { value: "channels", label: "Channels" },
-};
-
-export interface UserSearchResponse {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: User[];
-  nextPageNumber: number | null;
-  previousPageNumber: number | null;
-}
-
-export interface ChannelSearchResponse {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: Channel[];
-  nextPageNumber: number | null;
-  previousPageNumber: number | null;
-}
-
-interface BaseSearchParams {
-  type: string;
-  search?: string;
-}
-
-export interface UserSearchParams extends BaseSearchParams {
-  search?: string;
-  nativeLanguages?: Language[] | null;
-  learningLanguages?: Language[] | null;
-  learningLanguagesLevels?: ProficiencyLevel[] | null;
-}
-
-export interface ChannelSearchParams extends BaseSearchParams {
-  search?: string;
-  languages?: string[] | null;
-  levels?: string[] | null;
-}
-
-/**
- * Main search component.
+ * Main search page. Includes a search panel and the search results list.
  */
 function SearchPage() {
   const isDesktop = useIsDesktop();
@@ -83,13 +31,14 @@ function SearchPage() {
     useState<UserSearchParams | null>(null);
   const [channelSearchParams, setChannelSearchParams] =
     useState<ChannelSearchParams | null>(null);
-
   /**
    * Search type state.
    */
-  const [searchType, setSearchType] = useState<Option | null>(
+  const [searchType, setSearchType] = useState<Option<ChatType> | null>(
     searchTypeOptions.USERS,
   );
+
+  const isUserSearch = searchType?.value === "users";
 
   /**
    * User search query. Enabled only if the search type is set to 'users'.
@@ -98,32 +47,9 @@ function SearchPage() {
     data: usersData,
     fetchNextPage: fetchNextUsersPage,
     hasNextPage: hasNextUsersPage,
-    refetch: refetchUsers,
-  } = useInfiniteQuery<UserSearchResponse>(
-    ["users", "search", userSearchParams],
-    async ({ pageParam = 1 }) => {
-      const response = await axiosApi.get(`users/`, {
-        params: {
-          page: pageParam,
-          search: userSearchParams?.search ?? null,
-          native_language: userSearchParams?.nativeLanguages,
-          learning_language: userSearchParams?.learningLanguages,
-          level: userSearchParams?.learningLanguagesLevels,
-          size: 18,
-        },
-        paramsSerializer: (params) =>
-          qs.stringify(params, { arrayFormat: "repeat" }),
-      });
-      return response.data;
-    },
-    {
-      getPreviousPageParam: (firstPage) =>
-        firstPage.previousPageNumber ?? undefined,
-      getNextPageParam: (lastPage) => lastPage.nextPageNumber ?? undefined,
-      enabled: searchType === searchTypeOptions.USERS,
-    },
-  );
-
+  } = useUserSearchQuery(userSearchParams, {
+    enabled: isUserSearch,
+  });
   /**
    * Channel search query. Enabled only if the search type is set to 'channels'.
    */
@@ -131,47 +57,19 @@ function SearchPage() {
     data: channelsData,
     fetchNextPage: fetchNextChannelsPage,
     hasNextPage: hasNextChannelsPage,
-    refetch: refetchChannels,
-  } = useInfiniteQuery<ChannelSearchResponse>(
-    ["channels", "search", channelSearchParams],
-    async ({ pageParam = 1 }) => {
-      const response = await axiosApi.get(`channels/`, {
-        params: {
-          page: pageParam,
-          search: channelSearchParams?.search ?? null,
-          language: channelSearchParams?.languages,
-          level: channelSearchParams?.levels,
-          size: 18,
-        },
-        paramsSerializer: (params) =>
-          qs.stringify(params, { arrayFormat: "repeat" }),
-      });
-      return response.data;
-    },
-    {
-      getPreviousPageParam: (firstPage) =>
-        firstPage.previousPageNumber ?? undefined,
-      getNextPageParam: (lastPage) => lastPage.nextPageNumber ?? undefined,
-      enabled: searchType === searchTypeOptions.CHANNELS,
-    },
-  );
+  } = useChannelSearchQuery(channelSearchParams, {
+    enabled: searchType === searchTypeOptions.CHANNELS,
+  });
 
-  /**
-   * Refetch the queries whenever the params or search type state is updated.
-   */
-  useEffect(() => {
-    if (searchType === searchTypeOptions.USERS) {
-      refetchUsers();
-    } else {
-      refetchChannels();
-    }
-  }, [
-    userSearchParams,
-    channelSearchParams,
-    searchType,
-    refetchChannels,
-    refetchUsers,
-  ]);
+  const fetchNextPage = isUserSearch
+    ? fetchNextUsersPage
+    : fetchNextChannelsPage;
+  const hasNextPage = isUserSearch
+    ? hasNextUsersPage ?? false
+    : hasNextChannelsPage ?? false;
+  const data = isUserSearch ? usersData : channelsData;
+  const isDataEmpty =
+    data?.pages.length === 0 || data?.pages[0].results.length === 0;
 
   return (
     <>
@@ -186,63 +84,65 @@ function SearchPage() {
                 conditionally based on the selected search type. */}
           <animated.div style={transitionProps}>
             <InfiniteScroll
-              next={
-                searchType === searchTypeOptions.USERS
-                  ? fetchNextUsersPage
-                  : fetchNextChannelsPage
-              }
-              hasMore={
-                searchType === searchTypeOptions.USERS
-                  ? hasNextUsersPage ?? false
-                  : hasNextChannelsPage ?? false
-              }
+              next={fetchNextPage}
+              hasMore={hasNextPage}
               loader={<p>Loading...</p>}
-              dataLength={
-                searchType === searchTypeOptions.USERS
-                  ? usersData?.pages.length ?? 0
-                  : channelsData?.pages.length ?? 0
-              }
+              dataLength={data?.pages.length ?? 0}
               scrollableTarget="search-main"
-              style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+              css={infiniteScroll}
             >
               {/* Heading and search panel. */}
               <header css={homeSearchStyles.header}>
                 <h2 css={homeSearchStyles.h2}>Find Users & Channels</h2>
                 <SearchPanel
-                  setUserSearchParams={setUserSearchParams}
-                  setChannelSearchParams={setChannelSearchParams}
+                  onUserParamsChange={setUserSearchParams}
+                  onChannelParamsChange={setChannelSearchParams}
                   searchType={searchType}
-                  setSearchType={setSearchType}
+                  onSearchTypeChange={setSearchType}
                 />
               </header>
 
               {/* Search results. */}
               <section css={homeSearchStyles.section}>
                 <header>
-                  <h3 css={homeSearchStyles.sectionHeading}>
-                    {searchType === searchTypeOptions.USERS
-                      ? "Users"
-                      : "Channels"}
-                  </h3>
+                  <h3 css={homeSearchStyles.sectionHeading}>Search Results</h3>
                 </header>
                 <div css={homeSearchStyles.sectionItemsContainer}>
-                  {searchType === searchTypeOptions.USERS ? (
-                    <>
-                      <UserSearchResults
-                        data={usersData}
-                        fetchNextPage={fetchNextUsersPage}
-                        hasNextPage={hasNextUsersPage}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <ChannelSearchResults
-                        data={channelsData}
-                        fetchNextPage={fetchNextChannelsPage}
-                        hasNextPage={hasNextChannelsPage}
-                      />
-                    </>
-                  )}
+                  {isUserSearch
+                    ? usersData?.pages.map((page, pageIndex) => (
+                        <React.Fragment key={`page-${pageIndex}`}>
+                          {[...page.results].map((element) => (
+                            <SearchResultElement
+                              id={`${element.id}`}
+                              name={element.username}
+                              languages={element.languages.map(
+                                ({ language }) => language,
+                              )}
+                              description={element.description}
+                              image={element.image}
+                              key={`${element.id}`}
+                              link={`/chats/users/${element.id}`}
+                            />
+                          ))}
+                        </React.Fragment>
+                      ))
+                    : channelsData?.pages.map((page, pageIndex) => (
+                        <React.Fragment key={`page-${pageIndex}`}>
+                          {[...page.results].map((element) => (
+                            <SearchResultElement
+                              id={`${element.id}`}
+                              name={element.name}
+                              languages={[element.language]}
+                              description={element.description}
+                              image={element.image}
+                              key={`${element.id}`}
+                              link={`/chats/channels/${element.id}`}
+                            />
+                          ))}
+                        </React.Fragment>
+                      ))}
+
+                  {isDataEmpty && <p css={notFoundText}>No results.</p>}
                 </div>
               </section>
             </InfiniteScroll>
@@ -253,5 +153,23 @@ function SearchPage() {
     </>
   );
 }
+
+/**
+ * Options for the search type select.
+ */
+export const searchTypeOptions: Readonly<Record<string, Option<ChatType>>> = {
+  USERS: { value: "users", label: "Users" },
+  CHANNELS: { value: "channels", label: "Channels" },
+};
+
+const infiniteScroll = css`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const notFoundText = css`
+  padding: 1rem;
+`;
 
 export default SearchPage;
