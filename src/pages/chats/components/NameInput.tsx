@@ -1,12 +1,14 @@
 import { css } from "@emotion/react";
-import React from "react";
-import { useMutation, useQueryClient } from "react-query";
-import { axiosApi } from "../../../api";
+import React, { useRef } from "react";
+import EditButtons from "../../../common/components/EditButtons";
 import { COLORS } from "../../../common/resources/style-variables";
-import { Channel, Chat, User } from "../../../common/types";
-import EditButtons from "../../../components/EditButtons";
+import { Channel, User } from "../../../common/types";
+import { useEditField } from "../hooks";
+import {
+  useUpdateChannelNameMutation,
+  useUpdateUsernameMutation,
+} from "../queries";
 import { editElement } from "../styles";
-import { useEditField } from "./hooks";
 
 interface NameInputProps<TData> {
   data: TData;
@@ -15,6 +17,8 @@ interface NameInputProps<TData> {
 }
 
 // TODO: review, looks suspicious.
+// TODO: remove useEditField?
+// TODO: remove duplicate components (move mutations elsewhere)
 /**
  * Base name input component for detail views.
  */
@@ -33,7 +37,7 @@ function NameInput<TData>({ data, dataKey, onSubmit }: NameInputProps<TData>) {
   } = useEditField<HTMLInputElement, TData>(data, dataKey);
 
   // Used in handleBlur() to handle the case of submitting through keyboard.
-  const keyboardSubmitRef = React.useRef<boolean>(false);
+  const keyboardSubmitRef = useRef<boolean>(false);
 
   const handleBlur = async (event: React.FocusEvent<HTMLInputElement>) => {
     // If the submit button was clicked, submit the value. Else, cancel the editing.
@@ -96,13 +100,14 @@ function NameInput<TData>({ data, dataKey, onSubmit }: NameInputProps<TData>) {
           size={value.length}
           css={input}
         />
-        <EditButtons
-          editEnabled={editEnabled}
-          submitButtonRef={submitButtonRef}
-          handleSubmit={handleSubmit}
-          handleCancel={handleCancel}
-          color={COLORS.WHITE}
-        />
+        {editEnabled && (
+          <EditButtons
+            submitButtonRef={submitButtonRef}
+            handleSubmit={handleSubmit}
+            handleCancel={handleCancel}
+            color={COLORS.WHITE}
+          />
+        )}
       </div>
 
       {error ? <p css={errorText}>{error}</p> : null}
@@ -114,47 +119,7 @@ function NameInput<TData>({ data, dataKey, onSubmit }: NameInputProps<TData>) {
  * Name input component for channel detail.
  */
 export function ChannelNameInput({ data }: { data: Channel }) {
-  const queryClient = useQueryClient();
-
-  const updateRequest = async (requestData: { name: string }) => {
-    const response = await axiosApi.patch(data.url, requestData);
-    return response.data;
-  };
-
-  const updateMutation = useMutation(updateRequest, {
-    onSuccess: async (requestData) => {
-      // Update chat data in the channel's detail query, and also in the chat list and chat detail queries, to
-      // update the header and the chat list
-      queryClient.setQueryData<Channel | undefined>(
-        ["channels", data?.id],
-        (old) => {
-          if (old) {
-            old.name = requestData.name;
-          }
-          return old;
-        },
-      );
-      queryClient.setQueryData<Chat[] | undefined>(
-        ["chats", "list", "all"],
-        (old) => {
-          const oldChat = old?.find((chat) => chat.id === requestData.id);
-          if (oldChat) {
-            oldChat.name = requestData.name;
-          }
-          return old;
-        },
-      );
-      queryClient.setQueryData<Chat | undefined>(
-        ["chats", "messages", requestData.id],
-        (old) => {
-          if (old) {
-            old.name = requestData.name;
-          }
-          return old;
-        },
-      );
-    },
-  });
+  const updateMutation = useUpdateChannelNameMutation(data);
 
   const onSubmit = async (value: string) =>
     await updateMutation.mutateAsync({ name: value });
@@ -166,24 +131,7 @@ export function ChannelNameInput({ data }: { data: Channel }) {
  * Name input component for user detail.
  */
 export function UserNameInput({ data }: { data: User }) {
-  const queryClient = useQueryClient();
-
-  const updateRequest = async (requestData: { username: string }) => {
-    const response = await axiosApi.patch(data.url, requestData);
-    return response.data;
-  };
-
-  const updateMutation = useMutation(updateRequest, {
-    onSuccess: async (requestData) => {
-      // Update chat data in logged-in user's query
-      queryClient.setQueryData<User | undefined>(["users", data.id], (old) => {
-        if (old) {
-          old.username = requestData.username;
-        }
-        return old;
-      });
-    },
-  });
+  const updateMutation = useUpdateUsernameMutation(data);
 
   const onSubmit = async (value: string) =>
     await updateMutation.mutateAsync({ username: value });

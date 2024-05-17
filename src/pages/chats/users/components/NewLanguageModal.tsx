@@ -1,31 +1,20 @@
-import React from "react";
-import ReactModal from "react-modal";
-import { modal } from "../../../../components/styles";
+import Modal, {
+  CloseableModalProps,
+} from "../../../../common/components/Modal/Modal";
+import ModalTitle from "../../../../common/components/Modal/ModalTitle";
 import UserInfoNewLanguageSelect from "./UserInfoNewLanguageSelect";
 
-// Set the modal's app element to "hide the application from assistive screenreaders and other assistive technologies
-// while the modal is open" (see react-modal docs: https://reactcommunity.org/react-modal/examples/set_app_element/).
-ReactModal.setAppElement("#root");
-
-interface NewLanguageModalProps {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
+interface NewLanguageModalProps extends CloseableModalProps {}
 
 /**
  * Modal window which allows the user to add a new language to their profile.
  */
-function NewLanguageModal({ isOpen, setIsOpen }: NewLanguageModalProps) {
+function NewLanguageModal({ ...props }: NewLanguageModalProps) {
   return (
-    <ReactModal
-      isOpen={isOpen}
-      onRequestClose={() => setIsOpen(false)}
-      contentLabel="Add a new language"
-      style={modal.container}
-    >
-      <p css={modal.title}>Add a new language</p>
-      <UserInfoNewLanguageSelect onClose={() => setIsOpen(false)} />
-    </ReactModal>
+    <Modal {...props}>
+      <ModalTitle>Add a new language</ModalTitle>
+      <UserInfoNewLanguageSelect onClose={props.onRequestClose} />
+    </Modal>
   );
 }
 

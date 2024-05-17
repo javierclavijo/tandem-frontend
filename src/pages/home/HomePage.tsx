@@ -1,46 +1,39 @@
 import { css } from "@emotion/react";
-import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
+import Nav from "../../common/components/Nav/Nav";
+import SearchResultElement from "../../common/components/SearchResultElement";
+import Tabs from "../../common/components/Tabs";
+import { homeSearchStyles } from "../../common/components/styles";
+import useAuth from "../../common/context/AuthContext/AuthContext";
 import { COLORS } from "../../common/resources/style-variables";
-import Nav from "../../components/Nav/Nav";
-import SearchResultElement from "../../components/SearchResultElement";
-import Tabs from "../../components/Tabs";
-import { homeSearchStyles } from "../../components/styles";
-import useAuth from "../auth/AuthContext/AuthContext";
 
-import {
-  baseAppContainerWithTabs,
-  baseAppContainerWithoutTabs,
-  homeSearchMain,
-  homeSearchMainMobile,
-} from "../../common/styles";
+import { ResponsiveBottomTabsLayout } from "../../common/components/Layout";
+import { useIsDesktop } from "../../common/hooks";
+import { homeSearchMain, homeSearchMainMobile } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
-import { useChannelChatList, useFriendChatList } from "../chats/hooks";
+import { useChannelChatList, useFriendChatList } from "../chats/queries";
 import RecentElement from "./components/RecentElement";
-import { useDiscoverUsersList } from "./hooks";
+import { useDiscoverUsersList } from "./queries";
 
 /**
  * Post-login home component.
  */
 function HomePage() {
-  const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+  const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
-
-  const { isLoggedIn, user } = useAuth();
+  const { user } = useAuth();
 
   const { data: friendChats } = useFriendChatList();
   const { data: channelChats } = useChannelChatList();
   const { data: discoverUsers } = useDiscoverUsersList();
 
-  // TODO: I don't like this. Please change it using media queries.
-  const container = css`
-    ${isDesktop ? baseAppContainerWithoutTabs : baseAppContainerWithTabs};
-    height: ${isDesktop ? "auto" : "100vh"};
-  `;
+  if (user == null) {
+    return null;
+  }
 
-  return isLoggedIn && user ? (
-    <div css={container}>
+  return (
+    <ResponsiveBottomTabsLayout>
       <Nav />
       <main css={isDesktop ? homeSearchMain : homeSearchMainMobile}>
         <animated.header css={homeSearchStyles.header} style={transitionProps}>
@@ -156,9 +149,10 @@ function HomePage() {
           </footer>
         </animated.section>
       </main>
-      {!isDesktop ? <Tabs /> : null}
-    </div>
-  ) : null;
+
+      <Tabs />
+    </ResponsiveBottomTabsLayout>
+  );
 }
 
 const sectionFooter = css`

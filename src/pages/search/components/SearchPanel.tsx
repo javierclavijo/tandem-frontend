@@ -1,23 +1,23 @@
 import { css } from "@emotion/react";
 import { Search } from "iconoir-react";
 import qs from "qs";
-import React, { FormEvent } from "react";
+import React, { FormEvent, useCallback, useEffect, useState } from "react";
 import { DebounceInput } from "react-debounce-input";
 import { useSearchParams } from "react-router-dom";
 import Select, { StylesConfig } from "react-select";
-import {
-  languageOptions,
-  levelOptions,
-} from "../../../common/resources/languages";
-import { COLORS } from "../../../common/resources/style-variables";
-import { Language, Option, ProficiencyLevel } from "../../../common/types";
 import {
   buttonWithoutBackgroundAndBorder,
   noBorderAndBgSelectDark,
   searchInput,
   searchInputElement,
   searchSelect,
-} from "../../../components/styles";
+} from "../../../common/components/styles";
+import {
+  languageOptions,
+  levelOptions,
+} from "../../../common/resources/languages";
+import { COLORS } from "../../../common/resources/style-variables";
+import { Language, Option, ProficiencyLevel } from "../../../common/types";
 import {
   ChannelSearchParams,
   UserSearchParams,
@@ -52,7 +52,7 @@ function SearchPanel({
   /**
    * Search query input value.
    */
-  const [inputValue, setInputValue] = React.useState<string>("");
+  const [inputValue, setInputValue] = useState<string>("");
 
   /**
    * User search controls values.
@@ -60,13 +60,13 @@ function SearchPanel({
    * only disabled if channelLanguages is null, but is enabled if it's an empty
    * array.
    */
-  const [nativeLanguages, setNativeLanguages] = React.useState<
-    Option<Language>[]
-  >([]);
-  const [learningLanguages, setLearningLanguages] = React.useState<
+  const [nativeLanguages, setNativeLanguages] = useState<Option<Language>[]>(
+    [],
+  );
+  const [learningLanguages, setLearningLanguages] = useState<
     Option<Language>[] | null
   >(null);
-  const [learningLanguagesLevels, setLearningLanguagesLevels] = React.useState<
+  const [learningLanguagesLevels, setLearningLanguagesLevels] = useState<
     Option<ProficiencyLevel>[]
   >([]);
 
@@ -75,23 +75,23 @@ function SearchPanel({
    * channelLanguages follows the same logic as learningLanguages with regard
    * to being null.
    */
-  const [channelLanguages, setChannelLanguages] = React.useState<
-    Option[] | null
-  >(null);
-  const [channelLevels, setChannelLevels] = React.useState<Option[]>([]);
+  const [channelLanguages, setChannelLanguages] = useState<Option[] | null>(
+    null,
+  );
+  const [channelLevels, setChannelLevels] = useState<Option[]>([]);
 
   /**
    * Controls whether the values have already been set according to the route's
    * search params (i.e. if the hook below has been executed)
    */
   const [areInitialValuesSet, setAreInitialValuesSet] =
-    React.useState<boolean>(false);
+    useState<boolean>(false);
 
   /**
    * Set the values to the route's search params on init. Select values must be
    * found in the option arrays first.
    */
-  React.useEffect(() => {
+  useEffect(() => {
     if (!areInitialValuesSet) {
       const searchType = searchParams.get("type");
       setInputValue(searchParams.get("search") ?? "");
@@ -136,7 +136,7 @@ function SearchPanel({
    * state itself.
    * @param [e]: The search form's submit event.
    */
-  const handleSubmit = React.useCallback(
+  const handleSubmit = useCallback(
     (e?: FormEvent<HTMLFormElement>) => {
       e?.preventDefault();
       if (searchType === searchTypeOptions.USERS) {
@@ -190,7 +190,7 @@ function SearchPanel({
    * Submit the search whenever any select's values are updated, but only if the
    * initial values from search params have been set already.
    */
-  React.useEffect(() => {
+  useEffect(() => {
     if (areInitialValuesSet) handleSubmit();
   }, [
     nativeLanguages,

@@ -1,12 +1,13 @@
 import { css } from "@emotion/react";
-import React from "react";
+import React, { useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useMediaQuery } from "react-responsive";
 import { useParams } from "react-router-dom";
 import { animated } from "react-spring";
+import useAuth from "../../../common/context/AuthContext/AuthContext";
+import { useIsDesktop } from "../../../common/hooks";
 import { useFadeIn } from "../../../common/transitions";
-import useAuth from "../../auth/AuthContext/AuthContext";
-import { useChat, useSetChatRoomHeader } from "../hooks";
+import { useSetChatRoomHeader } from "../hooks";
+import { useChat } from "../queries";
 import ChatInputForm from "./components/ChatInputForm";
 import ChatRoomMessage from "./components/ChatRoomMessage";
 import { chatRoom, chatRoomMobile } from "./styles";
@@ -17,13 +18,13 @@ import { chatRoom, chatRoomMobile } from "./styles";
 function ChatPage() {
   const params = useParams();
   const { user } = useAuth();
-  const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+  const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
 
   /**
    * Ref for the message container div. Used to scroll to the bottom of the page when necessary.
    */
-  const messageContainerRef = React.useRef<HTMLDivElement>(null);
+  const messageContainerRef = useRef<HTMLDivElement>(null);
 
   /**
    * Infinite query which fetches and holds the chat's messages.

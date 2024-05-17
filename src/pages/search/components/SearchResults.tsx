@@ -5,7 +5,7 @@ import {
   InfiniteData,
   InfiniteQueryObserverResult,
 } from "react-query";
-import SearchResultElement from "../../../components/SearchResultElement";
+import SearchResultElement from "../../../common/components/SearchResultElement";
 import { ChannelSearchResponse, UserSearchResponse } from "../SearchPage";
 
 interface UserSearchResultsProps {

@@ -1,23 +1,29 @@
 import { DateTime } from "luxon";
-import React, { useCallback, useMemo } from "react";
 import {
-  UseInfiniteQueryOptions,
-  useInfiniteQuery,
-  useQuery,
-} from "react-query";
+  default as React,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { InfiniteData, useQueryClient } from "react-query";
 import { useOutletContext } from "react-router-dom";
-import useWebSocket from "react-use-websocket";
-import { axiosApi } from "../../api";
+import useWebSocket, { Options } from "react-use-websocket";
+import useAuth from "../../common/context/AuthContext/AuthContext";
 import { Chat, FriendChat, User } from "../../common/types";
-import { ChatHeaderProps } from "../../components/ChatHeader";
-import useAuth from "../auth/AuthContext/AuthContext";
-import { ChatMessage, ChatMessageResponse } from "./types";
+import {
+  ChatHeaderData,
+  ChatMessage,
+  ChatMessageResponse,
+  ChatType,
+  WsChatMessage,
+} from "./types";
 
 /**
  * Sorts messages or chats according to sent datetime. If the message is undefined (usually due to a chat having
  * no messages, which shouldn't happen in practice), the current datetime is used.
  */
-// TODO: move this stuff to its own module.
 export const messageSortFn = (
   a: ChatMessage | undefined,
   b: ChatMessage | undefined,
@@ -41,142 +47,16 @@ export const messageSortFn = (
 export const getFriendFromFriendChat = (user: User, chat: FriendChat) =>
   chat.users.find((u: User) => u.id !== user.id);
 
-const fetchFriendChatList = async (user: User | undefined) => {
-  if (user) {
-    const friendChatsResponse = await axiosApi.get(`friend_chats/`, {
-      params: {
-        users: user.id,
-        size: 9999,
-      },
-    });
-    // Add additional info to each chat (type, the other user's name, info URL and image)
-    return [...friendChatsResponse.data.results].map((chat) => {
-      const other_user = getFriendFromFriendChat(user, chat);
-      return {
-        ...chat,
-        type: "users",
-        name: other_user?.username,
-        infoUrl: other_user?.url,
-        image: other_user?.image,
-      };
-    });
-  }
-  return [];
-};
+export const useSetChatHeader = () => {
+  const [, setHeader] =
+    useOutletContext<
+      [
+        ChatHeaderData | null,
+        React.Dispatch<React.SetStateAction<ChatHeaderData | null>>,
+      ]
+    >();
 
-const fetchChannelChatList = async (user: User | undefined) => {
-  if (user) {
-    const channelChatsResponse = await axiosApi.get(`channels/`, {
-      params: {
-        memberships__user: user.id,
-        size: 9999,
-      },
-    });
-    // Add additional info to each chat (type, the channel's URL as the info URL)
-    return [...channelChatsResponse.data.results].map((chat) => ({
-      ...chat,
-      type: "channels",
-      infoUrl: chat.url,
-    }));
-  }
-  return [];
-};
-
-const fetchAllChatList = async (user: User | undefined) => {
-  const friendChats = await fetchFriendChatList(user);
-  const channelChats = await fetchChannelChatList(user);
-  return [...friendChats, ...channelChats];
-};
-
-/**
- * Holds information about the user's chat list (both channel and friend chats).
- */
-export const useAllChatList = () => {
-  const { user } = useAuth();
-  return useQuery<Chat[]>(
-    ["chats", "list", "all"],
-    () => fetchAllChatList(user),
-    {
-      // Whenever data is either fetched or updated with setQueryData(), sort chats according to their latest messages
-      onSuccess: (data) =>
-        data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
-      staleTime: 15000,
-      enabled: !!user,
-    },
-  );
-};
-
-/**
- * Holds information about the user's friend chat list.
- */
-export const useFriendChatList = () => {
-  const { user } = useAuth();
-  return useQuery<Chat[]>(
-    ["chats", "list", "users"],
-    () => fetchFriendChatList(user),
-    {
-      // Whenever data is either fetched or updated with setQueryData(), sort chats according to their latest messages
-      onSuccess: (data) =>
-        data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
-      staleTime: 15000,
-      enabled: !!user,
-    },
-  );
-};
-
-/**
- * Holds information about the user's channel chat list.
- */
-export const useChannelChatList = () => {
-  const { user } = useAuth();
-  return useQuery<Chat[]>(
-    ["chats", "list", "channels"],
-    () => fetchChannelChatList(user),
-    {
-      // Whenever data is either fetched or updated with setQueryData(), sort chats according to their latest messages
-      onSuccess: (data) =>
-        data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
-      staleTime: 15000,
-      enabled: !!user,
-    },
-  );
-};
-
-/**
- * Holds information about a chat and its messages.
- */
-export const useChat = (
-  id: string,
-  queryOptions: UseInfiniteQueryOptions<ChatMessageResponse> | undefined,
-) => {
-  const { data: chatList } = useAllChatList();
-
-  const chat: Chat | undefined = useMemo(
-    () => chatList?.find((c) => c.id === id),
-    [chatList, id],
-  );
-
-  const query = useInfiniteQuery<ChatMessageResponse>(
-    ["chats", "messages", chat?.id],
-    async ({ pageParam = 1 }) => {
-      if (chat) {
-        const response = await axiosApi.get(chat?.messageUrl, {
-          params: { page: pageParam },
-        });
-        return response.data;
-      }
-      return undefined;
-    },
-    {
-      ...queryOptions,
-      enabled: !!chat?.id,
-      getPreviousPageParam: (firstPage) =>
-        firstPage.previousPageNumber ?? undefined,
-      getNextPageParam: (lastPage) => lastPage.nextPageNumber ?? undefined,
-    },
-  );
-
-  return { ...query, chat };
+  return setHeader;
 };
 
 /**
@@ -184,17 +64,11 @@ export const useChat = (
  */
 export const useSetChatRoomHeader = (chat: Chat | undefined | null) => {
   const { user } = useAuth();
-  const [, setHeader] =
-    useOutletContext<
-      [
-        ChatHeaderProps | null,
-        React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>,
-      ]
-    >();
+  const setHeader = useSetChatHeader();
 
-  return React.useEffect(() => {
+  return useEffect(() => {
     if (chat) {
-      let headerProps: ChatHeaderProps;
+      let headerProps: ChatHeaderData;
       if (chat.type === "users") {
         const friend = getFriendFromFriendChat(user!, chat as FriendChat);
         headerProps = {
@@ -215,23 +89,76 @@ export const useSetChatRoomHeader = (chat: Chat | undefined | null) => {
 };
 
 /**
- * Sends a message through the WS connection when a chat is created to join the chat group.
- * The connection is closed if the user logs out.
+ * Holds the WebSocket connection to the server. Closes the connection if the
+ * user logs out.
  */
-export function useJoinWSChat() {
+function useBaseWsChatConnection(options?: Options | undefined) {
   const { isLoggedIn } = useAuth();
 
-  const { sendJsonMessage } = useWebSocket(
+  return useWebSocket<WsChatMessage>(
     `${import.meta.env.VITE_WS_URL}/ws/chats/`,
     {
       onClose: () => console.error("Chat socket closed unexpectedly"),
       shouldReconnect: () => true,
       share: true,
+      ...options,
     },
     isLoggedIn,
   );
+}
 
-  return useCallback(
+export function useWsChatListener() {
+  const queryClient = useQueryClient();
+
+  /**
+   * Updates the chat list and the corresponding chat messages query whenever a
+   * message is received or sent.
+   */
+  const onMessage = (wsMessage: MessageEvent<string>) => {
+    const { message } = JSON.parse(wsMessage.data) as WsChatMessage;
+    const { chat_id } = message;
+
+    if (chat_id == null) {
+      return;
+    }
+
+    queryClient.setQueryData<Chat[] | undefined>(
+      ["chats", "list", "all"],
+      (old) => {
+        if (old !== undefined) {
+          const oldChat = old.find((c) => c.id === chat_id);
+          if (oldChat) {
+            oldChat.messages = [message];
+          }
+        }
+        return old;
+      },
+    );
+
+    queryClient.setQueryData<InfiniteData<ChatMessageResponse> | undefined>(
+      ["chats", "messages", chat_id],
+      (old) => {
+        if (old !== undefined) {
+          // Add the message to the first page, reassign the page in the
+          // array so that the bottom-scrolling effect hook is triggered.
+          const firstPage = { ...old.pages[0] };
+          old.pages[0] = {
+            ...firstPage,
+            results: [message, ...firstPage.results],
+          };
+        }
+        return old;
+      },
+    );
+  };
+
+  return useBaseWsChatConnection({ onMessage });
+}
+
+export function useWsChatFunctions() {
+  const { sendJsonMessage } = useBaseWsChatConnection();
+
+  const joinChat = useCallback(
     (id: string) => {
       const message = {
         chat_id: id,
@@ -240,5 +167,129 @@ export function useJoinWSChat() {
       sendJsonMessage(message);
     },
     [sendJsonMessage],
+  );
+
+  const sendMessage = useCallback(
+    (
+      content: string,
+      chatId: string,
+      chatType: ChatType,
+      event:
+        | React.KeyboardEvent<HTMLTextAreaElement>
+        | React.FormEvent<HTMLFormElement>,
+    ) => {
+      event.preventDefault();
+      const message = {
+        type: "chat_message",
+        chat_id: chatId,
+        content,
+        chat_type: chatType,
+      };
+      sendJsonMessage(message);
+    },
+    [sendJsonMessage],
+  );
+
+  return useMemo(
+    () => ({
+      joinChat,
+      sendMessage,
+    }),
+    [joinChat, sendMessage],
+  );
+}
+
+interface UseEditType<T> {
+  editEnabled: boolean;
+  setEditEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+  value: string;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
+  error: string;
+  setError: React.Dispatch<React.SetStateAction<string>>;
+  clearError: () => void;
+  elementRef: React.MutableRefObject<T | null>;
+  submitButtonRef: React.MutableRefObject<HTMLButtonElement | null>;
+  handleChange: (e: React.ChangeEvent<T>) => void;
+  handleFocus: () => void;
+  handleCancel: () => void;
+}
+/**
+ * Holds state and functionality to update a user or channel's name or description.
+ */
+// TODO: probably remove this altogether, substitute with RHF.
+export function useEditField<
+  T extends HTMLInputElement | HTMLTextAreaElement,
+  S,
+>(data: S | undefined, dataKey: keyof S): UseEditType<T> {
+  const [editEnabled, setEditEnabled] = useState<boolean>(false);
+  const [value, setValue] = useState<string>("");
+  const [error, setError] = useState<string>("");
+
+  const elementRef = useRef<T>(null);
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
+
+  const clearError = useCallback(() => {
+    if (error) {
+      setError("");
+    }
+  }, [error]);
+
+  const updateInputValue = useCallback(() => {
+    const dataValue = data?.[dataKey];
+    if (dataValue && typeof dataValue === "string") {
+      setValue(dataValue);
+    }
+  }, [data, dataKey]);
+
+  // Set data on init and whenever data changes (i.e. after submitting)
+  useEffect(updateInputValue, [data?.[dataKey], updateInputValue]);
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<T>) => {
+      clearError();
+      setValue(e.target.value);
+    },
+    [clearError],
+  );
+
+  const handleFocus = useCallback(() => {
+    setEditEnabled(true);
+    clearError();
+  }, [clearError]);
+
+  const handleCancel = useCallback(() => {
+    updateInputValue();
+    setEditEnabled(false);
+  }, [updateInputValue]);
+
+  return useMemo(
+    () => ({
+      editEnabled,
+      setEditEnabled,
+      value,
+      setValue,
+      error,
+      setError,
+      clearError,
+      elementRef,
+      submitButtonRef,
+      handleChange,
+      handleFocus,
+      handleCancel,
+    }),
+    [
+      editEnabled,
+      setEditEnabled,
+      value,
+      setValue,
+      error,
+      setError,
+      clearError,
+      elementRef,
+      submitButtonRef,
+      handleChange,
+      handleFocus,
+      handleCancel,
+    ],
   );
 }

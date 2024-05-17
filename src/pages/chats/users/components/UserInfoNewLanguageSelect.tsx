@@ -1,55 +1,43 @@
 import { css } from "@emotion/react";
-import React from "react";
-import { useMutation, useQueryClient } from "react-query";
+import { useCallback, useState } from "react";
 import Select, { StylesConfig } from "react-select";
-import { axiosApi } from "../../../../api";
+import EditButtons from "../../../../common/components/EditButtons";
+import { select } from "../../../../common/components/styles";
+import useAuth from "../../../../common/context/AuthContext/AuthContext";
 import {
   languageOptions,
   levelOptions,
 } from "../../../../common/resources/languages";
 import { COLORS } from "../../../../common/resources/style-variables";
-import { Option, ProficiencyLevel, User } from "../../../../common/types";
-import EditButtons from "../../../../components/EditButtons";
-import { select } from "../../../../components/styles";
-import useAuth from "../../../auth/AuthContext/AuthContext";
+import { Language, Option, ProficiencyLevel } from "../../../../common/types";
+import { useCreateUserLanguageMutation } from "../queries";
 
-interface UserInfoNewLanguageSelectRequestData {
-  language: string;
-  level: string;
-  user: string;
+interface UserInfoNewLanguageSelectProps {
+  onClose: () => void;
 }
 
 /**
  * Contains controls to allow the user to add a new language to their profile.
  */
-function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
+function UserInfoNewLanguageSelect({
+  onClose,
+}: UserInfoNewLanguageSelectProps) {
   const { user } = useAuth();
-  const queryClient = useQueryClient();
 
-  const [languageValue, setLanguageValue] = React.useState<Option | null>(null);
-  const [levelValue, setLevelValue] =
-    React.useState<Option<ProficiencyLevel> | null>(null);
-  const [error, setError] = React.useState<string>("");
+  const mutation = useCreateUserLanguageMutation(user?.id);
 
-  const updateRequest = async (
-    requestData: UserInfoNewLanguageSelectRequestData,
-  ) => {
-    const response = await axiosApi.post("user_languages/", requestData);
-    return response.data;
-  };
-
-  const mutation = useMutation(updateRequest, {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries<User | undefined>([
-        "users",
-        user?.id,
-      ]);
-    },
-  });
+  // TODO: use RHF, move this stuff to NewLanguageModal
+  const [languageValue, setLanguageValue] = useState<Option<Language> | null>(
+    null,
+  );
+  const [levelValue, setLevelValue] = useState<Option<ProficiencyLevel> | null>(
+    null,
+  );
+  const [error, setError] = useState<string>("");
 
   const clearError = () => setError("");
 
-  const handleSubmit = React.useCallback(async () => {
+  const handleSubmit = useCallback(async () => {
     if (!languageValue || !levelValue) {
       setError("Language and level must be selected.");
       return false;
@@ -69,7 +57,7 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
   return (
     <div css={outerContainer}>
       <div css={innerContainer}>
-        <Select<Option>
+        <Select<Option<Language>>
           id={`language-new`}
           value={languageValue}
           onChange={setLanguageValue}
@@ -82,7 +70,7 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
             )
           }
           placeholder="Language"
-          styles={select as StylesConfig<Option>}
+          styles={select as StylesConfig<Option<Language>>}
         />
         <Select<Option<ProficiencyLevel>>
           id={`level-new`}
@@ -93,8 +81,9 @@ function UserInfoNewLanguageSelect({ onClose }: { onClose: () => void }) {
           placeholder="Level"
           styles={select as StylesConfig<Option<ProficiencyLevel>>}
         />
+
+        {/* TODO: substitute for regular buttons */}
         <EditButtons
-          editEnabled={true}
           handleSubmit={handleSubmit}
           handleCancel={onClose}
           color={COLORS.PRIMARY}

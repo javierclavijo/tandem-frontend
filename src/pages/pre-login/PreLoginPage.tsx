@@ -1,16 +1,15 @@
 import { css } from "@emotion/react";
 import { Link } from "react-router-dom";
+import { SimpleLayout } from "../../common/components/Layout";
+import Nav from "../../common/components/Nav/Nav";
 import { COLORS, FONT_SIZES } from "../../common/resources/style-variables";
-import { baseAppContainerWithoutTabs } from "../../common/styles";
-import Nav from "../../components/Nav/Nav";
-import { button } from "../../components/styles";
 
 /**
  * Pre-login home/index page component.
  */
 function PreLogin() {
   return (
-    <div css={baseAppContainerWithoutTabs}>
+    <SimpleLayout>
       <Nav />
       <main css={main}>
         <div css={textContainer}>
@@ -60,7 +59,7 @@ function PreLogin() {
           </div>
         </div>
       </main>
-    </div>
+    </SimpleLayout>
   );
 }
 
@@ -103,7 +102,14 @@ const disclaimer = css`
 `;
 
 const joinButton = css`
-  ${button};
+  width: fit-content;
+  padding: 0.5rem;
+  border-radius: 3px;
+  border: none;
+  color: ${COLORS.WHITE};
+  font-size: ${FONT_SIZES.M};
+  cursor: pointer;
+  transition: background-color 0.1s;
   text-decoration: none;
   background-color: ${COLORS.DARK_PRIMARY};
 

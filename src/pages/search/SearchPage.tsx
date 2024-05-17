@@ -1,20 +1,16 @@
 import qs from "qs";
-import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useInfiniteQuery } from "react-query";
-import { useMediaQuery } from "react-responsive";
 import { animated } from "react-spring";
-import { axiosApi } from "../../api";
-import Nav from "../../components/Nav/Nav";
-import Tabs from "../../components/Tabs";
-import { homeSearchStyles } from "../../components/styles";
+import { axiosApi } from "../../common/apis";
+import Nav from "../../common/components/Nav/Nav";
+import Tabs from "../../common/components/Tabs";
+import { homeSearchStyles } from "../../common/components/styles";
 
-import {
-  baseAppContainerWithTabs,
-  baseAppContainerWithoutTabs,
-  homeSearchMain,
-  homeSearchMainMobile,
-} from "../../common/styles";
+import { useEffect, useState } from "react";
+import { ResponsiveBottomTabsLayout } from "../../common/components/Layout";
+import { useIsDesktop } from "../../common/hooks";
+import { homeSearchMain, homeSearchMainMobile } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
 import {
   Channel,
@@ -77,21 +73,21 @@ export interface ChannelSearchParams extends BaseSearchParams {
  * Main search component.
  */
 function SearchPage() {
-  const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+  const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
 
   /**
    * Search params state.
    */
   const [userSearchParams, setUserSearchParams] =
-    React.useState<UserSearchParams | null>(null);
+    useState<UserSearchParams | null>(null);
   const [channelSearchParams, setChannelSearchParams] =
-    React.useState<ChannelSearchParams | null>(null);
+    useState<ChannelSearchParams | null>(null);
 
   /**
    * Search type state.
    */
-  const [searchType, setSearchType] = React.useState<Option | null>(
+  const [searchType, setSearchType] = useState<Option | null>(
     searchTypeOptions.USERS,
   );
 
@@ -163,7 +159,7 @@ function SearchPage() {
   /**
    * Refetch the queries whenever the params or search type state is updated.
    */
-  React.useEffect(() => {
+  useEffect(() => {
     if (searchType === searchTypeOptions.USERS) {
       refetchUsers();
     } else {
@@ -178,9 +174,7 @@ function SearchPage() {
   ]);
 
   return (
-    <div
-      css={isDesktop ? baseAppContainerWithoutTabs : baseAppContainerWithTabs}
-    >
+    <ResponsiveBottomTabsLayout>
       <Nav />
       <main
         id="search-main"
@@ -252,8 +246,8 @@ function SearchPage() {
           </InfiniteScroll>
         </animated.div>
       </main>
-      {!isDesktop ? <Tabs /> : null}
-    </div>
+      <Tabs />
+    </ResponsiveBottomTabsLayout>
   );
 }
 

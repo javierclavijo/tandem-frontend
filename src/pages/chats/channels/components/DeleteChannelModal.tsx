@@ -1,42 +1,25 @@
-import React from "react";
-import ReactModal from "react-modal";
-import { modal } from "../../../../components/styles";
+import { AxiosResponse } from "axios";
+import Button from "../../../../common/components/Button";
+import Modal, { ModalProps } from "../../../../common/components/Modal/Modal";
+import ModalButtonsContainer from "../../../../common/components/Modal/ModalButtonsContainer";
+import ModalTitle from "../../../../common/components/Modal/ModalTitle";
 
-// Set the modal's app element to "hide the application from assistive screenreaders and other assistive technologies
-// while the modal is open" (see react-modal docs: https://reactcommunity.org/react-modal/examples/set_app_element/).
-ReactModal.setAppElement("#root");
-
-interface DeleteChannelModalProps {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleDelete: () => Promise<void>;
+interface DeleteChannelModalProps extends ModalProps {
+  onDelete: () => Promise<AxiosResponse<void> | undefined>;
 }
 
 /**
  * Channel deletion confirmation modal window.
  */
-function DeleteChannelModal({
-  isOpen,
-  setIsOpen,
-  handleDelete,
-}: DeleteChannelModalProps) {
+function DeleteChannelModal({ onDelete, ...props }: DeleteChannelModalProps) {
   return (
-    <ReactModal
-      isOpen={isOpen}
-      onRequestClose={() => setIsOpen(false)}
-      contentLabel="Delete channel"
-      style={modal.container}
-    >
-      <p css={modal.title}>Delete channel?</p>
-      <div css={modal.buttonsContainer}>
-        <button onClick={handleDelete} css={modal.button}>
-          Delete
-        </button>
-        <button onClick={() => setIsOpen(false)} css={modal.cancelButton}>
-          Cancel
-        </button>
-      </div>
-    </ReactModal>
+    <Modal {...props}>
+      <ModalTitle>Delete channel?</ModalTitle>
+      <ModalButtonsContainer>
+        <Button onClick={onDelete}>Delete</Button>
+        <Button onClick={props.onRequestClose}>Cancel</Button>
+      </ModalButtonsContainer>
+    </Modal>
   );
 }
 

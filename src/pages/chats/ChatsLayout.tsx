@@ -1,93 +1,36 @@
-import React from "react";
-import { InfiniteData, useQueryClient } from "react-query";
-import { useMediaQuery } from "react-responsive";
+import { css } from "@emotion/react";
+import { useState } from "react";
 import { Outlet, useParams } from "react-router-dom";
 import { animated } from "react-spring";
-import useWebSocket from "react-use-websocket";
-import {
-  baseAppContainerWithTabs,
-  baseAppContainerWithoutTabs,
-} from "../../common/styles";
+import Nav from "../../common/components/Nav/Nav";
+import Tabs from "../../common/components/Tabs";
+import { useIsDesktop } from "../../common/hooks";
 import { useFadeIn } from "../../common/transitions";
-import { Chat } from "../../common/types";
-import ChatHeader, { ChatHeaderProps } from "../../components/ChatHeader";
-import Nav from "../../components/Nav/Nav";
-import Tabs from "../../components/Tabs";
-import useAuth from "../auth/AuthContext/AuthContext";
 import { chatRoom, chatRoomMobile } from "./chat/styles";
+import ChatHeader from "./components/ChatHeader";
 import ChatList from "./components/ChatList/ChatList";
+import { useWsChatListener } from "./hooks";
 import { chatMain, chatMainMobile } from "./styles";
-import { ChatMessageResponse, WsChatMessage } from "./types";
+import { ChatHeaderData } from "./types";
 
 /**
  * Main chat component. Holds the chat list, chat room and user/channel detail components.
  */
+// TODO: just remove this, make "dumb" layout components and reuse them in each
+// page.
 function ChatsLayout() {
-  const queryClient = useQueryClient();
   const params = useParams();
-  const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
-  const { isLoggedIn } = useAuth();
+  const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
+  useWsChatListener();
 
   /**
-   * State used by the router outlet context which controls the header's state. This way, the header's data can be
-   * obtained from the view components, without them having to contain the header themselves.
+   * State used by the router outlet context which controls the header's state.
+   * This way, the header's data can be obtained from the view components,
+   * without them having to contain the header themselves.
+   * TODO: remove this, it's a bad idea.
    */
-  const [header, setHeader] = React.useState<ChatHeaderProps | null>(null);
-
-  /**
-   * Holds the WebSocket connection to the server. Closes the connection if the user logs out.
-   */
-  const { lastJsonMessage } = useWebSocket<WsChatMessage>(
-    `${import.meta.env.VITE_WS_URL}/ws/chats/`,
-    {
-      onClose: () => console.error("Chat socket closed unexpectedly"),
-      shouldReconnect: () => true,
-      share: true,
-    },
-    isLoggedIn,
-  );
-
-  /**
-   * Updates the chat list and the corresponding chat messages query whenever a message is received or sent.
-   */
-  React.useEffect(() => {
-    if (!lastJsonMessage) {
-      return;
-    }
-
-    const message = lastJsonMessage.message;
-    if (message) {
-      queryClient.setQueryData<Chat[] | undefined>(
-        ["chats", "list", "all"],
-        (old) => {
-          if (old !== undefined) {
-            const oldChat = old.find((c) => c.id === message.chat_id);
-            if (oldChat) {
-              oldChat.messages = [message];
-            }
-          }
-          return old;
-        },
-      );
-
-      queryClient.setQueryData<InfiniteData<ChatMessageResponse> | undefined>(
-        ["chats", "messages", message.chat_id],
-        (old) => {
-          if (old !== undefined) {
-            // Add the message to the first page, reassign the page in the array so that the
-            // bottom-scrolling effect hook is triggered.
-            const firstPage = { ...old.pages[0] };
-            old.pages[0] = {
-              ...firstPage,
-              results: [message, ...firstPage.results],
-            };
-          }
-          return old;
-        },
-      );
-    }
-  }, [lastJsonMessage, queryClient]);
+  const [header, setHeader] = useState<ChatHeaderData | null>(null);
 
   return isDesktop ? (
     /**
@@ -122,5 +65,37 @@ function ChatsLayout() {
     </div>
   );
 }
+
+export const baseAppContainer = css`
+  // Main page layout
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: 100%;
+`;
+
+export const baseAppContainerWithoutTabs = css`
+  ${baseAppContainer};
+  grid-template-rows: 5rem 1fr;
+  grid-template-areas:
+    "header"
+    "main";
+`;
+
+export const baseAppContainerWithTabs = css`
+  ${baseAppContainer};
+  // Main page layout with tabs
+  grid-template-rows: 5rem 1fr 3rem;
+  grid-template-areas:
+    "header"
+    "main"
+    "tabs";
+
+  @media (min-width: 1024px) {
+    // Set "tabs" area height to zero in desktop layout
+    grid-template-rows: 5rem 1fr 0;
+  }
+`;
 
 export default ChatsLayout;

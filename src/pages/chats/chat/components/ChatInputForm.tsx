@@ -3,15 +3,15 @@ import useEventListener from "@use-it/event-listener";
 import Picker, { EmojiStyle } from "emoji-picker-react";
 import { MouseDownEvent } from "emoji-picker-react/dist/config/config";
 import { ArrowRightCircle, Emoji } from "iconoir-react";
-import React, { CSSProperties, useCallback, useState } from "react";
+import React, { CSSProperties, useCallback, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import useWebSocket from "react-use-websocket";
+import useAuth from "../../../../common/context/AuthContext/AuthContext";
 import {
   COLORS,
   FONT_SIZES,
 } from "../../../../common/resources/style-variables";
 import { Chat } from "../../../../common/types";
-import useAuth from "../../../auth/AuthContext/AuthContext";
 
 /**
  * Input form for the chat room. Includes the chat message input, a send button
@@ -33,7 +33,7 @@ function ChatInputForm({ chat }: { chat: Chat }) {
   /**
    * Message input text area ref.
    */
-  const elementRef = React.useRef<HTMLTextAreaElement | null>(null);
+  const elementRef = useRef<HTMLTextAreaElement | null>(null);
 
   /**
    * Controls the value of the input field.
@@ -95,7 +95,7 @@ function ChatInputForm({ chat }: { chat: Chat }) {
   /**
    * Handles the emoji click event. Appends the emoji to the input's value.
    */
-  const onEmojiClick: MouseDownEvent = React.useCallback(
+  const onEmojiClick: MouseDownEvent = useCallback(
     (emojiData) => {
       setInputValue(inputValue.concat(emojiData.emoji));
     },
@@ -122,7 +122,7 @@ function ChatInputForm({ chat }: { chat: Chat }) {
   /**
    * Toggles the emoji picker's rendering.
    */
-  const toggleEmojiPicker = React.useCallback(() => {
+  const toggleEmojiPicker = useCallback(() => {
     setShowEmojiPicker(!showEmojiPicker);
   }, [showEmojiPicker, setShowEmojiPicker]);
 

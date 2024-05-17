@@ -1,13 +1,13 @@
 import { css } from "@emotion/react";
 import { Plus } from "iconoir-react";
-import React from "react";
-import { useMediaQuery } from "react-responsive";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { animated } from "react-spring";
+import useAuth from "../../../../common/context/AuthContext/AuthContext";
+import { useIsDesktop } from "../../../../common/hooks";
 import { COLORS } from "../../../../common/resources/style-variables";
 import { useFadeIn } from "../../../../common/transitions";
-import useAuth from "../../../auth/AuthContext/AuthContext";
-import { useAllChatList } from "../../hooks";
+import { useAllChatList } from "../../queries";
 import { listContainer, listContainerMobile } from "../../styles";
 import ChatListElements from "./ChatListElements";
 import ChatListFilter from "./ChatListFilter";
@@ -18,7 +18,7 @@ import NewChannelModal from "./NewChannelModal";
  */
 function ChatList() {
   const params = useParams();
-  const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+  const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
   const { data } = useAllChatList();
   const { user } = useAuth();
@@ -26,13 +26,16 @@ function ChatList() {
   /**
    * Controls the chat list filter state.
    */
-  const [filter, setFilter] = React.useState<string>("");
+  const [filter, setFilter] = useState<string>("");
 
   /**
    * Controls whether the channel creation modal is open.
    */
   const [isChannelCreationModalOpen, setIsChannelCreationModalOpen] =
-    React.useState<boolean>(false);
+    useState<boolean>(false);
+
+  const onChannelCreationModalClose = () =>
+    setIsChannelCreationModalOpen(false);
 
   return (
     <>
@@ -66,7 +69,7 @@ function ChatList() {
       {/* Channel creation modal */}
       <NewChannelModal
         isOpen={isChannelCreationModalOpen}
-        setIsOpen={setIsChannelCreationModalOpen}
+        onRequestClose={onChannelCreationModalClose}
       />
     </>
   );

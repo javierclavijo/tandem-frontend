@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
+import { buttonWithoutBackgroundAndBorder } from "../../common/components/styles";
 import { COLORS, FONT_SIZES } from "../../common/resources/style-variables";
-import { buttonWithoutBackgroundAndBorder } from "../../components/styles";
 
 export const chatMain = css`
   grid-area: main;

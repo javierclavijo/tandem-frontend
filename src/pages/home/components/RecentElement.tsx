@@ -1,16 +1,16 @@
 import { css } from "@emotion/react";
 import { NavArrowRight } from "iconoir-react";
 import { Link } from "react-router-dom";
-import { COLORS } from "../../../common/resources/style-variables";
-import ResponsiveEllipsis from "../../../components/ResponsiveEllipsis";
+import ResponsiveEllipsis from "../../../common/components/ResponsiveEllipsis";
 import {
   containerWithLink,
   thumbnailContainer,
-} from "../../../components/styles";
+} from "../../../common/components/styles";
+import { COLORS } from "../../../common/resources/style-variables";
 
-import ChatThumbnail from "../../../components/ChatThumbnail";
+import ChatThumbnail from "../../../common/components/UserThumbnail";
 
-interface SearchElementProps {
+interface RecentElementProps {
   id: string;
   name: string;
   latestMessage: string;
@@ -18,10 +18,11 @@ interface SearchElementProps {
   link: string;
 }
 
+// TODO: refactor this and SearchResultElement into a single UserCard component.
 /**
  * Element component for post-login home 'recent' sections.
  */
-function RecentElement(props: SearchElementProps) {
+function RecentElement(props: RecentElementProps) {
   return (
     <article css={outerContainer}>
       <div css={innerContainer}>

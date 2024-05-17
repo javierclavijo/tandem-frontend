@@ -1,33 +1,25 @@
 import { css } from "@emotion/react";
-import React from "react";
+import { useEffect, useState } from "react";
 import { FlagIcon } from "react-flag-kit";
-import { useMutation, useQueryClient } from "react-query";
 import Select, { StylesConfig } from "react-select";
-import { axiosApi } from "../../../../api";
+import ProficiencyLevelIcon from "../../../../common/components/icons/ProficiencyLevelIcon";
+import {
+  badge,
+  noBorderAndBgSelectWhite,
+} from "../../../../common/components/styles";
 import {
   LANGUAGE_INFO,
   languageOptions,
   levelOptions,
 } from "../../../../common/resources/languages";
 import { COLORS } from "../../../../common/resources/style-variables";
-import {
-  Channel,
-  Language,
-  Option,
-  ProficiencyLevel,
-} from "../../../../common/types";
-import ProficiencyLevelIcon from "../../../../components/icons/ProficiencyLevelIcon";
-import { badge, noBorderAndBgSelectWhite } from "../../../../components/styles";
+import { Language, Option, ProficiencyLevel } from "../../../../common/types";
 import { UserLanguage } from "../../types";
+import { useUpdateLanguageMutation } from "../queries";
 
 interface LanguageBadgeProps {
   data: UserLanguage;
   bg: string;
-}
-
-interface UpdateRequest {
-  language?: Language;
-  level?: ProficiencyLevel;
 }
 
 // TODO: review this and the other badge components. Are they duplicated?
@@ -36,30 +28,15 @@ interface UpdateRequest {
  * language's name and icon and allows selecting the language and level.
  */
 function ChannelEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
-  const queryClient = useQueryClient();
-  const [languageValue, setLanguageValue] =
-    React.useState<Option<Language> | null>(null);
-  const [levelValue, setLevelValue] =
-    React.useState<Option<ProficiencyLevel> | null>(null);
-
-  const updateRequest = React.useCallback(
-    async (requestData: UpdateRequest) => {
-      if (data) {
-        const response = await axiosApi.patch(data?.url, requestData);
-        return response.data;
-      }
-    },
-    [data],
+  // TODO: use RHF
+  const [languageValue, setLanguageValue] = useState<Option<Language> | null>(
+    null,
+  );
+  const [levelValue, setLevelValue] = useState<Option<ProficiencyLevel> | null>(
+    null,
   );
 
-  const updateMutation = useMutation(updateRequest, {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries<Channel | undefined>([
-        "channels",
-        data?.id,
-      ]);
-    },
-  });
+  const updateMutation = useUpdateLanguageMutation(data?.id);
 
   // TODO: abstract union type
   const handleLanguageChange = async (option: Option<Language> | null) => {
@@ -67,7 +44,7 @@ function ChannelEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
       return;
     }
 
-    await updateMutation.mutateAsync({ language: option.value });
+    await updateMutation.mutateAsync({ url: data.url, language: option.value });
   };
 
   const handleLevelChange = async (option: Option<ProficiencyLevel> | null) => {
@@ -75,10 +52,11 @@ function ChannelEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
       return;
     }
 
-    await updateMutation.mutateAsync({ level: option.value });
+    await updateMutation.mutateAsync({ url: data.url, level: option.value });
   };
 
-  React.useEffect(() => {
+  // TODO: this should be cleaned up once the form has been refactored using RHF.
+  useEffect(() => {
     // Get the options which correspond to the data values and set them as the
     // selects' values
     const initialLevelOption = levelOptions.find((o) => o.value === data.level);

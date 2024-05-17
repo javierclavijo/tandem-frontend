@@ -1,25 +1,25 @@
-import { css } from "@emotion/react";
 import { Xmark } from "iconoir-react";
-import React from "react";
+import { useState } from "react";
 import { FlagIcon } from "react-flag-kit";
-import { useMutation, useQueryClient } from "react-query";
 import Select, { SingleValue, StylesConfig } from "react-select";
-import { axiosApi } from "../../../../api";
+import EditButton from "../../../../common/components/EditButton";
+import ProficiencyLevelIcon from "../../../../common/components/icons/ProficiencyLevelIcon";
+import {
+  badge,
+  noBorderAndBgSelectWhite,
+} from "../../../../common/components/styles";
 import {
   LANGUAGE_INFO,
   levelOptions,
 } from "../../../../common/resources/languages";
 import { COLORS } from "../../../../common/resources/style-variables";
-import { Option, ProficiencyLevel, User } from "../../../../common/types";
-import Button from "../../../../components/Button";
-import ProficiencyLevelIcon from "../../../../components/icons/ProficiencyLevelIcon";
-import { badge, noBorderAndBgSelectWhite } from "../../../../components/styles";
-import useAuth from "../../../auth/AuthContext/AuthContext";
+import { Option, ProficiencyLevel } from "../../../../common/types";
 import { UserLanguage } from "../../types";
+import { useUpdateUserLanguageMutation } from "../queries";
 
 interface LanguageBadgeProps {
   data: UserLanguage;
-  bg: string;
+  backgroundColor: string;
   onDelete: () => void;
 }
 
@@ -27,30 +27,18 @@ interface LanguageBadgeProps {
  * Badge-like component for user info view. Displays a language's name and icon
  * and allows selecting the language's level.
  */
-function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
-  const queryClient = useQueryClient();
-  const [levelValue, setLevelValue] =
-    React.useState<Option<ProficiencyLevel> | null>(null);
-  const { user } = useAuth();
+function UserInfoEditLanguageBadge({
+  data,
+  backgroundColor,
+  onDelete,
+}: LanguageBadgeProps) {
+  const mutation = useUpdateUserLanguageMutation(data.url);
 
-  const updateRequest = React.useCallback(
-    async (requestData: { level: ProficiencyLevel }) => {
-      if (data) {
-        const response = await axiosApi.patch(data.url, requestData);
-        return response.data;
-      }
-    },
-    [data],
+  const [levelValue, setLevelValue] = useState<Option<ProficiencyLevel> | null>(
+    () => levelOptions.find((o) => o.value === data.level) ?? null,
   );
 
-  const mutation = useMutation(updateRequest, {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries<User | undefined>([
-        "users",
-        user?.id,
-      ]);
-    },
-  });
+  const languageInfo = LANGUAGE_INFO[data.language];
 
   const onChange = async (option: SingleValue<Option<ProficiencyLevel>>) => {
     if (option != null) {
@@ -60,26 +48,8 @@ function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
     }
   };
 
-  React.useEffect(() => {
-    // Get the option which corresponds to the initial value prop and set it as
-    // the select's value
-    const initialOption = levelOptions.find((o) => o.value === data.level);
-    if (initialOption) {
-      setLevelValue(initialOption);
-    }
-  }, [data.level]);
-
-  // TODO: refactor this. Look for similar occurrences. (Probably should use
-  // CSSProperties)
-  const container = css`
-    ${badge};
-    background-color: ${bg};
-  `;
-
-  const languageInfo = LANGUAGE_INFO[data.language];
-
   return (
-    <div css={container}>
+    <div css={badge} style={{ backgroundColor }}>
       <FlagIcon code={languageInfo.flagIconCode} size={24} />
       <span>{languageInfo.displayName}</span>
       <span>|</span>
@@ -98,9 +68,9 @@ function UserInfoEditLanguageBadge({ data, bg, onDelete }: LanguageBadgeProps) {
           noBorderAndBgSelectWhite as StylesConfig<Option<ProficiencyLevel>>
         }
       />
-      <Button visible={true} onClick={onDelete}>
+      <EditButton onClick={onDelete}>
         <Xmark color={COLORS.WHITE} width={"1.5rem"} height={"1.5rem"} />
-      </Button>
+      </EditButton>
     </div>
   );
 }

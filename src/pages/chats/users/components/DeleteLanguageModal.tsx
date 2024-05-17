@@ -1,55 +1,29 @@
-import React from "react";
-import ReactModal from "react-modal";
-import { LANGUAGE_INFO } from "../../../../common/resources/languages";
-import { modal } from "../../../../components/styles";
-import { UserLanguage } from "../../types";
+import Button from "../../../../common/components/Button";
+import Modal, { ModalProps } from "../../../../common/components/Modal/Modal";
+import ModalButtonsContainer from "../../../../common/components/Modal/ModalButtonsContainer";
+import ModalTitle from "../../../../common/components/Modal/ModalTitle";
 
-// Set the modal's app element to "hide the application from assistive screenreaders and other assistive technologies
-// while the modal is open" (see react-modal docs: https://reactcommunity.org/react-modal/examples/set_app_element/).
-ReactModal.setAppElement("#root");
-
-interface DeleteLanguageModalProps {
-  selectedDeleteLanguage: UserLanguage | null;
-  // TODO: refactor this kind of prop dependencies (setState setters). Look in all files.
-  setSelectedDeleteLanguage: React.Dispatch<
-    React.SetStateAction<UserLanguage | null>
-  >;
-  handleDeleteLanguage: () => Promise<void>;
+interface DeleteLanguageModalProps extends ModalProps {
+  languageName: string | null;
+  onDelete: () => Promise<void>;
 }
 
 /**
  * Modal window which handles deletion of one of the user's language objects.
  */
 function DeleteLanguageModal({
-  selectedDeleteLanguage,
-  setSelectedDeleteLanguage,
-  handleDeleteLanguage,
+  languageName,
+  onDelete,
+  ...props
 }: DeleteLanguageModalProps) {
-  const languageName =
-    selectedDeleteLanguage != null
-      ? LANGUAGE_INFO[selectedDeleteLanguage?.language].displayName
-      : "";
-
   return (
-    <ReactModal
-      isOpen={!!selectedDeleteLanguage}
-      onRequestClose={() => setSelectedDeleteLanguage(null)}
-      contentLabel="Delete language"
-      style={modal.container}
-    >
-      <p css={modal.title}>{`Delete ${languageName} from your languages?`}</p>
-      <div css={modal.buttonsContainer}>
-        <button onClick={handleDeleteLanguage} css={modal.button}>
-          Delete
-        </button>
-        <button
-          onClick={() => setSelectedDeleteLanguage(null)}
-          css={modal.cancelButton}
-        >
-          Cancel
-        </button>
-      </div>
-    </ReactModal>
+    <Modal {...props}>
+      <ModalTitle>{`Delete ${languageName} from your languages?`}</ModalTitle>
+      <ModalButtonsContainer>
+        <Button onClick={onDelete}>Delete</Button>
+        <Button onClick={props.onRequestClose}>Cancel</Button>
+      </ModalButtonsContainer>
+    </Modal>
   );
 }
 

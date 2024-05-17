@@ -1,5 +1,11 @@
+import { Interpolation, Theme } from "@emotion/react";
 import { FlagIconCode } from "react-flag-kit";
+import { FieldPath, FieldValues } from "react-hook-form";
 import { ChatMessage, UserLanguage } from "../pages/chats/types";
+
+export type ProficiencyLevel = "BE" | "IN" | "AD" | "NA";
+export type Language = "DE" | "EN" | "FR" | "IT" | "ES";
+export type UserRole = "U" | "M" | "A";
 
 interface ChannelMembershipUser {
   id: string;
@@ -13,11 +19,8 @@ interface ChannelMembership {
   id: string;
   url: string;
   user: ChannelMembershipUser;
-  role: string;
+  role: UserRole;
 }
-
-export type ProficiencyLevel = "BE" | "IN" | "AD" | "NA";
-export type Language = "DE" | "EN" | "FR" | "IT" | "ES";
 
 export interface Channel extends Chat {
   description: string;
@@ -84,3 +87,17 @@ export interface Option<T extends string = string> {
 }
 
 export type ServerErrorResponse = Readonly<Record<string, string[]>>;
+
+export type UseFormSetErrorName<TData extends FieldValues> =
+  | FieldPath<TData>
+  | `root.${string}`
+  | "root";
+
+export interface StyledEmotionComponentProps {
+  css?: Interpolation<Theme>;
+}
+
+export type ImgProps = React.DetailedHTMLProps<
+  React.ImgHTMLAttributes<HTMLImageElement>,
+  HTMLImageElement
+>;

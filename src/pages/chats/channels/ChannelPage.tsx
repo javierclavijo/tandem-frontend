@@ -1,25 +1,19 @@
 import { css } from "@emotion/react";
 import { FastArrowDownSquare, FastArrowUpSquare } from "iconoir-react";
-import React from "react";
-import {
-  useLocation,
-  useNavigate,
-  useOutletContext,
-  useParams,
-} from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { animated } from "react-spring";
+import EditButton from "../../../common/components/EditButton";
+import LanguageBadge from "../../../common/components/LanguageBadge";
+import ShareLink from "../../../common/components/ShareLink";
+import useAuth from "../../../common/context/AuthContext/AuthContext";
 import { COLORS } from "../../../common/resources/style-variables";
 import { useFadeIn } from "../../../common/transitions";
-import Button from "../../../components/Button";
-import { ChatHeaderProps } from "../../../components/ChatHeader";
-import LanguageBadge from "../../../components/LanguageBadge";
-import ShareLink from "../../../components/ShareLink";
-import useAuth from "../../auth/AuthContext/AuthContext";
 import DescriptionTextarea from "../components/DescriptionTextarea";
 import ImageInput from "../components/ImageInput";
 import InfoListElement from "../components/InfoListElement";
 import { ChannelNameInput } from "../components/NameInput";
-import { useJoinWSChat } from "../hooks";
+import { useSetChatHeader, useWsChatFunctions } from "../hooks";
 import {
   descriptionSection,
   infoButton,
@@ -38,102 +32,70 @@ import {
   useDeleteChannel,
   useJoinChannel,
   useLeaveChannel,
-} from "./hooks";
+} from "./queries";
 
 /**
- * Displays a channel's details: image, name, language and level, description and members.
+ * Displays a channel's details: image, name, language and level, description
+ * and members.
  */
 function ChannelPage() {
   const params = useParams();
   const { user } = useAuth();
   const location = useLocation();
-  const [, setHeader] =
-    useOutletContext<
-      [
-        ChatHeaderProps | null,
-        React.Dispatch<React.SetStateAction<ChatHeaderProps | null>>,
-      ]
-    >();
   const navigate = useNavigate();
   const transitionProps = useFadeIn();
+  const { joinChat } = useWsChatFunctions();
+  const setHeader = useSetChatHeader();
 
-  /**
-   * Controls whether the user is a member of the channel, and their role in case they are.
-   */
-  const [userRole, setUserRole] = React.useState<string | null>(null);
-
-  /**
-   * Convenience function which determines if the user is staff (admin or moderator).
-   */
-  const userIsStaff = React.useCallback(
-    () => userRole === "A" || userRole === "M",
-    [userRole],
-  );
-
-  /**
-   * Convenience function which determines if the user is the channel's admin.
-   */
-  const userIsAdmin = React.useCallback(() => userRole === "A", [userRole]);
+  const { data } = useChannel(params.id);
+  const { mutateAsync: joinMutateAsync } = useJoinChannel(data);
+  const { mutateAsync: deleteMutateAsync } = useDeleteChannel(data);
+  const { mutateAsync: leaveMutateAsync } = useLeaveChannel(data);
 
   /**
    * Controls whether the channel deletion confirmation modal is open.
    */
-  const [deletionModalIsOpen, setDeletionModalIsOpen] =
-    React.useState<boolean>(false);
-
+  const [deletionModalOpen, setDeletionModalOpen] = useState<boolean>(false);
   /**
    * Controls whether the channel leave confirmation modal is open.
    */
-  const [leaveChannelModalIsOpen, setLeaveChannelModalIsOpen] =
-    React.useState<boolean>(false);
+  const [leaveChannelModalOpen, setLeaveChannelModalOpen] =
+    useState<boolean>(false);
 
-  /**
-   * Query which fetches and holds the channel's data
-   */
-  const { data } = useChannel(params.id);
+  const userRole = data?.memberships.find(
+    (membership) => membership.user.id === user?.id,
+  )?.role;
 
-  const joinWSChat = useJoinWSChat();
-
-  const { mutateAsync: joinMutateAsync } = useJoinChannel(data);
-
-  const { mutateAsync: leaveMutateAsync } = useLeaveChannel(data);
-
-  const handleJoinChannel = React.useCallback(async () => {
-    const response = await joinMutateAsync();
-    if (response?.status === 201 && params?.id) {
-      joinWSChat(params.id);
-      navigate(`/chats/${params.id}`);
-    }
-  }, [params?.id, joinMutateAsync, navigate, joinWSChat]);
-
-  const handleLeaveChannel = React.useCallback(async () => {
-    await leaveMutateAsync();
-    setLeaveChannelModalIsOpen(false);
-    navigate("/chats/");
-  }, [leaveMutateAsync, navigate]);
-
-  /**
-   * Checks if the user is a member of the channel and set the 'isMember' state if applicable. If the user is also an
-   * admin, set the user role state.
-   */
-  React.useEffect(() => {
-    const userMembership = data?.memberships.find(
-      (membership) => membership.user.id === user?.id,
-    );
-    if (userMembership) {
-      setUserRole(userMembership.role);
-    }
-  }, [data?.memberships, user]);
-
-  /**
-   * Channel deletion handler.
-   */
-  const handleDelete = useDeleteChannel(data);
+  const userIsAdmin = userRole === "A";
+  const userIsStaff = userIsAdmin || userRole === "M";
 
   /**
    * User role changing handlers.
    */
   const { handlePromoteUser, handleDemoteUser } = useChangeUserRole(params.id);
+  /**
+   * Channel delete/leave handlers.
+   */
+  const handleDeleteModalClose = () => setDeletionModalOpen(false);
+  const handleLeaveModalClose = () => setLeaveChannelModalOpen(false);
+  const handleDelete = async () => await deleteMutateAsync();
+
+  const handleLeaveChannel = useCallback(async () => {
+    await leaveMutateAsync();
+    setLeaveChannelModalOpen(false);
+    navigate("/chats/");
+  }, [leaveMutateAsync, navigate]);
+
+  /**
+   * Channel join handler.
+   */
+  const handleJoinChannel = useCallback(async () => {
+    const response = await joinMutateAsync();
+    if (response?.status === 201 && params?.id) {
+      joinChat(params.id);
+      navigate(`/chats/${params.id}`);
+    }
+  }, [params?.id, joinMutateAsync, navigate, joinChat]);
 
   /**
    * Sets the header to render the title 'user info', plus a 'share' button which copies the channel's URL to the
@@ -141,7 +103,8 @@ function ChannelPage() {
    * added for users who are not members of the channel, and a 'leave channel' button is added for those who are
    * members (except for admins).
    */
-  React.useEffect(() => {
+  // TODO: review the whole header thing.
+  useEffect(() => {
     setHeader({
       title: "Channel info",
       actions: (
@@ -150,20 +113,18 @@ function ChannelPage() {
             <button type="button" onClick={handleJoinChannel} css={infoButton}>
               Join channel
             </button>
-          ) : !userIsAdmin() ? (
+          ) : !userIsAdmin ? (
             <button
               type="button"
-              onClick={() => setLeaveChannelModalIsOpen(true)}
+              onClick={() => setLeaveChannelModalOpen(true)}
               css={infoButton}
             >
               Leave channel
             </button>
           ) : null}
-          {userIsAdmin() ? (
-            <button
-              onClick={() => setDeletionModalIsOpen(true)}
-              css={infoButton}
-            >
+
+          {userIsAdmin ? (
+            <button onClick={() => setDeletionModalOpen(true)} css={infoButton}>
               Delete
             </button>
           ) : null}
@@ -173,10 +134,14 @@ function ChannelPage() {
     });
   }, [location.pathname, userRole, setHeader, userIsAdmin, handleJoinChannel]);
 
-  return data ? (
+  if (data == null) {
+    return null;
+  }
+
+  return (
     <animated.div css={container} style={transitionProps}>
       <section css={infoSection}>
-        {userIsStaff() && data ? (
+        {userIsStaff ? (
           <>
             <ImageInput
               image={data.image}
@@ -197,12 +162,14 @@ function ChannelPage() {
             <p>{data?.name}</p>
           </>
         )}
+
         <p>
           Channel ·&nbsp;
-          {data?.memberships.length}{" "}
+          {data?.memberships.length}&nbsp;
           {data?.memberships.length === 1 ? "member" : "members"}
         </p>
-        {userIsStaff() ? (
+
+        {userIsStaff ? (
           <ChannelEditLanguageBadge data={data} bg={COLORS.DARK} />
         ) : (
           <LanguageBadge
@@ -211,8 +178,9 @@ function ChannelPage() {
             bg={COLORS.DARK}
           />
         )}
+
         <section css={descriptionSection}>
-          {userIsStaff() && data ? (
+          {userIsStaff && data ? (
             <DescriptionTextarea data={data} queryKey={"channels"} />
           ) : (
             <>
@@ -222,87 +190,89 @@ function ChannelPage() {
           )}
         </section>
       </section>
+
       <section css={listSection}>
         <h3 css={listSectionHeader}>Members</h3>
         <ul css={listSectionList}>
-          {data?.memberships.map((membership) =>
-            membership.user ? (
-              <InfoListElement
-                name={membership.user?.username}
-                additionalInfo={
-                  membership.role === "A"
-                    ? "Admin"
-                    : membership.role === "M"
-                      ? "Moderator"
-                      : undefined
-                }
-                description={membership.user.description}
-                key={membership.url}
-                image={membership.user.image}
-                link={`/chats/users/${membership.user.id}`}
-                buttons={
-                  <>
-                    {/* If the user is a regular user, show a button to promote them to
-                                                 moderator. If they are a moderator, show a button to demote them to
-                                                 regular user. If they are admin, show nothing. */}
-                    {userIsAdmin() && membership.role === "U" ? (
-                      <Button
-                        visible={true}
-                        onClick={async () =>
-                          await handlePromoteUser(membership.url)
-                        }
-                      >
-                        Promote
-                        <FastArrowUpSquare
-                          color={COLORS.PRIMARY}
-                          height={"1.5rem"}
-                          width={"1.5rem"}
-                        />
-                      </Button>
-                    ) : userIsAdmin() && membership.role === "M" ? (
-                      <Button
-                        visible={true}
-                        onClick={async () =>
-                          await handleDemoteUser(membership.url)
-                        }
-                      >
-                        Demote
-                        <FastArrowDownSquare
-                          color={COLORS.PRIMARY}
-                          height={"1.5rem"}
-                          width={"1.5rem"}
-                        />
-                      </Button>
-                    ) : null}
-                  </>
-                }
-              />
-            ) : null,
-          )}
+          {/* TODO: refactor into its own component */}
+          {data?.memberships.map((membership) => (
+            <InfoListElement
+              name={membership.user?.username}
+              additionalInfo={
+                membership.role === "A"
+                  ? "Admin"
+                  : membership.role === "M"
+                    ? "Moderator"
+                    : undefined
+              }
+              description={membership.user.description}
+              key={membership.url}
+              image={membership.user.image}
+              link={`/chats/users/${membership.user.id}`}
+              buttons={
+                <>
+                  {/* If the user is a regular user, show a button to promote
+                        them to moderator. If they are a moderator, show a 
+                        button to demote them to regular user. If they are 
+                        an admin, show nothing. */}
+                  {userIsAdmin && membership.role === "U" && (
+                    <EditButton
+                      onClick={async () =>
+                        await handlePromoteUser(membership.url)
+                      }
+                    >
+                      Promote
+                      <FastArrowUpSquare
+                        color={COLORS.PRIMARY}
+                        height="1.5rem"
+                        width="1.5rem"
+                      />
+                    </EditButton>
+                  )}
+
+                  {userIsAdmin && membership.role === "M" && (
+                    <EditButton
+                      onClick={async () =>
+                        await handleDemoteUser(membership.url)
+                      }
+                    >
+                      Demote
+                      <FastArrowDownSquare
+                        color={COLORS.PRIMARY}
+                        height="1.5rem"
+                        width="1.5rem"
+                      />
+                    </EditButton>
+                  )}
+                </>
+              }
+            />
+          ))}
+
           {/* Empty list */}
-          {!data?.memberships.length ? (
+          {data.memberships.length === 0 && (
             <li css={emptyContainer}>
               <p>This channel doesn&apos;t have any members yet.</p>
             </li>
-          ) : null}
+          )}
         </ul>
       </section>
 
       {/* Channel deletion confirmation modal */}
       <DeleteChannelModal
-        isOpen={deletionModalIsOpen}
-        setIsOpen={setDeletionModalIsOpen}
-        handleDelete={handleDelete}
+        isOpen={deletionModalOpen}
+        onRequestClose={handleDeleteModalClose}
+        onDelete={handleDelete}
       />
 
       {/* Channel leave confirmation modal */}
       <LeaveChannelModal
-        isOpen={leaveChannelModalIsOpen}
-        setIsOpen={setLeaveChannelModalIsOpen}
-        handleLeave={handleLeaveChannel}
+        isOpen={leaveChannelModalOpen}
+        onRequestClose={handleLeaveModalClose}
+        onLeave={handleLeaveChannel}
       />
     </animated.div>
-  ) : null;
+  );
 }
 
 const header = css`

@@ -1,19 +1,17 @@
 import { ErrorMessage } from "@hookform/error-message";
-import axios from "axios";
-import { Controller, useForm } from "react-hook-form";
-import { useMutation } from "react-query";
+import { Controller } from "react-hook-form";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import { animated } from "react-spring";
-import { axiosApi } from "../../api";
+import { SimpleLayout } from "../../common/components/Layout";
+import Nav from "../../common/components/Nav/Nav";
+import { select } from "../../common/components/styles";
+import useAuth from "../../common/context/AuthContext/AuthContext";
+import { useSetFormErrorOnRequestError } from "../../common/hooks";
 import { languageOptions } from "../../common/resources/languages";
-import { baseAppContainerWithoutTabs } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
-import { Option, ServerErrorResponse } from "../../common/types";
-import Nav from "../../components/Nav/Nav";
-import { select } from "../../components/styles";
-import useAuth from "./AuthContext/AuthContext";
-import { LogInRequestData } from "./AuthContext/types";
+import { useRegisterForm } from "./forms";
+import { useRegisterMutation } from "./queries";
 import {
   button,
   errorStyle,
@@ -25,17 +23,7 @@ import {
   main,
   section,
 } from "./styles";
-
-interface RegisterRequestData extends LogInRequestData {
-  email: string;
-  nativeLanguages: string[];
-}
-
-interface RegisterFormData extends LogInRequestData {
-  email: string;
-  nativeLanguages: Option[];
-  confirmPassword: string;
-}
+import { RegisterFormValues } from "./types";
 
 /**
  * Register form component.
@@ -51,57 +39,36 @@ function RegisterPage() {
     handleSubmit,
     control,
     watch,
-  } = useForm<RegisterFormData>();
+  } = useRegisterForm();
 
-  const registerRequest = async (data: RegisterRequestData) => {
-    return await axiosApi.post("users/", data);
-  };
+  const onMutationError = useSetFormErrorOnRequestError(setError);
 
-  const { mutateAsync: registerMutateAsync } = useMutation(registerRequest);
+  const { mutateAsync } = useRegisterMutation({
+    onError: onMutationError,
+  });
 
   /**
-   * Form submit handler. Attempts user registration and sets any error messages sent by the server.
-   *  If successful, logs in the user.
+   * Form submit handler. Attempts user registration and logs in the user if
+   * successful.
    */
-  const onSubmit = async (data: RegisterFormData) => {
-    try {
-      const response = await registerMutateAsync({
+  const onSubmit = async (data: RegisterFormValues) => {
+    const response = await mutateAsync({
+      username: data.username,
+      password: data.password,
+      email: data.email,
+      nativeLanguages: data.nativeLanguages.map((language) => language.value),
+    });
+
+    if (response.status === 201) {
+      await login({
         username: data.username,
         password: data.password,
-        email: data.email,
-        nativeLanguages: data.nativeLanguages.map((language) => language.value),
       });
-      if (response.status === 201) {
-        await login({
-          username: data.username,
-          password: data.password,
-        });
-      }
-    } catch (e) {
-      if (axios.isAxiosError(e) && e.response) {
-        Object.entries(e.response.data as ServerErrorResponse).forEach(
-          ([key, value]) =>
-            value.forEach((valueError) =>
-              setError(
-                key as keyof RegisterFormData,
-                {
-                  type: "focus",
-                  // Capitalize the message's first letter before setting it as the error message
-                  message:
-                    valueError[0].toUpperCase() + valueError.substring(1),
-                },
-                {
-                  shouldFocus: true,
-                },
-              ),
-            ),
-        );
-      }
     }
   };
 
   return (
-    <animated.div css={baseAppContainerWithoutTabs} style={transitionProps}>
+    <AnimatedLayout style={transitionProps}>
       <Nav />
       <main css={main}>
         <section css={section}>
@@ -212,8 +179,10 @@ function RegisterPage() {
           </form>
         </section>
       </main>
-    </animated.div>
+    </AnimatedLayout>
   );
 }
+
+const AnimatedLayout = animated(SimpleLayout);
 
 export default RegisterPage;
