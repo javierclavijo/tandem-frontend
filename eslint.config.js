@@ -50,6 +50,11 @@ export default tseslint.config(
         },
       ],
       "react/jsx-boolean-value": ["error", "never"],
+      "react/jsx-no-constructed-context-values": "error",
+      "react/jsx-no-leaked-render": [
+        "error",
+        { validStrategies: ["coerce", "ternary"] },
+      ],
     },
     settings: { react: { version: "detect" } },
   },

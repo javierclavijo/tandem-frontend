@@ -88,7 +88,7 @@ const DescriptionTextarea = ({ data, queryKey }: DescriptionTextareaProps) => {
     <>
       <div css={titleContainer}>
         <h3>Description</h3>
-        {editEnabled && (
+        {!!editEnabled && (
           <EditButtons
             submitButtonRef={submitButtonRef}
             handleSubmit={handleSubmit}

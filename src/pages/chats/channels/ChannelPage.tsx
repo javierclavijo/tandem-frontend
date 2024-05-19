@@ -219,7 +219,7 @@ const ChannelPage = () => {
                         them to moderator. If they are a moderator, show a 
                         button to demote them to regular user. If they are 
                       an admin, show nothing. */}
-                    {userIsAdmin && membership.role === "U" && (
+                    {!!userIsAdmin && membership.role === "U" && (
                       <EditButton
                         onClick={async () =>
                           await handlePromoteUser(membership.url)
@@ -234,7 +234,7 @@ const ChannelPage = () => {
                       </EditButton>
                     )}
 
-                    {userIsAdmin && membership.role === "M" && (
+                    {!!userIsAdmin && membership.role === "M" && (
                       <EditButton
                         onClick={async () =>
                           await handleDemoteUser(membership.url)

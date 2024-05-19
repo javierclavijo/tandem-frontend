@@ -126,7 +126,7 @@ const UserPage = () => {
             </button>
           )}
 
-          {isEditable && (
+          {!!isEditable && (
             <button
               type="button"
               onClick={() => setPasswordChangeModalIsOpen(true)}
@@ -309,7 +309,7 @@ const UserPage = () => {
       {/* Language creation modal
           Only rendered if the profile is the session user's. Opens when the 
           'add a language' button is pressed. */}
-      {isEditable && (
+      {!!isEditable && (
         <NewLanguageModal
           isOpen={newLanguageModalIsOpen}
           onRequestClose={onNewLanguageModalClose}
@@ -320,7 +320,7 @@ const UserPage = () => {
           Only available if the profile is the session user's and a language has
           been selected for deletion (i.e. when a language's delete button has 
           been pressed.) */}
-      {isEditable && (
+      {!!isEditable && (
         <DeleteLanguageModal
           isOpen={selectedDeleteLanguage != null}
           languageName={selectedDeleteLanguageName}
@@ -332,7 +332,7 @@ const UserPage = () => {
       {/* Set password modal.
           Only rendered if the profile is the user's. Opens when the 'change 
           password' button is pressed. */}
-      {isEditable && (
+      {!!isEditable && (
         <SetPasswordModal
           isOpen={passwordChangeModalIsOpen}
           onRequestClose={onPasswordModalClose}

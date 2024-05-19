@@ -101,7 +101,7 @@ const SearchPage = () => {
                   <h3 css={homeSearchStyles.sectionHeading}>Search Results</h3>
                 </header>
                 <div css={homeSearchStyles.sectionItemsContainer}>
-                  {isUserSearch &&
+                  {!!isUserSearch &&
                     usersData?.pages.map((page, pageIndex) => (
                       <React.Fragment key={`page-${pageIndex}`}>
                         {[...page.results].map((element) => (
@@ -120,7 +120,7 @@ const SearchPage = () => {
                       </React.Fragment>
                     ))}
 
-                  {isChannelSearch &&
+                  {!!isChannelSearch &&
                     channelsData?.pages.map((page, pageIndex) => (
                       <React.Fragment key={`page-${pageIndex}`}>
                         {[...page.results].map((element) => (
@@ -137,7 +137,7 @@ const SearchPage = () => {
                       </React.Fragment>
                     ))}
 
-                  {isDataEmpty && <p css={notFoundText}>No results.</p>}
+                  {!!isDataEmpty && <p css={notFoundText}>No results.</p>}
                 </div>
               </section>
             </InfiniteScroll>

@@ -106,7 +106,7 @@ const NameInput = <TData,>({
           size={value.length}
           css={input}
         />
-        {editEnabled && (
+        {!!editEnabled && (
           <EditButtons
             submitButtonRef={submitButtonRef}
             handleSubmit={handleSubmit}
