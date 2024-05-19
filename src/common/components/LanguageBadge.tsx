@@ -1,31 +1,29 @@
-import { css } from "@emotion/react";
 import { FlagIcon } from "react-flag-kit";
 import { COLORS, LANGUAGE_INFO, LEVEL_NAMES } from "../constants";
 import { Language, ProficiencyLevel } from "../types";
+import Badge from "./Badge";
 import ProficiencyLevelIcon from "./icons/ProficiencyLevelIcon";
-import { badge } from "./styles";
 
 interface LanguageBadgeProps {
   language: Language;
   level: ProficiencyLevel;
-  bg: string;
+  backgroundColor: string;
 }
 
 /**
  * Renders a badge with the specified language and level names and icons, plus
  * the specified background color.
  */
-const LanguageBadge = ({ language, level, bg }: LanguageBadgeProps) => {
-  const container = css`
-    ${badge};
-    background-color: ${bg};
-  `;
-
+const LanguageBadge = ({
+  language,
+  level,
+  backgroundColor,
+}: LanguageBadgeProps) => {
   const levelDisplayName = LEVEL_NAMES[level];
   const languageInfo = LANGUAGE_INFO[language];
 
   return (
-    <div css={container}>
+    <Badge style={{ backgroundColor }}>
       <FlagIcon code={languageInfo.flagIconCode} size={24} />
       <span>{languageInfo.displayName}</span>
       <span>|</span>
@@ -36,7 +34,7 @@ const LanguageBadge = ({ language, level, bg }: LanguageBadgeProps) => {
         width={24}
       />
       <span>{levelDisplayName}</span>
-    </div>
+    </Badge>
   );
 };
 

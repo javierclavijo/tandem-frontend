@@ -174,12 +174,15 @@ const ChannelPage = () => {
           </p>
 
           {userIsStaff ? (
-            <ChannelEditLanguageBadge data={data} bg={COLORS.DARK} />
+            <ChannelEditLanguageBadge
+              data={data}
+              backgroundColor={COLORS.DARK}
+            />
           ) : (
             <LanguageBadge
               language={data.language}
               level={data.level}
-              bg={COLORS.DARK}
+              backgroundColor={COLORS.DARK}
             />
           )}
 

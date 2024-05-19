@@ -35,7 +35,7 @@ export const useAllChatList = () => {
       // chats according to their latest messages
       onSuccess: (data) =>
         data.sort((a, b) => messageSortFn(a.messages[0], b.messages[0])),
-      staleTime: 15000,
+      staleTime: 10000,
       enabled: !!user,
     },
   );

@@ -5,17 +5,6 @@ import { COLORS, FONT_SIZES } from "../constants";
 // TODO: substitute all these css declarations with styled components or CSS
 // modules.
 
-export const badge = css`
-  display: flex;
-  border-radius: 5px;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.25rem 0.5rem;
-  width: fit-content;
-  height: 2rem;
-`;
-
 export const select: StylesConfig = {
   // Styles for react-select component
   menu: (provided) => ({

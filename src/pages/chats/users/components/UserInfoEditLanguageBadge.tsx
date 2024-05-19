@@ -2,12 +2,10 @@ import { Xmark } from "iconoir-react";
 import { useState } from "react";
 import { FlagIcon } from "react-flag-kit";
 import Select, { SingleValue, StylesConfig } from "react-select";
+import Badge from "../../../../common/components/Badge";
 import EditButton from "../../../../common/components/EditButton";
 import ProficiencyLevelIcon from "../../../../common/components/icons/ProficiencyLevelIcon";
-import {
-  badge,
-  noBorderAndBgSelectWhite,
-} from "../../../../common/components/styles";
+import { noBorderAndBgSelectWhite } from "../../../../common/components/styles";
 import {
   COLORS,
   LANGUAGE_INFO,
@@ -54,7 +52,7 @@ const UserInfoEditLanguageBadge = ({
   };
 
   return (
-    <div css={badge} style={{ backgroundColor }}>
+    <Badge style={{ backgroundColor }}>
       <FlagIcon code={languageInfo.flagIconCode} size={24} />
       <span>{languageInfo.displayName}</span>
       <span>|</span>
@@ -76,7 +74,7 @@ const UserInfoEditLanguageBadge = ({
       <EditButton onClick={onDelete}>
         <Xmark color={COLORS.WHITE} width="1.5rem" height="1.5rem" />
       </EditButton>
-    </div>
+    </Badge>
   );
 };
 

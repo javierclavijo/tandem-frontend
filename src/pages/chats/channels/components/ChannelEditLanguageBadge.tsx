@@ -1,12 +1,9 @@
-import { css } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { FlagIcon } from "react-flag-kit";
 import Select, { StylesConfig } from "react-select";
+import Badge from "../../../../common/components/Badge";
 import ProficiencyLevelIcon from "../../../../common/components/icons/ProficiencyLevelIcon";
-import {
-  badge,
-  noBorderAndBgSelectWhite,
-} from "../../../../common/components/styles";
+import { noBorderAndBgSelectWhite } from "../../../../common/components/styles";
 import {
   COLORS,
   LANGUAGE_INFO,
@@ -19,7 +16,7 @@ import { useUpdateLanguageMutation } from "../queries";
 
 interface LanguageBadgeProps {
   data: UserLanguage;
-  bg: string;
+  backgroundColor: string;
 }
 
 // TODO: review this and the other badge components. Are they duplicated?
@@ -27,7 +24,10 @@ interface LanguageBadgeProps {
  * Badge-like component for channel detail view. Displays the channel's
  * language's name and icon and allows selecting the language and level.
  */
-const ChannelEditLanguageBadge = ({ data, bg }: LanguageBadgeProps) => {
+const ChannelEditLanguageBadge = ({
+  data,
+  backgroundColor,
+}: LanguageBadgeProps) => {
   // TODO: use RHF
   const [languageValue, setLanguageValue] = useState<Option<Language> | null>(
     null,
@@ -38,7 +38,6 @@ const ChannelEditLanguageBadge = ({ data, bg }: LanguageBadgeProps) => {
 
   const updateMutation = useUpdateLanguageMutation(data?.id);
 
-  // TODO: abstract union type
   const handleLanguageChange = async (option: Option<Language> | null) => {
     if (option == null) {
       return;
@@ -55,7 +54,6 @@ const ChannelEditLanguageBadge = ({ data, bg }: LanguageBadgeProps) => {
     await updateMutation.mutateAsync({ url: data.url, level: option.value });
   };
 
-  // TODO: this should be cleaned up once the form has been refactored using RHF.
   useEffect(() => {
     // Get the options which correspond to the data values and set them as the
     // selects' values
@@ -71,22 +69,15 @@ const ChannelEditLanguageBadge = ({ data, bg }: LanguageBadgeProps) => {
     }
   }, [data.language, data.level]);
 
-  // TODO: refactor
-  const container = css`
-    ${badge};
-    background-color: ${bg};
-  `;
-
   const languageInfo = LANGUAGE_INFO[data.language];
 
   return (
-    <div css={container}>
+    <Badge style={{ backgroundColor }}>
       <FlagIcon code={languageInfo.flagIconCode} size={24} />
       <Select<Option<Language>>
         id={`language-${data.id}`}
         value={languageValue}
         onChange={async (option) => {
-          // TODO: move handlers like this one to component body.
           setLanguageValue(option);
           await handleLanguageChange(option);
         }}
@@ -112,7 +103,7 @@ const ChannelEditLanguageBadge = ({ data, bg }: LanguageBadgeProps) => {
           noBorderAndBgSelectWhite as StylesConfig<Option<ProficiencyLevel>>
         }
       />
-    </div>
+    </Badge>
   );
 };
 

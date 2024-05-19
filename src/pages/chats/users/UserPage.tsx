@@ -194,7 +194,7 @@ const UserPage = () => {
                       <LanguageBadge
                         language={language.language}
                         level={language.level}
-                        bg={COLORS.DARK}
+                        backgroundColor={COLORS.DARK}
                         key={language.id}
                       />
                     ) : (
@@ -224,7 +224,7 @@ const UserPage = () => {
                   <LanguageBadge
                     language={language.language}
                     level={language.level}
-                    bg={COLORS.DARK}
+                    backgroundColor={COLORS.DARK}
                     key={language.id}
                   />
                 ))
