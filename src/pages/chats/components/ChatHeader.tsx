@@ -24,7 +24,7 @@ const ChatHeader = ({ title, link, image, actions }: ChatHeaderProps) => {
         <BackButton />
         <div css={linkContainer}>
           <div css={innerContainer}>
-            {image !== null && (
+            {image != null && (
               <ThumbnailContainer css={imageContainer}>
                 <Thumbnail src={image} />
               </ThumbnailContainer>
