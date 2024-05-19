@@ -2,6 +2,7 @@ import { Interpolation, Theme } from "@emotion/react";
 import { FlagIconCode } from "react-flag-kit";
 import { FieldPath, FieldValues } from "react-hook-form";
 import { ChatMessage, ChatType, UserLanguage } from "../pages/chats/types";
+import { LabelOption } from "./components/Select/types";
 
 export type NonNativeProficiencyLevel = "BE" | "IN" | "AD";
 export type ProficiencyLevel = NonNativeProficiencyLevel | "NA";
@@ -82,11 +83,6 @@ export interface LanguageInfo {
   displayName: string;
 }
 
-export interface Option<T extends string = string> {
-  value: T;
-  label: string;
-}
-
 export type ServerErrorResponse = Readonly<Record<string, string[]>>;
 
 export type UseFormSetErrorName<TData extends FieldValues> =
@@ -104,5 +100,5 @@ export type ImgProps = React.DetailedHTMLProps<
 >;
 
 export type OptionsObject<TData extends string> = Readonly<
-  Record<TData, Option<TData>>
+  Record<TData, LabelOption<TData>>
 >;

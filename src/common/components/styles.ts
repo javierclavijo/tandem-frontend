@@ -1,75 +1,8 @@
 import { css } from "@emotion/react";
-import { StylesConfig } from "react-select";
 import { COLORS, FONT_SIZES } from "../constants";
 
 // TODO: substitute all these css declarations with styled components or CSS
 // modules.
-
-export const select: StylesConfig = {
-  // Styles for react-select component
-  menu: (provided) => ({
-    ...provided,
-    width: "max-content",
-    minWidth: "100%",
-  }),
-};
-
-export const searchSelect: StylesConfig = {
-  // Styles for react-select component
-  menu: (provided) => ({
-    ...provided,
-    width: "max-content",
-    minWidth: "100%",
-  }),
-  container: (provided) => ({
-    ...provided,
-    width: "100%",
-  }),
-};
-
-export const noBorderAndBgSelectWhite: StylesConfig = {
-  // Styles for react-select component
-  menu: (provided) => ({
-    ...provided,
-    width: "max-content",
-    minWidth: "100%",
-    color: COLORS.DARK,
-  }),
-  control: (provided) => ({
-    ...provided,
-    backgroundColor: "none",
-    border: "none",
-    boxShadow: "none",
-  }),
-  dropdownIndicator: (provided) => ({
-    ...provided,
-    color: COLORS.WHITE,
-  }),
-  singleValue: (provided) => ({
-    ...provided,
-    color: COLORS.WHITE,
-  }),
-  indicatorSeparator: (provided) => ({
-    ...provided,
-    display: "none",
-  }),
-};
-
-export const noBorderAndBgSelectDark: StylesConfig = {
-  ...noBorderAndBgSelectWhite,
-  dropdownIndicator: (provided) => ({
-    ...provided,
-    color: COLORS.DARK,
-  }),
-  singleValue: (provided) => ({
-    ...provided,
-    color: COLORS.DARK,
-  }),
-  container: (provided) => ({
-    ...provided,
-    flex: "1 0 auto",
-  }),
-};
 
 export const buttonWithoutBackgroundAndBorder = css`
   border: none;

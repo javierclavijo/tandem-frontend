@@ -158,20 +158,17 @@ export const editElement = css`
   }
 `;
 
-export const buttonHover = css`
-  color: ${COLORS.WHITE};
-  border-bottom: 2px solid ${COLORS.SECONDARY}00;
-
-  transition: border-bottom 0.1s;
-  &:hover {
-    border-bottom: 2px solid ${COLORS.SECONDARY}90;
-  }
-`;
-
 export const infoButton = css`
   ${buttonWithoutBackgroundAndBorder};
-  ${buttonHover};
+
+  color: ${COLORS.WHITE};
+  border-bottom: 2px solid ${COLORS.SECONDARY}00;
   font-size: ${FONT_SIZES.S};
   height: fit-content;
   padding: 0.25rem;
+  transition: border-bottom 0.1s;
+
+  &:hover {
+    border-bottom: 2px solid ${COLORS.SECONDARY}90;
+  }
 `;

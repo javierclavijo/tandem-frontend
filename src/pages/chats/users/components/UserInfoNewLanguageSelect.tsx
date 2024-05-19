@@ -1,15 +1,15 @@
 import { css } from "@emotion/react";
 import { useCallback, useState } from "react";
-import Select, { StylesConfig } from "react-select";
 import EditButtons from "../../../../common/components/EditButtons";
-import { select } from "../../../../common/components/styles";
+import BaseSelect from "../../../../common/components/Select/BaseSelect";
+import { LabelOption } from "../../../../common/components/Select/types";
 import {
   COLORS,
   languageOptionsArray,
   levelOptionsArray,
 } from "../../../../common/constants";
 import useAuth from "../../../../common/context/AuthContext/AuthContext";
-import { Language, Option, ProficiencyLevel } from "../../../../common/types";
+import { Language, ProficiencyLevel } from "../../../../common/types";
 import { useCreateUserLanguageMutation } from "../queries";
 
 interface UserInfoNewLanguageSelectProps {
@@ -27,12 +27,10 @@ const UserInfoNewLanguageSelect = ({
   const mutation = useCreateUserLanguageMutation(user?.id);
 
   // TODO: use RHF, move this stuff to NewLanguageModal
-  const [languageValue, setLanguageValue] = useState<Option<Language> | null>(
-    null,
-  );
-  const [levelValue, setLevelValue] = useState<Option<ProficiencyLevel> | null>(
-    null,
-  );
+  const [languageValue, setLanguageValue] =
+    useState<LabelOption<Language> | null>(null);
+  const [levelValue, setLevelValue] =
+    useState<LabelOption<ProficiencyLevel> | null>(null);
   const [error, setError] = useState<string>("");
 
   const clearError = () => setError("");
@@ -57,7 +55,7 @@ const UserInfoNewLanguageSelect = ({
   return (
     <div css={outerContainer}>
       <div css={innerContainer}>
-        <Select<Option<Language>>
+        <BaseSelect<LabelOption<Language>>
           id="language-new"
           value={languageValue}
           onChange={setLanguageValue}
@@ -70,16 +68,14 @@ const UserInfoNewLanguageSelect = ({
             )
           }
           placeholder="Language"
-          styles={select as StylesConfig<Option<Language>>}
         />
-        <Select<Option<ProficiencyLevel>>
+        <BaseSelect<LabelOption<ProficiencyLevel>>
           id="level-new"
           value={levelValue}
           onChange={setLevelValue}
           onFocus={clearError}
           options={levelOptionsArray}
           placeholder="Level"
-          styles={select as StylesConfig<Option<ProficiencyLevel>>}
         />
 
         {/* TODO: substitute for regular buttons */}

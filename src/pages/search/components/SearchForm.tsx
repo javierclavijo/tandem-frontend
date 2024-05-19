@@ -4,23 +4,20 @@ import { useEffect } from "react";
 import { DebounceInput } from "react-debounce-input";
 import { Controller } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
-import Select, { StylesConfig } from "react-select";
+import { StylesConfig } from "react-select";
+import BaseSelect from "../../../common/components/Select/BaseSelect";
+import DropdownSelect from "../../../common/components/Select/DropdownSelect";
+import { LabelOption } from "../../../common/components/Select/types";
 import {
-  noBorderAndBgSelectDark,
   searchInput,
   searchInputElement,
-  searchSelect,
 } from "../../../common/components/styles";
 import {
   COLORS,
   languageOptionsArray,
   levelOptionsArray,
 } from "../../../common/constants";
-import {
-  Language,
-  NonNativeProficiencyLevel,
-  Option,
-} from "../../../common/types";
+import { Language, NonNativeProficiencyLevel } from "../../../common/types";
 import { ChatType } from "../../chats/types";
 import { searchTypeOptionsArray, useSearchPanelForm } from "../forms";
 import { onSearchSubmit } from "../functions";
@@ -76,12 +73,12 @@ const SearchForm = () => {
             control={control}
             name="type"
             render={({ field }) => (
-              <Select<Option<ChatType>>
+              <DropdownSelect<LabelOption<ChatType>>
                 {...field}
                 options={searchTypeOptionsArray}
                 placeholder="Type"
                 styles={
-                  noBorderAndBgSelectDark as StylesConfig<Option<ChatType>>
+                  noBorderAndBgSelectDark as StylesConfig<LabelOption<ChatType>>
                 }
               />
             )}
@@ -104,13 +101,15 @@ const SearchForm = () => {
               control={control}
               name="channelLanguages"
               render={({ field }) => (
-                <Select<Option<Language>, true>
+                <BaseSelect<LabelOption<Language>, true>
                   {...field}
                   isMulti
                   options={languageOptionsArray}
                   placeholder="Language(s)"
                   aria-label="Channel languages"
-                  styles={searchSelect as StylesConfig<Option<Language>>}
+                  styles={
+                    fullWidthSelect as StylesConfig<LabelOption<Language>>
+                  }
                 />
               )}
             />
@@ -120,7 +119,7 @@ const SearchForm = () => {
               control={control}
               name="channelLevels"
               render={({ field }) => (
-                <Select<Option<NonNativeProficiencyLevel>, true>
+                <BaseSelect<LabelOption<NonNativeProficiencyLevel>, true>
                   {...field}
                   isMulti
                   options={levelOptionsArray}
@@ -130,8 +129,8 @@ const SearchForm = () => {
                   placeholder="Level(s)"
                   aria-label="Proficiency levels of channel languages"
                   styles={
-                    searchSelect as StylesConfig<
-                      Option<NonNativeProficiencyLevel>
+                    fullWidthSelect as StylesConfig<
+                      LabelOption<NonNativeProficiencyLevel>
                     >
                   }
                 />
@@ -148,7 +147,7 @@ const SearchForm = () => {
               control={control}
               name="nativeLanguages"
               render={({ field }) => (
-                <Select<Option<Language>, true>
+                <BaseSelect<LabelOption<Language>, true>
                   {...field}
                   isMulti
                   options={languageOptionsArray}
@@ -157,7 +156,9 @@ const SearchForm = () => {
                   }
                   placeholder="Native language(s)"
                   aria-label="Users' native languages"
-                  styles={searchSelect as StylesConfig<Option<Language>>}
+                  styles={
+                    fullWidthSelect as StylesConfig<LabelOption<Language>>
+                  }
                 />
               )}
             />
@@ -168,7 +169,7 @@ const SearchForm = () => {
               control={control}
               name="learningLanguages"
               render={({ field }) => (
-                <Select<Option<Language>, true>
+                <BaseSelect<LabelOption<Language>, true>
                   {...field}
                   isMulti
                   options={languageOptionsArray}
@@ -177,7 +178,9 @@ const SearchForm = () => {
                   }
                   placeholder="Is learning..."
                   aria-label="Users' target languages"
-                  styles={searchSelect as StylesConfig<Option<Language>>}
+                  styles={
+                    fullWidthSelect as StylesConfig<LabelOption<Language>>
+                  }
                 />
               )}
             />
@@ -187,7 +190,7 @@ const SearchForm = () => {
               control={control}
               name="learningLanguageLevels"
               render={({ field }) => (
-                <Select<Option<NonNativeProficiencyLevel>, true>
+                <BaseSelect<LabelOption<NonNativeProficiencyLevel>, true>
                   {...field}
                   isMulti
                   options={levelOptionsArray}
@@ -197,8 +200,8 @@ const SearchForm = () => {
                   placeholder="Level(s)"
                   aria-label="Proficiency levels of users' target languages"
                   styles={
-                    searchSelect as StylesConfig<
-                      Option<NonNativeProficiencyLevel>
+                    fullWidthSelect as StylesConfig<
+                      LabelOption<NonNativeProficiencyLevel>
                     >
                   }
                 />
@@ -250,5 +253,27 @@ const filterSelectsContainer = css`
     flex-direction: row;
   }
 `;
+
+const noBorderAndBgSelectDark: StylesConfig = {
+  dropdownIndicator: (provided) => ({
+    ...provided,
+    color: COLORS.DARK,
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: COLORS.DARK,
+  }),
+  container: (provided) => ({
+    ...provided,
+    flex: "1 0 auto",
+  }),
+};
+
+const fullWidthSelect: StylesConfig = {
+  container: (provided) => ({
+    ...provided,
+    width: "100%",
+  }),
+};
 
 export default SearchForm;

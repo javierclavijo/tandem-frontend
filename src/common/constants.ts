@@ -1,8 +1,8 @@
+import { LabelOption } from "./components/Select/types";
 import {
   Language,
   LanguageInfo,
   NonNativeProficiencyLevel,
-  Option,
   OptionsObject,
   ProficiencyLevel,
 } from "./types";
@@ -49,7 +49,7 @@ export const languageOptions: OptionsObject<Language> = {
 
 export const languageKeys: string[] = [...Object.keys(languageOptions)];
 
-export const languageOptionsArray: Option<Language>[] = [
+export const languageOptionsArray: LabelOption<Language>[] = [
   ...Object.values(languageOptions),
 ];
 
@@ -61,6 +61,6 @@ export const levelOptions: OptionsObject<NonNativeProficiencyLevel> = {
 
 export const levelKeys: string[] = [...Object.keys(levelOptions)];
 
-export const levelOptionsArray: Option<NonNativeProficiencyLevel>[] = [
+export const levelOptionsArray: LabelOption<NonNativeProficiencyLevel>[] = [
   ...Object.values(levelOptions),
 ];

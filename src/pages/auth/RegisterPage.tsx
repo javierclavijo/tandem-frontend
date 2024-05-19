@@ -2,11 +2,10 @@ import { ErrorMessage } from "@hookform/error-message";
 import { Helmet } from "react-helmet-async";
 import { Controller } from "react-hook-form";
 import { Link } from "react-router-dom";
-import Select from "react-select";
 import { animated } from "react-spring";
 import { SimpleLayout } from "../../common/components/Layout";
 import Nav from "../../common/components/Nav/Nav";
-import { select } from "../../common/components/styles";
+import BaseSelect from "../../common/components/Select/BaseSelect";
 import { languageOptionsArray } from "../../common/constants";
 import useAuth from "../../common/context/AuthContext/AuthContext";
 import { useSetFormErrorOnRequestError } from "../../common/hooks";
@@ -159,14 +158,13 @@ const RegisterPage = () => {
                     required: "One or more native languages must be selected.",
                   }}
                   render={({ field }) => (
-                    <Select
+                    <BaseSelect
                       id="native-languages"
                       isMulti
                       {...field}
                       value={field.value}
                       options={languageOptionsArray}
                       placeholder="Native languages"
-                      styles={select}
                     />
                   )}
                 />

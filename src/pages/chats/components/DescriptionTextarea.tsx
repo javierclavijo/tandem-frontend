@@ -110,6 +110,7 @@ const DescriptionTextarea = ({ data, queryKey }: DescriptionTextareaProps) => {
         maxRows={8}
         css={editElement}
         placeholder="Add a description…"
+        spellCheck={false}
       />
       {error.length !== 0 && <p css={errorText}>{error}</p>}
     </>

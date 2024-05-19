@@ -1,17 +1,18 @@
 import { Xmark } from "iconoir-react";
 import { useState } from "react";
 import { FlagIcon } from "react-flag-kit";
-import Select, { SingleValue, StylesConfig } from "react-select";
+import { SingleValue } from "react-select";
 import Badge from "../../../../common/components/Badge";
 import EditButton from "../../../../common/components/EditButton";
+import DropdownSelect from "../../../../common/components/Select/DropdownSelect";
+import { LabelOption } from "../../../../common/components/Select/types";
 import ProficiencyLevelIcon from "../../../../common/components/icons/ProficiencyLevelIcon";
-import { noBorderAndBgSelectWhite } from "../../../../common/components/styles";
 import {
   COLORS,
   LANGUAGE_INFO,
   levelOptionsArray,
 } from "../../../../common/constants";
-import { Language, Option, ProficiencyLevel } from "../../../../common/types";
+import { Language, ProficiencyLevel } from "../../../../common/types";
 import { useUpdateUserLanguageMutation } from "../queries";
 
 interface LanguageBadgeProps {
@@ -37,13 +38,16 @@ const UserInfoEditLanguageBadge = ({
 }: LanguageBadgeProps) => {
   const mutation = useUpdateUserLanguageMutation(url);
 
-  const [levelValue, setLevelValue] = useState<Option<ProficiencyLevel> | null>(
-    () => levelOptionsArray.find((o) => o.value === level) ?? null,
-  );
+  const [levelValue, setLevelValue] =
+    useState<LabelOption<ProficiencyLevel> | null>(
+      () => levelOptionsArray.find((o) => o.value === level) ?? null,
+    );
 
   const languageInfo = LANGUAGE_INFO[language];
 
-  const onChange = async (option: SingleValue<Option<ProficiencyLevel>>) => {
+  const onChange = async (
+    option: SingleValue<LabelOption<ProficiencyLevel>>,
+  ) => {
     if (option != null) {
       const requestData = { level: option.value };
       await mutation.mutateAsync(requestData);
@@ -62,14 +66,11 @@ const UserInfoEditLanguageBadge = ({
         height={24}
         width={24}
       />
-      <Select<Option<ProficiencyLevel>>
+      <DropdownSelect<LabelOption<ProficiencyLevel>>
         id={`level-${id}`}
         value={levelValue}
         onChange={onChange}
         options={levelOptionsArray}
-        styles={
-          noBorderAndBgSelectWhite as StylesConfig<Option<ProficiencyLevel>>
-        }
       />
       <EditButton onClick={onDelete}>
         <Xmark color={COLORS.WHITE} width="1.5rem" height="1.5rem" />

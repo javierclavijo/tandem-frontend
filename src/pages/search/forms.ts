@@ -1,9 +1,9 @@
 import { UseFormProps, useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
+import { LabelOption } from "../../common/components/Select/types";
 import {
   Language,
   NonNativeProficiencyLevel,
-  Option,
   OptionsObject,
 } from "../../common/types";
 import { ChatType } from "../chats/types";
@@ -38,7 +38,7 @@ const getDefaultSearchPanelFormValues = (
 
     const nativeLanguageOptions = getOptionsFromLanguages(nativeLanguages);
     const learningLanguageOptions = getOptionsFromLanguages(learningLanguages);
-    const learningLanguageLevelOptions: Option<NonNativeProficiencyLevel>[] =
+    const learningLanguageLevelOptions: LabelOption<NonNativeProficiencyLevel>[] =
       getOptionsFromLevels(learningLanguageLevels);
 
     return {
@@ -51,9 +51,9 @@ const getDefaultSearchPanelFormValues = (
   } else if (type === "channels") {
     const { languages, levels } = getChannelExclusiveSearchParams(searchParams);
 
-    const channelLanguages: Option<Language>[] =
+    const channelLanguages: LabelOption<Language>[] =
       getOptionsFromLanguages(languages);
-    const channelLevels: Option<NonNativeProficiencyLevel>[] =
+    const channelLevels: LabelOption<NonNativeProficiencyLevel>[] =
       getOptionsFromLevels(levels);
 
     return {

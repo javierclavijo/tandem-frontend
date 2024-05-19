@@ -1,5 +1,5 @@
+import { LabelOption } from "../../common/components/Select/types";
 import { LogInRequestData } from "../../common/context/AuthContext/types";
-import { Option } from "../../common/types";
 
 export interface RegisterRequestData extends LogInRequestData {
   email: string;
@@ -8,6 +8,6 @@ export interface RegisterRequestData extends LogInRequestData {
 
 export interface RegisterFormValues extends LogInRequestData {
   email: string;
-  nativeLanguages: Option[];
+  nativeLanguages: LabelOption[];
   confirmPassword: string;
 }
