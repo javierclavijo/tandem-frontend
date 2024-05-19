@@ -30,7 +30,7 @@ const Nav = () => {
               <>
                 <li>
                   <NavLink
-                    to={"/"}
+                    to="/"
                     css={link}
                     style={({ isActive }) => (isActive ? activeNavLink : {})}
                   >
@@ -40,7 +40,7 @@ const Nav = () => {
                 </li>
                 <li>
                   <NavLink
-                    to={"/chats"}
+                    to="/chats"
                     css={link}
                     style={({ isActive }) => (isActive ? activeNavLink : {})}
                     end
@@ -55,7 +55,7 @@ const Nav = () => {
                 </li>
                 <li>
                   <NavLink
-                    to={"/search"}
+                    to="/search"
                     css={link}
                     style={({ isActive }) => (isActive ? activeNavLink : {})}
                   >
@@ -112,7 +112,7 @@ const Nav = () => {
             <>
               <li>
                 <NavLink
-                  to={"/auth/login"}
+                  to="/auth/login"
                   css={link}
                   style={({ isActive }) => (isActive ? activeNavLink : {})}
                 >
@@ -121,7 +121,7 @@ const Nav = () => {
               </li>
               <li>
                 <NavLink
-                  to={"/auth/register"}
+                  to="/auth/register"
                   css={link}
                   style={({ isActive }) => (isActive ? activeNavLink : {})}
                 >

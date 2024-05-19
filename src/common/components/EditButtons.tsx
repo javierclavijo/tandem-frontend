@@ -21,10 +21,10 @@ const EditButtons = ({
 }: EditButtonsProps) => (
   <div css={container}>
     <EditButton onClick={handleSubmit} ref={submitButtonRef}>
-      <Check color={color} width={"1.5rem"} height={"1.5rem"} />
+      <Check color={color} width="1.5rem" height="1.5rem" />
     </EditButton>
     <EditButton onClick={handleCancel}>
-      <Xmark color={color} width={"1.5rem"} height={"1.5rem"} />
+      <Xmark color={color} width="1.5rem" height="1.5rem" />
     </EditButton>
   </div>
 );

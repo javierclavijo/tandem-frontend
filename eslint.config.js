@@ -40,6 +40,15 @@ export default tseslint.config(
           unnamedComponents: "arrow-function",
         },
       ],
+      "react/hook-use-state": "error",
+      "react/jsx-curly-brace-presence": [
+        "error",
+        {
+          props: "never",
+          children: "never",
+          propElementValues: "always",
+        },
+      ],
     },
     settings: { react: { version: "detect" } },
   },

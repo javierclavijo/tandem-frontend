@@ -58,7 +58,7 @@ const UserInfoNewLanguageSelect = ({
     <div css={outerContainer}>
       <div css={innerContainer}>
         <Select<Option<Language>>
-          id={`language-new`}
+          id="language-new"
           value={languageValue}
           onChange={setLanguageValue}
           onFocus={clearError}
@@ -73,7 +73,7 @@ const UserInfoNewLanguageSelect = ({
           styles={select as StylesConfig<Option<Language>>}
         />
         <Select<Option<ProficiencyLevel>>
-          id={`level-new`}
+          id="level-new"
           value={levelValue}
           onChange={setLevelValue}
           onFocus={clearError}

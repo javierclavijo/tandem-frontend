@@ -185,7 +185,7 @@ const ChannelPage = () => {
 
           <section css={descriptionSection}>
             {userIsStaff && data ? (
-              <DescriptionTextarea data={data} queryKey={"channels"} />
+              <DescriptionTextarea data={data} queryKey="channels" />
             ) : (
               <>
                 <h3>Description</h3>

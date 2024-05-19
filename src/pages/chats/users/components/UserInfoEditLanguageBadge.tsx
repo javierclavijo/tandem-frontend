@@ -74,7 +74,7 @@ const UserInfoEditLanguageBadge = ({
         }
       />
       <EditButton onClick={onDelete}>
-        <Xmark color={COLORS.WHITE} width={"1.5rem"} height={"1.5rem"} />
+        <Xmark color={COLORS.WHITE} width="1.5rem" height="1.5rem" />
       </EditButton>
     </div>
   );

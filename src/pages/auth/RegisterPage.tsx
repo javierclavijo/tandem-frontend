@@ -180,7 +180,7 @@ const RegisterPage = () => {
               <button type="submit" css={button}>
                 Sign in
               </button>
-              <Link to={"/auth/login"} css={link}>
+              <Link to="/auth/login" css={link}>
                 Log in
               </Link>
             </form>

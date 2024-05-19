@@ -50,7 +50,7 @@ const ImageInput = ({ image, url, invalidateQueryKey }: ImageInputProps) => {
         aria-label="Update profile image"
       />
       <label
-        htmlFor={"image"}
+        htmlFor="image"
         css={label}
         style={{ opacity: isLabelDisplayed ? 1 : 0 }}
       >

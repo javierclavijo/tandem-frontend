@@ -78,7 +78,7 @@ const LoginPage = () => {
               <button type="submit" css={button}>
                 Log in
               </button>
-              <Link to={"/auth/register"} css={link}>
+              <Link to="/auth/register" css={link}>
                 Sign in
               </Link>
             </form>

@@ -234,7 +234,7 @@ const UserPage = () => {
 
           <section css={descriptionSection}>
             {isEditable ? (
-              <DescriptionTextarea data={data} queryKey={"users"} />
+              <DescriptionTextarea data={data} queryKey="users" />
             ) : (
               <>
                 <h3>Description</h3>

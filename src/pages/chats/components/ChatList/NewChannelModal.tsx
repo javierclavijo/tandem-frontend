@@ -85,7 +85,7 @@ const NewChannelModal = ({
               rules={{ required: "Language is required" }}
               render={({ field }) => (
                 <Select
-                  id={`new-channel-language`}
+                  id="new-channel-language"
                   {...field}
                   options={languageOptionsArray}
                   placeholder="Language"
@@ -106,7 +106,7 @@ const NewChannelModal = ({
               rules={{ required: "Proficiency level is required" }}
               render={({ field }) => (
                 <Select<Option>
-                  id={`new-channel-level`}
+                  id="new-channel-level"
                   {...field}
                   options={levelOptionsArray}
                   placeholder="Level"
