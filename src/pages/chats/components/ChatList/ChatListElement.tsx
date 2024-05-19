@@ -2,8 +2,8 @@ import { css } from "@emotion/react";
 import { DateTime } from "luxon";
 import { NavLink } from "react-router-dom";
 import ResponsiveEllipsis from "../../../../common/components/ResponsiveEllipsis";
-import ChatThumbnail from "../../../../common/components/UserThumbnail";
-import { thumbnailContainer } from "../../../../common/components/styles";
+import Thumbnail from "../../../../common/components/Thumbnail/Thumbnail";
+import ThumbnailContainer from "../../../../common/components/Thumbnail/ThumbnailContainer";
 import { COLORS, FONT_SIZES } from "../../../../common/constants";
 import { elementContentContainer, link } from "../../styles";
 
@@ -46,9 +46,9 @@ const ChatListElement = ({
   return (
     <li css={[outerContainer, selected ? selectedOuterContainer : undefined]}>
       <div css={elementContentContainer}>
-        <div css={thumbnailContainer}>
-          <ChatThumbnail src={chatImage} />
-        </div>
+        <ThumbnailContainer>
+          <Thumbnail src={chatImage} />
+        </ThumbnailContainer>
         <div css={innerContainer}>
           <span css={title}>
             <span>{chatName}</span>

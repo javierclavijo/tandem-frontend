@@ -118,7 +118,6 @@ const UserPage = () => {
     setHeader({
       title: "User info",
       actions: (
-        // TODO: this doesn't look too good (open-closed).
         <>
           {!isFriend && (
             <button type="button" onClick={onChatCreateClick} css={infoButton}>
@@ -194,7 +193,7 @@ const UserPage = () => {
                       <LanguageBadge
                         language={language.language}
                         level={language.level}
-                        bg={COLORS.DARK}
+                        backgroundColor={COLORS.DARK}
                         key={language.id}
                       />
                     ) : (
@@ -224,7 +223,7 @@ const UserPage = () => {
                   <LanguageBadge
                     language={language.language}
                     level={language.level}
-                    bg={COLORS.DARK}
+                    backgroundColor={COLORS.DARK}
                     key={language.id}
                   />
                 ))

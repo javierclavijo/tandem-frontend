@@ -1,9 +1,6 @@
 import { UseInfiniteQueryOptions } from "react-query";
-import {
-  Language,
-  NonNativeProficiencyLevel,
-  Option,
-} from "../../common/types";
+import { LabelOption } from "../../common/components/Select/types";
+import { Language, NonNativeProficiencyLevel } from "../../common/types";
 import { ChatType } from "../chats/types";
 
 export interface SearchResponse<T> {
@@ -37,15 +34,15 @@ export type InfiniteQueryOptions<TData> = Omit<
 >;
 
 export interface SearchPanelFormValues {
-  type: Option<ChatType>;
+  type: LabelOption<ChatType>;
   search: string;
 
   // User search.
-  nativeLanguages?: Option<Language>[];
-  learningLanguages?: Option<Language>[];
-  learningLanguageLevels?: Option<NonNativeProficiencyLevel>[];
+  nativeLanguages?: LabelOption<Language>[];
+  learningLanguages?: LabelOption<Language>[];
+  learningLanguageLevels?: LabelOption<NonNativeProficiencyLevel>[];
 
   // Channel search.
-  channelLanguages?: Option<Language>[];
-  channelLevels?: Option<NonNativeProficiencyLevel>[];
+  channelLanguages?: LabelOption<Language>[];
+  channelLevels?: LabelOption<NonNativeProficiencyLevel>[];
 }

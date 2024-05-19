@@ -1,14 +1,11 @@
 import { css } from "@emotion/react";
 import { NavArrowRight } from "iconoir-react";
 import { Link } from "react-router-dom";
-import {
-  containerWithLink,
-  thumbnailContainer,
-} from "../../../common/components/styles";
+import Thumbnail from "../../../common/components/Thumbnail/Thumbnail";
+import ThumbnailContainer from "../../../common/components/Thumbnail/ThumbnailContainer";
 import { COLORS } from "../../../common/constants";
+import { linkContainer } from "../../../common/styles";
 import { infoListElementInnerContainer } from "../styles";
-
-import ChatThumbnail from "../../../common/components/UserThumbnail";
 
 interface InfoListElementProps {
   name: string;
@@ -33,9 +30,9 @@ const InfoListElement = ({
 }: InfoListElementProps) => (
   <li css={outerContainer}>
     <div css={infoListElementInnerContainer}>
-      <div css={pictureContainer}>
-        <ChatThumbnail src={image} />
-      </div>
+      <ThumbnailContainer css={imageContainer}>
+        <Thumbnail src={image} />
+      </ThumbnailContainer>
       <div css={contentContainer}>
         <div css={upperInnerContentContainer}>
           <span css={title}>
@@ -65,7 +62,7 @@ const InfoListElement = ({
 );
 
 const outerContainer = css`
-  ${containerWithLink};
+  ${linkContainer};
   padding: 0.5rem 1rem;
 
   transition: background-color 0.1s;
@@ -136,8 +133,7 @@ const upperInnerContentContainer = css`
   height: 100%;
 `;
 
-const pictureContainer = css`
-  ${thumbnailContainer};
+const imageContainer = css`
   flex: 0 0 auto;
 `;
 

@@ -3,12 +3,13 @@ import { NavArrowRight } from "iconoir-react";
 import { FlagIcon } from "react-flag-kit";
 import { Link } from "react-router-dom";
 import { COLORS } from "../constants";
+import { linkContainer } from "../styles";
 import ResponsiveEllipsis from "./ResponsiveEllipsis";
-import { containerWithLink, thumbnailContainer } from "./styles";
 
 import { LANGUAGE_INFO } from "../constants";
 import { Language } from "../types";
-import ChatThumbnail from "./UserThumbnail";
+import Thumbnail from "./Thumbnail/Thumbnail";
+import ThumbnailContainer from "./Thumbnail/ThumbnailContainer";
 
 interface SearchResultElementProps {
   id: string;
@@ -30,11 +31,11 @@ const SearchResultElement = ({
   image,
   link,
 }: SearchResultElementProps) => (
-  <article css={[containerWithLink, outerContainer]}>
+  <article css={[linkContainer, outerContainer]}>
     <div css={innerContainer}>
-      <div css={[thumbnailContainer, imgContainer]}>
-        <ChatThumbnail src={image} />
-      </div>
+      <ThumbnailContainer css={imgContainer}>
+        <Thumbnail src={image} />
+      </ThumbnailContainer>
       <div css={contentContainer}>
         <div css={upperInnerContainer}>
           <h4>{name}</h4>

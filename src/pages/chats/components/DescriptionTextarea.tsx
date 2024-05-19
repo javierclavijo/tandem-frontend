@@ -18,7 +18,6 @@ interface DescriptionTextareaProps {
  * Text area component to edit a user or channel's description.
  */
 const DescriptionTextarea = ({ data, queryKey }: DescriptionTextareaProps) => {
-  // TODO: substitute with RHF.
   const {
     editEnabled,
     setEditEnabled,
@@ -37,7 +36,6 @@ const DescriptionTextarea = ({ data, queryKey }: DescriptionTextareaProps) => {
 
   const updateMutation = useUpdateChannelDescriptionMutation(data, queryKey);
 
-  // TODO: all this can probably be simplified with RHF.
   const handleBlur = async (event: React.FocusEvent<HTMLTextAreaElement>) => {
     // If the submit button was clicked, submit the value. Else, cancel the editing.
     if (event.relatedTarget === submitButtonRef?.current) {
@@ -110,6 +108,7 @@ const DescriptionTextarea = ({ data, queryKey }: DescriptionTextareaProps) => {
         maxRows={8}
         css={editElement}
         placeholder="Add a description…"
+        spellCheck={false}
       />
       {error.length !== 0 && <p css={errorText}>{error}</p>}
     </>

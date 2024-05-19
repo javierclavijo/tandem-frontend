@@ -2,8 +2,8 @@ import { ErrorMessage } from "@hookform/error-message";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
+import Header from "../../common/components/Header/Header";
 import { SimpleLayout } from "../../common/components/Layout";
-import Nav from "../../common/components/Nav/Nav";
 import useAuth from "../../common/context/AuthContext/AuthContext";
 import { useFadeIn } from "../../common/transitions";
 import { useLogInForm } from "./forms";
@@ -36,7 +36,7 @@ const LoginPage = () => {
     <>
       <Helmet title="Log In | LangFlow" />
       <SimpleLayout>
-        <Nav />
+        <Header />
         <animated.main css={main} style={transitionProps}>
           <section css={section}>
             <h2 css={header}>Log In</h2>

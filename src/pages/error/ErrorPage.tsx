@@ -2,8 +2,8 @@ import { css } from "@emotion/react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
+import Header from "../../common/components/Header/Header";
 import { ResponsiveBottomTabsLayout } from "../../common/components/Layout";
-import Nav from "../../common/components/Nav/Nav";
 import { COLORS } from "../../common/constants";
 import { useFadeIn } from "../../common/transitions";
 
@@ -27,7 +27,7 @@ export const BaseErrorPage = ({
     <>
       <Helmet title={title} />
       <AnimatedLayout style={transitionProps}>
-        <Nav />
+        <Header />
         <main css={main}>
           <h2>{heading}</h2>
           <p>{description}</p>

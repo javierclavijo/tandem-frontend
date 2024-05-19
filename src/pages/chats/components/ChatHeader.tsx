@@ -2,11 +2,9 @@ import { css } from "@emotion/react";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
 import BackButton from "../../../common/components/BackButton";
-import ChatThumbnail from "../../../common/components/UserThumbnail";
-import {
-  containerWithLink,
-  thumbnailContainer,
-} from "../../../common/components/styles";
+import Thumbnail from "../../../common/components/Thumbnail/Thumbnail";
+import ThumbnailContainer from "../../../common/components/Thumbnail/ThumbnailContainer";
+import { linkContainer } from "../../../common/styles";
 import { useFadeIn } from "../../../common/transitions";
 import { chatHeader } from "../chat/styles";
 import { ChatHeaderData } from "../types";
@@ -24,12 +22,12 @@ const ChatHeader = ({ title, link, image, actions }: ChatHeaderProps) => {
     <animated.header css={chatHeader} style={transitionProps}>
       <div css={backButtonContainer}>
         <BackButton />
-        <div css={containerWithLink}>
+        <div css={linkContainer}>
           <div css={innerContainer}>
-            {image !== null && (
-              <div css={imageContainer}>
-                <ChatThumbnail src={image} />
-              </div>
+            {image != null && (
+              <ThumbnailContainer css={imageContainer}>
+                <Thumbnail src={image} />
+              </ThumbnailContainer>
             )}
             <h2>{title}</h2>
           </div>
@@ -42,7 +40,6 @@ const ChatHeader = ({ title, link, image, actions }: ChatHeaderProps) => {
 };
 
 const imageContainer = css`
-  ${thumbnailContainer};
   flex: 0 0 auto;
 `;
 

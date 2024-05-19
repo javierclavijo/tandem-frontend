@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import { useState } from "react";
 import { Outlet, useParams } from "react-router-dom";
 import { animated } from "react-spring";
-import Nav from "../../common/components/Nav/Nav";
+import Header from "../../common/components/Header/Header";
 import Tabs from "../../common/components/Tabs";
 import { useIsDesktop } from "../../common/hooks";
 import { useFadeIn } from "../../common/transitions";
@@ -16,8 +16,6 @@ import { ChatHeaderData } from "./types";
 /**
  * Main chat component. Holds the chat list, chat room and user/channel detail components.
  */
-// TODO: just remove this, make "dumb" layout components and reuse them in each
-// page.
 const ChatsLayout = () => {
   const params = useParams();
   const isDesktop = useIsDesktop();
@@ -28,7 +26,6 @@ const ChatsLayout = () => {
    * State used by the router outlet context which controls the header's state.
    * This way, the header's data can be obtained from the view components,
    * without them having to contain the header themselves.
-   * TODO: remove this, it's a bad idea.
    */
   const [header, setHeader] = useState<ChatHeaderData | null>(null);
 
@@ -37,7 +34,7 @@ const ChatsLayout = () => {
      * Desktop layout. Displays the chat list to the left of the router's outlet.
      */
     <div css={baseAppContainerWithoutTabs}>
-      <Nav />
+      <Header />
       <main css={chatMain}>
         <ChatList />
         <animated.section
@@ -57,7 +54,7 @@ const ChatsLayout = () => {
     <div
       css={params.id ? baseAppContainerWithoutTabs : baseAppContainerWithTabs}
     >
-      {params.id && header ? <ChatHeader {...header} /> : <Nav />}
+      {params.id && header ? <ChatHeader {...header} /> : <Header />}
       <main css={chatMainMobile}>
         <Outlet context={[header, setHeader]} />
       </main>

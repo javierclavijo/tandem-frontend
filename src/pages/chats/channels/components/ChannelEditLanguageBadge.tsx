@@ -1,45 +1,40 @@
-import { css } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { FlagIcon } from "react-flag-kit";
-import Select, { StylesConfig } from "react-select";
+import Badge from "../../../../common/components/Badge";
+import DropdownSelect from "../../../../common/components/Select/DropdownSelect";
+import { LabelOption } from "../../../../common/components/Select/types";
 import ProficiencyLevelIcon from "../../../../common/components/icons/ProficiencyLevelIcon";
-import {
-  badge,
-  noBorderAndBgSelectWhite,
-} from "../../../../common/components/styles";
 import {
   COLORS,
   LANGUAGE_INFO,
   languageOptionsArray,
   levelOptionsArray,
 } from "../../../../common/constants";
-import { Language, Option, ProficiencyLevel } from "../../../../common/types";
+import { Language, ProficiencyLevel } from "../../../../common/types";
 import { UserLanguage } from "../../types";
 import { useUpdateLanguageMutation } from "../queries";
 
 interface LanguageBadgeProps {
   data: UserLanguage;
-  bg: string;
+  backgroundColor: string;
 }
 
-// TODO: review this and the other badge components. Are they duplicated?
 /**
  * Badge-like component for channel detail view. Displays the channel's
  * language's name and icon and allows selecting the language and level.
  */
-const ChannelEditLanguageBadge = ({ data, bg }: LanguageBadgeProps) => {
-  // TODO: use RHF
-  const [languageValue, setLanguageValue] = useState<Option<Language> | null>(
-    null,
-  );
-  const [levelValue, setLevelValue] = useState<Option<ProficiencyLevel> | null>(
-    null,
-  );
+const ChannelEditLanguageBadge = ({
+  data,
+  backgroundColor,
+}: LanguageBadgeProps) => {
+  const [languageValue, setLanguageValue] =
+    useState<LabelOption<Language> | null>(null);
+  const [levelValue, setLevelValue] =
+    useState<LabelOption<ProficiencyLevel> | null>(null);
 
   const updateMutation = useUpdateLanguageMutation(data?.id);
 
-  // TODO: abstract union type
-  const handleLanguageChange = async (option: Option<Language> | null) => {
+  const handleLanguageChange = async (option: LabelOption<Language> | null) => {
     if (option == null) {
       return;
     }
@@ -47,7 +42,9 @@ const ChannelEditLanguageBadge = ({ data, bg }: LanguageBadgeProps) => {
     await updateMutation.mutateAsync({ url: data.url, language: option.value });
   };
 
-  const handleLevelChange = async (option: Option<ProficiencyLevel> | null) => {
+  const handleLevelChange = async (
+    option: LabelOption<ProficiencyLevel> | null,
+  ) => {
     if (option == null) {
       return;
     }
@@ -55,7 +52,6 @@ const ChannelEditLanguageBadge = ({ data, bg }: LanguageBadgeProps) => {
     await updateMutation.mutateAsync({ url: data.url, level: option.value });
   };
 
-  // TODO: this should be cleaned up once the form has been refactored using RHF.
   useEffect(() => {
     // Get the options which correspond to the data values and set them as the
     // selects' values
@@ -71,27 +67,19 @@ const ChannelEditLanguageBadge = ({ data, bg }: LanguageBadgeProps) => {
     }
   }, [data.language, data.level]);
 
-  // TODO: refactor
-  const container = css`
-    ${badge};
-    background-color: ${bg};
-  `;
-
   const languageInfo = LANGUAGE_INFO[data.language];
 
   return (
-    <div css={container}>
+    <Badge style={{ backgroundColor }}>
       <FlagIcon code={languageInfo.flagIconCode} size={24} />
-      <Select<Option<Language>>
+      <DropdownSelect<LabelOption<Language>>
         id={`language-${data.id}`}
         value={languageValue}
         onChange={async (option) => {
-          // TODO: move handlers like this one to component body.
           setLanguageValue(option);
           await handleLanguageChange(option);
         }}
         options={languageOptionsArray}
-        styles={noBorderAndBgSelectWhite as StylesConfig<Option<Language>>}
       />
       <span>|</span>
       <ProficiencyLevelIcon
@@ -100,7 +88,7 @@ const ChannelEditLanguageBadge = ({ data, bg }: LanguageBadgeProps) => {
         height={24}
         width={24}
       />
-      <Select<Option<ProficiencyLevel>>
+      <DropdownSelect<LabelOption<ProficiencyLevel>>
         id={`level-${data.id}`}
         value={levelValue}
         onChange={async (option) => {
@@ -108,11 +96,8 @@ const ChannelEditLanguageBadge = ({ data, bg }: LanguageBadgeProps) => {
           await handleLevelChange(option);
         }}
         options={levelOptionsArray}
-        styles={
-          noBorderAndBgSelectWhite as StylesConfig<Option<ProficiencyLevel>>
-        }
       />
-    </div>
+    </Badge>
   );
 };
 

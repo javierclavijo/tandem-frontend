@@ -1,13 +1,14 @@
-import { Language, Option, ProficiencyLevel } from "../../../../common/types";
+import { LabelOption } from "../../../../common/components/Select/types";
+import { Language, NonNativeProficiencyLevel } from "../../../../common/types";
 
 export interface ChannelCreationRequest {
   name: string;
   language: string;
-  level: ProficiencyLevel;
+  level: NonNativeProficiencyLevel;
 }
 
 export interface ChannelCreationFormValues {
   name: string;
-  language: Option<Language> | null;
-  level: Option<ProficiencyLevel> | null;
+  language: LabelOption<Language> | null;
+  level: LabelOption<NonNativeProficiencyLevel> | null;
 }

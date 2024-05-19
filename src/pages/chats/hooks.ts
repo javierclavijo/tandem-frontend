@@ -204,7 +204,6 @@ interface UseEditType<T> {
 /**
  * Holds state and functionality to update a user or channel's name or description.
  */
-// TODO: probably remove this altogether, substitute with RHF.
 export function useEditField<
   T extends HTMLInputElement | HTMLTextAreaElement,
   S,

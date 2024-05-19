@@ -1,5 +1,4 @@
 import { css } from "@emotion/react";
-import { buttonWithoutBackgroundAndBorder } from "../../common/components/styles";
 import { COLORS, FONT_SIZES } from "../../common/constants";
 
 export const chatMain = css`
@@ -71,8 +70,6 @@ export const elementContentContainer = css`
   display: flex;
   gap: 0.75rem;
 `;
-
-// TODO: substitute all this for CSS modules (also in other features)
 
 export const infoSection = css`
   background-color: ${COLORS.DARK_PRIMARY};
@@ -158,20 +155,23 @@ export const editElement = css`
   }
 `;
 
-export const buttonHover = css`
+export const infoButton = css`
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  gap: 0.5rem;
+
   color: ${COLORS.WHITE};
   border-bottom: 2px solid ${COLORS.SECONDARY}00;
-
-  transition: border-bottom 0.1s;
-  &:hover {
-    border-bottom: 2px solid ${COLORS.SECONDARY}90;
-  }
-`;
-
-export const infoButton = css`
-  ${buttonWithoutBackgroundAndBorder};
-  ${buttonHover};
   font-size: ${FONT_SIZES.S};
   height: fit-content;
   padding: 0.25rem;
+  transition: border-bottom 0.1s;
+
+  &:hover {
+    border-bottom: 2px solid ${COLORS.SECONDARY}90;
+  }
 `;

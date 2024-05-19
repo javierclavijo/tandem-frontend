@@ -2,13 +2,13 @@ import { css } from "@emotion/react";
 import { ErrorMessage } from "@hookform/error-message";
 import { Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import Select, { StylesConfig } from "react-select";
 import Button from "../../../../common/components/Button";
 import Modal, {
   CloseableModalProps,
 } from "../../../../common/components/Modal/Modal";
 import ModalTitle from "../../../../common/components/Modal/ModalTitle";
-import { select } from "../../../../common/components/styles";
+import BaseSelect from "../../../../common/components/Select/BaseSelect";
+import { LabelOption } from "../../../../common/components/Select/types";
 import {
   COLORS,
   FONT_SIZES,
@@ -16,7 +16,7 @@ import {
   levelOptionsArray,
 } from "../../../../common/constants";
 import { useSetFormErrorOnRequestError } from "../../../../common/hooks";
-import { Option } from "../../../../common/types";
+import { NonNativeProficiencyLevel } from "../../../../common/types";
 import { errorStyle } from "../../../auth/styles";
 import { useChannelCreationForm } from "./forms";
 import { useCreateChannelMutation } from "./queries";
@@ -84,12 +84,11 @@ const NewChannelModal = ({
               name="language"
               rules={{ required: "Language is required" }}
               render={({ field }) => (
-                <Select
+                <BaseSelect
                   id="new-channel-language"
                   {...field}
                   options={languageOptionsArray}
                   placeholder="Language"
-                  styles={select}
                 />
               )}
             />
@@ -105,12 +104,11 @@ const NewChannelModal = ({
               name="level"
               rules={{ required: "Proficiency level is required" }}
               render={({ field }) => (
-                <Select<Option>
+                <BaseSelect<LabelOption<NonNativeProficiencyLevel>>
                   id="new-channel-level"
                   {...field}
                   options={levelOptionsArray}
                   placeholder="Level"
-                  styles={select as StylesConfig<Option>}
                 />
               )}
             />

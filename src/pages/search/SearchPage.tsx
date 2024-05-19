@@ -3,13 +3,16 @@ import { Helmet } from "react-helmet-async";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSearchParams } from "react-router-dom";
 import { animated } from "react-spring";
+import Header from "../../common/components/Header/Header";
 import { ResponsiveBottomTabsLayout } from "../../common/components/Layout";
-import Nav from "../../common/components/Nav/Nav";
 import SearchResultElement from "../../common/components/SearchResultElement";
 import Tabs from "../../common/components/Tabs";
-import { homeSearchStyles } from "../../common/components/styles";
 import { useIsDesktop } from "../../common/hooks";
-import { homeSearchMain, homeSearchMainMobile } from "../../common/styles";
+import {
+  homeSearchMain,
+  homeSearchMainMobile,
+  homeSearchStyles,
+} from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
 import SearchForm from "./components/SearchForm";
 import {
@@ -71,7 +74,7 @@ const SearchPage = () => {
     <>
       <Helmet title="Search | LangFlow" />
       <ResponsiveBottomTabsLayout>
-        <Nav />
+        <Header />
         <main
           id="search-main"
           css={isDesktop ? homeSearchMain : homeSearchMainMobile}

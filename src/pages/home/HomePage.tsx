@@ -1,12 +1,12 @@
 import { css } from "@emotion/react";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
-import Nav from "../../common/components/Nav/Nav";
+import Header from "../../common/components/Header/Header";
 import SearchResultElement from "../../common/components/SearchResultElement";
 import Tabs from "../../common/components/Tabs";
-import { homeSearchStyles } from "../../common/components/styles";
 import { COLORS } from "../../common/constants";
 import useAuth from "../../common/context/AuthContext/AuthContext";
+import { homeSearchStyles } from "../../common/styles";
 
 import { Helmet } from "react-helmet-async";
 import { ResponsiveBottomTabsLayout } from "../../common/components/Layout";
@@ -41,7 +41,7 @@ const HomePage = () => {
     <>
       <Helmet title="Home | LangFlow" />
       <ResponsiveBottomTabsLayout>
-        <Nav />
+        <Header />
         <main css={isDesktop ? homeSearchMain : homeSearchMainMobile}>
           <animated.header
             css={homeSearchStyles.header}

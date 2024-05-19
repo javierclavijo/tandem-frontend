@@ -105,7 +105,6 @@ const ChannelPage = () => {
    * added for users who are not members of the channel, and a 'leave channel' button is added for those who are
    * members (except for admins).
    */
-  // TODO: review the whole header thing.
   useEffect(() => {
     setHeader({
       title: "Channel info",
@@ -174,12 +173,15 @@ const ChannelPage = () => {
           </p>
 
           {userIsStaff ? (
-            <ChannelEditLanguageBadge data={data} bg={COLORS.DARK} />
+            <ChannelEditLanguageBadge
+              data={data}
+              backgroundColor={COLORS.DARK}
+            />
           ) : (
             <LanguageBadge
               language={data.language}
               level={data.level}
-              bg={COLORS.DARK}
+              backgroundColor={COLORS.DARK}
             />
           )}
 
@@ -198,7 +200,6 @@ const ChannelPage = () => {
         <section css={listSection}>
           <h3 css={listSectionHeader}>Members</h3>
           <ul css={listSectionList}>
-            {/* TODO: refactor into its own component */}
             {data?.memberships.map((membership) => (
               <InfoListElement
                 name={membership.user?.username}

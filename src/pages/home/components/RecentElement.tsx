@@ -2,13 +2,11 @@ import { css } from "@emotion/react";
 import { NavArrowRight } from "iconoir-react";
 import { Link } from "react-router-dom";
 import ResponsiveEllipsis from "../../../common/components/ResponsiveEllipsis";
-import {
-  containerWithLink,
-  thumbnailContainer,
-} from "../../../common/components/styles";
 import { COLORS } from "../../../common/constants";
+import { linkContainer } from "../../../common/styles";
 
-import ChatThumbnail from "../../../common/components/UserThumbnail";
+import Thumbnail from "../../../common/components/Thumbnail/Thumbnail";
+import ThumbnailContainer from "../../../common/components/Thumbnail/ThumbnailContainer";
 
 interface RecentElementProps {
   chatName: string;
@@ -19,7 +17,6 @@ interface RecentElementProps {
   link: string;
 }
 
-// TODO: refactor this and SearchResultElement into a single UserCard component.
 /**
  * Element component for post-login home 'recent' sections.
  */
@@ -38,9 +35,9 @@ const RecentElement = ({
   return (
     <article css={outerContainer}>
       <div css={innerContainer}>
-        <div css={imgContainer}>
-          <ChatThumbnail src={chatImage} />
-        </div>
+        <ThumbnailContainer css={imgContainer}>
+          <Thumbnail src={chatImage} />
+        </ThumbnailContainer>
         <div css={contentContainer}>
           <div css={upperInnerContainer}>
             <h4>{chatName}</h4>
@@ -66,14 +63,13 @@ const RecentElement = ({
 };
 
 const imgContainer = css`
-  ${thumbnailContainer};
   height: 4.5rem;
   width: 4.5rem;
   flex: 0 0 auto;
 `;
 
 const outerContainer = css`
-  ${containerWithLink};
+  ${linkContainer};
   width: 100%;
   transition: background-color 0.1s;
 
