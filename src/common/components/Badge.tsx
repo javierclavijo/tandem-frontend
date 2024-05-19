@@ -1,13 +1,14 @@
 import { css } from "@emotion/react";
 import { PropsWithChildren, forwardRef } from "react";
 import { StyledEmotionComponentProps } from "../types";
-interface LayoutProps
+
+interface BadgeProps
   extends PropsWithChildren<React.ClassAttributes<HTMLDivElement>>,
     React.ButtonHTMLAttributes<HTMLDivElement>,
     StyledEmotionComponentProps {}
 
-const Badge = forwardRef<HTMLDivElement, LayoutProps>(
-  ({ children, ...props }: LayoutProps, ref?) => (
+const Badge = forwardRef<HTMLDivElement, BadgeProps>(
+  ({ children, ...props }: BadgeProps, ref?) => (
     <div {...props} ref={ref} css={[div, props.css]}>
       {children}
     </div>

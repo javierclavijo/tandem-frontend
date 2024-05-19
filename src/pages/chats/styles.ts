@@ -1,5 +1,4 @@
 import { css } from "@emotion/react";
-import { buttonWithoutBackgroundAndBorder } from "../../common/components/styles";
 import { COLORS, FONT_SIZES } from "../../common/constants";
 
 export const chatMain = css`
@@ -159,7 +158,13 @@ export const editElement = css`
 `;
 
 export const infoButton = css`
-  ${buttonWithoutBackgroundAndBorder};
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  gap: 0.5rem;
 
   color: ${COLORS.WHITE};
   border-bottom: 2px solid ${COLORS.SECONDARY}00;

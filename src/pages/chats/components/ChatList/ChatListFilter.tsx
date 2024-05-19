@@ -1,10 +1,7 @@
 import { css } from "@emotion/react";
 import { Search } from "iconoir-react";
-import {
-  searchInput,
-  searchInputElement,
-} from "../../../../common/components/styles";
 import { COLORS, FONT_SIZES } from "../../../../common/constants";
+import { searchInput, searchInputElement } from "../../../../common/styles";
 
 interface ChatListFilterProps {
   value: string;

@@ -1,13 +1,13 @@
 import { css } from "@emotion/react";
 import { memo } from "react";
 import userPlaceholderImage from "../../common/static/images/user-placeholder.png";
-import { ImgProps } from "../types";
+import { ImgProps } from "../../types";
 
-interface UserThumbnailProps extends Omit<ImgProps, "src"> {
+interface ThumbnailProps extends Omit<ImgProps, "src"> {
   src?: string | null;
 }
 
-const UserThumbnail = ({ ...props }: UserThumbnailProps) => (
+const Thumbnail = ({ ...props }: ThumbnailProps) => (
   <img {...props} src={props.src ?? userPlaceholderImage} css={img} />
 );
 
@@ -17,4 +17,4 @@ export const img = css`
   object-fit: cover;
 `;
 
-export default memo(UserThumbnail);
+export default memo(Thumbnail);

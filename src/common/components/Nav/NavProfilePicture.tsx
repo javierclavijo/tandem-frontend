@@ -2,8 +2,8 @@ import { css } from "@emotion/react";
 import { NavLink, NavLinkProps } from "react-router-dom";
 import { infoButton } from "../../../pages/chats/styles";
 import { COLORS, FONT_SIZES } from "../../constants";
-import ChatThumbnail from "../UserThumbnail";
-import { thumbnailContainer } from "../styles";
+import Thumbnail from "../Thumbnail/Thumbnail";
+import ThumbnailContainer from "../Thumbnail/ThumbnailContainer";
 import { activeNavLink } from "./Nav";
 
 interface NavProfilePictureProps
@@ -27,9 +27,9 @@ const NavProfilePicture = ({
     title="Go to your profile"
     {...props}
   >
-    <div css={imageContainer}>
-      <ChatThumbnail src={image} css={pictureImg} />
-    </div>
+    <ThumbnailContainer css={imageContainer}>
+      <Thumbnail src={image} css={pictureImg} />
+    </ThumbnailContainer>
     <p>{username}</p>
   </NavLink>
 );
@@ -52,7 +52,6 @@ const pictureImg = css`
 `;
 
 const imageContainer = css`
-  ${thumbnailContainer};
   height: 1.5rem;
   width: 1.5rem;
   flex: 1 0 auto;

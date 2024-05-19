@@ -7,9 +7,12 @@ import { ResponsiveBottomTabsLayout } from "../../common/components/Layout";
 import Nav from "../../common/components/Nav/Nav";
 import SearchResultElement from "../../common/components/SearchResultElement";
 import Tabs from "../../common/components/Tabs";
-import { homeSearchStyles } from "../../common/components/styles";
 import { useIsDesktop } from "../../common/hooks";
-import { homeSearchMain, homeSearchMainMobile } from "../../common/styles";
+import {
+  homeSearchMain,
+  homeSearchMainMobile,
+  homeSearchStyles,
+} from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
 import SearchForm from "./components/SearchForm";
 import {

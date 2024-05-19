@@ -9,14 +9,11 @@ import BaseSelect from "../../../common/components/Select/BaseSelect";
 import DropdownSelect from "../../../common/components/Select/DropdownSelect";
 import { LabelOption } from "../../../common/components/Select/types";
 import {
-  searchInput,
-  searchInputElement,
-} from "../../../common/components/styles";
-import {
   COLORS,
   languageOptionsArray,
   levelOptionsArray,
 } from "../../../common/constants";
+import { searchInput, searchInputElement } from "../../../common/styles";
 import { Language, NonNativeProficiencyLevel } from "../../../common/types";
 import { ChatType } from "../../chats/types";
 import { searchTypeOptionsArray, useSearchPanelForm } from "../forms";
