@@ -12,8 +12,8 @@ import { select } from "../../../../common/components/styles";
 import {
   COLORS,
   FONT_SIZES,
-  LANGUAGE_OPTIONS,
-  LEVEL_OPTIONS,
+  languageOptionsArray,
+  levelOptionsArray,
 } from "../../../../common/constants";
 import { useSetFormErrorOnRequestError } from "../../../../common/hooks";
 import { Option } from "../../../../common/types";
@@ -84,7 +84,7 @@ function NewChannelModal({ onRequestClose, ...props }: NewChannelModalProps) {
                 <Select
                   id={`new-channel-language`}
                   {...field}
-                  options={LANGUAGE_OPTIONS}
+                  options={languageOptionsArray}
                   placeholder="Language"
                   styles={select}
                 />
@@ -105,7 +105,7 @@ function NewChannelModal({ onRequestClose, ...props }: NewChannelModalProps) {
                 <Select<Option>
                   id={`new-channel-level`}
                   {...field}
-                  options={LEVEL_OPTIONS}
+                  options={levelOptionsArray}
                   placeholder="Level"
                   styles={select as StylesConfig<Option>}
                 />

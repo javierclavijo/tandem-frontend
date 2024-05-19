@@ -25,18 +25,16 @@ export const useUserSearchQuery = (
           search: params?.search ?? null,
           native_language: params?.nativeLanguages,
           learning_language: params?.learningLanguages,
-          level: params?.learningLanguagesLevels,
+          level: params?.learningLanguageLevels,
           size: 18,
         },
-        paramsSerializer: (params) =>
-          qs.stringify(params, { arrayFormat: "repeat" }),
+        paramsSerializer,
       });
       return response.data;
     },
     {
-      getPreviousPageParam: (firstPage) =>
-        firstPage.previousPageNumber ?? undefined,
-      getNextPageParam: (lastPage) => lastPage.nextPageNumber ?? undefined,
+      getPreviousPageParam,
+      getNextPageParam,
       ...options,
     },
   );
@@ -59,15 +57,20 @@ export const useChannelSearchQuery = (
           level: params?.levels,
           size: 18,
         },
-        paramsSerializer: (params) =>
-          qs.stringify(params, { arrayFormat: "repeat" }),
+        paramsSerializer,
       });
       return response.data;
     },
     {
-      getPreviousPageParam: (firstPage) =>
-        firstPage.previousPageNumber ?? undefined,
-      getNextPageParam: (lastPage) => lastPage.nextPageNumber ?? undefined,
+      getPreviousPageParam,
+      getNextPageParam,
       ...options,
     },
   );
+
+const paramsSerializer = (params: Record<string, unknown>) =>
+  qs.stringify(params, { arrayFormat: "repeat" });
+const getPreviousPageParam = <TData>(firstPage: SearchResponse<TData>) =>
+  firstPage.previousPageNumber ?? undefined;
+const getNextPageParam = <TData>(lastPage: SearchResponse<TData>) =>
+  lastPage.nextPageNumber ?? undefined;

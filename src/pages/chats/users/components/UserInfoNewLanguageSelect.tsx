@@ -5,8 +5,8 @@ import EditButtons from "../../../../common/components/EditButtons";
 import { select } from "../../../../common/components/styles";
 import {
   COLORS,
-  LANGUAGE_OPTIONS,
-  LEVEL_OPTIONS,
+  languageOptionsArray,
+  levelOptionsArray,
 } from "../../../../common/constants";
 import useAuth from "../../../../common/context/AuthContext/AuthContext";
 import { Language, Option, ProficiencyLevel } from "../../../../common/types";
@@ -62,7 +62,7 @@ function UserInfoNewLanguageSelect({
           value={languageValue}
           onChange={setLanguageValue}
           onFocus={clearError}
-          options={LANGUAGE_OPTIONS}
+          options={languageOptionsArray}
           isOptionDisabled={(option) =>
             // Disable the options for languages the user already has.
             !!user?.languages.find(
@@ -77,7 +77,7 @@ function UserInfoNewLanguageSelect({
           value={levelValue}
           onChange={setLevelValue}
           onFocus={clearError}
-          options={LEVEL_OPTIONS}
+          options={levelOptionsArray}
           placeholder="Level"
           styles={select as StylesConfig<Option<ProficiencyLevel>>}
         />

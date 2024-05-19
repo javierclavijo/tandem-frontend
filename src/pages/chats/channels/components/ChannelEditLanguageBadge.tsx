@@ -10,8 +10,8 @@ import {
 import {
   COLORS,
   LANGUAGE_INFO,
-  LANGUAGE_OPTIONS,
-  LEVEL_OPTIONS,
+  languageOptionsArray,
+  levelOptionsArray,
 } from "../../../../common/constants";
 import { Language, Option, ProficiencyLevel } from "../../../../common/types";
 import { UserLanguage } from "../../types";
@@ -59,10 +59,10 @@ function ChannelEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
   useEffect(() => {
     // Get the options which correspond to the data values and set them as the
     // selects' values
-    const initialLevelOption = LEVEL_OPTIONS.find(
+    const initialLevelOption = levelOptionsArray.find(
       (o) => o.value === data.level,
     );
-    const initialLanguageOption = LANGUAGE_OPTIONS.find(
+    const initialLanguageOption = languageOptionsArray.find(
       (o) => o.value === data.language,
     );
     if (initialLevelOption && initialLanguageOption) {
@@ -90,7 +90,7 @@ function ChannelEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
           setLanguageValue(option);
           await handleLanguageChange(option);
         }}
-        options={LANGUAGE_OPTIONS}
+        options={languageOptionsArray}
         styles={noBorderAndBgSelectWhite as StylesConfig<Option<Language>>}
       />
       <span>|</span>
@@ -107,7 +107,7 @@ function ChannelEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
           setLevelValue(option);
           await handleLevelChange(option);
         }}
-        options={LEVEL_OPTIONS}
+        options={levelOptionsArray}
         styles={
           noBorderAndBgSelectWhite as StylesConfig<Option<ProficiencyLevel>>
         }

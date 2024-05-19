@@ -3,7 +3,8 @@ import { FlagIconCode } from "react-flag-kit";
 import { FieldPath, FieldValues } from "react-hook-form";
 import { ChatMessage, ChatType, UserLanguage } from "../pages/chats/types";
 
-export type ProficiencyLevel = "BE" | "IN" | "AD" | "NA";
+export type NonNativeProficiencyLevel = "BE" | "IN" | "AD";
+export type ProficiencyLevel = NonNativeProficiencyLevel | "NA";
 export type Language = "DE" | "EN" | "FR" | "IT" | "ES";
 export type UserRole = "U" | "M" | "A";
 
@@ -100,4 +101,8 @@ export interface StyledEmotionComponentProps {
 export type ImgProps = React.DetailedHTMLProps<
   React.ImgHTMLAttributes<HTMLImageElement>,
   HTMLImageElement
+>;
+
+export type OptionsObject<TData extends string> = Readonly<
+  Record<TData, Option<TData>>
 >;

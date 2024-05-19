@@ -1,4 +1,11 @@
-import { Language, LanguageInfo, Option, ProficiencyLevel } from "./types";
+import {
+  Language,
+  LanguageInfo,
+  NonNativeProficiencyLevel,
+  Option,
+  OptionsObject,
+  ProficiencyLevel,
+} from "./types";
 
 export const COLORS: Readonly<Record<string, string>> = {
   DARK_PRIMARY: "#00638B",
@@ -32,16 +39,28 @@ export const LEVEL_NAMES: Readonly<Record<ProficiencyLevel, string>> = {
   NA: "Native",
 };
 
-export const LANGUAGE_OPTIONS: Option<Language>[] = [
-  { value: "EN", label: "English" },
-  { value: "FR", label: "French" },
-  { value: "DE", label: "German" },
-  { value: "IT", label: "Italian" },
-  { value: "ES", label: "Spanish" },
+export const languageOptions: OptionsObject<Language> = {
+  EN: { value: "EN", label: "English" },
+  FR: { value: "FR", label: "French" },
+  DE: { value: "DE", label: "German" },
+  IT: { value: "IT", label: "Italian" },
+  ES: { value: "ES", label: "Spanish" },
+};
+
+export const languageKeys: string[] = [...Object.keys(languageOptions)];
+
+export const languageOptionsArray: Option<Language>[] = [
+  ...Object.values(languageOptions),
 ];
 
-export const LEVEL_OPTIONS: Option<ProficiencyLevel>[] = [
-  { value: "BE", label: "Beginner" },
-  { value: "IN", label: "Intermediate" },
-  { value: "AD", label: "Advanced" },
+export const levelOptions: OptionsObject<NonNativeProficiencyLevel> = {
+  BE: { value: "BE", label: "Beginner" },
+  IN: { value: "IN", label: "Intermediate" },
+  AD: { value: "AD", label: "Advanced" },
+};
+
+export const levelKeys: string[] = [...Object.keys(levelOptions)];
+
+export const levelOptionsArray: Option<NonNativeProficiencyLevel>[] = [
+  ...Object.values(levelOptions),
 ];

@@ -11,7 +11,7 @@ import {
 import {
   COLORS,
   LANGUAGE_INFO,
-  LEVEL_OPTIONS,
+  levelOptionsArray,
 } from "../../../../common/constants";
 import { Language, Option, ProficiencyLevel } from "../../../../common/types";
 import { useUpdateUserLanguageMutation } from "../queries";
@@ -40,7 +40,7 @@ function UserInfoEditLanguageBadge({
   const mutation = useUpdateUserLanguageMutation(url);
 
   const [levelValue, setLevelValue] = useState<Option<ProficiencyLevel> | null>(
-    () => LEVEL_OPTIONS.find((o) => o.value === level) ?? null,
+    () => levelOptionsArray.find((o) => o.value === level) ?? null,
   );
 
   const languageInfo = LANGUAGE_INFO[language];
@@ -68,7 +68,7 @@ function UserInfoEditLanguageBadge({
         id={`level-${id}`}
         value={levelValue}
         onChange={onChange}
-        options={LEVEL_OPTIONS}
+        options={levelOptionsArray}
         styles={
           noBorderAndBgSelectWhite as StylesConfig<Option<ProficiencyLevel>>
         }
