@@ -5,9 +5,10 @@ import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import LanguageBadge from "../../../common/components/LanguageBadge";
+import ProfileImage from "../../../common/components/ProfileImage";
+import { COLORS, LANGUAGE_INFO } from "../../../common/constants";
 import useAuth from "../../../common/context/AuthContext/AuthContext";
-import { LANGUAGE_INFO } from "../../../common/resources/languages";
-import { COLORS } from "../../../common/resources/style-variables";
+import userPlaceholderImage from "../../../common/static/images/user-placeholder.png";
 import { useFadeIn } from "../../../common/transitions";
 import DescriptionTextarea from "../components/DescriptionTextarea";
 import ImageInput from "../components/ImageInput";
@@ -15,8 +16,8 @@ import InfoListElement from "../components/InfoListElement";
 import { UserNameInput } from "../components/NameInput";
 import {
   getFriendFromFriendChat,
+  useJoinWsChat,
   useSetChatHeader,
-  useWsChatFunctions,
 } from "../hooks";
 import {
   descriptionSection,
@@ -25,7 +26,6 @@ import {
   listSection,
   listSectionHeader,
   listSectionList,
-  profileImg,
 } from "../styles";
 import { UserLanguage } from "../types";
 import DeleteLanguageModal from "./components/DeleteLanguageModal";
@@ -46,7 +46,7 @@ function UserPage() {
   const { user: appUser } = useAuth();
   const navigate = useNavigate();
   const transitionProps = useFadeIn();
-  const { joinChat } = useWsChatFunctions();
+  const joinChat = useJoinWsChat();
   const setHeader = useSetChatHeader();
 
   const { data } = useUser(params.id);
@@ -110,8 +110,9 @@ function UserPage() {
   const onPasswordModalClose = () => setPasswordChangeModalIsOpen(false);
 
   /**
-   * Set header to render the title 'user info', plus a button to chat with the user if the user is not already a
-   * friend of the current user (i.e. doesn't have any friend chats with them).
+   * Set header to render the title 'user info', plus a button to chat with the
+   * user if the user is not already a friend of the current user (i.e. doesn't
+   * have any friend chats with them).
    */
   useEffect(() => {
     setHeader({
@@ -164,8 +165,6 @@ function UserPage() {
             <>
               <ImageInput
                 image={data.image}
-                // TODO: remove direct references like this.
-                defaultImage="/images/user-placeholder.png"
                 url={data.url}
                 invalidateQueryKey={["users", appUser?.id]}
               />
@@ -173,11 +172,7 @@ function UserPage() {
             </>
           ) : (
             <>
-              <img
-                src={data.image ?? "/images/user-placeholder.png"}
-                alt=""
-                css={picture}
-              />
+              <ProfileImage src={data.image ?? userPlaceholderImage} alt="" />
               <p>{data?.username}</p>
             </>
           )}
@@ -205,7 +200,10 @@ function UserPage() {
                     ) : (
                       <div css={editableLanguage} key={language.id}>
                         <UserInfoEditLanguageBadge
-                          data={language}
+                          id={language.id}
+                          language={language.language}
+                          level={language.level}
+                          url={language.url}
                           backgroundColor={COLORS.DARK}
                           onDelete={() => setSelectedDeleteLanguage(language)}
                         />
@@ -346,11 +344,6 @@ function UserPage() {
 
 const container = css`
   overflow-y: scroll;
-`;
-
-const picture = css`
-  ${profileImg};
-  grid-area: input;
 `;
 
 const languagesOuterContainer = css`

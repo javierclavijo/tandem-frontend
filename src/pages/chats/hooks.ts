@@ -155,10 +155,10 @@ export function useWsChatListener() {
   return useBaseWsChatConnection({ onMessage });
 }
 
-export function useWsChatFunctions() {
+export function useJoinWsChat() {
   const { sendJsonMessage } = useBaseWsChatConnection();
 
-  const joinChat = useCallback(
+  return useCallback(
     (id: string) => {
       const message = {
         chat_id: id,
@@ -168,17 +168,13 @@ export function useWsChatFunctions() {
     },
     [sendJsonMessage],
   );
+}
 
-  const sendMessage = useCallback(
-    (
-      content: string,
-      chatId: string,
-      chatType: ChatType,
-      event:
-        | React.KeyboardEvent<HTMLTextAreaElement>
-        | React.FormEvent<HTMLFormElement>,
-    ) => {
-      event.preventDefault();
+export function useSendWsMessage() {
+  const { sendJsonMessage } = useBaseWsChatConnection();
+
+  return useCallback(
+    (content: string, chatId: string, chatType: ChatType) => {
       const message = {
         type: "chat_message",
         chat_id: chatId,
@@ -188,14 +184,6 @@ export function useWsChatFunctions() {
       sendJsonMessage(message);
     },
     [sendJsonMessage],
-  );
-
-  return useMemo(
-    () => ({
-      joinChat,
-      sendMessage,
-    }),
-    [joinChat, sendMessage],
   );
 }
 

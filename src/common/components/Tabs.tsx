@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { ChatLines, Home, Search } from "iconoir-react";
 import { NavLink } from "react-router-dom";
-import { COLORS, FONT_SIZES } from "../resources/style-variables";
+import { COLORS, FONT_SIZES } from "../constants";
 
 /**
  * Renders a nav element with tabs to the app's main sections. Only renders in

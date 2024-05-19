@@ -1,9 +1,10 @@
 import { Interpolation, Theme } from "@emotion/react";
 import { FlagIconCode } from "react-flag-kit";
 import { FieldPath, FieldValues } from "react-hook-form";
-import { ChatMessage, UserLanguage } from "../pages/chats/types";
+import { ChatMessage, ChatType, UserLanguage } from "../pages/chats/types";
 
-export type ProficiencyLevel = "BE" | "IN" | "AD" | "NA";
+export type NonNativeProficiencyLevel = "BE" | "IN" | "AD";
+export type ProficiencyLevel = NonNativeProficiencyLevel | "NA";
 export type Language = "DE" | "EN" | "FR" | "IT" | "ES";
 export type UserRole = "U" | "M" | "A";
 
@@ -63,7 +64,7 @@ export interface Chat {
   url: string;
   messages: ChatMessage[];
   image: string | null;
-  type: "users" | "channels";
+  type: ChatType;
   name: string;
   // Contains the URL for the endpoint to fetch the channel's chat messages
   messageUrl: string;
@@ -100,4 +101,8 @@ export interface StyledEmotionComponentProps {
 export type ImgProps = React.DetailedHTMLProps<
   React.ImgHTMLAttributes<HTMLImageElement>,
   HTMLImageElement
+>;
+
+export type OptionsObject<TData extends string> = Readonly<
+  Record<TData, Option<TData>>
 >;

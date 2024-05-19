@@ -4,71 +4,63 @@ import { NavLink } from "react-router-dom";
 import ResponsiveEllipsis from "../../../../common/components/ResponsiveEllipsis";
 import ChatThumbnail from "../../../../common/components/UserThumbnail";
 import { thumbnailContainer } from "../../../../common/components/styles";
-import {
-  COLORS,
-  FONT_SIZES,
-} from "../../../../common/resources/style-variables";
-import { Chat } from "../../../../common/types";
+import { COLORS, FONT_SIZES } from "../../../../common/constants";
 import { elementContentContainer, link } from "../../styles";
 
 interface ChatListElementProps {
-  chat: Chat;
+  chatId: string;
+  chatName: string;
+  chatImage: string | null;
+  lastMessageText: string;
+  lastMessageDateTime: string;
+  lastMessageAuthor: string;
+  isOwnMessage: boolean;
   selected: boolean;
-  latestMessageIsOwn: boolean;
 }
 
 /**
- * Chat list element component. Renders with a different background color based on whether the
- * element's chat is currently being displayed, or the user is hovering the mouse above the element.
+ * Chat list element component. Renders with a different background color based
+ * on whether the element's chat is currently being displayed, or the user is
+ * hovering the mouse above the element.
  */
 function ChatListElement({
-  chat,
+  chatId,
+  chatName,
+  chatImage,
+  lastMessageText,
+  lastMessageDateTime,
+  lastMessageAuthor,
+  isOwnMessage,
   selected,
-  latestMessageIsOwn,
 }: ChatListElementProps) {
-  const chatListElementContainer = css`
-    display: grid;
-    border-bottom: 1px solid ${COLORS.LIGHT};
-    color: ${selected ? COLORS.WHITE : COLORS.DARK};
-    width: 100%;
-    background-color: ${selected ? COLORS.PRIMARY : COLORS.WHITE};
-    padding: 0 1rem;
-    box-sizing: border-box;
-    transition: background-color 0.1s;
+  const formattedLastMessageDateTime = DateTime.fromISO(
+    lastMessageDateTime,
+  ).toLocaleString(DateTime.DATE_SHORT);
 
-    &:hover {
-      ${!selected ? `background-color: ${COLORS.LIGHT};` : ""}
-    }
-  `;
+  // Show the first message and its author's username, or 'You' if the app's
+  // user is the author.
+  const displayedMessageContent = isOwnMessage
+    ? `You: ${lastMessageText}`
+    : `${lastMessageAuthor}: ${lastMessageText}`;
 
   return (
-    <li css={chatListElementContainer}>
+    <li css={[outerContainer, selected ? selectedOuterContainer : undefined]}>
       <div css={elementContentContainer}>
         <div css={thumbnailContainer}>
-          <ChatThumbnail src={chat.image} />
+          <ChatThumbnail src={chatImage} />
         </div>
         <div css={innerContainer}>
           <span css={title}>
-            <span>{chat.name}</span>
-            <span css={latestMessageDatetime}>
-              {/* If the chat has messages, show the date when the latest message was sent. */}
-              {chat.messages.length
-                ? DateTime.fromISO(chat.messages[0].timestamp).toLocaleString(
-                    DateTime.DATE_SHORT,
-                  )
-                : null}
+            <span>{chatName}</span>
+            <span css={lastMessageDatetimeCss}>
+              {formattedLastMessageDateTime}
             </span>
           </span>
-          {/* If there's messages in the chat, show the first message and its author's username, or 'You'
-              if the current user is the author. */}
+
+          {/* Show the first message and its author's username, or 'You' if the 
+              app's user is the author. */}
           <ResponsiveEllipsis
-            text={
-              chat.messages.length
-                ? latestMessageIsOwn
-                  ? `You: ${chat.messages[0].content}`
-                  : `${chat.messages[0].author.username}: ${chat.messages[0].content}`
-                : ""
-            }
+            text={displayedMessageContent}
             maxLine="1"
             ellipsis="…"
             trimRight
@@ -77,12 +69,34 @@ function ChatListElement({
           />
         </div>
       </div>
-      <NavLink to={`/chats/${chat.id}`} css={link} title={chat.name}>
-        <></>
-      </NavLink>
+      <NavLink to={`/chats/${chatId}`} css={link} title={chatName} />
     </li>
   );
 }
+
+const outerContainer = css`
+  display: grid;
+  border-bottom: 1px solid ${COLORS.LIGHT};
+  width: 100%;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  transition: background-color 0.1s;
+  color: ${COLORS.DARK};
+  background-color: ${COLORS.WHITE};
+
+  &:hover {
+    background-color: ${COLORS.LIGHT};
+  }
+`;
+
+const selectedOuterContainer = css`
+  color: ${COLORS.WHITE};
+  background-color: ${COLORS.PRIMARY};
+
+  &:hover {
+    background-color: ${COLORS.PRIMARY};
+  }
+`;
 
 const innerContainer = css`
   display: flex;
@@ -99,7 +113,7 @@ const title = css`
   align-items: center;
 `;
 
-const latestMessageDatetime = css`
+const lastMessageDatetimeCss = css`
   font-size: ${FONT_SIZES.S};
 `;
 

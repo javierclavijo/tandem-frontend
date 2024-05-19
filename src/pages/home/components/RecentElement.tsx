@@ -6,15 +6,16 @@ import {
   containerWithLink,
   thumbnailContainer,
 } from "../../../common/components/styles";
-import { COLORS } from "../../../common/resources/style-variables";
+import { COLORS } from "../../../common/constants";
 
 import ChatThumbnail from "../../../common/components/UserThumbnail";
 
 interface RecentElementProps {
-  id: string;
-  name: string;
-  latestMessage: string;
-  image?: string | null;
+  chatName: string;
+  chatImage: string | null;
+  lastMessageText: string;
+  lastMessageAuthorName: string;
+  isOwnMessage: boolean;
   link: string;
 }
 
@@ -22,24 +23,35 @@ interface RecentElementProps {
 /**
  * Element component for post-login home 'recent' sections.
  */
-function RecentElement(props: RecentElementProps) {
+function RecentElement({
+  chatName,
+  chatImage,
+  lastMessageText,
+  lastMessageAuthorName,
+  isOwnMessage,
+  link,
+}: RecentElementProps) {
+  const displayedMessageContent = `${
+    isOwnMessage ? "You" : lastMessageAuthorName
+  }: ${lastMessageText}`;
+
   return (
     <article css={outerContainer}>
       <div css={innerContainer}>
         <div css={imgContainer}>
-          <ChatThumbnail src={props.image} />
+          <ChatThumbnail src={chatImage} />
         </div>
         <div css={contentContainer}>
           <div css={upperInnerContainer}>
-            <h4>{props.name}</h4>
+            <h4>{chatName}</h4>
             <NavArrowRight
               color={COLORS.PRIMARY}
-              width={"1.5rem"}
-              height={"1.5rem"}
+              width="1.5rem"
+              height="1.5rem"
             />
           </div>
           <ResponsiveEllipsis
-            text={props.latestMessage}
+            text={displayedMessageContent}
             maxLine="2"
             ellipsis="…"
             trimRight
@@ -48,7 +60,7 @@ function RecentElement(props: RecentElementProps) {
           />
         </div>
       </div>
-      <Link to={props.link} css={link} title={props.name} />
+      <Link to={link} css={linkCss} title={chatName} />
     </article>
   );
 }
@@ -63,8 +75,8 @@ const imgContainer = css`
 const outerContainer = css`
   ${containerWithLink};
   width: 100%;
-
   transition: background-color 0.1s;
+
   &:hover {
     background-color: ${COLORS.LIGHT};
   }
@@ -95,7 +107,7 @@ const upperInnerContainer = css`
   justify-content: space-between;
 `;
 
-const link = css`
+const linkCss = css`
   grid-area: element;
 `;
 

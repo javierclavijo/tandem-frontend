@@ -9,16 +9,18 @@ import {
   noBorderAndBgSelectWhite,
 } from "../../../../common/components/styles";
 import {
+  COLORS,
   LANGUAGE_INFO,
-  levelOptions,
-} from "../../../../common/resources/languages";
-import { COLORS } from "../../../../common/resources/style-variables";
-import { Option, ProficiencyLevel } from "../../../../common/types";
-import { UserLanguage } from "../../types";
+  levelOptionsArray,
+} from "../../../../common/constants";
+import { Language, Option, ProficiencyLevel } from "../../../../common/types";
 import { useUpdateUserLanguageMutation } from "../queries";
 
 interface LanguageBadgeProps {
-  data: UserLanguage;
+  id: string;
+  language: Language;
+  level: ProficiencyLevel;
+  url: string;
   backgroundColor: string;
   onDelete: () => void;
 }
@@ -28,17 +30,20 @@ interface LanguageBadgeProps {
  * and allows selecting the language's level.
  */
 function UserInfoEditLanguageBadge({
-  data,
+  id,
+  language,
+  level,
+  url,
   backgroundColor,
   onDelete,
 }: LanguageBadgeProps) {
-  const mutation = useUpdateUserLanguageMutation(data.url);
+  const mutation = useUpdateUserLanguageMutation(url);
 
   const [levelValue, setLevelValue] = useState<Option<ProficiencyLevel> | null>(
-    () => levelOptions.find((o) => o.value === data.level) ?? null,
+    () => levelOptionsArray.find((o) => o.value === level) ?? null,
   );
 
-  const languageInfo = LANGUAGE_INFO[data.language];
+  const languageInfo = LANGUAGE_INFO[language];
 
   const onChange = async (option: SingleValue<Option<ProficiencyLevel>>) => {
     if (option != null) {
@@ -54,16 +59,16 @@ function UserInfoEditLanguageBadge({
       <span>{languageInfo.displayName}</span>
       <span>|</span>
       <ProficiencyLevelIcon
-        level={data.level}
+        level={level}
         color={COLORS.WHITE}
         height={24}
         width={24}
       />
       <Select<Option<ProficiencyLevel>>
-        id={`level-${data.id}`}
+        id={`level-${id}`}
         value={levelValue}
         onChange={onChange}
-        options={levelOptions}
+        options={levelOptionsArray}
         styles={
           noBorderAndBgSelectWhite as StylesConfig<Option<ProficiencyLevel>>
         }

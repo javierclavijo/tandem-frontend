@@ -3,7 +3,11 @@ import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { SimpleLayout } from "../../common/components/Layout";
 import Nav from "../../common/components/Nav/Nav";
-import { COLORS, FONT_SIZES } from "../../common/resources/style-variables";
+import { COLORS, FONT_SIZES } from "../../common/constants";
+import langflowLogo from "../../common/static/svg/langflow_logo.svg";
+import bottomImage from "./static/images/pre-login-bottom.webp";
+import middleImage from "./static/images/pre-login-middle.webp";
+import topImage from "./static/images/pre-login-top.webp";
 
 /**
  * Pre-login home/index page component.
@@ -25,7 +29,7 @@ function PreLoginPage() {
           </div>
           <div css={imageContainer}>
             <img
-              src="/images/pre-login-top.webp"
+              src={topImage}
               alt="A team of rafters rowing in a body of water."
               css={image}
             />
@@ -48,14 +52,14 @@ function PreLoginPage() {
               </p>
             </div>
             <img
-              src="/images/pre-login-middle.webp"
+              src={middleImage}
               alt="A young person clad in urban attire, smiling."
               css={splitImage}
             />
           </div>
           <div css={splitContainer}>
             <img
-              src="/images/pre-login-bottom.webp"
+              src={bottomImage}
               alt="Young people jumping and looking excited overall."
               css={splitImage}
             />
@@ -76,30 +80,15 @@ function PreLoginHelmet() {
     <Helmet>
       <title>LangFlow</title>
       <link
-        ref="preload"
+        rel="preload"
         fetchPriority="high"
         as="image"
-        href="/images/pre-login-top.webp"
+        href={topImage}
         type="image/webp"
       />
-      <link
-        ref="preload"
-        as="image"
-        href="/images/pre-login-middle.webp"
-        type="image/webp"
-      />
-      <link
-        ref="preload"
-        as="image"
-        href="/images/pre-login-bottom.webp"
-        type="image/webp"
-      />
-      <link
-        ref="preload"
-        as="image"
-        href="/svg/langflow_logo.svg"
-        type="image/svg+xml"
-      />
+      <link rel="preload" as="image" href={middleImage} type="image/webp" />
+      <link rel="preload" as="image" href={bottomImage} type="image/webp" />
+      <link rel="preload" as="image" href={langflowLogo} type="image/svg+xml" />
     </Helmet>
   );
 }

@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import React, { useRef } from "react";
 import EditButtons from "../../../common/components/EditButtons";
-import { COLORS } from "../../../common/resources/style-variables";
+import { COLORS } from "../../../common/constants";
 import { Channel, User } from "../../../common/types";
 import { useEditField } from "../hooks";
 import {
@@ -40,14 +40,16 @@ function NameInput<TData>({ data, dataKey, onSubmit }: NameInputProps<TData>) {
   const keyboardSubmitRef = useRef<boolean>(false);
 
   const handleBlur = async (event: React.FocusEvent<HTMLInputElement>) => {
-    // If the submit button was clicked, submit the value. Else, cancel the editing.
+    // If the submit button was clicked, submit the value. Else, cancel the
+    // editing.
     if (event.relatedTarget === submitButtonRef?.current) {
       const success = await handleSubmit();
       if (!success) {
         elementRef?.current?.focus();
       }
     } else if (keyboardSubmitRef.current) {
-      // If the blur event was dispatched by the keyboard submit handler, just set 'enabled' to false.
+      // If the blur event was dispatched by the keyboard submit handler, just
+      //set 'enabled' to false.
       keyboardSubmitRef.current = false;
       setEditEnabled(false);
     } else {
@@ -68,8 +70,8 @@ function NameInput<TData>({ data, dataKey, onSubmit }: NameInputProps<TData>) {
   const handleKeyDown = async (
     event: React.KeyboardEvent<HTMLInputElement>,
   ) => {
-    // If the Enter key is pressed, submit the form. If the pressed key is the Escape key, cancel the editing and
-    // blur the text area.
+    // If the Enter key is pressed, submit the form. If the pressed key is the
+    // Escape key, cancel the editing and blur the text area.
     if (event.code === "Enter") {
       const success = await handleSubmit();
       if (success) {

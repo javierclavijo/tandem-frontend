@@ -5,7 +5,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import useAuth from "../../../common/context/AuthContext/AuthContext";
-import { useIsDesktop } from "../../../common/hooks";
+import { useIsDesktop, useTimeoutHandler } from "../../../common/hooks";
 import { useFadeIn } from "../../../common/transitions";
 import { useSetChatRoomHeader } from "../hooks";
 import { useChat } from "../queries";
@@ -23,11 +23,6 @@ function ChatPage() {
   const transitionProps = useFadeIn();
 
   /**
-   * Ref for the message container div. Used to scroll to the bottom of the page when necessary.
-   */
-  const messageContainerRef = useRef<HTMLDivElement>(null);
-
-  /**
    * Infinite query which fetches and holds the chat's messages.
    */
   const { data, chat, fetchNextPage, hasNextPage } = useChat(
@@ -41,6 +36,24 @@ function ChatPage() {
    * Set the chat header's data.
    */
   useSetChatRoomHeader(chat);
+
+  /**
+   * Ref for the message container div. Used to scroll to the bottom of the page
+   * when necessary.
+   */
+  const messageContainerRef = useRef<HTMLDivElement>(null);
+
+  /**
+   * Scrolls to bottom after a timeout.
+   */
+  const onMessageSend = useTimeoutHandler(
+    () =>
+      messageContainerRef.current?.scroll({
+        top: messageContainerRef.current.offsetHeight,
+        behavior: "smooth",
+      }),
+    25,
+  );
 
   if (chat == null || data == null) {
     return null;
@@ -72,9 +85,11 @@ function ChatPage() {
               <React.Fragment key={`page-${pageIndex}`}>
                 {[...page.results].map((message) => (
                   <ChatRoomMessage
-                    message={message}
+                    authorName={message.author.username}
+                    content={message.content}
+                    timestamp={message.timestamp}
                     isOwnMessage={user?.id === message.author.id}
-                    type={chat?.type}
+                    chatType={chat?.type}
                     key={message.id}
                   />
                 ))}
@@ -82,7 +97,11 @@ function ChatPage() {
             ))}
           </InfiniteScroll>
         </div>
-        <ChatInputForm chat={chat} />
+        <ChatInputForm
+          chatId={chat.id}
+          chatType={chat.type}
+          onMessageSend={onMessageSend}
+        />
       </animated.div>
     </>
   );

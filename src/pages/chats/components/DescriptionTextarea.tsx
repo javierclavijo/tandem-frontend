@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import React, { useRef } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import EditButtons from "../../../common/components/EditButtons";
-import { COLORS } from "../../../common/resources/style-variables";
+import { COLORS } from "../../../common/constants";
 import { Channel, User } from "../../../common/types";
 import { useEditField } from "../hooks";
 import { useUpdateChannelDescriptionMutation } from "../queries";
@@ -18,6 +18,7 @@ interface DescriptionTextareaProps {
  * Text area component to edit a user or channel's description.
  */
 function DescriptionTextarea({ data, queryKey }: DescriptionTextareaProps) {
+  // TODO: substitute with RHF.
   const {
     editEnabled,
     setEditEnabled,
@@ -36,6 +37,7 @@ function DescriptionTextarea({ data, queryKey }: DescriptionTextareaProps) {
 
   const updateMutation = useUpdateChannelDescriptionMutation(data, queryKey);
 
+  // TODO: all this can probably be simplified with RHF.
   const handleBlur = async (event: React.FocusEvent<HTMLTextAreaElement>) => {
     // If the submit button was clicked, submit the value. Else, cancel the editing.
     if (event.relatedTarget === submitButtonRef?.current) {
@@ -109,7 +111,7 @@ function DescriptionTextarea({ data, queryKey }: DescriptionTextareaProps) {
         css={editElement}
         placeholder="Add a description…"
       />
-      {error ? <p css={errorText}>{error}</p> : null}
+      {error.length !== 0 && <p css={errorText}>{error}</p>}
     </>
   );
 }

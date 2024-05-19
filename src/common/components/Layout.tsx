@@ -63,3 +63,6 @@ export const responsiveBottomTabsLayout = css`
       "main";
   }
 `;
+
+SimpleLayout.displayName = "SimpleLayout";
+ResponsiveBottomTabsLayout.displayName = "ResponsiveBottomTabsLayout";

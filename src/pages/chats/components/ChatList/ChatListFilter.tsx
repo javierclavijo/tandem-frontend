@@ -1,46 +1,40 @@
 import { css } from "@emotion/react";
 import { Search } from "iconoir-react";
-import React from "react";
 import {
   searchInput,
   searchInputElement,
 } from "../../../../common/components/styles";
-import {
-  COLORS,
-  FONT_SIZES,
-} from "../../../../common/resources/style-variables";
+import { COLORS, FONT_SIZES } from "../../../../common/constants";
+
+interface ChatListFilterProps {
+  value: string;
+  onFilterChange: (newValue: string) => void;
+}
 
 /**
  * Chat list filter form.
  */
-function ChatListFilter({
-  setFilter,
-}: {
-  setFilter: React.Dispatch<React.SetStateAction<string>>;
-}) {
+function ChatListFilter({ value, onFilterChange }: ChatListFilterProps) {
   return (
     <div css={outerContainer}>
       <div css={innerContainer}>
         <form css={searchInputForm}>
           <input
             type="text"
-            onChange={(e) => setFilter(e.target.value)}
+            value={value}
+            onChange={(e) => onFilterChange(e.target.value)}
             placeholder="Search..."
             id="chat-list-filter"
             css={searchInputElement}
             aria-label="Chat list filter"
           />
-          <button
-            type="button"
+
+          <Search
+            color={COLORS.DARK_PRIMARY}
+            width="1.5rem"
+            height="1.5rem"
             css={searchButton}
-            aria-label="Filter chat list"
-          >
-            <Search
-              color={COLORS.DARK_PRIMARY}
-              width="1.5rem"
-              height="1.5rem"
-            />
-          </button>
+          />
         </form>
       </div>
     </div>

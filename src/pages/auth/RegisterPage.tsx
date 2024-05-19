@@ -7,9 +7,9 @@ import { animated } from "react-spring";
 import { SimpleLayout } from "../../common/components/Layout";
 import Nav from "../../common/components/Nav/Nav";
 import { select } from "../../common/components/styles";
+import { languageOptionsArray } from "../../common/constants";
 import useAuth from "../../common/context/AuthContext/AuthContext";
 import { useSetFormErrorOnRequestError } from "../../common/hooks";
-import { languageOptions } from "../../common/resources/languages";
 import { useFadeIn } from "../../common/transitions";
 import { useRegisterForm } from "./forms";
 import { useRegisterMutation } from "./queries";
@@ -164,7 +164,7 @@ function RegisterPage() {
                       isMulti={true}
                       {...field}
                       value={field.value}
-                      options={languageOptions}
+                      options={languageOptionsArray}
                       placeholder="Native languages"
                       styles={select}
                     />

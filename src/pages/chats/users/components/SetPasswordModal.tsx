@@ -31,8 +31,9 @@ function SetPasswordModal({ ...props }: NewLanguageModalProps) {
 
   const onMutationError = (e: AxiosError<ServerErrorResponse>) => {
     if (isAxiosError(e) && e.response) {
-      // If the server returned any errors, set them in the form. The server returns errors as string arrays,
-      // so we must first iterate over the response's entries, and then over the entries' values, setting the
+      // If the server returned any errors, set them in the form. The server
+      // returns errors as string arrays, so we must first iterate over the
+      // response's entries, and then over the entries' values, setting the
       // error's key as the error's field's name.
       if (e.response.status === 401) {
         setError("oldPassword", {

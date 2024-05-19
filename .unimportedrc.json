@@ -1,0 +1,8 @@
+{
+  "ignoreUnresolved": [],
+  "ignoreUnused": [
+    "@emotion/babel-plugin",
+    "globals"
+  ],
+  "ignoreUnimported": []
+}

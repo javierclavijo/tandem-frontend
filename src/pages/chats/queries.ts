@@ -60,7 +60,7 @@ export const useChat = (
     async ({ pageParam = 1 }) => {
       if (chat) {
         const response = await axiosApi.get(chat?.messageUrl, {
-          params: { page: pageParam },
+          params: { page: pageParam, size: 15 },
         });
         return response.data;
       }

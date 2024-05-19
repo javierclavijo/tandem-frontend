@@ -6,15 +6,17 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import EditButton from "../../../common/components/EditButton";
 import LanguageBadge from "../../../common/components/LanguageBadge";
+import ProfileImage from "../../../common/components/ProfileImage";
 import ShareLink from "../../../common/components/ShareLink";
+import { COLORS } from "../../../common/constants";
 import useAuth from "../../../common/context/AuthContext/AuthContext";
-import { COLORS } from "../../../common/resources/style-variables";
+import userPlaceholderImage from "../../../common/static/images/user-placeholder.png";
 import { useFadeIn } from "../../../common/transitions";
 import DescriptionTextarea from "../components/DescriptionTextarea";
 import ImageInput from "../components/ImageInput";
 import InfoListElement from "../components/InfoListElement";
 import { ChannelNameInput } from "../components/NameInput";
-import { useSetChatHeader, useWsChatFunctions } from "../hooks";
+import { useJoinWsChat, useSetChatHeader } from "../hooks";
 import {
   descriptionSection,
   infoButton,
@@ -22,7 +24,6 @@ import {
   listSection,
   listSectionHeader,
   listSectionList,
-  profileImg,
 } from "../styles";
 import ChannelEditLanguageBadge from "./components/ChannelEditLanguageBadge";
 import DeleteChannelModal from "./components/DeleteChannelModal";
@@ -45,7 +46,7 @@ function ChannelPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const transitionProps = useFadeIn();
-  const { joinChat } = useWsChatFunctions();
+  const joinChat = useJoinWsChat();
   const setHeader = useSetChatHeader();
 
   const { data } = useChannel(params.id);
@@ -148,8 +149,6 @@ function ChannelPage() {
             <>
               <ImageInput
                 image={data.image}
-                // TODO: remove direct references like this.
-                defaultImage="/images/user-placeholder.png"
                 url={data.url}
                 invalidateQueryKey={["channels", data.id]}
               />
@@ -157,10 +156,12 @@ function ChannelPage() {
             </>
           ) : (
             <>
-              <img
-                src={data.image ?? "/images/user-placeholder.png"}
+              <ProfileImage
+                src={data.image ?? userPlaceholderImage}
                 alt=""
-                css={profileImg}
+                css={css`
+                  display: none;
+                `}
               />
               <p>{data?.name}</p>
             </>
