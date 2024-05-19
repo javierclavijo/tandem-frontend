@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useParams } from "react-router-dom";
@@ -81,9 +81,10 @@ const ChatPage = () => {
             inverse
             aria-live="polite"
           >
-            {data?.pages.reverse().map((page, pageIndex) => (
-              <React.Fragment key={`page-${pageIndex}`}>
-                {[...page.results].map((message) => (
+            {data?.pages
+              .reverse()
+              .map((page) =>
+                [...page.results].map((message) => (
                   <ChatRoomMessage
                     authorName={message.author.username}
                     content={message.content}
@@ -92,9 +93,8 @@ const ChatPage = () => {
                     chatType={chat?.type}
                     key={message.id}
                   />
-                ))}
-              </React.Fragment>
-            ))}
+                )),
+              )}
           </InfiniteScroll>
         </div>
         <ChatInputForm

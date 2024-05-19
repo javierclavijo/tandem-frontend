@@ -1,5 +1,4 @@
 import { css } from "@emotion/react";
-import React from "react";
 import { Helmet } from "react-helmet-async";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSearchParams } from "react-router-dom";
@@ -102,40 +101,36 @@ const SearchPage = () => {
                 </header>
                 <div css={homeSearchStyles.sectionItemsContainer}>
                   {!!isUserSearch &&
-                    usersData?.pages.map((page, pageIndex) => (
-                      <React.Fragment key={`page-${pageIndex}`}>
-                        {[...page.results].map((element) => (
-                          <SearchResultElement
-                            id={`${element.id}`}
-                            name={element.username}
-                            languages={element.languages.map(
-                              ({ language }) => language,
-                            )}
-                            description={element.description}
-                            image={element.image}
-                            key={`${element.id}`}
-                            link={`/chats/users/${element.id}`}
-                          />
-                        ))}
-                      </React.Fragment>
-                    ))}
+                    usersData?.pages.map((page) =>
+                      [...page.results].map((element) => (
+                        <SearchResultElement
+                          id={`${element.id}`}
+                          name={element.username}
+                          languages={element.languages.map(
+                            ({ language }) => language,
+                          )}
+                          description={element.description}
+                          image={element.image}
+                          key={`${element.id}`}
+                          link={`/chats/users/${element.id}`}
+                        />
+                      )),
+                    )}
 
                   {!!isChannelSearch &&
-                    channelsData?.pages.map((page, pageIndex) => (
-                      <React.Fragment key={`page-${pageIndex}`}>
-                        {[...page.results].map((element) => (
-                          <SearchResultElement
-                            id={`${element.id}`}
-                            name={element.name}
-                            languages={[element.language]}
-                            description={element.description}
-                            image={element.image}
-                            key={`${element.id}`}
-                            link={`/chats/channels/${element.id}`}
-                          />
-                        ))}
-                      </React.Fragment>
-                    ))}
+                    channelsData?.pages.map((page) =>
+                      [...page.results].map((element) => (
+                        <SearchResultElement
+                          id={`${element.id}`}
+                          name={element.name}
+                          languages={[element.language]}
+                          description={element.description}
+                          image={element.image}
+                          key={`${element.id}`}
+                          link={`/chats/channels/${element.id}`}
+                        />
+                      )),
+                    )}
 
                   {!!isDataEmpty && <p css={notFoundText}>No results.</p>}
                 </div>
