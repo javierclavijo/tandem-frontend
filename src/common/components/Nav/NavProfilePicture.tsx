@@ -16,11 +16,11 @@ interface NavProfilePictureProps
 /**
  * User profile picture component, used in the app's header.
  */
-function NavProfilePicture({
+const NavProfilePicture = ({
   image,
   username,
   ...props
-}: NavProfilePictureProps) {
+}: NavProfilePictureProps) => {
   return (
     <NavLink
       css={link}
@@ -34,7 +34,7 @@ function NavProfilePicture({
       <p>{username}</p>
     </NavLink>
   );
-}
+};
 
 const link = css`
   ${infoButton};

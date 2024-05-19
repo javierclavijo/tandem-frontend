@@ -19,11 +19,11 @@ interface ChatInputFormProps {
  * Input form for the chat room. Includes the chat message input, a send button
  * and an emoji picker.
  */
-function ChatInputForm({
+const ChatInputForm = ({
   chatId,
   chatType,
   onMessageSend,
-}: ChatInputFormProps) {
+}: ChatInputFormProps) => {
   const sendWsMessage = useSendWsMessage();
 
   // TODO:use RHF
@@ -155,7 +155,7 @@ function ChatInputForm({
       </form>
     </div>
   );
-}
+};
 
 const container = css`
   padding: 1rem;

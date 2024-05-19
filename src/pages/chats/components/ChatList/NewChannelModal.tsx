@@ -27,7 +27,10 @@ interface NewChannelModalProps extends CloseableModalProps {}
 /**
  * Modal for channel creation.
  */
-function NewChannelModal({ onRequestClose, ...props }: NewChannelModalProps) {
+const NewChannelModal = ({
+  onRequestClose,
+  ...props
+}: NewChannelModalProps) => {
   const navigate = useNavigate();
   const {
     register,
@@ -127,7 +130,7 @@ function NewChannelModal({ onRequestClose, ...props }: NewChannelModalProps) {
       </form>
     </Modal>
   );
-}
+};
 
 const form = css`
   display: flex;

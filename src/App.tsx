@@ -25,6 +25,29 @@ import { default as PreLoginPage } from "./pages/pre-login/PreLoginPage";
 import SearchPage from "./pages/search/SearchPage";
 import globalStyles from "./styles";
 
+/**
+ * Wraps the apps with providers. Goes inside a React Router route.
+ *
+ * The reason for this 'hack' is that the galaxy brains at React Router decided
+ * to create a RouterProvider component which doesn't accept children, so you
+ * can't --for example-- navigate to the home page after login if the login
+ * function is in the AuthContext outside the RouterProvider. We *could* just
+ * call the login function directly from its hook, but then we'd have to handle
+ * auth stuff (e.g. errors) manually in components.
+ */
+const AppWrapper = () => {
+  return (
+    <>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <Outlet />
+        </AuthProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </>
+  );
+};
+
 export const router = createBrowserRouter([
   {
     path: "",
@@ -79,42 +102,19 @@ export const router = createBrowserRouter([
 ]);
 
 /**
- * Wraps the apps with providers. Goes inside a React Router route.
- *
- * The reason for this 'hack' is that the galaxy brains at React Router decided
- * to create a RouterProvider component which doesn't accept children, so you
- * can't --for example-- navigate to the home page after login if the login
- * function is in the AuthContext outside the RouterProvider. We *could* just
- * call the login function directly from its hook, but then we'd have to handle
- * auth stuff (e.g. errors) manually in components.
- */
-function AppWrapper() {
-  return (
-    <>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <Outlet />
-        </AuthProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </>
-  );
-}
-
-/**
  * Main App component rendered by index.tsx. Contains stuff that doesn't need to
  * access React Router APIs (i.e. hooks), plus the RouterProvider itself.
  */
-export default function App() {
-  return (
-    <React.StrictMode>
-      <Global styles={globalStyles} />
-      <ErrorBoundary fallback={<ErrorPage />}>
-        <HelmetProvider context={helmetContext}>
-          <Helmet title="LangFlow" />
-          <RouterProvider router={router} />
-        </HelmetProvider>
-      </ErrorBoundary>
-    </React.StrictMode>
-  );
-}
+const App = () => (
+  <React.StrictMode>
+    <Global styles={globalStyles} />
+    <ErrorBoundary fallback={<ErrorPage />}>
+      <HelmetProvider context={helmetContext}>
+        <Helmet title="LangFlow" />
+        <RouterProvider router={router} />
+      </HelmetProvider>
+    </ErrorBoundary>
+  </React.StrictMode>
+);
+
+export default App;

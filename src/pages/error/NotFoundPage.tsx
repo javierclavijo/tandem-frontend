@@ -3,7 +3,7 @@ import { BaseErrorPage } from "./ErrorPage";
 /**
  * 404 error page. Used in the app's router.
  */
-function NotFoundPage() {
+const NotFoundPage = () => {
   return (
     <BaseErrorPage
       title="Not Found | LangFlow"
@@ -11,6 +11,6 @@ function NotFoundPage() {
       description="We couldn't find what you're looking for."
     />
   );
-}
+};
 
 export default NotFoundPage;

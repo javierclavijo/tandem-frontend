@@ -41,7 +41,7 @@ import {
 /**
  * User detail component.
  */
-function UserPage() {
+const UserPage = () => {
   const params = useParams();
   const { user: appUser } = useAuth();
   const navigate = useNavigate();
@@ -340,7 +340,7 @@ function UserPage() {
       )}
     </>
   );
-}
+};
 
 const container = css`
   overflow-y: scroll;

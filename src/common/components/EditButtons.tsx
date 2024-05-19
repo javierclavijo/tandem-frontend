@@ -13,12 +13,12 @@ interface EditButtonsProps {
 /**
  * Renders a confirm (check) and a cancel (cross) button.
  */
-function EditButtons({
+const EditButtons = ({
   submitButtonRef,
   handleSubmit,
   handleCancel,
   color,
-}: EditButtonsProps) {
+}: EditButtonsProps) => {
   return (
     <div css={container}>
       <EditButton onClick={handleSubmit} ref={submitButtonRef}>
@@ -29,7 +29,7 @@ function EditButtons({
       </EditButton>
     </div>
   );
-}
+};
 
 const container = css`
   display: flex;

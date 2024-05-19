@@ -23,14 +23,14 @@ interface RecentElementProps {
 /**
  * Element component for post-login home 'recent' sections.
  */
-function RecentElement({
+const RecentElement = ({
   chatName,
   chatImage,
   lastMessageText,
   lastMessageAuthorName,
   isOwnMessage,
   link,
-}: RecentElementProps) {
+}: RecentElementProps) => {
   const displayedMessageContent = `${
     isOwnMessage ? "You" : lastMessageAuthorName
   }: ${lastMessageText}`;
@@ -63,7 +63,7 @@ function RecentElement({
       <Link to={link} css={linkCss} title={chatName} />
     </article>
   );
-}
+};
 
 const imgContainer = css`
   ${thumbnailContainer};

@@ -17,7 +17,7 @@ interface ChatHeaderProps extends ChatHeaderData {}
  * Chat header component. Can render a title, an image and action buttons.
  * If the 'link' prop is passed, it renders the link above the component's area.
  */
-function ChatHeader({ title, link, image, actions }: ChatHeaderProps) {
+const ChatHeader = ({ title, link, image, actions }: ChatHeaderProps) => {
   const transitionProps = useFadeIn();
 
   return (
@@ -39,7 +39,7 @@ function ChatHeader({ title, link, image, actions }: ChatHeaderProps) {
       {actions}
     </animated.header>
   );
-}
+};
 
 const imageContainer = css`
   ${thumbnailContainer};

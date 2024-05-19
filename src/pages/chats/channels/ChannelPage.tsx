@@ -40,7 +40,7 @@ import {
  * Displays a channel's details: image, name, language and level, description
  * and members.
  */
-function ChannelPage() {
+const ChannelPage = () => {
   const params = useParams();
   const { user } = useAuth();
   const location = useLocation();
@@ -278,7 +278,7 @@ function ChannelPage() {
       />
     </>
   );
-}
+};
 
 const header = css`
   display: flex;

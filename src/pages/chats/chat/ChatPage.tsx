@@ -16,7 +16,7 @@ import { chatRoom, chatRoomMobile } from "./styles";
 /**
  * Renders a chat's messages, plus the input form to send messages to the chat.
  */
-function ChatPage() {
+const ChatPage = () => {
   const params = useParams();
   const { user } = useAuth();
   const isDesktop = useIsDesktop();
@@ -105,7 +105,7 @@ function ChatPage() {
       </animated.div>
     </>
   );
-}
+};
 
 const container = css`
   overflow: auto;

@@ -11,7 +11,7 @@ import NavProfilePicture from "./NavProfilePicture";
 /**
  * Main header component. Renders differently according to the viewport width and to whether the user is logged in.
  */
-function Nav() {
+const Nav = () => {
   const { user, isLoggedIn, logout } = useAuth();
   const isDesktop = useIsDesktop();
 
@@ -134,7 +134,7 @@ function Nav() {
       </nav>
     </header>
   );
-}
+};
 
 const header = css`
   grid-area: header;

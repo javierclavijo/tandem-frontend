@@ -31,6 +31,14 @@ export default tseslint.config(
       ...eslintPluginReactHooks.configs.recommended.rules,
       "react/no-unknown-property": ["error", { ignore: ["css"] }], // Avoid issues with emotion
       "react/jsx-fragments": ["error", "syntax"],
+      "react/destructuring-assignment": ["error", "always"],
+      "react/function-component-definition": [
+        "error",
+        {
+          namedComponents: "arrow-function",
+          unnamedComponents: "arrow-function",
+        },
+      ],
     },
     settings: { react: { version: "detect" } },
   },

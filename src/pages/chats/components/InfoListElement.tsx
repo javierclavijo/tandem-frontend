@@ -23,14 +23,14 @@ interface InfoListElementProps {
  * List element for lists in channel and user info components. Admits a
  * 'buttons' JSX prop which is made visible on hover.
  */
-function InfoListElement({
+const InfoListElement = ({
   name,
   additionalInfo,
   description,
   image,
   link,
   buttons,
-}: InfoListElementProps) {
+}: InfoListElementProps) => {
   return (
     <li css={outerContainer}>
       <div css={infoListElementInnerContainer}>
@@ -64,7 +64,7 @@ function InfoListElement({
       <Link to={link} css={linkCss} title={name} />
     </li>
   );
-}
+};
 
 const outerContainer = css`
   ${containerWithLink};

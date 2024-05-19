@@ -12,7 +12,7 @@ import topImage from "./static/images/pre-login-top.webp";
 /**
  * Pre-login home/index page component.
  */
-function PreLoginPage() {
+const PreLoginPage = () => {
   return (
     <>
       <PreLoginHelmet />
@@ -73,9 +73,9 @@ function PreLoginPage() {
       </SimpleLayout>
     </>
   );
-}
+};
 
-function PreLoginHelmet() {
+const PreLoginHelmet = () => {
   return (
     <Helmet>
       <title>LangFlow</title>
@@ -91,7 +91,7 @@ function PreLoginHelmet() {
       <link rel="preload" as="image" href={langflowLogo} type="image/svg+xml" />
     </Helmet>
   );
-}
+};
 
 const main = css`
   display: flex;

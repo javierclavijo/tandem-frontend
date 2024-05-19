@@ -24,7 +24,7 @@ import { ChannelSearchParams, UserSearchParams } from "./types";
 /**
  * Main search page. Includes a search panel and the search results list.
  */
-function SearchPage() {
+const SearchPage = () => {
   const [searchParams] = useSearchParams();
   const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
@@ -147,7 +147,7 @@ function SearchPage() {
       </ResponsiveBottomTabsLayout>
     </>
   );
-}
+};
 
 const infiniteScroll = css`
   display: flex;

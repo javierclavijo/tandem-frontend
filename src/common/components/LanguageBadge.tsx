@@ -15,7 +15,7 @@ interface LanguageBadgeProps {
  * Renders a badge with the specified language and level names and icons, plus
  * the specified background color.
  */
-function LanguageBadge({ language, level, bg }: LanguageBadgeProps) {
+const LanguageBadge = ({ language, level, bg }: LanguageBadgeProps) => {
   const container = css`
     ${badge};
     background-color: ${bg};
@@ -38,6 +38,6 @@ function LanguageBadge({ language, level, bg }: LanguageBadgeProps) {
       <span>{levelDisplayName}</span>
     </div>
   );
-}
+};
 
 export default LanguageBadge;

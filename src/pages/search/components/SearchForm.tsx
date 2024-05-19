@@ -31,7 +31,7 @@ import { onSearchSubmit } from "../functions";
  * is submitted. Conditionally renders search controls depending on the chosen
  * search type (users by default).
  */
-function SearchForm() {
+const SearchForm = () => {
   const [, setSearchParams] = useSearchParams();
   const { watch, handleSubmit, control } = useSearchPanelForm();
 
@@ -209,7 +209,7 @@ function SearchForm() {
       </div>
     </form>
   );
-}
+};
 
 const form = css`
   display: flex;

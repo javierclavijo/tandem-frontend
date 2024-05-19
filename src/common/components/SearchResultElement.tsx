@@ -22,14 +22,14 @@ interface SearchResultElementProps {
 /**
  * Element component for search results.
  */
-function SearchResultElement({
+const SearchResultElement = ({
   id,
   name,
   languages,
   description,
   image,
   link,
-}: SearchResultElementProps) {
+}: SearchResultElementProps) => {
   return (
     <article css={[containerWithLink, outerContainer]}>
       <div css={innerContainer}>
@@ -67,7 +67,7 @@ function SearchResultElement({
       <Link to={link} css={linkCss} title={name} />
     </article>
   );
-}
+};
 
 const imgContainer = css`
   height: 4.5rem;

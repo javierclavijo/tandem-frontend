@@ -29,7 +29,7 @@ import { RegisterFormValues } from "./types";
 /**
  * Register form component.
  */
-function RegisterPage() {
+const RegisterPage = () => {
   const { login } = useAuth();
   const transitionProps = useFadeIn();
 
@@ -189,7 +189,7 @@ function RegisterPage() {
       </AnimatedLayout>
     </>
   );
-}
+};
 
 const AnimatedLayout = animated(SimpleLayout);
 

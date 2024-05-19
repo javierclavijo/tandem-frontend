@@ -18,7 +18,7 @@ import { ChatHeaderData } from "./types";
  */
 // TODO: just remove this, make "dumb" layout components and reuse them in each
 // page.
-function ChatsLayout() {
+const ChatsLayout = () => {
   const params = useParams();
   const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
@@ -64,7 +64,7 @@ function ChatsLayout() {
       {!params.id ? <Tabs /> : null}
     </div>
   );
-}
+};
 
 export const baseAppContainer = css`
   // Main page layout

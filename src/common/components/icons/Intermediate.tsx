@@ -3,10 +3,10 @@ import React from "react";
 /**
  * 'Beginner' proficiency level icon.
  */
-function Intermediate(
+const Intermediate = (
   props: React.SVGProps<SVGSVGElement>,
   svgRef?: React.Ref<SVGSVGElement>,
-) {
+) => {
   return (
     <svg
       width="1.5em"
@@ -34,7 +34,7 @@ function Intermediate(
       />
     </svg>
   );
-}
+};
 
 export default React.forwardRef(Intermediate);
 

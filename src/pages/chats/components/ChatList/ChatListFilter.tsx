@@ -14,7 +14,7 @@ interface ChatListFilterProps {
 /**
  * Chat list filter form.
  */
-function ChatListFilter({ value, onFilterChange }: ChatListFilterProps) {
+const ChatListFilter = ({ value, onFilterChange }: ChatListFilterProps) => {
   return (
     <div css={outerContainer}>
       <div css={innerContainer}>
@@ -39,7 +39,7 @@ function ChatListFilter({ value, onFilterChange }: ChatListFilterProps) {
       </div>
     </div>
   );
-}
+};
 
 const innerContainer = css`
   padding-bottom: 1rem;

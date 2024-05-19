@@ -22,7 +22,11 @@ interface NameInputProps<TData> {
 /**
  * Base name input component for detail views.
  */
-function NameInput<TData>({ data, dataKey, onSubmit }: NameInputProps<TData>) {
+const NameInput = <TData,>({
+  data,
+  dataKey,
+  onSubmit,
+}: NameInputProps<TData>) => {
   const {
     editEnabled,
     setEditEnabled,
@@ -115,31 +119,31 @@ function NameInput<TData>({ data, dataKey, onSubmit }: NameInputProps<TData>) {
       {error ? <p css={errorText}>{error}</p> : null}
     </>
   );
-}
+};
 
 /**
  * Name input component for channel detail.
  */
-export function ChannelNameInput({ data }: { data: Channel }) {
+export const ChannelNameInput = ({ data }: { data: Channel }) => {
   const updateMutation = useUpdateChannelNameMutation(data);
 
   const onSubmit = async (value: string) =>
     await updateMutation.mutateAsync({ name: value });
 
   return <NameInput<Channel> data={data} dataKey="name" onSubmit={onSubmit} />;
-}
+};
 
 /**
  * Name input component for user detail.
  */
-export function UserNameInput({ data }: { data: User }) {
+export const UserNameInput = ({ data }: { data: User }) => {
   const updateMutation = useUpdateUsernameMutation(data);
 
   const onSubmit = async (value: string) =>
     await updateMutation.mutateAsync({ username: value });
 
   return <NameInput<User> data={data} dataKey="username" onSubmit={onSubmit} />;
-}
+};
 
 const container = css`
   width: 100%;
