@@ -124,21 +124,30 @@ export function useWsChatListener() {
       },
     );
 
-    queryClient.setQueryData<InfiniteData<ChatMessageResponse> | undefined>(
-      ["chats", "messages", chat_id],
-      (old) => {
-        if (old !== undefined) {
-          // Add the message to the first page, reassign the page in the
-          // array so that the bottom-scrolling effect hook is triggered.
-          const firstPage = { ...old.pages[0] };
-          old.pages[0] = {
-            ...firstPage,
-            results: [message, ...firstPage.results],
-          };
-        }
-        return old;
-      },
-    );
+    const chatQueryKey = ["chats", "messages", chat_id];
+
+    // Update the chat's message list, but only if it already exists in cache.
+    // Else, React Query won't fetch the chat's messages when the user enters
+    // the chat page. (Tested on React Query 3.39.3, may be corrected in newer
+    // versions.)
+    const isChatFetched = queryClient.getQueryState(chatQueryKey) !== undefined;
+    if (isChatFetched) {
+      queryClient.setQueryData<InfiniteData<ChatMessageResponse> | undefined>(
+        chatQueryKey,
+        (old) => {
+          if (old !== undefined) {
+            // Add the message to the first page, reassign the page in the
+            // array so that the bottom-scrolling effect hook is triggered.
+            const firstPage = { ...old.pages[0] };
+            old.pages[0] = {
+              ...firstPage,
+              results: [message, ...firstPage.results],
+            };
+            return old;
+          }
+        },
+      );
+    }
 
     // If the message comes from another user (i.e. it wasn't sent by the app's
     // user and the user is not currently viewing the chat page, show a message
