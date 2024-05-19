@@ -25,7 +25,7 @@ export const fetchAllChatList = async (user: User | undefined) => {
 /**
  * Holds information about the user's chat list (both channel and friend chats).
  */
-export const useAllChatList = () => {
+export const useAllChatsList = () => {
   const { user } = useAuth();
   return useQuery<Chat[]>(
     ["chats", "list", "all"],
@@ -48,7 +48,7 @@ export const useChat = (
   id: string,
   queryOptions: UseInfiniteQueryOptions<ChatMessageResponse> | undefined,
 ) => {
-  const { data: chatList } = useAllChatList();
+  const { data: chatList } = useAllChatsList();
 
   const chat: Chat | undefined = useMemo(
     () => chatList?.find((c) => c.id === id),

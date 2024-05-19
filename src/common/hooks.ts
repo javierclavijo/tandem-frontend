@@ -1,8 +1,16 @@
 import { AxiosError, isAxiosError } from "axios";
 import { useCallback, useEffect, useRef } from "react";
 import { FieldValues, UseFormSetError } from "react-hook-form";
+import { InfiniteData, useQueryClient } from "react-query";
 import { useMediaQuery } from "react-responsive";
-import { ServerErrorResponse, UseFormSetErrorName } from "./types";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { Options, default as useWebSocket } from "react-use-websocket";
+import { useAllChatsList } from "../pages/chats/queries";
+import { ChatMessageResponse, WsChatMessage } from "../pages/chats/types";
+import ChatMessageToast from "./components/ChatMessageToast";
+import useAuth from "./context/AuthContext/AuthContext";
+import { Chat, ServerErrorResponse, UseFormSetErrorName } from "./types";
 
 export const useSetFormErrorOnRequestError = <TData extends FieldValues>(
   setError: UseFormSetError<TData>,
@@ -63,4 +71,99 @@ export const useTimeoutHandler = (
   };
 
   return returnHandler;
-};
+}; /**
+ * Holds the WebSocket connection to the server. Closes the connection if the
+ * user logs out.
+ */
+export function useBaseWsChatConnection(options?: Options | undefined) {
+  const { isLoggedIn } = useAuth();
+
+  return useWebSocket<WsChatMessage>(
+    `${import.meta.env.VITE_WS_URL}/ws/chats/`,
+    {
+      onClose: () => console.error("Chat socket closed unexpectedly"),
+      shouldReconnect: () => true,
+      share: true,
+      retryOnError: true,
+      ...options,
+    },
+    isLoggedIn,
+  );
+}
+
+export function useWsChatListener() {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { user } = useAuth();
+  const { data: userChatListData } = useAllChatsList();
+
+  /**
+   * Updates the chat list and the corresponding chat messages query whenever a
+   * message is received (or sent!). Shows a toast notification under certain
+   * conditions.
+   */
+  const onMessage = (wsMessage: MessageEvent<string>) => {
+    const { message } = JSON.parse(wsMessage.data) as WsChatMessage;
+    const { chat_id } = message;
+
+    if (chat_id == null) {
+      return;
+    }
+
+    queryClient.setQueryData<Chat[] | undefined>(
+      ["chats", "list", "all"],
+      (old) => {
+        if (old !== undefined) {
+          const oldChat = old.find((c) => c.id === chat_id);
+          if (oldChat) {
+            oldChat.messages = [message];
+          }
+        }
+        return old;
+      },
+    );
+
+    queryClient.setQueryData<InfiniteData<ChatMessageResponse> | undefined>(
+      ["chats", "messages", chat_id],
+      (old) => {
+        if (old !== undefined) {
+          // Add the message to the first page, reassign the page in the
+          // array so that the bottom-scrolling effect hook is triggered.
+          const firstPage = { ...old.pages[0] };
+          old.pages[0] = {
+            ...firstPage,
+            results: [message, ...firstPage.results],
+          };
+        }
+        return old;
+      },
+    );
+
+    // If the message comes from another user (i.e. it wasn't sent by the app's
+    // user and the user is not currently viewing the chat page, show a message
+    // toast.
+    if (
+      location.pathname !== `/chats/${chat_id}` &&
+      user?.id !== undefined &&
+      message.author.id !== user?.id
+    ) {
+      const chatImage = userChatListData?.find(
+        (chat) => chat.id === chat_id,
+      )?.image;
+
+      toast(
+        ChatMessageToast({
+          chatImage,
+          authorName: message.author.username,
+          messageContent: message.content,
+        }),
+        {
+          onClick: () => navigate(`/chats/${chat_id}`),
+        },
+      );
+    }
+  };
+
+  return useBaseWsChatConnection({ onMessage });
+}

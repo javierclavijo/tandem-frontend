@@ -5,6 +5,8 @@ import { Helmet, HelmetProvider } from "react-helmet-async";
 import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { helmetContext, queryClient } from "./common/apis";
 import { AuthProvider } from "./common/context/AuthContext/AuthContext";
 import {
@@ -109,6 +111,7 @@ const App = () => (
         <Helmet title="LangFlow" />
         <RouterProvider router={router} />
       </HelmetProvider>
+      <ToastContainer hideProgressBar closeOnClick closeButton />
     </ErrorBoundary>
   </React.StrictMode>
 );

@@ -7,18 +7,11 @@ import {
   useRef,
   useState,
 } from "react";
-import { InfiniteData, useQueryClient } from "react-query";
 import { useOutletContext } from "react-router-dom";
-import useWebSocket, { Options } from "react-use-websocket";
 import useAuth from "../../common/context/AuthContext/AuthContext";
+import { useBaseWsChatConnection } from "../../common/hooks";
 import { Chat, FriendChat, User } from "../../common/types";
-import {
-  ChatHeaderData,
-  ChatMessage,
-  ChatMessageResponse,
-  ChatType,
-  WsChatMessage,
-} from "./types";
+import { ChatHeaderData, ChatMessage, ChatType } from "./types";
 
 /**
  * Sorts messages or chats according to sent datetime. If the message is undefined (usually due to a chat having
@@ -87,73 +80,6 @@ export const useSetChatRoomHeader = (chat: Chat | undefined | null) => {
     }
   }, [chat, setHeader, user]);
 };
-
-/**
- * Holds the WebSocket connection to the server. Closes the connection if the
- * user logs out.
- */
-function useBaseWsChatConnection(options?: Options | undefined) {
-  const { isLoggedIn } = useAuth();
-
-  return useWebSocket<WsChatMessage>(
-    `${import.meta.env.VITE_WS_URL}/ws/chats/`,
-    {
-      onClose: () => console.error("Chat socket closed unexpectedly"),
-      shouldReconnect: () => true,
-      share: true,
-      ...options,
-    },
-    isLoggedIn,
-  );
-}
-
-export function useWsChatListener() {
-  const queryClient = useQueryClient();
-
-  /**
-   * Updates the chat list and the corresponding chat messages query whenever a
-   * message is received or sent.
-   */
-  const onMessage = (wsMessage: MessageEvent<string>) => {
-    const { message } = JSON.parse(wsMessage.data) as WsChatMessage;
-    const { chat_id } = message;
-
-    if (chat_id == null) {
-      return;
-    }
-
-    queryClient.setQueryData<Chat[] | undefined>(
-      ["chats", "list", "all"],
-      (old) => {
-        if (old !== undefined) {
-          const oldChat = old.find((c) => c.id === chat_id);
-          if (oldChat) {
-            oldChat.messages = [message];
-          }
-        }
-        return old;
-      },
-    );
-
-    queryClient.setQueryData<InfiniteData<ChatMessageResponse> | undefined>(
-      ["chats", "messages", chat_id],
-      (old) => {
-        if (old !== undefined) {
-          // Add the message to the first page, reassign the page in the
-          // array so that the bottom-scrolling effect hook is triggered.
-          const firstPage = { ...old.pages[0] };
-          old.pages[0] = {
-            ...firstPage,
-            results: [message, ...firstPage.results],
-          };
-        }
-        return old;
-      },
-    );
-  };
-
-  return useBaseWsChatConnection({ onMessage });
-}
 
 export function useJoinWsChat() {
   const { sendJsonMessage } = useBaseWsChatConnection();

@@ -4,12 +4,11 @@ import { Outlet, useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import Header from "../../common/components/Header/Header";
 import Tabs from "../../common/components/Tabs";
-import { useIsDesktop } from "../../common/hooks";
+import { useIsDesktop, useWsChatListener } from "../../common/hooks";
 import { useFadeIn } from "../../common/transitions";
 import { chatRoom, chatRoomMobile } from "./chat/styles";
 import ChatHeader from "./components/ChatHeader";
 import ChatList from "./components/ChatList/ChatList";
-import { useWsChatListener } from "./hooks";
 import { chatMain, chatMainMobile } from "./styles";
 import { ChatHeaderData } from "./types";
 
