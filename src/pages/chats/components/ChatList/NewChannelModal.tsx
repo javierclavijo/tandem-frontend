@@ -68,7 +68,7 @@ const NewChannelModal = ({
       <form onSubmit={handleSubmit(onSubmit)} css={form}>
         <input
           {...register("name", { required: "Name is required", maxLength: 64 })}
-          required={true}
+          required
           placeholder="Channel name"
           css={nameInput}
         />

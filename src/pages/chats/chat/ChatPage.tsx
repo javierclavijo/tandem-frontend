@@ -78,7 +78,7 @@ const ChatPage = () => {
             dataLength={data.pages.length}
             scrollableTarget="chat-messages-container"
             style={{ display: "flex", flexDirection: "column-reverse" }}
-            inverse={true}
+            inverse
             aria-live="polite"
           >
             {data?.pages.reverse().map((page, pageIndex) => (

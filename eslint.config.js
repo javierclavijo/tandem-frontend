@@ -49,6 +49,7 @@ export default tseslint.config(
           propElementValues: "always",
         },
       ],
+      "react/jsx-boolean-value": ["error", "never"],
     },
     settings: { react: { version: "detect" } },
   },

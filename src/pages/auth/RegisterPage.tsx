@@ -161,7 +161,7 @@ const RegisterPage = () => {
                   render={({ field }) => (
                     <Select
                       id="native-languages"
-                      isMulti={true}
+                      isMulti
                       {...field}
                       value={field.value}
                       options={languageOptionsArray}
