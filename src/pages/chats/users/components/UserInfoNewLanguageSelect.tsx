@@ -26,7 +26,6 @@ const UserInfoNewLanguageSelect = ({
 
   const mutation = useCreateUserLanguageMutation(user?.id);
 
-  // TODO: use RHF, move this stuff to NewLanguageModal
   const [languageValue, setLanguageValue] =
     useState<LabelOption<Language> | null>(null);
   const [levelValue, setLevelValue] =
@@ -78,7 +77,6 @@ const UserInfoNewLanguageSelect = ({
           placeholder="Level"
         />
 
-        {/* TODO: substitute for regular buttons */}
         <EditButtons
           handleSubmit={handleSubmit}
           handleCancel={onClose}

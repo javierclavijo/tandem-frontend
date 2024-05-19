@@ -71,8 +71,6 @@ export const elementContentContainer = css`
   gap: 0.75rem;
 `;
 
-// TODO: substitute all this for CSS modules (also in other features)
-
 export const infoSection = css`
   background-color: ${COLORS.DARK_PRIMARY};
   color: ${COLORS.WHITE};

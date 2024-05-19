@@ -23,7 +23,6 @@ const Header = () => {
           <h1 css={title}>LangFlow</h1>
         </Link>
         <ul css={navList}>
-          {/* TODO: probably refactor this (open-closed principle) */}
           {isLoggedIn ? (
             isDesktop ? (
               // Post-login desktop header

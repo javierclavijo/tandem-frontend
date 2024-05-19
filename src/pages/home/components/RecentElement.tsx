@@ -17,7 +17,6 @@ interface RecentElementProps {
   link: string;
 }
 
-// TODO: refactor this and SearchResultElement into a single UserCard component.
 /**
  * Element component for post-login home 'recent' sections.
  */

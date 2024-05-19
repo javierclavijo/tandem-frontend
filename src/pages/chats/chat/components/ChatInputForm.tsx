@@ -26,7 +26,6 @@ const ChatInputForm = ({
 }: ChatInputFormProps) => {
   const sendWsMessage = useSendWsMessage();
 
-  // TODO:use RHF
   /**
    * Controls the value of the input field.
    */

@@ -16,9 +16,6 @@ interface NameInputProps<TData> {
   onSubmit: (value: string) => Promise<void>;
 }
 
-// TODO: review, looks suspicious.
-// TODO: remove useEditField?
-// TODO: remove duplicate components (move mutations elsewhere)
 /**
  * Base name input component for detail views.
  */

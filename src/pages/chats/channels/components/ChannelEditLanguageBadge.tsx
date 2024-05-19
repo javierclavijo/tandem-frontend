@@ -19,7 +19,6 @@ interface LanguageBadgeProps {
   backgroundColor: string;
 }
 
-// TODO: review this and the other badge components. Are they duplicated?
 /**
  * Badge-like component for channel detail view. Displays the channel's
  * language's name and icon and allows selecting the language and level.
@@ -28,7 +27,6 @@ const ChannelEditLanguageBadge = ({
   data,
   backgroundColor,
 }: LanguageBadgeProps) => {
-  // TODO: use RHF
   const [languageValue, setLanguageValue] =
     useState<LabelOption<Language> | null>(null);
   const [levelValue, setLevelValue] =

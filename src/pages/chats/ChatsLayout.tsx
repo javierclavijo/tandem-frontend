@@ -16,8 +16,6 @@ import { ChatHeaderData } from "./types";
 /**
  * Main chat component. Holds the chat list, chat room and user/channel detail components.
  */
-// TODO: just remove this, make "dumb" layout components and reuse them in each
-// page.
 const ChatsLayout = () => {
   const params = useParams();
   const isDesktop = useIsDesktop();
@@ -28,7 +26,6 @@ const ChatsLayout = () => {
    * State used by the router outlet context which controls the header's state.
    * This way, the header's data can be obtained from the view components,
    * without them having to contain the header themselves.
-   * TODO: remove this, it's a bad idea.
    */
   const [header, setHeader] = useState<ChatHeaderData | null>(null);
 

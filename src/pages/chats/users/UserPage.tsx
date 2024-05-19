@@ -118,7 +118,6 @@ const UserPage = () => {
     setHeader({
       title: "User info",
       actions: (
-        // TODO: this doesn't look too good (open-closed).
         <>
           {!isFriend && (
             <button type="button" onClick={onChatCreateClick} css={infoButton}>
