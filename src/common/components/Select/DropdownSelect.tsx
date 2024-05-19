@@ -19,6 +19,7 @@ const DropdownSelect = <
   ...props
 }: DropdownSelectProps<TOption, TIsMulti, TGroup>) => (
   <Select<TOption, TIsMulti, TGroup>
+    menuPortalTarget={document.body}
     {...props}
     styles={{
       // @ts-expect-error | The styles object's TGroup generates TS errors for
@@ -58,6 +59,7 @@ export const select: StylesConfig = {
     ...provided,
     display: "none",
   }),
+  menuPortal: (base) => ({ ...base, zIndex: 9999 }),
 };
 
 export default DropdownSelect;

@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { memo } from "react";
-import userPlaceholderImage from "../../common/static/images/user-placeholder.png";
+import userPlaceholderImage from "../../../common/static/images/user-placeholder.png";
 import { ImgProps } from "../../types";
 
 interface ThumbnailProps extends Omit<ImgProps, "src"> {
