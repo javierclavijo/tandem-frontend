@@ -22,7 +22,7 @@ import {
 /**
  * Login form component.
  */
-function LoginPage() {
+const LoginPage = () => {
   const { login } = useAuth();
   const transitionProps = useFadeIn();
 
@@ -78,7 +78,7 @@ function LoginPage() {
               <button type="submit" css={button}>
                 Log in
               </button>
-              <Link to={"/auth/register"} css={link}>
+              <Link to="/auth/register" css={link}>
                 Sign in
               </Link>
             </form>
@@ -87,6 +87,6 @@ function LoginPage() {
       </SimpleLayout>
     </>
   );
-}
+};
 
 export default LoginPage;

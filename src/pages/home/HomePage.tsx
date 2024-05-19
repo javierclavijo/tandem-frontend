@@ -20,7 +20,7 @@ import { useDiscoverUsersList } from "./queries";
 /**
  * Post-login home component.
  */
-function HomePage() {
+const HomePage = () => {
   const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
   const { user } = useAuth();
@@ -153,7 +153,7 @@ function HomePage() {
       </ResponsiveBottomTabsLayout>
     </>
   );
-}
+};
 
 const sectionFooter = css`
   width: 100%;

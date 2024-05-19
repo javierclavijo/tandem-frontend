@@ -23,7 +23,7 @@ interface ChatListElementProps {
  * on whether the element's chat is currently being displayed, or the user is
  * hovering the mouse above the element.
  */
-function ChatListElement({
+const ChatListElement = ({
   chatId,
   chatName,
   chatImage,
@@ -32,7 +32,7 @@ function ChatListElement({
   lastMessageAuthor,
   isOwnMessage,
   selected,
-}: ChatListElementProps) {
+}: ChatListElementProps) => {
   const formattedLastMessageDateTime = DateTime.fromISO(
     lastMessageDateTime,
   ).toLocaleString(DateTime.DATE_SHORT);
@@ -72,7 +72,7 @@ function ChatListElement({
       <NavLink to={`/chats/${chatId}`} css={link} title={chatName} />
     </li>
   );
-}
+};
 
 const outerContainer = css`
   display: grid;

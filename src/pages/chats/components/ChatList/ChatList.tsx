@@ -21,7 +21,7 @@ import NewChannelModal from "./NewChannelModal";
 /**
  * Chat list section component. Holds the chat list, the filtering input and the channel creation button.
  */
-function ChatList() {
+const ChatList = () => {
   const params = useParams();
   const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
@@ -112,7 +112,7 @@ function ChatList() {
       />
     </>
   );
-}
+};
 
 const newChatButtonContainer = css`
   position: absolute;

@@ -7,9 +7,9 @@ interface UserThumbnailProps extends Omit<ImgProps, "src"> {
   src?: string | null;
 }
 
-function UserThumbnail({ ...props }: UserThumbnailProps) {
-  return <img {...props} src={props.src ?? userPlaceholderImage} css={img} />;
-}
+const UserThumbnail = ({ ...props }: UserThumbnailProps) => (
+  <img {...props} src={props.src ?? userPlaceholderImage} css={img} />
+);
 
 export const img = css`
   height: 100%;

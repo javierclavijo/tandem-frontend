@@ -16,7 +16,11 @@ interface ErrorPageProps {
 /**
  * Base error page.
  */
-export function BaseErrorPage({ title, heading, description }: ErrorPageProps) {
+export const BaseErrorPage = ({
+  title,
+  heading,
+  description,
+}: ErrorPageProps) => {
   const transitionProps = useFadeIn();
 
   return (
@@ -34,21 +38,19 @@ export function BaseErrorPage({ title, heading, description }: ErrorPageProps) {
       </AnimatedLayout>
     </>
   );
-}
+};
 
 /**
  * Generic error page. Used in the app's router, plus an error boundary
  * wrapping the app.
  */
-function ErrorPage() {
-  return (
-    <BaseErrorPage
-      title="Error | LangFlow"
-      heading="Oops!"
-      description="An error happened."
-    />
-  );
-}
+const ErrorPage = () => (
+  <BaseErrorPage
+    title="Error | LangFlow"
+    heading="Oops!"
+    description="An error happened."
+  />
+);
 
 const AnimatedLayout = animated(ResponsiveBottomTabsLayout);
 

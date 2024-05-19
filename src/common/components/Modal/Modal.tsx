@@ -19,14 +19,12 @@ export interface CloseableModalProps
 /**
  * Styled generic modal window.
  */
-function Modal({ children, ...props }: ModalProps) {
-  return (
-    <ReactModal {...props} style={{ ...modal.container, ...props.style }}>
-      <p css={modal.title}>Delete channel?</p>
-      {children}
-    </ReactModal>
-  );
-}
+const Modal = ({ children, ...props }: ModalProps) => (
+  <ReactModal {...props} style={{ ...modal.container, ...props.style }}>
+    <p css={modal.title}>Delete channel?</p>
+    {children}
+  </ReactModal>
+);
 
 export const modal = {
   container: {

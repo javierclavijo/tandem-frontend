@@ -19,9 +19,9 @@ interface UserInfoNewLanguageSelectProps {
 /**
  * Contains controls to allow the user to add a new language to their profile.
  */
-function UserInfoNewLanguageSelect({
+const UserInfoNewLanguageSelect = ({
   onClose,
-}: UserInfoNewLanguageSelectProps) {
+}: UserInfoNewLanguageSelectProps) => {
   const { user } = useAuth();
 
   const mutation = useCreateUserLanguageMutation(user?.id);
@@ -58,7 +58,7 @@ function UserInfoNewLanguageSelect({
     <div css={outerContainer}>
       <div css={innerContainer}>
         <Select<Option<Language>>
-          id={`language-new`}
+          id="language-new"
           value={languageValue}
           onChange={setLanguageValue}
           onFocus={clearError}
@@ -73,7 +73,7 @@ function UserInfoNewLanguageSelect({
           styles={select as StylesConfig<Option<Language>>}
         />
         <Select<Option<ProficiencyLevel>>
-          id={`level-new`}
+          id="level-new"
           value={levelValue}
           onChange={setLevelValue}
           onFocus={clearError}
@@ -92,7 +92,7 @@ function UserInfoNewLanguageSelect({
       {error ? <p css={errorText}>{error}</p> : null}
     </div>
   );
-}
+};
 
 const outerContainer = css`
   display: flex;

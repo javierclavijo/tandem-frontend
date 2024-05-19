@@ -4,12 +4,11 @@ import { axiosApi } from "../../common/apis";
 import { ServerErrorResponse, User } from "../../common/types";
 import { RegisterRequestData } from "./types";
 
-const registerRequest = async (data: RegisterRequestData) => {
-  return await axiosApi.post<User, AxiosResponse<User>, RegisterRequestData>(
+const registerRequest = async (data: RegisterRequestData) =>
+  await axiosApi.post<User, AxiosResponse<User>, RegisterRequestData>(
     "users/",
     data,
   );
-};
 
 export const useRegisterMutation = (
   options: Omit<

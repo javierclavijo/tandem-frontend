@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useParams } from "react-router-dom";
@@ -16,7 +16,7 @@ import { chatRoom, chatRoomMobile } from "./styles";
 /**
  * Renders a chat's messages, plus the input form to send messages to the chat.
  */
-function ChatPage() {
+const ChatPage = () => {
   const params = useParams();
   const { user } = useAuth();
   const isDesktop = useIsDesktop();
@@ -78,12 +78,13 @@ function ChatPage() {
             dataLength={data.pages.length}
             scrollableTarget="chat-messages-container"
             style={{ display: "flex", flexDirection: "column-reverse" }}
-            inverse={true}
+            inverse
             aria-live="polite"
           >
-            {data?.pages.reverse().map((page, pageIndex) => (
-              <React.Fragment key={`page-${pageIndex}`}>
-                {[...page.results].map((message) => (
+            {data?.pages
+              .reverse()
+              .map((page) =>
+                [...page.results].map((message) => (
                   <ChatRoomMessage
                     authorName={message.author.username}
                     content={message.content}
@@ -92,9 +93,8 @@ function ChatPage() {
                     chatType={chat?.type}
                     key={message.id}
                   />
-                ))}
-              </React.Fragment>
-            ))}
+                )),
+              )}
           </InfiniteScroll>
         </div>
         <ChatInputForm
@@ -105,7 +105,7 @@ function ChatPage() {
       </animated.div>
     </>
   );
-}
+};
 
 const container = css`
   overflow: auto;

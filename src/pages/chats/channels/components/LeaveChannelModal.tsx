@@ -10,16 +10,14 @@ interface LeaveChannelModalProps extends ModalProps {
 /**
  * Confirmation modal window for channel leave action.
  */
-function LeaveChannelModal({ onLeave, ...props }: LeaveChannelModalProps) {
-  return (
-    <Modal {...props}>
-      <ModalTitle>Leave channel?</ModalTitle>
-      <ModalButtonsContainer>
-        <Button onClick={onLeave}>Leave</Button>
-        <Button onClick={props.onRequestClose}>Cancel</Button>
-      </ModalButtonsContainer>
-    </Modal>
-  );
-}
+const LeaveChannelModal = ({ onLeave, ...props }: LeaveChannelModalProps) => (
+  <Modal {...props}>
+    <ModalTitle>Leave channel?</ModalTitle>
+    <ModalButtonsContainer>
+      <Button onClick={onLeave}>Leave</Button>
+      <Button onClick={props.onRequestClose}>Cancel</Button>
+    </ModalButtonsContainer>
+  </Modal>
+);
 
 export default LeaveChannelModal;

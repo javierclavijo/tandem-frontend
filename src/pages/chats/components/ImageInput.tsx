@@ -14,7 +14,7 @@ interface ImageInputProps {
 /**
  * Displays the profile image for a user or channel and allows updating it.
  */
-function ImageInput({ image, url, invalidateQueryKey }: ImageInputProps) {
+const ImageInput = ({ image, url, invalidateQueryKey }: ImageInputProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const mutation = useUpdateImage(url, invalidateQueryKey);
 
@@ -50,7 +50,7 @@ function ImageInput({ image, url, invalidateQueryKey }: ImageInputProps) {
         aria-label="Update profile image"
       />
       <label
-        htmlFor={"image"}
+        htmlFor="image"
         css={label}
         style={{ opacity: isLabelDisplayed ? 1 : 0 }}
       >
@@ -63,7 +63,7 @@ function ImageInput({ image, url, invalidateQueryKey }: ImageInputProps) {
       />
     </div>
   );
-}
+};
 
 const container = css`
   display: grid;

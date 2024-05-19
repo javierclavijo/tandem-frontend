@@ -11,16 +11,17 @@ interface DeleteChannelModalProps extends ModalProps {
 /**
  * Channel deletion confirmation modal window.
  */
-function DeleteChannelModal({ onDelete, ...props }: DeleteChannelModalProps) {
-  return (
-    <Modal {...props}>
-      <ModalTitle>Delete channel?</ModalTitle>
-      <ModalButtonsContainer>
-        <Button onClick={onDelete}>Delete</Button>
-        <Button onClick={props.onRequestClose}>Cancel</Button>
-      </ModalButtonsContainer>
-    </Modal>
-  );
-}
+const DeleteChannelModal = ({
+  onDelete,
+  ...props
+}: DeleteChannelModalProps) => (
+  <Modal {...props}>
+    <ModalTitle>Delete channel?</ModalTitle>
+    <ModalButtonsContainer>
+      <Button onClick={onDelete}>Delete</Button>
+      <Button onClick={props.onRequestClose}>Cancel</Button>
+    </ModalButtonsContainer>
+  </Modal>
+);
 
 export default DeleteChannelModal;

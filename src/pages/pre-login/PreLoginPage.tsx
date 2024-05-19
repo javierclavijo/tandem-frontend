@@ -12,86 +12,78 @@ import topImage from "./static/images/pre-login-top.webp";
 /**
  * Pre-login home/index page component.
  */
-function PreLoginPage() {
-  return (
-    <>
-      <PreLoginHelmet />
-      <SimpleLayout>
-        <Nav />
-        <main css={main}>
-          <div css={textContainer}>
-            <p css={topText}>
-              Welcome to the coolest language learning community ever!
+const PreLoginPage = () => (
+  <>
+    <PreLoginHelmet />
+    <SimpleLayout>
+      <Nav />
+      <main css={main}>
+        <div css={textContainer}>
+          <p css={topText}>
+            Welcome to the coolest language learning community ever!
+          </p>
+          <Link to="/auth/register" css={joinButton}>
+            Join Now
+          </Link>
+        </div>
+        <div css={imageContainer}>
+          <img
+            src={topImage}
+            alt="A team of rafters rowing in a body of water."
+            css={image}
+          />
+          <div css={imageGradient} />
+          <div css={imageQuoteContainer}>
+            <p css={imageQuote}>
+              Running water never grows stale. So you just have to &apos;keep on
+              flowing.&apos; <span css={imageQuoteAuthor}>Bruce Lee</span>
             </p>
-            <Link to="/auth/register" css={joinButton}>
-              Join Now
-            </Link>
           </div>
-          <div css={imageContainer}>
-            <img
-              src={topImage}
-              alt="A team of rafters rowing in a body of water."
-              css={image}
-            />
-            <div css={imageGradient} />
-            <div css={imageQuoteContainer}>
-              <p css={imageQuote}>
-                Running water never grows stale. So you just have to &apos;keep
-                on flowing.&apos; <span css={imageQuoteAuthor}>Bruce Lee</span>
-              </p>
-            </div>
+        </div>
+        <div css={splitContainer}>
+          <div css={splitTextContainer}>
+            <p css={splitText}>
+              Chat with native speakers of your target language who share your
+              interests
+            </p>
+            <p css={disclaimer}>Users of this app might not always be real.</p>
           </div>
-          <div css={splitContainer}>
-            <div css={splitTextContainer}>
-              <p css={splitText}>
-                Chat with native speakers of your target language who share your
-                interests
-              </p>
-              <p css={disclaimer}>
-                Users of this app might not always be real.
-              </p>
-            </div>
-            <img
-              src={middleImage}
-              alt="A young person clad in urban attire, smiling."
-              css={splitImage}
-            />
+          <img
+            src={middleImage}
+            alt="A young person clad in urban attire, smiling."
+            css={splitImage}
+          />
+        </div>
+        <div css={splitContainer}>
+          <img
+            src={bottomImage}
+            alt="Young people jumping and looking excited overall."
+            css={splitImage}
+          />
+          <div css={splitTextContainer}>
+            <p css={splitText}>Create channels and chat with other learners</p>
           </div>
-          <div css={splitContainer}>
-            <img
-              src={bottomImage}
-              alt="Young people jumping and looking excited overall."
-              css={splitImage}
-            />
-            <div css={splitTextContainer}>
-              <p css={splitText}>
-                Create channels and chat with other learners
-              </p>
-            </div>
-          </div>
-        </main>
-      </SimpleLayout>
-    </>
-  );
-}
+        </div>
+      </main>
+    </SimpleLayout>
+  </>
+);
 
-function PreLoginHelmet() {
-  return (
-    <Helmet>
-      <title>LangFlow</title>
-      <link
-        rel="preload"
-        fetchPriority="high"
-        as="image"
-        href={topImage}
-        type="image/webp"
-      />
-      <link rel="preload" as="image" href={middleImage} type="image/webp" />
-      <link rel="preload" as="image" href={bottomImage} type="image/webp" />
-      <link rel="preload" as="image" href={langflowLogo} type="image/svg+xml" />
-    </Helmet>
-  );
-}
+const PreLoginHelmet = () => (
+  <Helmet>
+    <title>LangFlow</title>
+    <link
+      rel="preload"
+      fetchPriority="high"
+      as="image"
+      href={topImage}
+      type="image/webp"
+    />
+    <link rel="preload" as="image" href={middleImage} type="image/webp" />
+    <link rel="preload" as="image" href={bottomImage} type="image/webp" />
+    <link rel="preload" as="image" href={langflowLogo} type="image/svg+xml" />
+  </Helmet>
+);
 
 const main = css`
   display: flex;

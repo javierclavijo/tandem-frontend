@@ -12,7 +12,7 @@ import { chatHeader, chatRoom } from "./styles";
 /**
  * Empty chat page component. Only used in the desktop chat list.
  */
-function DesktopEmptyChatPage() {
+const DesktopEmptyChatPage = () => {
   const setHeader = useSetChatHeader();
 
   useEffect(() => setHeader(null), [setHeader]);
@@ -28,12 +28,12 @@ function DesktopEmptyChatPage() {
       </div>
     </animated.div>
   );
-}
+};
 
 /**
  * Empty chat page component.
  */
-function EmptyChatPage() {
+const EmptyChatPage = () => {
   const isDesktop = useIsDesktop();
   return (
     <>
@@ -41,7 +41,7 @@ function EmptyChatPage() {
       {isDesktop ? <DesktopEmptyChatPage /> : <ChatList />}
     </>
   );
-}
+};
 
 const container = css`
   padding: 1rem;

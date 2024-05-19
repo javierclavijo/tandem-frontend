@@ -14,32 +14,30 @@ interface ChatListFilterProps {
 /**
  * Chat list filter form.
  */
-function ChatListFilter({ value, onFilterChange }: ChatListFilterProps) {
-  return (
-    <div css={outerContainer}>
-      <div css={innerContainer}>
-        <form css={searchInputForm}>
-          <input
-            type="text"
-            value={value}
-            onChange={(e) => onFilterChange(e.target.value)}
-            placeholder="Search..."
-            id="chat-list-filter"
-            css={searchInputElement}
-            aria-label="Chat list filter"
-          />
+const ChatListFilter = ({ value, onFilterChange }: ChatListFilterProps) => (
+  <div css={outerContainer}>
+    <div css={innerContainer}>
+      <form css={searchInputForm}>
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => onFilterChange(e.target.value)}
+          placeholder="Search..."
+          id="chat-list-filter"
+          css={searchInputElement}
+          aria-label="Chat list filter"
+        />
 
-          <Search
-            color={COLORS.DARK_PRIMARY}
-            width="1.5rem"
-            height="1.5rem"
-            css={searchButton}
-          />
-        </form>
-      </div>
+        <Search
+          color={COLORS.DARK_PRIMARY}
+          width="1.5rem"
+          height="1.5rem"
+          css={searchButton}
+        />
+      </form>
     </div>
-  );
-}
+  </div>
+);
 
 const innerContainer = css`
   padding-bottom: 1rem;

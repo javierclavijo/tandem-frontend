@@ -1,5 +1,4 @@
 import { css } from "@emotion/react";
-import React from "react";
 import { Helmet } from "react-helmet-async";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSearchParams } from "react-router-dom";
@@ -24,7 +23,7 @@ import { ChannelSearchParams, UserSearchParams } from "./types";
 /**
  * Main search page. Includes a search panel and the search results list.
  */
-function SearchPage() {
+const SearchPage = () => {
   const [searchParams] = useSearchParams();
   const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
@@ -101,43 +100,39 @@ function SearchPage() {
                   <h3 css={homeSearchStyles.sectionHeading}>Search Results</h3>
                 </header>
                 <div css={homeSearchStyles.sectionItemsContainer}>
-                  {isUserSearch &&
-                    usersData?.pages.map((page, pageIndex) => (
-                      <React.Fragment key={`page-${pageIndex}`}>
-                        {[...page.results].map((element) => (
-                          <SearchResultElement
-                            id={`${element.id}`}
-                            name={element.username}
-                            languages={element.languages.map(
-                              ({ language }) => language,
-                            )}
-                            description={element.description}
-                            image={element.image}
-                            key={`${element.id}`}
-                            link={`/chats/users/${element.id}`}
-                          />
-                        ))}
-                      </React.Fragment>
-                    ))}
+                  {!!isUserSearch &&
+                    usersData?.pages.map((page) =>
+                      [...page.results].map((element) => (
+                        <SearchResultElement
+                          id={`${element.id}`}
+                          name={element.username}
+                          languages={element.languages.map(
+                            ({ language }) => language,
+                          )}
+                          description={element.description}
+                          image={element.image}
+                          key={`${element.id}`}
+                          link={`/chats/users/${element.id}`}
+                        />
+                      )),
+                    )}
 
-                  {isChannelSearch &&
-                    channelsData?.pages.map((page, pageIndex) => (
-                      <React.Fragment key={`page-${pageIndex}`}>
-                        {[...page.results].map((element) => (
-                          <SearchResultElement
-                            id={`${element.id}`}
-                            name={element.name}
-                            languages={[element.language]}
-                            description={element.description}
-                            image={element.image}
-                            key={`${element.id}`}
-                            link={`/chats/channels/${element.id}`}
-                          />
-                        ))}
-                      </React.Fragment>
-                    ))}
+                  {!!isChannelSearch &&
+                    channelsData?.pages.map((page) =>
+                      [...page.results].map((element) => (
+                        <SearchResultElement
+                          id={`${element.id}`}
+                          name={element.name}
+                          languages={[element.language]}
+                          description={element.description}
+                          image={element.image}
+                          key={`${element.id}`}
+                          link={`/chats/channels/${element.id}`}
+                        />
+                      )),
+                    )}
 
-                  {isDataEmpty && <p css={notFoundText}>No results.</p>}
+                  {!!isDataEmpty && <p css={notFoundText}>No results.</p>}
                 </div>
               </section>
             </InfiniteScroll>
@@ -147,7 +142,7 @@ function SearchPage() {
       </ResponsiveBottomTabsLayout>
     </>
   );
-}
+};
 
 const infiniteScroll = css`
   display: flex;

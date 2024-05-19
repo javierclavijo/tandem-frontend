@@ -41,7 +41,7 @@ import {
 /**
  * User detail component.
  */
-function UserPage() {
+const UserPage = () => {
   const params = useParams();
   const { user: appUser } = useAuth();
   const navigate = useNavigate();
@@ -126,7 +126,7 @@ function UserPage() {
             </button>
           )}
 
-          {isEditable && (
+          {!!isEditable && (
             <button
               type="button"
               onClick={() => setPasswordChangeModalIsOpen(true)}
@@ -234,7 +234,7 @@ function UserPage() {
 
           <section css={descriptionSection}>
             {isEditable ? (
-              <DescriptionTextarea data={data} queryKey={"users"} />
+              <DescriptionTextarea data={data} queryKey="users" />
             ) : (
               <>
                 <h3>Description</h3>
@@ -309,7 +309,7 @@ function UserPage() {
       {/* Language creation modal
           Only rendered if the profile is the session user's. Opens when the 
           'add a language' button is pressed. */}
-      {isEditable && (
+      {!!isEditable && (
         <NewLanguageModal
           isOpen={newLanguageModalIsOpen}
           onRequestClose={onNewLanguageModalClose}
@@ -320,7 +320,7 @@ function UserPage() {
           Only available if the profile is the session user's and a language has
           been selected for deletion (i.e. when a language's delete button has 
           been pressed.) */}
-      {isEditable && (
+      {!!isEditable && (
         <DeleteLanguageModal
           isOpen={selectedDeleteLanguage != null}
           languageName={selectedDeleteLanguageName}
@@ -332,7 +332,7 @@ function UserPage() {
       {/* Set password modal.
           Only rendered if the profile is the user's. Opens when the 'change 
           password' button is pressed. */}
-      {isEditable && (
+      {!!isEditable && (
         <SetPasswordModal
           isOpen={passwordChangeModalIsOpen}
           onRequestClose={onPasswordModalClose}
@@ -340,7 +340,7 @@ function UserPage() {
       )}
     </>
   );
-}
+};
 
 const container = css`
   overflow-y: scroll;

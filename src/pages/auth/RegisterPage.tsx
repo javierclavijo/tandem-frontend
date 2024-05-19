@@ -29,7 +29,7 @@ import { RegisterFormValues } from "./types";
 /**
  * Register form component.
  */
-function RegisterPage() {
+const RegisterPage = () => {
   const { login } = useAuth();
   const transitionProps = useFadeIn();
 
@@ -161,7 +161,7 @@ function RegisterPage() {
                   render={({ field }) => (
                     <Select
                       id="native-languages"
-                      isMulti={true}
+                      isMulti
                       {...field}
                       value={field.value}
                       options={languageOptionsArray}
@@ -180,7 +180,7 @@ function RegisterPage() {
               <button type="submit" css={button}>
                 Sign in
               </button>
-              <Link to={"/auth/login"} css={link}>
+              <Link to="/auth/login" css={link}>
                 Log in
               </Link>
             </form>
@@ -189,7 +189,7 @@ function RegisterPage() {
       </AnimatedLayout>
     </>
   );
-}
+};
 
 const AnimatedLayout = animated(SimpleLayout);
 

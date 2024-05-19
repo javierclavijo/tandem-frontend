@@ -11,7 +11,7 @@ import NavProfilePicture from "./NavProfilePicture";
 /**
  * Main header component. Renders differently according to the viewport width and to whether the user is logged in.
  */
-function Nav() {
+const Nav = () => {
   const { user, isLoggedIn, logout } = useAuth();
   const isDesktop = useIsDesktop();
 
@@ -30,7 +30,7 @@ function Nav() {
               <>
                 <li>
                   <NavLink
-                    to={"/"}
+                    to="/"
                     css={link}
                     style={({ isActive }) => (isActive ? activeNavLink : {})}
                   >
@@ -40,7 +40,7 @@ function Nav() {
                 </li>
                 <li>
                   <NavLink
-                    to={"/chats"}
+                    to="/chats"
                     css={link}
                     style={({ isActive }) => (isActive ? activeNavLink : {})}
                     end
@@ -55,7 +55,7 @@ function Nav() {
                 </li>
                 <li>
                   <NavLink
-                    to={"/search"}
+                    to="/search"
                     css={link}
                     style={({ isActive }) => (isActive ? activeNavLink : {})}
                   >
@@ -112,7 +112,7 @@ function Nav() {
             <>
               <li>
                 <NavLink
-                  to={"/auth/login"}
+                  to="/auth/login"
                   css={link}
                   style={({ isActive }) => (isActive ? activeNavLink : {})}
                 >
@@ -121,7 +121,7 @@ function Nav() {
               </li>
               <li>
                 <NavLink
-                  to={"/auth/register"}
+                  to="/auth/register"
                   css={link}
                   style={({ isActive }) => (isActive ? activeNavLink : {})}
                 >
@@ -134,7 +134,7 @@ function Nav() {
       </nav>
     </header>
   );
-}
+};
 
 const header = css`
   grid-area: header;

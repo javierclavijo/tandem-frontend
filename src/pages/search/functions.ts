@@ -76,21 +76,17 @@ export const getChannelExclusiveSearchParams = (
 
 export const getUserSearchParams = (
   searchParams: URLSearchParams,
-): UserSearchParams => {
-  return {
-    ...getBaseSearchParams(searchParams),
-    ...getUserExclusiveSearchParams(searchParams),
-  };
-};
+): UserSearchParams => ({
+  ...getBaseSearchParams(searchParams),
+  ...getUserExclusiveSearchParams(searchParams),
+});
 
 export const getChannelSearchParams = (
   searchParams: URLSearchParams,
-): ChannelSearchParams => {
-  return {
-    ...getBaseSearchParams(searchParams),
-    ...getChannelExclusiveSearchParams(searchParams),
-  };
-};
+): ChannelSearchParams => ({
+  ...getBaseSearchParams(searchParams),
+  ...getChannelExclusiveSearchParams(searchParams),
+});
 
 const stringifyParams = (params: unknown): string =>
   qs.stringify(params, { arrayFormat: "repeat" });

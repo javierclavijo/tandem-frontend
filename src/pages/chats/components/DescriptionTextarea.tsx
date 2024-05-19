@@ -17,7 +17,7 @@ interface DescriptionTextareaProps {
 /**
  * Text area component to edit a user or channel's description.
  */
-function DescriptionTextarea({ data, queryKey }: DescriptionTextareaProps) {
+const DescriptionTextarea = ({ data, queryKey }: DescriptionTextareaProps) => {
   // TODO: substitute with RHF.
   const {
     editEnabled,
@@ -88,7 +88,7 @@ function DescriptionTextarea({ data, queryKey }: DescriptionTextareaProps) {
     <>
       <div css={titleContainer}>
         <h3>Description</h3>
-        {editEnabled && (
+        {!!editEnabled && (
           <EditButtons
             submitButtonRef={submitButtonRef}
             handleSubmit={handleSubmit}
@@ -114,7 +114,7 @@ function DescriptionTextarea({ data, queryKey }: DescriptionTextareaProps) {
       {error.length !== 0 && <p css={errorText}>{error}</p>}
     </>
   );
-}
+};
 
 const titleContainer = css`
   display: flex;

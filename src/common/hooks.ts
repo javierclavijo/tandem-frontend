@@ -51,11 +51,12 @@ export const useTimeoutHandler = (
 ) => {
   const timeoutIdRef = useRef<number>(-1);
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       clearTimeout(timeoutIdRef.current);
-    };
-  }, []);
+    },
+    [],
+  );
 
   const returnHandler = () => {
     timeoutIdRef.current = setTimeout(handler, timeout);

@@ -27,7 +27,10 @@ interface NewChannelModalProps extends CloseableModalProps {}
 /**
  * Modal for channel creation.
  */
-function NewChannelModal({ onRequestClose, ...props }: NewChannelModalProps) {
+const NewChannelModal = ({
+  onRequestClose,
+  ...props
+}: NewChannelModalProps) => {
   const navigate = useNavigate();
   const {
     register,
@@ -65,7 +68,7 @@ function NewChannelModal({ onRequestClose, ...props }: NewChannelModalProps) {
       <form onSubmit={handleSubmit(onSubmit)} css={form}>
         <input
           {...register("name", { required: "Name is required", maxLength: 64 })}
-          required={true}
+          required
           placeholder="Channel name"
           css={nameInput}
         />
@@ -82,7 +85,7 @@ function NewChannelModal({ onRequestClose, ...props }: NewChannelModalProps) {
               rules={{ required: "Language is required" }}
               render={({ field }) => (
                 <Select
-                  id={`new-channel-language`}
+                  id="new-channel-language"
                   {...field}
                   options={languageOptionsArray}
                   placeholder="Language"
@@ -103,7 +106,7 @@ function NewChannelModal({ onRequestClose, ...props }: NewChannelModalProps) {
               rules={{ required: "Proficiency level is required" }}
               render={({ field }) => (
                 <Select<Option>
-                  id={`new-channel-level`}
+                  id="new-channel-level"
                   {...field}
                   options={levelOptionsArray}
                   placeholder="Level"
@@ -127,7 +130,7 @@ function NewChannelModal({ onRequestClose, ...props }: NewChannelModalProps) {
       </form>
     </Modal>
   );
-}
+};
 
 const form = css`
   display: flex;

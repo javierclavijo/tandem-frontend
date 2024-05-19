@@ -29,14 +29,14 @@ interface LanguageBadgeProps {
  * Badge-like component for user info view. Displays a language's name and icon
  * and allows selecting the language's level.
  */
-function UserInfoEditLanguageBadge({
+const UserInfoEditLanguageBadge = ({
   id,
   language,
   level,
   url,
   backgroundColor,
   onDelete,
-}: LanguageBadgeProps) {
+}: LanguageBadgeProps) => {
   const mutation = useUpdateUserLanguageMutation(url);
 
   const [levelValue, setLevelValue] = useState<Option<ProficiencyLevel> | null>(
@@ -74,10 +74,10 @@ function UserInfoEditLanguageBadge({
         }
       />
       <EditButton onClick={onDelete}>
-        <Xmark color={COLORS.WHITE} width={"1.5rem"} height={"1.5rem"} />
+        <Xmark color={COLORS.WHITE} width="1.5rem" height="1.5rem" />
       </EditButton>
     </div>
   );
-}
+};
 
 export default UserInfoEditLanguageBadge;

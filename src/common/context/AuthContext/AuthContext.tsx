@@ -21,7 +21,7 @@ export const AuthContext = React.createContext<AuthContextType>({
  * Authentication context provider for the app. Fetches and provides information
  * about the user and provides functions to log in and log out.
  */
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { data: sessionInfo, isLoading: isSessionInfoLoading } =
     useSessionInfoQuery();
 
@@ -59,7 +59,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   return (
     <AuthContext.Provider value={memoedValue}>{children}</AuthContext.Provider>
   );
-}
+};
 
 export default function useAuth() {
   return useContext(AuthContext);

@@ -27,7 +27,7 @@ interface LanguageBadgeProps {
  * Badge-like component for channel detail view. Displays the channel's
  * language's name and icon and allows selecting the language and level.
  */
-function ChannelEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
+const ChannelEditLanguageBadge = ({ data, bg }: LanguageBadgeProps) => {
   // TODO: use RHF
   const [languageValue, setLanguageValue] = useState<Option<Language> | null>(
     null,
@@ -114,6 +114,6 @@ function ChannelEditLanguageBadge({ data, bg }: LanguageBadgeProps) {
       />
     </div>
   );
-}
+};
 
 export default ChannelEditLanguageBadge;

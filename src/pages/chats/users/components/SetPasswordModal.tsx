@@ -19,7 +19,7 @@ interface NewLanguageModalProps extends CloseableModalProps {}
 /**
  * Modal window component which allows the user to change their password.
  */
-function SetPasswordModal({ ...props }: NewLanguageModalProps) {
+const SetPasswordModal = ({ ...props }: NewLanguageModalProps) => {
   const { user, login } = useAuth();
   const {
     register,
@@ -123,7 +123,7 @@ function SetPasswordModal({ ...props }: NewLanguageModalProps) {
       </form>
     </Modal>
   );
-}
+};
 
 const form = css`
   display: flex;

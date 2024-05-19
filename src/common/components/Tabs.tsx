@@ -7,44 +7,42 @@ import { COLORS, FONT_SIZES } from "../constants";
  * Renders a nav element with tabs to the app's main sections. Only renders in
  * the mobile layout.
  */
-function Tabs() {
-  return (
-    <nav role="navigation" css={nav}>
-      <ul css={ul}>
-        <li css={tab}>
-          <NavLink
-            to="/chats"
-            style={({ isActive }) => (isActive ? activeLink : link)}
-            css={additionalLinkStyles}
-          >
-            <ChatLines color={COLORS.WHITE} width="1.5rem" height="1.5rem" />
-            Chats
-          </NavLink>
-        </li>
-        <li css={tab}>
-          <NavLink
-            to="/home"
-            style={({ isActive }) => (isActive ? activeLink : link)}
-            css={additionalLinkStyles}
-          >
-            <Home color={COLORS.WHITE} width="1.5rem" height="1.5rem" />
-            Home
-          </NavLink>
-        </li>
-        <li css={tab}>
-          <NavLink
-            to="/search"
-            style={({ isActive }) => (isActive ? activeLink : link)}
-            css={additionalLinkStyles}
-          >
-            <Search color={COLORS.WHITE} width="1.5rem" height="1.5rem" />
-            Search
-          </NavLink>
-        </li>
-      </ul>
-    </nav>
-  );
-}
+const Tabs = () => (
+  <nav role="navigation" css={nav}>
+    <ul css={ul}>
+      <li css={tab}>
+        <NavLink
+          to="/chats"
+          style={({ isActive }) => (isActive ? activeLink : link)}
+          css={additionalLinkStyles}
+        >
+          <ChatLines color={COLORS.WHITE} width="1.5rem" height="1.5rem" />
+          Chats
+        </NavLink>
+      </li>
+      <li css={tab}>
+        <NavLink
+          to="/home"
+          style={({ isActive }) => (isActive ? activeLink : link)}
+          css={additionalLinkStyles}
+        >
+          <Home color={COLORS.WHITE} width="1.5rem" height="1.5rem" />
+          Home
+        </NavLink>
+      </li>
+      <li css={tab}>
+        <NavLink
+          to="/search"
+          style={({ isActive }) => (isActive ? activeLink : link)}
+          css={additionalLinkStyles}
+        >
+          <Search color={COLORS.WHITE} width="1.5rem" height="1.5rem" />
+          Search
+        </NavLink>
+      </li>
+    </ul>
+  </nav>
+);
 
 const nav = css`
   grid-area: tabs;

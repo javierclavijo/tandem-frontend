@@ -17,7 +17,7 @@ interface ChatRoomMessageProps {
  * sent by the session's user or another user. If the chat is of channel type, renders the
  * message's author's name above the message's contents.
  */
-function ChatRoomMessage(
+const ChatRoomMessage = (
   {
     authorName,
     content,
@@ -26,7 +26,7 @@ function ChatRoomMessage(
     chatType: type,
   }: ChatRoomMessageProps,
   ref: React.Ref<HTMLDivElement>,
-) {
+) => {
   const formattedDateTime = DateTime.fromISO(timestamp).toLocaleString(
     DateTime.DATETIME_SHORT,
   );
@@ -47,7 +47,7 @@ function ChatRoomMessage(
       {isOwnMessage ? <div css={speechBubbleOwnMessage} /> : null}
     </div>
   );
-}
+};
 
 const outerContainer = css`
   display: flex;

@@ -40,7 +40,7 @@ import {
  * Displays a channel's details: image, name, language and level, description
  * and members.
  */
-function ChannelPage() {
+const ChannelPage = () => {
   const params = useParams();
   const { user } = useAuth();
   const location = useLocation();
@@ -185,7 +185,7 @@ function ChannelPage() {
 
           <section css={descriptionSection}>
             {userIsStaff && data ? (
-              <DescriptionTextarea data={data} queryKey={"channels"} />
+              <DescriptionTextarea data={data} queryKey="channels" />
             ) : (
               <>
                 <h3>Description</h3>
@@ -219,7 +219,7 @@ function ChannelPage() {
                         them to moderator. If they are a moderator, show a 
                         button to demote them to regular user. If they are 
                       an admin, show nothing. */}
-                    {userIsAdmin && membership.role === "U" && (
+                    {!!userIsAdmin && membership.role === "U" && (
                       <EditButton
                         onClick={async () =>
                           await handlePromoteUser(membership.url)
@@ -234,7 +234,7 @@ function ChannelPage() {
                       </EditButton>
                     )}
 
-                    {userIsAdmin && membership.role === "M" && (
+                    {!!userIsAdmin && membership.role === "M" && (
                       <EditButton
                         onClick={async () =>
                           await handleDemoteUser(membership.url)
@@ -278,7 +278,7 @@ function ChannelPage() {
       />
     </>
   );
-}
+};
 
 const header = css`
   display: flex;

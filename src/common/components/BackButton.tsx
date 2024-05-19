@@ -11,7 +11,7 @@ interface BackButtonProps
  * Back button component. The location it navigates to can be modified.
  * Defaults to going back to the previous location.
  */
-function BackButton({ to, ...props }: BackButtonProps) {
+const BackButton = ({ to, ...props }: BackButtonProps) => {
   const navigate = useNavigate();
 
   const handleClick: React.MouseEventHandler<HTMLAnchorElement> = (
@@ -27,6 +27,6 @@ function BackButton({ to, ...props }: BackButtonProps) {
       <ArrowLeft color={COLORS.WHITE} width="1.5rem" height="1.5rem" />
     </Link>
   );
-}
+};
 
 export default BackButton;
