@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import { useState } from "react";
 import { Outlet, useParams } from "react-router-dom";
 import { animated } from "react-spring";
-import Nav from "../../common/components/Nav/Nav";
+import Header from "../../common/components/Header/Header";
 import Tabs from "../../common/components/Tabs";
 import { useIsDesktop } from "../../common/hooks";
 import { useFadeIn } from "../../common/transitions";
@@ -37,7 +37,7 @@ const ChatsLayout = () => {
      * Desktop layout. Displays the chat list to the left of the router's outlet.
      */
     <div css={baseAppContainerWithoutTabs}>
-      <Nav />
+      <Header />
       <main css={chatMain}>
         <ChatList />
         <animated.section
@@ -57,7 +57,7 @@ const ChatsLayout = () => {
     <div
       css={params.id ? baseAppContainerWithoutTabs : baseAppContainerWithTabs}
     >
-      {params.id && header ? <ChatHeader {...header} /> : <Nav />}
+      {params.id && header ? <ChatHeader {...header} /> : <Header />}
       <main css={chatMainMobile}>
         <Outlet context={[header, setHeader]} />
       </main>

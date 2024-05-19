@@ -3,8 +3,8 @@ import { Helmet } from "react-helmet-async";
 import { Controller } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
+import Header from "../../common/components/Header/Header";
 import { SimpleLayout } from "../../common/components/Layout";
-import Nav from "../../common/components/Nav/Nav";
 import BaseSelect from "../../common/components/Select/BaseSelect";
 import { languageOptionsArray } from "../../common/constants";
 import useAuth from "../../common/context/AuthContext/AuthContext";
@@ -71,7 +71,7 @@ const RegisterPage = () => {
     <>
       <Helmet title="Sign In | LangFlow" />
       <AnimatedLayout style={transitionProps}>
-        <Nav />
+        <Header />
         <main css={main}>
           <section css={section}>
             <h2 css={header}>Sign In</h2>

@@ -6,12 +6,12 @@ import { infoButton } from "../../../pages/chats/styles";
 import { COLORS, FONT_SIZES } from "../../constants";
 import useAuth from "../../context/AuthContext/AuthContext";
 import { useIsDesktop } from "../../hooks";
-import NavProfilePicture from "./NavProfilePicture";
+import HeaderProfilePicture from "./HeaderProfilePicture";
 
 /**
  * Main header component. Renders differently according to the viewport width and to whether the user is logged in.
  */
-const Nav = () => {
+const Header = () => {
   const { user, isLoggedIn, logout } = useAuth();
   const isDesktop = useIsDesktop();
 
@@ -68,7 +68,7 @@ const Nav = () => {
                   </NavLink>
                 </li>
                 <li>
-                  <NavProfilePicture
+                  <HeaderProfilePicture
                     to={`/chats/users/${user?.id}`}
                     image={user?.image}
                     username={user?.username}
@@ -89,7 +89,7 @@ const Nav = () => {
               // Post-login mobile header
               <>
                 <li>
-                  <NavProfilePicture
+                  <HeaderProfilePicture
                     to={`/chats/users/${user?.id}`}
                     image={user?.image}
                     username={user?.username}
@@ -214,4 +214,4 @@ const logoutButton = css`
   }
 `;
 
-export default Nav;
+export default Header;

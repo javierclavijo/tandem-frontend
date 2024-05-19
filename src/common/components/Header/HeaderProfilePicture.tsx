@@ -4,9 +4,9 @@ import { infoButton } from "../../../pages/chats/styles";
 import { COLORS, FONT_SIZES } from "../../constants";
 import Thumbnail from "../Thumbnail/Thumbnail";
 import ThumbnailContainer from "../Thumbnail/ThumbnailContainer";
-import { activeNavLink } from "./Nav";
+import { activeNavLink } from "./Header";
 
-interface NavProfilePictureProps
+interface HeaderProfilePictureProps
   extends NavLinkProps,
     React.RefAttributes<HTMLAnchorElement> {
   image: string | undefined;
@@ -16,11 +16,11 @@ interface NavProfilePictureProps
 /**
  * User profile picture component, used in the app's header.
  */
-const NavProfilePicture = ({
+const HeaderProfilePicture = ({
   image,
   username,
   ...props
-}: NavProfilePictureProps) => (
+}: HeaderProfilePictureProps) => (
   <NavLink
     css={link}
     style={({ isActive }) => (isActive ? activeNavLink : {})}
@@ -57,4 +57,4 @@ const imageContainer = css`
   flex: 1 0 auto;
 `;
 
-export default NavProfilePicture;
+export default HeaderProfilePicture;

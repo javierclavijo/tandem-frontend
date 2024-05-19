@@ -1,8 +1,8 @@
 import { css } from "@emotion/react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
+import Header from "../../common/components/Header/Header";
 import { SimpleLayout } from "../../common/components/Layout";
-import Nav from "../../common/components/Nav/Nav";
 import { COLORS, FONT_SIZES } from "../../common/constants";
 import langflowLogo from "../../common/static/svg/langflow_logo.svg";
 import bottomImage from "./static/images/pre-login-bottom.webp";
@@ -16,7 +16,7 @@ const PreLoginPage = () => (
   <>
     <PreLoginHelmet />
     <SimpleLayout>
-      <Nav />
+      <Header />
       <main css={main}>
         <div css={textContainer}>
           <p css={topText}>
