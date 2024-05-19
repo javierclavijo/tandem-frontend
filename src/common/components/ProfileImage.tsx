@@ -9,11 +9,9 @@ interface ProfileImageProps
   src?: string | null;
 }
 
-const ProfileImage = ({ css, ...props }: ProfileImageProps) => {
-  return (
-    <img {...props} src={props.src ?? userPlaceholderImage} css={[img, css]} />
-  );
-};
+const ProfileImage = ({ css, ...props }: ProfileImageProps) => (
+  <img {...props} src={props.src ?? userPlaceholderImage} css={[img, css]} />
+);
 
 export const img = css`
   width: 12rem;

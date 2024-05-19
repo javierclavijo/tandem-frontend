@@ -30,41 +30,39 @@ const InfoListElement = ({
   image,
   link,
   buttons,
-}: InfoListElementProps) => {
-  return (
-    <li css={outerContainer}>
-      <div css={infoListElementInnerContainer}>
-        <div css={pictureContainer}>
-          <ChatThumbnail src={image} />
-        </div>
-        <div css={contentContainer}>
-          <div css={upperInnerContentContainer}>
-            <span css={title}>
-              <h4>{name}</h4>
-              {additionalInfo ? (
-                <p css={additionalInfoText}>{additionalInfo}</p>
-              ) : null}
-            </span>
-            <div css={upperOuterContentContainer}>
-              <div css={buttonsInnerContainer} className="buttons-container">
-                {buttons}
-              </div>
-              <NavArrowRight
-                color={COLORS.PRIMARY}
-                width="1.5rem"
-                height="1.5rem"
-              />
+}: InfoListElementProps) => (
+  <li css={outerContainer}>
+    <div css={infoListElementInnerContainer}>
+      <div css={pictureContainer}>
+        <ChatThumbnail src={image} />
+      </div>
+      <div css={contentContainer}>
+        <div css={upperInnerContentContainer}>
+          <span css={title}>
+            <h4>{name}</h4>
+            {additionalInfo ? (
+              <p css={additionalInfoText}>{additionalInfo}</p>
+            ) : null}
+          </span>
+          <div css={upperOuterContentContainer}>
+            <div css={buttonsInnerContainer} className="buttons-container">
+              {buttons}
             </div>
+            <NavArrowRight
+              color={COLORS.PRIMARY}
+              width="1.5rem"
+              height="1.5rem"
+            />
           </div>
-          <div css={descriptionContainer}>
-            <p css={descriptionText}>{description}</p>
-          </div>
+        </div>
+        <div css={descriptionContainer}>
+          <p css={descriptionText}>{description}</p>
         </div>
       </div>
-      <Link to={link} css={linkCss} title={name} />
-    </li>
-  );
-};
+    </div>
+    <Link to={link} css={linkCss} title={name} />
+  </li>
+);
 
 const outerContainer = css`
   ${containerWithLink};

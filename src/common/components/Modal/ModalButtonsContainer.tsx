@@ -15,13 +15,11 @@ interface ModalButtonsContainerProps
 const ModalButtonsContainer = React.forwardRef<
   HTMLDivElement,
   ModalButtonsContainerProps
->(({ children, ...props }: ModalButtonsContainerProps, ref?) => {
-  return (
-    <div ref={ref} {...props} css={[buttonsContainer, props.css]}>
-      {children}
-    </div>
-  );
-});
+>(({ children, ...props }: ModalButtonsContainerProps, ref?) => (
+  <div ref={ref} {...props} css={[buttonsContainer, props.css]}>
+    {children}
+  </div>
+));
 
 const buttonsContainer = css`
   display: flex;

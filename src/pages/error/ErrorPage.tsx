@@ -44,15 +44,13 @@ export const BaseErrorPage = ({
  * Generic error page. Used in the app's router, plus an error boundary
  * wrapping the app.
  */
-const ErrorPage = () => {
-  return (
-    <BaseErrorPage
-      title="Error | LangFlow"
-      heading="Oops!"
-      description="An error happened."
-    />
-  );
-};
+const ErrorPage = () => (
+  <BaseErrorPage
+    title="Error | LangFlow"
+    heading="Oops!"
+    description="An error happened."
+  />
+);
 
 const AnimatedLayout = animated(ResponsiveBottomTabsLayout);
 

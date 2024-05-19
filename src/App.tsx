@@ -35,18 +35,14 @@ import globalStyles from "./styles";
  * call the login function directly from its hook, but then we'd have to handle
  * auth stuff (e.g. errors) manually in components.
  */
-const AppWrapper = () => {
-  return (
-    <>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <Outlet />
-        </AuthProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </>
-  );
-};
+const AppWrapper = () => (
+  <QueryClientProvider client={queryClient}>
+    <AuthProvider>
+      <Outlet />
+    </AuthProvider>
+    <ReactQueryDevtools initialIsOpen={false} />
+  </QueryClientProvider>
+);
 
 export const router = createBrowserRouter([
   {

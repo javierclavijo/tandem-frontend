@@ -18,18 +18,16 @@ const EditButtons = ({
   handleSubmit,
   handleCancel,
   color,
-}: EditButtonsProps) => {
-  return (
-    <div css={container}>
-      <EditButton onClick={handleSubmit} ref={submitButtonRef}>
-        <Check color={color} width={"1.5rem"} height={"1.5rem"} />
-      </EditButton>
-      <EditButton onClick={handleCancel}>
-        <Xmark color={color} width={"1.5rem"} height={"1.5rem"} />
-      </EditButton>
-    </div>
-  );
-};
+}: EditButtonsProps) => (
+  <div css={container}>
+    <EditButton onClick={handleSubmit} ref={submitButtonRef}>
+      <Check color={color} width={"1.5rem"} height={"1.5rem"} />
+    </EditButton>
+    <EditButton onClick={handleCancel}>
+      <Xmark color={color} width={"1.5rem"} height={"1.5rem"} />
+    </EditButton>
+  </div>
+);
 
 const container = css`
   display: flex;

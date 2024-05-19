@@ -20,21 +20,19 @@ const NavProfilePicture = ({
   image,
   username,
   ...props
-}: NavProfilePictureProps) => {
-  return (
-    <NavLink
-      css={link}
-      style={({ isActive }) => (isActive ? activeNavLink : {})}
-      title="Go to your profile"
-      {...props}
-    >
-      <div css={imageContainer}>
-        <ChatThumbnail src={image} css={pictureImg} />
-      </div>
-      <p>{username}</p>
-    </NavLink>
-  );
-};
+}: NavProfilePictureProps) => (
+  <NavLink
+    css={link}
+    style={({ isActive }) => (isActive ? activeNavLink : {})}
+    title="Go to your profile"
+    {...props}
+  >
+    <div css={imageContainer}>
+      <ChatThumbnail src={image} css={pictureImg} />
+    </div>
+    <p>{username}</p>
+  </NavLink>
+);
 
 const link = css`
   ${infoButton};

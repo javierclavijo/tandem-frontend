@@ -14,13 +14,11 @@ interface ButtonProps
  * Generic button component.
  */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ children, ...props }: ButtonProps, ref?) => {
-    return (
-      <button ref={ref} {...props} css={[button, props.css]}>
-        {children}
-      </button>
-    );
-  },
+  ({ children, ...props }: ButtonProps, ref?) => (
+    <button ref={ref} {...props} css={[button, props.css]}>
+      {children}
+    </button>
+  ),
 );
 
 const button = css`

@@ -29,45 +29,43 @@ const SearchResultElement = ({
   description,
   image,
   link,
-}: SearchResultElementProps) => {
-  return (
-    <article css={[containerWithLink, outerContainer]}>
-      <div css={innerContainer}>
-        <div css={[thumbnailContainer, imgContainer]}>
-          <ChatThumbnail src={image} />
-        </div>
-        <div css={contentContainer}>
-          <div css={upperInnerContainer}>
-            <h4>{name}</h4>
-            <NavArrowRight
-              color={COLORS.PRIMARY}
-              width="1.5rem"
-              height="1.5rem"
-            />
-          </div>
-          <div css={flagsContainer}>
-            {languages.map((language) => (
-              <FlagIcon
-                code={LANGUAGE_INFO[language].flagIconCode}
-                size={24}
-                key={`${id}-${language}`}
-              />
-            ))}
-          </div>
-          <ResponsiveEllipsis
-            text={description}
-            maxLine="1"
-            ellipsis="…"
-            trimRight
-            basedOn="letters"
-            css={descriptionCss}
+}: SearchResultElementProps) => (
+  <article css={[containerWithLink, outerContainer]}>
+    <div css={innerContainer}>
+      <div css={[thumbnailContainer, imgContainer]}>
+        <ChatThumbnail src={image} />
+      </div>
+      <div css={contentContainer}>
+        <div css={upperInnerContainer}>
+          <h4>{name}</h4>
+          <NavArrowRight
+            color={COLORS.PRIMARY}
+            width="1.5rem"
+            height="1.5rem"
           />
         </div>
+        <div css={flagsContainer}>
+          {languages.map((language) => (
+            <FlagIcon
+              code={LANGUAGE_INFO[language].flagIconCode}
+              size={24}
+              key={`${id}-${language}`}
+            />
+          ))}
+        </div>
+        <ResponsiveEllipsis
+          text={description}
+          maxLine="1"
+          ellipsis="…"
+          trimRight
+          basedOn="letters"
+          css={descriptionCss}
+        />
       </div>
-      <Link to={link} css={linkCss} title={name} />
-    </article>
-  );
-};
+    </div>
+    <Link to={link} css={linkCss} title={name} />
+  </article>
+);
 
 const imgContainer = css`
   height: 4.5rem;

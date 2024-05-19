@@ -29,6 +29,7 @@ export default tseslint.config(
       ...eslintPluginReact.configs.recommended.rules,
       ...eslintPluginReact.configs["jsx-runtime"].rules,
       ...eslintPluginReactHooks.configs.recommended.rules,
+      "arrow-body-style": ["error", "as-needed"],
       "react/no-unknown-property": ["error", { ignore: ["css"] }], // Avoid issues with emotion
       "react/jsx-fragments": ["error", "syntax"],
       "react/destructuring-assignment": ["error", "always"],

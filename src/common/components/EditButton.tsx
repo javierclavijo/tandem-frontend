@@ -13,17 +13,15 @@ interface EditButtonProps
  * Edit button component.
  */
 const EditButton = React.forwardRef<HTMLButtonElement, EditButtonProps>(
-  ({ children, ...props }: EditButtonProps, ref?) => {
-    return (
-      <button
-        ref={ref}
-        {...props}
-        css={[buttonWithoutBackgroundAndBorder, props.css]}
-      >
-        {children}
-      </button>
-    );
-  },
+  ({ children, ...props }: EditButtonProps, ref?) => (
+    <button
+      ref={ref}
+      {...props}
+      css={[buttonWithoutBackgroundAndBorder, props.css]}
+    >
+      {children}
+    </button>
+  ),
 );
 
 EditButton.displayName = "EditButton";
