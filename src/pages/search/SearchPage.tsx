@@ -6,10 +6,10 @@ import { animated } from "react-spring";
 import Header from "../../common/components/Header/Header";
 import { ResponsiveBottomTabsLayout } from "../../common/components/Layout";
 import Tabs from "../../common/components/Tabs";
+import UserCard from "../../common/components/UserCard";
 import { useWsChatListener } from "../../common/hooks";
 import { homeSearchMain, homeSearchStyles } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
-import RecentElement from "../home/components/RecentElement";
 import SearchForm from "./components/SearchForm";
 import {
   getBaseSearchParams,
@@ -99,7 +99,7 @@ const SearchPage = () => {
                   {!!isUserSearch &&
                     usersData?.pages.map((page) =>
                       [...page.results].map((element) => (
-                        <RecentElement
+                        <UserCard
                           name={element.username}
                           languages={element.languages.map(
                             ({ language }) => language,
@@ -116,7 +116,7 @@ const SearchPage = () => {
                   {!!isChannelSearch &&
                     channelsData?.pages.map((page) =>
                       [...page.results].map((element) => (
-                        <RecentElement
+                        <UserCard
                           name={element.name}
                           languages={[element.language]}
                           content={element.description}

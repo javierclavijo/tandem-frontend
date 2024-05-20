@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
+import UserCard from "../../../common/components/UserCard";
 import useAuth from "../../../common/context/AuthContext/AuthContext";
 import { getChatLastMessageDisplayText } from "../../../common/functions";
 import { homeSearchStyles } from "../../../common/styles";
 import { useFadeIn } from "../../../common/transitions";
 import { useFriendChatList } from "../../chats/queries";
-import RecentElement from "./RecentElement";
 
 const RecentChats = () => {
   const transitionProps = useFadeIn();
@@ -21,7 +21,7 @@ const RecentChats = () => {
       </header>
       <div css={homeSearchStyles.sectionItemsContainer}>
         {displayedFriendChats?.map((chat) => (
-          <RecentElement
+          <UserCard
             name={chat.name}
             image={chat.image}
             content={getChatLastMessageDisplayText(chat.messages[0], user)}

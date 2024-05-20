@@ -102,6 +102,7 @@ const NameInput = <TData,>({
           onKeyDown={handleKeyDown}
           size={value.length}
           css={input}
+          pattern="\w+"
         />
         {!!editEnabled && (
           <EditButtons

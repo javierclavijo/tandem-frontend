@@ -1,16 +1,16 @@
 import { css } from "@emotion/react";
 import { NavArrowRight } from "iconoir-react";
 import { Link } from "react-router-dom";
-import ResponsiveEllipsis from "../../../common/components/ResponsiveEllipsis";
-import { COLORS, LANGUAGE_INFO } from "../../../common/constants";
-import { linkContainer } from "../../../common/styles";
+import { COLORS, LANGUAGE_INFO } from "../constants";
+import { linkContainer } from "../styles";
+import ResponsiveEllipsis from "./ResponsiveEllipsis";
 
 import { FlagIcon } from "react-flag-kit";
-import Thumbnail from "../../../common/components/Thumbnail/Thumbnail";
-import ThumbnailContainer from "../../../common/components/Thumbnail/ThumbnailContainer";
-import { Language } from "../../../common/types";
+import { Language } from "../types";
+import Thumbnail from "./Thumbnail/Thumbnail";
+import ThumbnailContainer from "./Thumbnail/ThumbnailContainer";
 
-interface RecentElementProps {
+interface UserCardProps {
   name: string;
   image: string | null;
   content: string;
@@ -19,14 +19,14 @@ interface RecentElementProps {
   maxContentLines?: number;
 }
 
-const RecentElement = ({
+const UserCard = ({
   name,
   image,
   content,
   link,
   languages,
   maxContentLines = 1,
-}: RecentElementProps) => (
+}: UserCardProps) => (
   <article css={outerContainer}>
     <div css={innerContainer}>
       <ThumbnailContainer css={imgContainer}>
@@ -116,4 +116,4 @@ const linkCss = css`
   grid-area: element;
 `;
 
-export default RecentElement;
+export default UserCard;

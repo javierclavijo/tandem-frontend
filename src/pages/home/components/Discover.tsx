@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
+import UserCard from "../../../common/components/UserCard";
 import { homeSearchStyles } from "../../../common/styles";
 import { useFadeIn } from "../../../common/transitions";
 import { useDiscoverUsersList } from "../queries";
-import RecentElement from "./RecentElement";
 
 /**
  * Displays a list of randomized users, excluding friends of the user.
@@ -21,7 +21,7 @@ const Discover = () => {
       </header>
       <div css={homeSearchStyles.sectionItemsContainer}>
         {displayedDiscoverUsers?.map((user) => (
-          <RecentElement
+          <UserCard
             name={user.username}
             languages={user.languages.map(({ language }) => language)}
             content={user.description}

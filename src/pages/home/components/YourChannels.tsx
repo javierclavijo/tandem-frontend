@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
+import UserCard from "../../../common/components/UserCard";
 import useAuth from "../../../common/context/AuthContext/AuthContext";
 import { getChatLastMessageDisplayText } from "../../../common/functions";
 import { homeSearchStyles } from "../../../common/styles";
 import { useFadeIn } from "../../../common/transitions";
 import { useChannelChatList } from "../../chats/queries";
-import RecentElement from "./RecentElement";
 
 const YourChannels = () => {
   const transitionProps = useFadeIn();
@@ -22,7 +22,7 @@ const YourChannels = () => {
       </header>
       <div css={homeSearchStyles.sectionItemsContainer}>
         {displayedChannelChats?.map((chat) => (
-          <RecentElement
+          <UserCard
             name={chat.name}
             image={chat.image}
             content={getChatLastMessageDisplayText(chat.messages[0], user)}
