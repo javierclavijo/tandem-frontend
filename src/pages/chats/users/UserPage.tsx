@@ -119,7 +119,7 @@ const UserPage = () => {
       title: "User info",
       actions: (
         <>
-          {!isFriend && (
+          {!isFriend && !isEditable && (
             <button type="button" onClick={onChatCreateClick} css={infoButton}>
               Chat with user
             </button>
