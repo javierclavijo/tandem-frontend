@@ -8,21 +8,13 @@ export const homeSearchMain = css`
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding: 1rem 3.125rem;
-  box-sizing: border-box;
   gap: 1rem;
   overflow: auto;
-`;
 
-export const homeSearchMainMobile = css`
-  grid-area: main;
-  height: 100%;
-  max-height: 100%;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  overflow: auto;
+  @media (min-width: 1024px) {
+    padding: 1rem 3.125rem;
+    box-sizing: border-box;
+  }
 `;
 
 export const visuallyHidden = css`
@@ -76,6 +68,20 @@ export const homeSearchStyles = {
 
     @media (min-width: 1024px) {
       grid-template-columns: repeat(3, 1fr);
+    }
+  `,
+
+  sectionFooter: css`
+    width: 100%;
+    text-align: end;
+  `,
+
+  sectionFooterLink: css`
+    text-decoration: none;
+    color: ${COLORS.PRIMARY};
+
+    &:visited {
+      color: ${COLORS.PRIMARY};
     }
   `,
 };

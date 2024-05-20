@@ -7,12 +7,8 @@ import Header from "../../common/components/Header/Header";
 import { ResponsiveBottomTabsLayout } from "../../common/components/Layout";
 import SearchResultElement from "../../common/components/SearchResultElement";
 import Tabs from "../../common/components/Tabs";
-import { useIsDesktop, useWsChatListener } from "../../common/hooks";
-import {
-  homeSearchMain,
-  homeSearchMainMobile,
-  homeSearchStyles,
-} from "../../common/styles";
+import { useWsChatListener } from "../../common/hooks";
+import { homeSearchMain, homeSearchStyles } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
 import SearchForm from "./components/SearchForm";
 import {
@@ -28,7 +24,6 @@ import { ChannelSearchParams, UserSearchParams } from "./types";
  */
 const SearchPage = () => {
   const [searchParams] = useSearchParams();
-  const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
   useWsChatListener();
 
@@ -76,10 +71,7 @@ const SearchPage = () => {
       <Helmet title="Search | LangFlow" />
       <ResponsiveBottomTabsLayout>
         <Header />
-        <main
-          id="search-main"
-          css={isDesktop ? homeSearchMain : homeSearchMainMobile}
-        >
+        <main id="search-main" css={homeSearchMain}>
           {/* Infinite scroll component. Includes the search panel and results. 
               Its properties are assigned conditionally based on the selected 
               search type. */}
