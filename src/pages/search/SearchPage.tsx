@@ -7,7 +7,7 @@ import Header from "../../common/components/Header/Header";
 import { ResponsiveBottomTabsLayout } from "../../common/components/Layout";
 import SearchResultElement from "../../common/components/SearchResultElement";
 import Tabs from "../../common/components/Tabs";
-import { useIsDesktop } from "../../common/hooks";
+import { useIsDesktop, useWsChatListener } from "../../common/hooks";
 import {
   homeSearchMain,
   homeSearchMainMobile,
@@ -30,6 +30,7 @@ const SearchPage = () => {
   const [searchParams] = useSearchParams();
   const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
+  useWsChatListener();
 
   const { type } = getBaseSearchParams(searchParams);
   const isUserSearch = type === "users";

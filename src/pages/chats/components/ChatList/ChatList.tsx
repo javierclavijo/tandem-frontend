@@ -8,7 +8,7 @@ import useAuth from "../../../../common/context/AuthContext/AuthContext";
 import { useIsDesktop } from "../../../../common/hooks";
 import { useFadeIn } from "../../../../common/transitions";
 import { messageSortFn } from "../../hooks";
-import { useAllChatList } from "../../queries";
+import { useAllChatsList } from "../../queries";
 import {
   listContainer,
   listContainerMobile,
@@ -26,7 +26,7 @@ const ChatList = () => {
   const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
   const { user } = useAuth();
-  const { data } = useAllChatList();
+  const { data } = useAllChatsList();
 
   /**
    * Controls the chat list filter state.

@@ -10,7 +10,7 @@ import { homeSearchStyles } from "../../common/styles";
 
 import { Helmet } from "react-helmet-async";
 import { ResponsiveBottomTabsLayout } from "../../common/components/Layout";
-import { useIsDesktop } from "../../common/hooks";
+import { useIsDesktop, useWsChatListener } from "../../common/hooks";
 import { homeSearchMain, homeSearchMainMobile } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
 import { useChannelChatList, useFriendChatList } from "../chats/queries";
@@ -24,6 +24,7 @@ const HomePage = () => {
   const isDesktop = useIsDesktop();
   const transitionProps = useFadeIn();
   const { user } = useAuth();
+  useWsChatListener();
 
   const { data: friendChats } = useFriendChatList();
   const { data: channelChats } = useChannelChatList();
