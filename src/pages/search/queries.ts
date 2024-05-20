@@ -26,7 +26,7 @@ export const useUserSearchQuery = (
           native_language: params?.nativeLanguages,
           learning_language: params?.learningLanguages,
           level: params?.learningLanguageLevels,
-          size: 18,
+          size: 30,
         },
         paramsSerializer,
       });
@@ -55,7 +55,7 @@ export const useChannelSearchQuery = (
           search: params?.search ?? null,
           language: params?.languages,
           level: params?.levels,
-          size: 18,
+          size: 30,
         },
         paramsSerializer,
       });
