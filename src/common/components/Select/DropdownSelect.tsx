@@ -1,11 +1,13 @@
-import Select, { GroupBase, Props, StylesConfig } from "react-select";
+import { Ref, forwardRef } from "react";
+import ReactSelect, { GroupBase, Props, StylesConfig } from "react-select";
+import Select from "react-select/base";
 import { COLORS } from "../../constants";
 
 interface DropdownSelectProps<
-  Option,
-  IsMulti extends boolean = false,
-  Group extends GroupBase<Option> = GroupBase<Option>,
-> extends Props<Option, IsMulti, Group> {}
+  TOption,
+  TIsMulti extends boolean = false,
+  TGroup extends GroupBase<TOption> = GroupBase<TOption>,
+> extends Props<TOption, TIsMulti, TGroup> {}
 
 /**
  * Select element styled like a dropdown.
@@ -14,13 +16,14 @@ const DropdownSelect = <
   TOption,
   TIsMulti extends boolean = false,
   TGroup extends GroupBase<TOption> = GroupBase<TOption>,
->({
-  styles,
-  ...props
-}: DropdownSelectProps<TOption, TIsMulti, TGroup>) => (
-  <Select<TOption, TIsMulti, TGroup>
+>(
+  { styles, ...props }: DropdownSelectProps<TOption, TIsMulti, TGroup>,
+  ref?: Ref<Select<TOption, TIsMulti, TGroup>>,
+) => (
+  <ReactSelect<TOption, TIsMulti, TGroup>
     menuPortalTarget={document.body}
     {...props}
+    ref={ref}
     styles={{
       // @ts-expect-error | The styles object's TGroup generates TS errors for
       // some reason. I'm not using groups in this project (at least yet), so
@@ -31,7 +34,7 @@ const DropdownSelect = <
   />
 );
 
-export const select: StylesConfig = {
+const select: StylesConfig = {
   menu: (provided) => ({
     ...provided,
     width: "max-content",
@@ -62,4 +65,13 @@ export const select: StylesConfig = {
   menuPortal: (base) => ({ ...base, zIndex: 9999 }),
 };
 
-export default DropdownSelect;
+const ForwardedDropdownSelect = forwardRef(DropdownSelect) as <
+  TOption,
+  TIsMulti extends boolean = false,
+  TGroup extends GroupBase<TOption> = GroupBase<TOption>,
+>(
+  props: DropdownSelectProps<TOption, TIsMulti, TGroup>,
+  ref?: Ref<Select<TOption, TIsMulti, TGroup>>,
+) => JSX.Element;
+
+export default ForwardedDropdownSelect;
