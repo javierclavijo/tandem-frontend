@@ -155,13 +155,7 @@ const ChannelPage = () => {
             </>
           ) : (
             <>
-              <ProfileImage
-                src={data.image ?? userPlaceholderImage}
-                alt=""
-                css={css`
-                  display: none;
-                `}
-              />
+              <ProfileImage src={data.image ?? userPlaceholderImage} alt="" />
               <p>{data?.name}</p>
             </>
           )}

@@ -2,7 +2,7 @@ import { FlagIcon } from "react-flag-kit";
 import { COLORS, LANGUAGE_INFO, LEVEL_NAMES } from "../constants";
 import { Language, ProficiencyLevel } from "../types";
 import Badge from "./Badge";
-import ProficiencyLevelIcon from "./icons/ProficiencyLevelIcon";
+import ProficiencyLevelIcon from "./Icons/ProficiencyLevelIcon";
 
 interface LanguageBadgeProps {
   language: Language;

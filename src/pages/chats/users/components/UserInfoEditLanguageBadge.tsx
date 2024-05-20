@@ -4,9 +4,9 @@ import { FlagIcon } from "react-flag-kit";
 import { SingleValue } from "react-select";
 import Badge from "../../../../common/components/Badge";
 import EditButton from "../../../../common/components/EditButton";
+import ProficiencyLevelIcon from "../../../../common/components/Icons/ProficiencyLevelIcon";
 import DropdownSelect from "../../../../common/components/Select/DropdownSelect";
 import { LabelOption } from "../../../../common/components/Select/types";
-import ProficiencyLevelIcon from "../../../../common/components/icons/ProficiencyLevelIcon";
 import {
   COLORS,
   LANGUAGE_INFO,
