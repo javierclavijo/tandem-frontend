@@ -5,11 +5,11 @@ import { useSearchParams } from "react-router-dom";
 import { animated } from "react-spring";
 import Header from "../../common/components/Header/Header";
 import { ResponsiveBottomTabsLayout } from "../../common/components/Layout";
-import SearchResultElement from "../../common/components/SearchResultElement";
 import Tabs from "../../common/components/Tabs";
 import { useWsChatListener } from "../../common/hooks";
 import { homeSearchMain, homeSearchStyles } from "../../common/styles";
 import { useFadeIn } from "../../common/transitions";
+import RecentElement from "../home/components/RecentElement";
 import SearchForm from "./components/SearchForm";
 import {
   getBaseSearchParams,
@@ -99,16 +99,16 @@ const SearchPage = () => {
                   {!!isUserSearch &&
                     usersData?.pages.map((page) =>
                       [...page.results].map((element) => (
-                        <SearchResultElement
-                          id={`${element.id}`}
+                        <RecentElement
                           name={element.username}
                           languages={element.languages.map(
                             ({ language }) => language,
                           )}
-                          description={element.description}
+                          content={element.description}
                           image={element.image}
                           key={`${element.id}`}
                           link={`/chats/users/${element.id}`}
+                          maxContentLines={1}
                         />
                       )),
                     )}
@@ -116,14 +116,14 @@ const SearchPage = () => {
                   {!!isChannelSearch &&
                     channelsData?.pages.map((page) =>
                       [...page.results].map((element) => (
-                        <SearchResultElement
-                          id={`${element.id}`}
+                        <RecentElement
                           name={element.name}
                           languages={[element.language]}
-                          description={element.description}
+                          content={element.description}
                           image={element.image}
                           key={`${element.id}`}
                           link={`/chats/channels/${element.id}`}
+                          maxContentLines={1}
                         />
                       )),
                     )}

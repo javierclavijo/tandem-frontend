@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { animated } from "react-spring";
 import useAuth from "../../../common/context/AuthContext/AuthContext";
+import { getChatLastMessageDisplayText } from "../../../common/functions";
 import { homeSearchStyles } from "../../../common/styles";
 import { useFadeIn } from "../../../common/transitions";
 import { useChannelChatList } from "../../chats/queries";
@@ -22,11 +23,9 @@ const YourChannels = () => {
       <div css={homeSearchStyles.sectionItemsContainer}>
         {displayedChannelChats?.map((chat) => (
           <RecentElement
-            chatName={chat.name}
-            chatImage={chat.image}
-            lastMessageText={chat.messages[0].content}
-            lastMessageAuthorName={chat.messages[0].author.username}
-            isOwnMessage={chat.messages[0].author.id === user?.id}
+            name={chat.name}
+            image={chat.image}
+            content={getChatLastMessageDisplayText(chat.messages[0], user)}
             link={`/chats/${chat.id}`}
             key={chat.id}
           />

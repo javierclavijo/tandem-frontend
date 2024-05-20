@@ -2,65 +2,69 @@ import { css } from "@emotion/react";
 import { NavArrowRight } from "iconoir-react";
 import { Link } from "react-router-dom";
 import ResponsiveEllipsis from "../../../common/components/ResponsiveEllipsis";
-import { COLORS } from "../../../common/constants";
+import { COLORS, LANGUAGE_INFO } from "../../../common/constants";
 import { linkContainer } from "../../../common/styles";
 
+import { FlagIcon } from "react-flag-kit";
 import Thumbnail from "../../../common/components/Thumbnail/Thumbnail";
 import ThumbnailContainer from "../../../common/components/Thumbnail/ThumbnailContainer";
+import { Language } from "../../../common/types";
 
 interface RecentElementProps {
-  chatName: string;
-  chatImage: string | null;
-  lastMessageText: string;
-  lastMessageAuthorName: string;
-  isOwnMessage: boolean;
+  name: string;
+  image: string | null;
+  content: string;
   link: string;
+  languages?: Language[];
+  maxContentLines?: number;
 }
 
-/**
- * Element component for post-login home 'recent' sections.
- */
 const RecentElement = ({
-  chatName,
-  chatImage,
-  lastMessageText,
-  lastMessageAuthorName,
-  isOwnMessage,
+  name,
+  image,
+  content,
   link,
-}: RecentElementProps) => {
-  const displayedMessageContent = `${
-    isOwnMessage ? "You" : lastMessageAuthorName
-  }: ${lastMessageText}`;
-
-  return (
-    <article css={outerContainer}>
-      <div css={innerContainer}>
-        <ThumbnailContainer css={imgContainer}>
-          <Thumbnail src={chatImage} />
-        </ThumbnailContainer>
-        <div css={contentContainer}>
-          <div css={upperInnerContainer}>
-            <h4>{chatName}</h4>
-            <NavArrowRight
-              color={COLORS.PRIMARY}
-              width="1.5rem"
-              height="1.5rem"
-            />
-          </div>
-          <ResponsiveEllipsis
-            text={displayedMessageContent}
-            maxLine="2"
-            ellipsis="…"
-            trimRight
-            basedOn="letters"
-            css={content}
+  languages,
+  maxContentLines = 1,
+}: RecentElementProps) => (
+  <article css={outerContainer}>
+    <div css={innerContainer}>
+      <ThumbnailContainer css={imgContainer}>
+        <Thumbnail src={image} />
+      </ThumbnailContainer>
+      <div css={contentContainer}>
+        <div css={upperInnerContainer}>
+          <h4>{name}</h4>
+          <NavArrowRight
+            color={COLORS.PRIMARY}
+            width="1.5rem"
+            height="1.5rem"
           />
         </div>
+        {languages != null && (
+          <div css={flagsContainer}>
+            {languages.map((language) => (
+              <FlagIcon
+                code={LANGUAGE_INFO[language].flagIconCode}
+                size={24}
+                key={language}
+              />
+            ))}
+          </div>
+        )}
+        <ResponsiveEllipsis
+          text={content}
+          maxLine={maxContentLines}
+          ellipsis="…"
+          trimRight
+          basedOn="letters"
+          css={contentCss}
+        />
       </div>
-      <Link to={link} css={linkCss} title={chatName} />
-    </article>
-  );
-};
+    </div>
+    <Link to={link} css={linkCss} title={name} />
+  </article>
+);
 
 const imgContainer = css`
   height: 4.5rem;
@@ -93,7 +97,7 @@ const contentContainer = css`
   width: 100%;
 `;
 
-const content = css`
+const contentCss = css`
   overflow-wrap: anywhere;
 `;
 
@@ -101,6 +105,11 @@ const upperInnerContainer = css`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+`;
+
+const flagsContainer = css`
+  display: flex;
+  gap: 0.5rem;
 `;
 
 const linkCss = css`

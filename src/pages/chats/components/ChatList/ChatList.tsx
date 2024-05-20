@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { animated } from "react-spring";
 import { COLORS } from "../../../../common/constants";
 import useAuth from "../../../../common/context/AuthContext/AuthContext";
+import { getChatLastMessageDisplayText } from "../../../../common/functions";
 import { useIsDesktop } from "../../../../common/hooks";
 import { useFadeIn } from "../../../../common/transitions";
 import { messageSortFn } from "../../hooks";
@@ -72,10 +73,8 @@ const ChatList = () => {
               chatId={chat.id}
               chatName={chat.name}
               chatImage={chat.image}
-              lastMessageText={chat.messages[0].content}
+              content={getChatLastMessageDisplayText(chat.messages[0], user)}
               lastMessageDateTime={chat.messages[0].timestamp}
-              lastMessageAuthor={chat.messages[0].author.username}
-              isOwnMessage={chat.messages[0]?.author.id === user.id}
               selected={chat.id === params.id}
               key={chat.id}
             />

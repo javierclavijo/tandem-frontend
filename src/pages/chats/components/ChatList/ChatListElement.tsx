@@ -11,10 +11,8 @@ interface ChatListElementProps {
   chatId: string;
   chatName: string;
   chatImage: string | null;
-  lastMessageText: string;
+  content: string;
   lastMessageDateTime: string;
-  lastMessageAuthor: string;
-  isOwnMessage: boolean;
   selected: boolean;
 }
 
@@ -27,21 +25,13 @@ const ChatListElement = ({
   chatId,
   chatName,
   chatImage,
-  lastMessageText,
+  content,
   lastMessageDateTime,
-  lastMessageAuthor,
-  isOwnMessage,
   selected,
 }: ChatListElementProps) => {
   const formattedLastMessageDateTime = DateTime.fromISO(
     lastMessageDateTime,
   ).toLocaleString(DateTime.DATE_SHORT);
-
-  // Show the first message and its author's username, or 'You' if the app's
-  // user is the author.
-  const displayedMessageContent = isOwnMessage
-    ? `You: ${lastMessageText}`
-    : `${lastMessageAuthor}: ${lastMessageText}`;
 
   return (
     <li css={[outerContainer, selected ? selectedOuterContainer : undefined]}>
@@ -57,15 +47,13 @@ const ChatListElement = ({
             </span>
           </span>
 
-          {/* Show the first message and its author's username, or 'You' if the 
-              app's user is the author. */}
           <ResponsiveEllipsis
-            text={displayedMessageContent}
+            text={content}
             maxLine="1"
             ellipsis="…"
             trimRight
             basedOn="letters"
-            css={content}
+            css={contentCss}
           />
         </div>
       </div>
@@ -117,7 +105,7 @@ const lastMessageDatetimeCss = css`
   font-size: ${FONT_SIZES.S};
 `;
 
-const content = css`
+const contentCss = css`
   overflow-wrap: anywhere;
 `;
 

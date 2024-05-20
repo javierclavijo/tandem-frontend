@@ -3,7 +3,6 @@ import { NavArrowRight } from "iconoir-react";
 import { FlagIcon } from "react-flag-kit";
 import { Link } from "react-router-dom";
 import { COLORS } from "../constants";
-import { linkContainer } from "../styles";
 import ResponsiveEllipsis from "./ResponsiveEllipsis";
 
 import { LANGUAGE_INFO } from "../constants";
@@ -12,26 +11,21 @@ import Thumbnail from "./Thumbnail/Thumbnail";
 import ThumbnailContainer from "./Thumbnail/ThumbnailContainer";
 
 interface SearchResultElementProps {
-  id: string;
   name: string;
-  languages: Language[];
-  description: string;
   image?: string | null;
+  content: string;
   link: string;
+  languages?: Language[];
 }
 
-/**
- * Element component for search results.
- */
 const SearchResultElement = ({
-  id,
   name,
   languages,
-  description,
+  content,
   image,
   link,
 }: SearchResultElementProps) => (
-  <article css={[linkContainer, outerContainer]}>
+  <article css={outerContainer}>
     <div css={innerContainer}>
       <ThumbnailContainer css={imgContainer}>
         <Thumbnail src={image} />
@@ -46,16 +40,16 @@ const SearchResultElement = ({
           />
         </div>
         <div css={flagsContainer}>
-          {languages.map((language) => (
+          {languages?.map((language) => (
             <FlagIcon
               code={LANGUAGE_INFO[language].flagIconCode}
               size={24}
-              key={`${id}-${language}`}
+              key={language}
             />
           ))}
         </div>
         <ResponsiveEllipsis
-          text={description}
+          text={content}
           maxLine="1"
           ellipsis="…"
           trimRight
