@@ -52,6 +52,7 @@ export const useSessionInfoQuery = () =>
           removeLocalStorageLoggedIn();
         }
       },
+      staleTime: Infinity,
     },
   );
 
